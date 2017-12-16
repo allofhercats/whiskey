@@ -1,0 +1,26 @@
+\title{Rationale for Whiskey}
+\date{November 2th, 2017}
+
+\h1{Introduction}
+
+This is the reasoning and thought process behind the Whiskey programming language. It's why things are the way they are.
+
+\h1{The Basics}
+
+\h2{Paradigm}
+
+Whiskey is intended to be an alternative for C++, so it is predominantly object-oriented. It also allows for use of the functional paradigm. However, many other languages that "include functional programming features" do not enforce any of the restrictions that make functional programming actually useful. Whiskey allows you to program as functionally as you want.
+
+\h2{Type System}
+
+Whiskey is definitely not strictly typed, but it is not weakly typed either. Types cannot be implicitly converted between each other, but if a cast is explicitly defined as implicit, the types involved will be.
+
+There are a number of atomic types. Everything else is a class type of some sort.
+
+\h2{Memory Management}
+
+Memory is manually managed. In a natively executing programming language, automatic memory management of any sort is kind of stupid.
+
+\h1{Data Model}
+
+Atomic values are stored directly on the stack.

@@ -1,0 +1,119 @@
+\documentclass[11pt, a4paper, twoside]{article}
+
+\usepackage[letterpaper, margin=0.5in]{geometry}
+
+\title{Whiskey Language Specification}
+\author{Oliver Katz}
+\date{November 23rd, 2017}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Syntax}
+
+  \subsection{Lexical}
+
+    \newpage
+
+    \subsubsection{Whitespace}
+
+    \begin{verbatim}
+    WHITESPACE [ \t\r\n]
+    \end{verbatim}
+
+    All whitespace should be disregarded except as a deliminator.
+
+    \newpage
+
+    \subsubsection{Comments}
+
+    \begin{verbatim}
+    COMMENT_LINE_BEGIN  #
+    COMMENT_LINE_END    [\r\n]
+    COMMENT_BLOCK_BEGIN #\{
+    COMMENT_BLOCK_END   \}#
+    \end{verbatim}
+
+    Any characters between and including \verb|COMMENT_LINE_BEGIN| and the first subsequent \verb|COMMENT_LINE_END| should be disregarded except as a deliminator. For example:
+
+    \begin{verbatim}
+    # This is a line comment.
+    # This is another line comment.
+    \end{verbatim}
+
+    Any characters between and including \verb|COMMENT_BLOCK_BEGIN| and the corresponding \verb|COMMENT_BLOCK_END| should be disregarded except as a deliminator. For example:
+
+    \begin{verbatim}
+    #{ This is a block comment
+       spread over two lines.  }#
+    \end{verbatim}
+
+    Block comments can be nested. For example:
+
+    \begin{verbatim}
+    #{
+      
+      ...
+
+      #{
+
+        ...
+
+        #{
+
+          ...
+
+        }#
+
+        ...
+
+      }#
+
+      ...
+
+      #{
+
+        ...
+
+      }#
+
+      ...
+      
+    }#
+    \end{verbatim}
+
+    \newpage
+
+    \subsubsection{Symbols}
+
+    \begin{verbatim}
+    SYMBOL [a-zA-Z\x80-\xff_][a-zA-Z0-9\x80-\xff_]*\'*
+    \end{verbatim}
+
+    The following are all examples of symbols:
+    \begin{verbatim}
+    x
+    _x
+    x10
+    _10
+    _
+    x'
+    _'''
+    \end{verbatim}
+
+    \newpage
+
+    \subsubsection{Integers}
+
+    \begin{verbatim}
+    
+    \end{verbatim}
+
+  \subsection{Grammatical}
+
+\section{Semantics}
+
+\end{document}

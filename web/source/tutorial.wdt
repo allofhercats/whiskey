@@ -1,0 +1,64 @@
+\title{Whiskey Tutorial}
+\date{November 3rd, 2017}
+
+\h1{Hello, World}
+
+Every programming language tutorial starts off with a hello world program. Who am I to deny this tradition?
+
+\code{!{
+	import_using("std");
+
+	int32 main(cref array<string> args) {
+		print("Hello, world.\n");
+		return (0);
+	}
+}!}
+
+First, save this as \verb{hello.w}. Then, compile till golden brown:
+
+\code{!{
+	$ whiskey link hello.w
+}!}
+
+This will produce an executable called \verb{hello}. Run it:
+
+\code{!{
+	$ ./hello
+	Hello, world.
+}!}
+
+And that's your first Whiskey program.
+
+\h1{Using the Interpreter}
+
+Whiskey has an interpreter that lets you evaluate Whiskey expressions interactively. You can start it with:
+
+\code{!{
+	$ whiskey cli
+	% 
+}!}
+
+Now you can type in any Whiskey expression and it will evaluate:
+
+\code{!{
+	% "Hello, world.\n"
+	"Hello, world.\n"
+}!}
+
+Since we just typed in a string, it simply evaluates to the same value. Let's try something a bit more interesting like addition.
+
+\code{!{
+	% 3+5
+	8
+}!}
+
+Wow. You're blown away by the power of this programming language, right? Then this will litterally melt your noggin:
+
+\code{!{
+	% "This is a number: " + 3
+	--:1:21: error: cannot add string and int32 types
+		"This is a number: " + 3
+		                     ^
+}!}
+
+Whiskey is a somewhat type-strict language. It is not strictly typed, but it still has more safety than say 

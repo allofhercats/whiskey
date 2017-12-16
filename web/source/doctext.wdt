@@ -1,0 +1,296 @@
+\title{Whiskey Doctext Tutorial}
+\date{November 1st, 2017}
+
+\h1{Introduction}
+
+Whiskey Doctext (WDT) is yet another documentation text format. If you've made it all the way past \i{Markdown} and \i{reStructuredText}, the big names in this industry, then you're probably asking yourself why we need another format. The answer is that we don't need one, but I do. Whisky has a lot of documentation that needs to be statically generated and customized on a regular basis. Also, much of this documentation needs to be generated from source code. WDT has a very minimal unambiguous syntax that makes it easy to generate. It also is highly customizable from a very minimal default configuration.
+
+\h1{Calling the Generator}
+
+\code{!{
+	Whiskey Doctext Generator 0.1.0a
+	Copyright 2017 Oliver Katz
+
+	usage: wdtgen [OPTIONS]
+
+	OPTIONS
+	  -h|--help         Show help.
+	  -V|--version      Show version.
+	  -i <INPUT *.wdt>  Specify input file.
+	  -o <OUTPUT DIR>   Specify output directory.
+	  -vno-loading
+	  -vloading         Enable/disable verbose messages for file loading.
+	  -vno-lexing
+	  -vlexing          Enable/disable verbose messages for lexing.
+	  -vno-parsing
+	  -vparsing         Enable/disable verbose messages for parsing.
+	  -vno-generating
+	  -vgenerating      Enable/disable verbose messages for generating.
+	  -vnone
+	  -vall             Enable/disable all verbose messages.
+}!}
+
+For example:
+
+\code{!{
+	$ wdtgen -i index.wdt -o build
+}!}
+
+This will load \verb{index.wdt} and generate HTML into the directory \verb{build/}. One \verb{*.wdt} file generates a corresponding \verb{*.html} file in the directory structure of \verb{build/}.
+
+\h1{The Basics}
+
+For the most part, you can just type text normally. For example, this paragraph was made with the following WDT code:
+
+\code{!{
+	For the most part, you can just type text normally.
+}!}
+
+However, sometimes you want to spice things up a bit. To make text \b{bold}, you can use the \verb{\\b\{...\}} command. Like so:
+
+\code{!{
+	\b{This text will be bold now.}
+	\i{The same works for italics,}
+	\u{underlines,}
+	\st{or strikethroughs.}
+}!}
+
+WDT uses the special characters \verb{\\}, \verb{\{}, \verb{\}}, and \verb{!} (as seen below). You can escape these characters by prefixing them with an additional \verb{\\}:
+
+\code{!{
+	\\
+	\{
+	\}
+	\\!
+}!}
+
+Sometimes you want to include code in your documentation file. You'll notice that I've done a lot of that in this very documentation file. I used the \verb{\\code\{...\}} command:
+
+\code{!{
+	\code{
+		#include <stdio.h>
+
+		void main() \{
+			printf("This is my code.\n");
+		\}
+	}
+}!}
+
+You can see that I had to escape out the curly brackets \verb{\{} and \verb{\}}. This is annoying, so you can use the verbatim text "command" by wrapping our text with \verb{!\{} and \verb{\}!}:
+
+\code{
+	!\{ This text will be rendered verbatim, including \{, \}, and whitespace! \}!
+}
+
+We can try our original example again:
+
+\code{!{
+	\code{!{
+		#include <stdio.h>
+
+		void main() {
+			printf("This is my code.\n");
+		}
+	}\!}
+}!}
+
+It's a little bit cleaner. Note that if you want to include \verb{!} characters inside a verbatim text block, they have to be escaped with \verb{\\!}.
+
+What if we want to put the verbatim text inline? Use \verb{\\verb\{...\}}:
+
+\code{!{
+	This is some \verb{code}.
+}!}
+
+Another useful thing to do is include external links in your documentation. Use the \verb{\\link\{...|...\}} command:
+
+\code{!{
+	\link{http://www.google.com|This is a link to Google.}
+}!}
+
+\h1{Pages and Files}
+
+You can put some information at the top of your \verb{*.wdt} files containing information about them:
+
+\code{!{
+	\title{This is a title}
+	\subtitle{This is a subtitle}
+	\author{Me}
+	\date{Today}
+}!}
+
+\b{All} documents require a title! Let's say that you want to split your documentation into multiple files. Use the \verb{\\load\{...\}} command. Suppose we have a directory structure as follows:
+
+\code{!{
+	index.wdt
+	blah.wdt
+	bleh/meh.wdt
+}!}
+
+We could put, in \verb{index.wdt}, the following:
+
+\code{!{
+	\load{blah.wdt}
+	\load{bleh/meh.wdt}
+}!}
+
+This links up the files.
+
+\h1{TOC and References}
+\label{toc_refs}
+
+To add new sections to your document, like this section labeled \ref{toc_refs}, use the \verb{\\h1\{...\}} command:
+
+\code{!{
+	\h1{This is a heading}
+}!}
+
+You can also make subsections with the \verb{h2}, \verb{h3}, \verb{h4}, etc. commands. These headings will show up in your table of contents for the current document.
+
+To label them, use the \verb{\\label\{...\}} command:
+
+\code{!{
+	\h1{This is a heading}
+	\label{this_is_a_label}
+}!}
+
+Then you can reference it later from any file:
+
+\code{!{
+	\ref{this_is_a_label}
+}!}
+
+\h1{Lists and Tables}
+
+What if I want to make a list like this:
+
+\dotted-list{
+	\item{How}
+	\item{Do}
+	\item{I}
+	\item{Make}
+	\item{A}
+	\item{List?}
+}
+
+You write WDT code like this:
+
+\code{!{
+	\dotted-list{
+		\item{How}
+		\item{Do}
+		\item{I}
+		\item{Make}
+		\item{A}
+		\item{List?}
+	}
+}!}
+
+However, what if I want to make a numbered list like this:
+
+\numbered-list{
+	\item{What}
+	\item{If}
+	\item{I}
+	\item{Want}
+	\item{It}
+	\item{Numbered?}
+}
+
+Then you write WDT like this instead, using the \verb{\\numbered-list\{...\}} command:
+
+\code{!{
+	\numbered-list{
+		\item{What}
+		\item{If}
+		\item{I}
+		\item{Want}
+		\item{It}
+		\item{Numbered?}
+	}
+}!}
+
+Now, what if I want a table like this?
+
+\table{
+	\row{
+		\heading{Number}
+		\heading{Letter}
+	}
+	\row{
+		\entry{1}
+		\entry{A}
+	}
+	\row{
+		\entry{2}
+		\entry{B}
+	}
+	\row{
+		\entry{3}
+		\entry{C}
+	}
+}
+
+Then you write WDT code like this:
+
+\code{!{
+	\table{
+		\row{
+			\heading{Number}
+			\heading{Letter}
+		}
+		\row{
+			\entry{1}
+			\entry{A}
+		}
+		\row{
+			\entry{2}
+			\entry{B}
+		}
+		\row{
+			\entry{3}
+			\entry{C}
+		}
+	}
+}!}
+
+\h1{Customization}
+
+The following commands exist for your customization pleasure:
+
+\code{!{
+	\tab-width{...}
+	\head{...}
+	\body-pre{...}
+	\body-nav-pre{...}
+	\body-nav-prev-pre{...}
+	\body-nav-prev-name{...}
+	\body-nav-prev-post{...}
+	\body-nav-parent-pre{...}
+	\body-nav-parent-name{...}
+	\body-nav-parent-post{...}
+	\body-nav-next-pre{...}
+	\body-nav-next-name{...}
+	\body-nav-next-post{...}
+	\body-nav-children-pre{...}
+	\body-nav-children-sep{...}
+	\body-nav-children-post{...}
+	\body-nav-post{...}
+	\body-wrapper-pre{...}
+	\body-wrapper-title-pre{...}
+	\body-wrapper-title-post{...}
+	\body-wrapper-subtitle-pre{...}
+	\body-wrapper-subtitle-post{...}
+	\body-wrapper-author-pre{...}
+	\body-wrapper-author-post{...}
+	\body-wrapper-date-pre{...}
+	\body-wrapper-date-post{...}
+	\body-wrapper-post{...}
+	\body-toc-pre{...}
+	\body-toc-post{...}
+	\body-content-pre{...}
+	\body-content-post{...}
+	\body-post{...}
+}!}
+
+Use all of them as liberally as you want. They all take effect immediately upon loading.
