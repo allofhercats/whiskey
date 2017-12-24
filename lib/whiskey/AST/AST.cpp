@@ -114,57 +114,60 @@ bool AST::isStmt(ID id) {
 }
 
 bool AST::isStmtEmpty(ID id) {
-	return id ==
+	return id == AST::ID::StmtEmpty;
 }
 
 bool AST::isStmtExpr(ID id) {
-	return id ==
+	return id == AST::ID::StmtExpr
+		|| id == AST::ID::StmtReturn;
 }
 
 bool AST::isStmtIf(ID id) {
-	return id ==
+	return id == AST::ID::StmtIf;
 }
 
 bool AST::isStmtWhile(ID id) {
-	return id ==
+	return id == AST::ID::StmtWhile;
 }
 
 bool AST::isStmtFor(ID id) {
-	return id ==
+	return id == AST::ID::StmtFor;
 }
 
 bool AST::isStmtForEach(ID id) {
-	return id ==
+	return id == AST::ID::StmtForEach;
 }
 
 bool AST::isStmtBlock(ID id) {
-	return id ==
+	return id == AST::ID::StmtBlock;
 }
 
 bool AST::isDecl(ID id) {
-	return id ==
+	return isDeclVariable(id)
+		|| isDeclFunction(id)
+		|| isDeclClass(id)
+		|| isDeclNamespace(id);
 }
 
 bool AST::isDeclVariable(ID id) {
-	return id ==
+	return id == AST::ID::DeclVariable;
 }
 
 bool AST::isDeclFunction(ID id) {
-	return id ==
+	return id == AST::ID::DeclFunction;
 }
 
 bool AST::isDeclClass(ID id) {
-	return id ==
+	return id == AST::ID::DeclClass;
 }
 
 bool AST::isDeclNamespace(ID id) {
-	return id ==
+	return id == AST::ID::DeclNamespace;
 }
 
 bool AST::isImport(ID id) {
-	return id ==
+	return id == AST::ID::Import;
 }
-
 
 AST::AST(AST::ID id, Range range) : id(id), range(range) {}
 
@@ -186,5 +189,11 @@ bool AST::compare(const AST &other) const {
 	} else {
 		return onCompare(other);
 	}
+}
+
+std::queue<ContainerRef<AST>> AST::getChildren() {
+	std::queue<ContainerRef<AST>> rtn;
+	onGetChildren(rtn);
+	return rtn;
 }
 }

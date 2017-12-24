@@ -14,6 +14,8 @@ void Printer::printNewline(std::ostream &os, unsigned int indent) {
 
 Printer::Printer(unsigned int tabWidth) : tabWidth(tabWidth) {}
 
+Printer::~Printer() {}
+
 unsigned int Printer::getTabWidth() const {
 	return tabWidth;
 }

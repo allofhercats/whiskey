@@ -23,9 +23,18 @@ bool DeclNamespace::onCompareDecl(const Decl &other) const {
 	return true;
 }
 
+void DeclNamespace::onGetChildrenDecl(std::queue<ContainerRef<AST>> &children) {
+	for (Container<Decl> &i : members) {
+		children.push(ContainerRef<AST>(i));
+	}
+	onGetChildrenDeclNamespace(children);
+}
+
 bool DeclNamespace::onCompareDeclNamespace(const DeclNamespace &other) const {
 	return true;
 }
+
+void DeclNamespace::onGetChildrenDeclNamespace(std::queue<ContainerRef<AST>> &children) {}
 
 DeclNamespace::DeclNamespace(std::string name, std::vector<Container<Decl>> members) : Decl(AST::ID::DeclNamespace, Range(), name), members(members) {}
 

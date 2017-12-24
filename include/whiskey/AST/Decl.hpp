@@ -15,8 +15,10 @@ private:
 
 protected:
 	bool onCompare(const AST &other) const;
+	void onGetChildren(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareDecl(const Decl &other) const = 0;
+	virtual void onGetChildrenDecl(std::queue<ContainerRef<AST>> &children) = 0;
 
 public:
 	Decl(AST::ID id, Range range, std::string name);

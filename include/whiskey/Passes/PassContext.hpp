@@ -6,32 +6,25 @@
 namespace whiskey {
 template<class T>
 class PassContext {
-public:
-	enum Status {
-		Continue,
-		BreakFromBranch,
-		BreakFromTree
-	};
-
 private:
 	CRef<AST> parent;
 	Ref<T> original;
 	Container<AST> replacement;
-	Status status;
 
 public:
+	PassContext();
 	PassContext(CRef<AST> parent, Ref<T> original);
 
 	template<class U>
-	PassContext<U> as();
+	PassContext<U> branch();
+
+	template<class U>
+	void merge(PassContext<U> &other);
 
 	Ref<T> getOriginal();
 	CRef<AST> getParent();
 	Container<AST> &getReplacement();
 	void setReplacement(Container<AST> value);
-
-	Status getStatus() const;
-	void setStatus(Status value);
 };
 }
 

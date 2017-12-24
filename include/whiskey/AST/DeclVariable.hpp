@@ -14,10 +14,13 @@ private:
 	Container<Expr> init;
 
 protected:
-	AST *onClone() const;
+	virtual AST *onClone() const;
+	
 	bool onCompareDecl(const Decl &other) const;
+	void onGetChildrenDecl(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareDeclVariable(const DeclVariable &other) const;
+	virtual void onGetChildrenDeclVariable(std::queue<ContainerRef<AST>> &children);
 
 public:
 	DeclVariable(Container<Type> type, std::string name, Container<Expr> init = nullptr);

@@ -12,10 +12,13 @@ private:
 	std::vector<Container<Expr>> args;
 
 protected:
-	AST *onClone() const;
-	bool onCompare(const AST &other) const;
+	virtual AST *onClone() const;
+
+	bool onCompareExpr(const Expr &other) const;
+	void onGetChildrenExpr(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareExprCall(const ExprCall &other) const;
+	virtual void onGetChildrenExprCall(std::queue<ContainerRef<AST>> &children);
 
 public:
 	ExprCall(Container<Expr> callee, std::vector<Container<Expr>> args = {});

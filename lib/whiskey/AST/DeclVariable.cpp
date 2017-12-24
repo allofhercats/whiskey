@@ -25,9 +25,17 @@ bool DeclVariable::onCompareDecl(const Decl &other) const {
 	return true;
 }
 
+void DeclVariable::onGetChildrenDecl(std::queue<ContainerRef<AST>> &children) {
+	children.push(ContainerRef<AST>(type));
+	children.push(ContainerRef<AST>(init));
+	onGetChildrenDeclVariable(children);
+}
+
 bool DeclVariable::onCompareDeclVariable(const DeclVariable &other) const {
 	return true;
 }
+
+void DeclVariable::onGetChildrenDeclVariable(std::queue<ContainerRef<AST>> &children) {}
 
 DeclVariable::DeclVariable(Container<Type> type, std::string name, Container<Expr> init) : Decl(AST::ID::DeclVariable, Range(), name), type(type), init(init) {}
 

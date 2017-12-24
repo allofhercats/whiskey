@@ -7,7 +7,7 @@ AST *TypeBinary::onClone() const {
 	return new TypeBinary(getID(), getRange(), lhs, rhs);
 }
 
-bool TypeBinary::onCompare(const AST &other) const {
+bool TypeBinary::onCompareType(const Type &other) const {
 	const TypeBinary &casted = static_cast<const TypeBinary &>(other);
 
 	if (!AST::compare(lhs, casted.lhs)) {
@@ -25,9 +25,17 @@ bool TypeBinary::onCompare(const AST &other) const {
 	return true;
 }
 
+void TypeBinary::onGetChildrenType(std::queue<ContainerRef<AST>> &children) {
+	children.push(ContainerRef<AST>(lhs));
+	children.push(ContainerRef<AST>(rhs));
+	onGetChildrenTypeBinary(children);
+}
+
 bool TypeBinary::onCompareTypeBinary(const TypeBinary &other) const {
 	return true;
 }
+
+void TypeBinary::onGetChildrenTypeBinary(std::queue<ContainerRef<AST>> &children) {}
 
 TypeBinary::TypeBinary(AST::ID id, Container<Type> lhs, Container<Type> rhs) : Type(id, Range()), lhs(lhs), rhs(rhs) {}
 

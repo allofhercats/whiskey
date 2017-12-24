@@ -7,7 +7,7 @@ AST *TypeFunction::onClone() const {
 	return new TypeFunction(getRange(), ret, args);
 }
 
-bool TypeFunction::onCompare(const AST &other) const {
+bool TypeFunction::onCompareType(const Type &other) const {
 	const TypeFunction &casted = static_cast<const TypeFunction &>(other);
 
 	if (!AST::compare(ret, casted.ret)) {
@@ -25,9 +25,19 @@ bool TypeFunction::onCompare(const AST &other) const {
 	return true;
 }
 
+void TypeFunction::onGetChildrenType(std::queue<ContainerRef<AST>> &children) {
+	children.push(ContainerRef<AST>(ret));
+	for (Container<Type> &i : args) {
+		children.push(ContainerRef<AST>(i));
+	}
+	onGetChildrenTypeFunction(children);
+}
+
 bool TypeFunction::onCompareTypeFunction(const TypeFunction &other) const {
 	return true;
 }
+
+void TypeFunction::onGetChildrenTypeFunction(std::queue<ContainerRef<AST>> &children) {}
 
 TypeFunction::TypeFunction(Container<Type> ret, std::vector<Container<Type>> args) : Type(AST::ID::TypeFunction, Range()), ret(ret), args(args) {}
 

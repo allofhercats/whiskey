@@ -174,4 +174,20 @@ void printLiteralString(std::ostream &os, const std::string &value) {
 	}
 	os << "\"";
 }
+
+void printLiteralString(std::ostream &os, const std::u16string &value) {
+	os << "\"";
+	for (char16_t i : value) {
+		printLiteralCharHelper(os, 0xffff & i, '\"');
+	}
+	os << "\"";
+}
+
+void printLiteralString(std::ostream &os, const std::u32string &value) {
+	os << "\"";
+	for (char32_t i : value) {
+		printLiteralCharHelper(os, i, '\"');
+	}
+	os << "\"";
+}
 }

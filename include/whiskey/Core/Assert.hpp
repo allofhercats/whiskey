@@ -3,7 +3,7 @@
 
 #include <whiskey/Core/Module.inc>
 
-#define _W_ASSERT_STREAM (::std::cerr)
+#define _W_ASSERT_STREAM (::whiskey::getAssertStream())
 #define _W_ASSERT_BOOL bool
 #define _W_ASSERT_POINTER void *
 #define _W_ASSERT_INT int64_t
@@ -187,6 +187,11 @@
 		_W_ASSERT_STREAM << "  rhs: " << #arg1 << " (" << _w_arg1Value << ")\n"; \
 		_W_ASSERT_DIE(); \
 	} \
+}
+
+namespace whiskey {
+std::ostream &getAssertStream();
+void setAssertStream(std::string &os);
 }
 
 #endif

@@ -7,5 +7,7 @@
 #include <whiskey/Source.hpp>
 #include <whiskey/Lexing.hpp>
 #include <whiskey/Parsing.hpp>
+#include <whiskey/Printing.hpp>
+#include <whiskey/Fuzzing.hpp>
 
 #endif

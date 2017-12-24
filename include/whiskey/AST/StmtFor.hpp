@@ -16,10 +16,13 @@ private:
 	Container<Stmt> bodyClause;
 
 protected:
-	AST *onClone() const;
-	bool onCompare(const AST &other) const;
+	virtual AST *onClone() const;
+
+	bool onCompareStmt(const Stmt &other) const;
+	void onGetChildrenStmt(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareStmtFor(const StmtFor &other) const;
+	virtual void onGetChildrenStmtFor(std::queue<ContainerRef<AST>> &children);
 
 public:
 	StmtFor(Range range = Range());

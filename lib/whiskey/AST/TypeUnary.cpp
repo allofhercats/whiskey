@@ -7,7 +7,7 @@ AST *TypeUnary::onClone() const {
 	return new TypeUnary(getID(), getRange(), arg);
 }
 
-bool TypeUnary::onCompare(const AST &other) const {
+bool TypeUnary::onCompareType(const Type &other) const {
 	const TypeUnary &casted = static_cast<const TypeUnary &>(other);
 
 	if (!AST::compare(arg, casted.arg)) {
@@ -21,9 +21,16 @@ bool TypeUnary::onCompare(const AST &other) const {
 	return true;
 }
 
+void TypeUnary::onGetChildrenType(std::queue<ContainerRef<AST>> &children) {
+	children.push(ContainerRef<AST>(arg));
+	onGetChildrenTypeUnary(children);
+}
+
 bool TypeUnary::onCompareTypeUnary(const TypeUnary &other) const {
 	return true;
 }
+
+void TypeUnary::onGetChildrenTypeUnary(std::queue<ContainerRef<AST>> &children) {}
 
 TypeUnary::TypeUnary(AST::ID id, Container<Type> arg) : Type(id, Range()), arg(arg) {}
 

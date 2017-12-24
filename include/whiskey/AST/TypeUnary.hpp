@@ -11,10 +11,13 @@ private:
 	Container<Type> arg;
 
 protected:
-	AST *onClone() const;
-	bool onCompare(const AST &other) const;
+	virtual AST *onClone() const;
+
+	bool onCompareType(const Type &other) const;
+	void onGetChildrenType(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareTypeUnary(const TypeUnary &other) const;
+	virtual void onGetChildrenTypeUnary(std::queue<ContainerRef<AST>> &children);
 
 public:
 	TypeUnary(AST::ID id, Container<Type> arg);

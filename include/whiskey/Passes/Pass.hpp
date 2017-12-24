@@ -41,9 +41,39 @@ protected:
 	virtual void onDeclNamespace(PassContext<DeclNamespace> &ctx);
 	virtual void onImport(PassContext<Import> &ctx);
 
+	virtual void onASTPost(PassContext<AST> &ctx);
+	virtual void onTypePost(PassContext<Type> &ctx);
+	virtual void onTypeAtomicPost(PassContext<TypeAtomic> &ctx);
+	virtual void onTypeSymbolPost(PassContext<TypeSymbol> &ctx);
+	virtual void onTypeUnaryPost(PassContext<TypeUnary> &ctx);
+	virtual void onTypeBinaryPost(PassContext<TypeBinary> &ctx);
+	virtual void onTypeFunctionPost(PassContext<TypeFunction> &ctx);
+	virtual void onExprPost(PassContext<Expr> &ctx);
+	virtual void onExprLiteralIntPost(PassContext<ExprLiteralInt> &ctx);
+	virtual void onExprLiteralFloatPost(PassContext<ExprLiteralFloat> &ctx);
+	virtual void onExprSymbolPost(PassContext<ExprSymbol> &ctx);
+	virtual void onExprUnaryPost(PassContext<ExprUnary> &ctx);
+	virtual void onExprBinaryPost(PassContext<ExprBinary> &ctx);
+	virtual void onExprCallPost(PassContext<ExprCall> &ctx);
+	virtual void onStmtPost(PassContext<Stmt> &ctx);
+	virtual void onStmtEmptyPost(PassContext<StmtEmpty> &ctx);
+	virtual void onStmtExprPost(PassContext<StmtExpr> &ctx);
+	virtual void onStmtIfPost(PassContext<StmtIf> &ctx);
+	virtual void onStmtWhilePost(PassContext<StmtWhile> &ctx);
+	virtual void onStmtForPost(PassContext<StmtFor> &ctx);
+	virtual void onStmtForEachPost(PassContext<StmtForEach> &ctx);
+	virtual void onStmtBlockPost(PassContext<StmtBlock> &ctx);
+	virtual void onDeclPost(PassContext<Decl> &ctx);
+	virtual void onDeclVariablePost(PassContext<DeclVariable> &ctx);
+	virtual void onDeclFunctionPost(PassContext<DeclFunction> &ctx);
+	virtual void onDeclClassPost(PassContext<DeclClass> &ctx);
+	virtual void onDeclNamespacePost(PassContext<DeclNamespace> &ctx);
+	virtual void onImportPost(PassContext<Import> &ctx);
+
 public:
 	Pass(std::string name, std::initializer_list<std::string> dependencies = {});
 	Pass(const Pass &) = delete;
+	virtual ~Pass();
 
 	const std::string &getName() const;
 	const std::vector<std::string> &getDependencies() const;

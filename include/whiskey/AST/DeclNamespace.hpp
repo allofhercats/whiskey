@@ -12,10 +12,13 @@ private:
 	std::vector<Container<Decl>> members;
 
 protected:
-	AST *onClone() const;
+	virtual AST *onClone() const;
+	
 	bool onCompareDecl(const Decl &other) const;
+	void onGetChildrenDecl(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareDeclNamespace(const DeclNamespace &other) const;
+	virtual void onGetChildrenDeclNamespace(std::queue<ContainerRef<AST>> &children);
 
 public:
 	DeclNamespace(std::string name, std::vector<Container<Decl>> members = {});

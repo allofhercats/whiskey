@@ -7,7 +7,7 @@ AST *ExprBinary::onClone() const {
 	return new ExprBinary(getID(), getRange(), lhs, rhs);
 }
 
-bool ExprBinary::onCompare(const AST &other) const {
+bool ExprBinary::onCompareExpr(const Expr &other) const {
 	const ExprBinary &casted = static_cast<const ExprBinary &>(other);
 
 	if (!AST::compare(lhs, casted.lhs)) {
@@ -25,9 +25,17 @@ bool ExprBinary::onCompare(const AST &other) const {
 	return true;
 }
 
+void ExprBinary::onGetChildrenExpr(std::queue<ContainerRef<AST>> &children) {
+	children.push(ContainerRef<AST>(lhs));
+	children.push(ContainerRef<AST>(rhs));
+	onGetChildrenExprBinary(children);
+}
+
 bool ExprBinary::onCompareExprBinary(const ExprBinary &other) const {
 	return true;
 }
+
+void ExprBinary::onGetChildrenExprBinary(std::queue<ContainerRef<AST>> &children) {}
 
 ExprBinary::ExprBinary(AST::ID id, Container<Expr> lhs, Container<Expr> rhs) : Expr(id, Range()), lhs(lhs), rhs(rhs) {}
 

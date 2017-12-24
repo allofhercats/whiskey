@@ -27,9 +27,23 @@ bool DeclClass::onCompareDecl(const Decl &other) const {
 	return true;
 }
 
+void DeclClass::onGetChildrenDecl(std::queue<ContainerRef<AST>> &children) {
+	for (Container<Type> &i : inherits) {
+		children.push(ContainerRef<AST>(i));
+	}
+
+	for (Container<Decl> &i : members) {
+		children.push(ContainerRef<AST>(i));
+	}
+
+	onGetChildrenDeclClass(children);
+}
+
 bool DeclClass::onCompareDeclClass(const DeclClass &other) const {
 	return true;
 }
+
+void DeclClass::onGetChildrenDeclClass(std::queue<ContainerRef<AST>> &children) {}
 
 DeclClass::DeclClass(std::string name, std::vector<Container<Type>> inherits, std::vector<Container<Decl>> members) : Decl(AST::ID::DeclClass, Range(), name), inherits(inherits), members(members) {}
 

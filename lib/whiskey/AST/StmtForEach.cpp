@@ -9,7 +9,7 @@ AST *StmtForEach::onClone() const {
 	return new StmtForEach(getRange(), value, sequence, bodyClause);
 }
 
-bool StmtForEach::onCompare(const AST &other) const {
+bool StmtForEach::onCompareStmt(const Stmt &other) const {
 	const StmtForEach &casted = static_cast<const StmtForEach &>(other);
 
 	if (!AST::compare(value, casted.value)) {
@@ -31,9 +31,18 @@ bool StmtForEach::onCompare(const AST &other) const {
 	return true;
 }
 
+void StmtForEach::onGetChildrenStmt(std::queue<ContainerRef<AST>> &children) {
+	children.push(ContainerRef<AST>(value));
+	children.push(ContainerRef<AST>(sequence));
+	children.push(ContainerRef<AST>(bodyClause));
+	onGetChildrenStmtForEach(children);
+}
+
 bool StmtForEach::onCompareStmtForEach(const StmtForEach &other) const {
 	return true;
 }
+
+void StmtForEach::onGetChildrenStmtForEach(std::queue<ContainerRef<AST>> &children) {}
 
 StmtForEach::StmtForEach(Container<Decl> value, Container<Expr> sequence, Container<Stmt> bodyClause) : Stmt(AST::ID::StmtForEach, Range()), value(value), sequence(sequence), bodyClause(bodyClause) {}
 

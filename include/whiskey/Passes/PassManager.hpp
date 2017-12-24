@@ -10,14 +10,16 @@ class PassManager {
 private:
 	std::vector<std::unique_ptr<Pass>> passes;
 
+	void runHelper(PassContext<AST> &ctx);
+
 public:
 	PassManager();
 	PassManager(const PassManager &) = delete;
 
-	bool hasPass(const std::string &name) const;
+	bool hasPass(const std::string &name);
 	void addPass(Pass *pass);
 
-	void run(Container<AST> &ast) const;
+	void run(Container<AST> &ast);
 };
 }
 

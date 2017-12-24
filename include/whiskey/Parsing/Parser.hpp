@@ -16,9 +16,11 @@ public:
 	static ParserResult parseTemplateEvalArg(ParserContext &ctx);
 
 	static ParserResult parseTypeSymbol(ParserContext &ctx);
+	static ParserResult parseTypeTerm(ParserContext &ctx);
 	static ParserResult parseTypeAccessUnary(ParserContext &ctx);
 	static ParserResult parseTypeAccessBinary(ParserContext &ctx);
 	static ParserResult parseTypeFunction(ParserContext &ctx);
+	static ParserResult parseTypeGroup(ParserContext &ctx);
 	static ParserResult parseType(ParserContext &ctx);
 
 	static ParserResult parseExprSymbol(ParserContext &ctx);
@@ -49,7 +51,7 @@ public:
 
 	static ParserResult parseStmtEmpty(ParserContext &ctx);
 	static ParserResult parseStmtExpr(ParserContext &ctx);
-	static ParserResult parseStmtExprReturn(ParserContext &ctx);
+	static ParserResult parseStmtReturn(ParserContext &ctx);
 	static ParserResult parseStmtIf(ParserContext &ctx);
 	static ParserResult parseStmtWhile(ParserContext &ctx);
 	static ParserResult parseStmtFor(ParserContext &ctx);

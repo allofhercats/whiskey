@@ -12,10 +12,13 @@ private:
 	Container<Type> rhs;
 
 protected:
-	AST *onClone() const;
-	bool onCompare(const AST &other) const;
+	virtual AST *onClone() const;
+
+	bool onCompareType(const Type &other) const;
+	void onGetChildrenType(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareTypeBinary(const TypeBinary &other) const;
+	virtual void onGetChildrenTypeBinary(std::queue<ContainerRef<AST>> &children);
 
 public:
 	TypeBinary(AST::ID id, Container<Type> lhs, Container<Type> rhs);

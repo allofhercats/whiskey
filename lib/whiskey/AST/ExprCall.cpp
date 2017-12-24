@@ -7,7 +7,7 @@ AST *ExprCall::onClone() const {
 	return new ExprCall(getRange(), callee, args);
 }
 
-bool ExprCall::onCompare(const AST &other) const {
+bool ExprCall::onCompareExpr(const Expr &other) const {
 	const ExprCall &casted = static_cast<const ExprCall &>(other);
 
 	if (!AST::compare(callee, casted.callee)) {
@@ -25,9 +25,19 @@ bool ExprCall::onCompare(const AST &other) const {
 	return true;
 }
 
+void ExprCall::onGetChildrenExpr(std::queue<ContainerRef<AST>> &children) {
+	children.push(ContainerRef<AST>(callee));
+	for (Container<Expr> &i : args) {
+		children.push(ContainerRef<AST>(i));
+	}
+	onGetChildrenExprCall(children);
+}
+
 bool ExprCall::onCompareExprCall(const ExprCall &other) const {
 	return true;
 }
+
+void ExprCall::onGetChildrenExprCall(std::queue<ContainerRef<AST>> &children) {}
 
 ExprCall::ExprCall(Container<Expr> callee, std::vector<Container<Expr>> args) : Expr(AST::ID::ExprCall, Range()), callee(callee), args(args) {}
 

@@ -6,7 +6,8 @@
 namespace whiskey {
 enum class Precedence {
 	None = -1,
-	ExprBoolImplies = 0,
+	ExprAssign = 0,
+	ExprBoolImplies,
 	ExprBoolOr,
 	ExprBoolAnd,
 	ExprBoolNot,
@@ -23,7 +24,11 @@ enum class Precedence {
 	ExprUnaryRight,
 	ExprCall,
 	ExprAccess,
-	ExprTerm
+	ExprTerm,
+	TypeFunction,
+	TypeBinary,
+	TypeUnary,
+	TypeTerm
 };
 
 Precedence getPrecedence(AST::ID astID);

@@ -25,6 +25,13 @@ bool Decl::onCompare(const AST &other) const {
 	return true;
 }
 
+void Decl::onGetChildren(std::queue<ContainerRef<AST>> &children) {
+	for (Container<DeclVariable> &i : templateDeclArgs) {
+		children.push(ContainerRef<AST>(i));
+	}
+	onGetChildrenDecl(children);
+}
+
 Decl::Decl(AST::ID id, Range range, std::string name) : AST(id, range), name(name) {}
 
 const std::string &Decl::getName() const {

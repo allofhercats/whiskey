@@ -9,7 +9,7 @@ AST *ExprSymbol::onClone() const {
 	return rtn;
 }
 
-bool ExprSymbol::onCompare(const AST &other) const {
+bool ExprSymbol::onCompareExpr(const Expr &other) const {
 	const ExprSymbol &casted = static_cast<const ExprSymbol &>(other);
 
 	if (value != casted.value) {
@@ -27,13 +27,30 @@ bool ExprSymbol::onCompare(const AST &other) const {
 	return true;
 }
 
+void ExprSymbol::onGetChildrenExpr(std::queue<ContainerRef<AST>> &children) {
+	for (Container<AST> &i : templateEvalArgs) {
+		children.push(ContainerRef<AST>(i));
+	}
+	onGetChildrenExprSymbol(children);
+}
+
 bool ExprSymbol::onCompareExprSymbol(const ExprSymbol &other) const {
 	return true;
 }
 
-ExprSymbol::ExprSymbol(std::string value) : Expr(AST::ID::ExprSymbol, Range()), value(value) {}
+void ExprSymbol::onGetChildrenExprSymbol(std::queue<ContainerRef<AST>> &children) {}
 
-ExprSymbol::ExprSymbol(Range range, std::string value) : Expr(AST::ID::ExprSymbol, range), value(value) {}
+ExprSymbol::ExprSymbol(std::string value, std::vector<Container<AST>> templateEvalArgs) : Expr(AST::ID::ExprSymbol, Range()), value(value), templateEvalArgs(templateEvalArgs) {}
+
+ExprSymbol::ExprSymbol(Range range, std::string value, std::vector<Container<AST>> templateEvalArgs) : Expr(AST::ID::ExprSymbol, range), value(value), templateEvalArgs(templateEvalArgs) {}
+
+const std::string &ExprSymbol::getValue() const {
+	return value;
+}
+
+void ExprSymbol::setValue(std::string value) {
+	this->value = value;
+}
 
 std::vector<Container<AST>> &ExprSymbol::getTemplateEvalArgs() {
 	return templateEvalArgs;

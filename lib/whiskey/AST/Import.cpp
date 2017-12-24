@@ -21,9 +21,15 @@ bool Import::onCompare(const AST &other) const {
 	return true;
 }
 
+void Import::onGetChildren(std::queue<ContainerRef<AST>> &children) {
+	onGetChildrenImport(children);
+}
+
 bool Import::onCompareImport(const Import &other) const {
 	return true;
 }
+
+void Import::onGetChildrenImport(std::queue<ContainerRef<AST>> &children) {}
 
 Import::Import(std::string path) : AST(AST::ID::Import, Range()), path(path) {}
 

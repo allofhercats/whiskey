@@ -12,14 +12,17 @@ private:
 	std::vector<Container<AST>> templateEvalArgs;
 
 protected:
-	AST *onClone() const;
-	bool onCompare(const AST &other) const;
+	virtual AST *onClone() const;
+
+	bool onCompareExpr(const Expr &other) const;
+	void onGetChildrenExpr(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareExprSymbol(const ExprSymbol &other) const;
+	virtual void onGetChildrenExprSymbol(std::queue<ContainerRef<AST>> &children);
 
 public:
-	ExprSymbol(std::string value);
-	ExprSymbol(Range range, std::string value);
+	ExprSymbol(std::string value, std::vector<Container<AST>> templateEvalArgs = {});
+	ExprSymbol(Range range, std::string value, std::vector<Container<AST>> templateEvalArgs = {});
 
 	const std::string &getValue() const;
 	void setValue(std::string value);

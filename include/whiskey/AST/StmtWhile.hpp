@@ -13,10 +13,13 @@ private:
 	Container<Stmt> bodyClause;
 
 protected:
-	AST *onClone() const;
-	bool onCompare(const AST &other) const;
+	virtual AST *onClone() const;
+
+	bool onCompareStmt(const Stmt &other) const;
+	void onGetChildrenStmt(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareStmtWhile(const StmtWhile &other) const;
+	virtual void onGetChildrenStmtWhile(std::queue<ContainerRef<AST>> &children);
 
 public:
 	StmtWhile(Container<Expr> condition, Container<Stmt> bodyClause = nullptr);

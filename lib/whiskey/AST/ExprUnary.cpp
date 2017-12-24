@@ -7,7 +7,7 @@ AST *ExprUnary::onClone() const {
 	return new ExprUnary(getID(), getRange(), arg);
 }
 
-bool ExprUnary::onCompare(const AST &other) const {
+bool ExprUnary::onCompareExpr(const Expr &other) const {
 	const ExprUnary &casted = static_cast<const ExprUnary &>(other);
 
 	if (!AST::compare(arg, casted.arg)) {
@@ -21,9 +21,16 @@ bool ExprUnary::onCompare(const AST &other) const {
 	return true;
 }
 
+void ExprUnary::onGetChildrenExpr(std::queue<ContainerRef<AST>> &children) {
+	children.push(ContainerRef<AST>(arg));
+	onGetChildrenExprUnary(children);
+}
+
 bool ExprUnary::onCompareExprUnary(const ExprUnary &other) const {
 	return true;
 }
+
+void ExprUnary::onGetChildrenExprUnary(std::queue<ContainerRef<AST>> &children) {}
 
 ExprUnary::ExprUnary(AST::ID id, Container<Expr> arg) : Expr(id, Range()), arg(arg) {}
 

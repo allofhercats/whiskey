@@ -3,6 +3,13 @@
 #include <whiskey/Parsing/Parser.hpp>
 
 namespace whiskey {
+ParserResult Parser::parseTemplateEvalArg(ParserContext &ctx) {
+	return ctx.tryParseAny({
+		parseType,
+		parseExpr
+	});
+}
+
 ParserResult Parser::parseTypeSymbol(ParserContext &ctx) {
 	Token tokenSymbol = ctx.tryToken(Token::Symbol);
 	if (!tokenSymbol.isGood()) {
@@ -56,13 +63,20 @@ ParserResult Parser::parseTypeSymbol(ParserContext &ctx) {
 	}
 }
 
+ParserResult Parser::parseTypeTerm(ParserContext &ctx) {
+	return ctx.tryParseAny({
+		parseTypeSymbol,
+		parseTypeGroup
+	});
+}
+
 ParserResult Parser::parseTypeAccessUnary(ParserContext &ctx) {
 	Token tokenOp = ctx.tryToken(Token::Period);
 	if (!tokenOp.isGood()) {
-		return ParserResult();
+		return parseTypeTerm(ctx);
 	}
 
-	ParserResult res = ctx.expectParse(parseTypeSymbol, "type");
+	ParserResult res = ctx.expectParse(parseTypeAccessUnary, "type");
 	if (!res.isGood()) {
 		return ParserResult();
 	}
@@ -81,7 +95,7 @@ ParserResult Parser::parseTypeAccessBinary(ParserContext &ctx) {
 		return lhs;
 	}
 
-	ParserResult rhs = ctx.expectParse(parseTypeSymbol, "type");
+	ParserResult rhs = ctx.expectParse(parseTypeAccessBinary, "type");
 	if (!rhs.isGood()) {
 		return ParserResult();
 	}
@@ -108,28 +122,69 @@ ParserResult Parser::parseTypeFunction(ParserContext &ctx) {
 	Container<TypeFunction> ast = new TypeFunction(tokenLArrow.getRange(), ret.getAST()->cloneAs<Type>(), {});
 	bool endedCorrectly = false;
 	while (ctx.areMoreTokens()) {
+		Token tokenSep = ctx.getToken();
+		if (tokenSep.getID() == Token::RParen) {
+			ctx.eatToken();
+			endedCorrectly = true;
+			break;
+		}
+
 		ParserResult arg = ctx.expectParse(parseType, "type");
 		if (arg.isGood()) {
 			ast->getArgs().push_back(arg.getAST()->cloneAs<Type>());
+		} else {
+			return ParserResult();
 		}
-		Token tokenSep = ctx.getToken();
+		
+		tokenSep = ctx.getToken();
 		if (tokenSep.getID() == Token::Comma) {
 			ctx.eatToken();
+			tokenSep = ctx.getToken();
+			if (tokenSep.getID() == Token::RParen) {
+				ctx.emitMessageUnexpectedToken("type");
+				return ParserResult();
+			}
 		} else if (tokenSep.getID() == Token::RParen) {
 			ctx.eatToken();
 			endedCorrectly = true;
 			break;
 		} else {
 			ctx.emitMessageUnexpectedToken(", or )");
-			ctx.eatToken();
+			return ParserResult();
 		}
 	}
 
 	if (!endedCorrectly) {
 		ctx.emitMessageUnexpectedToken("closing )");
+		return ParserResult();
 	}
 
 	return ParserResult(ast->clone());
+}
+
+ParserResult Parser::parseTypeGroup(ParserContext &ctx) {
+	Token tokenLParen = ctx.tryToken(Token::LParen);
+	if (!tokenLParen.isGood()) {
+		return ParserResult();
+	}
+
+	ParserResult arg = ctx.expectParse(parseType, "type");
+	if (!arg.isGood()) {
+		return ParserResult();
+	}
+
+	Token tokenRParen = ctx.expectToken(Token::RParen, ")");
+	if (!tokenRParen.isGood()) {
+		return ParserResult();
+	}
+
+	return ParserResult(
+		new TypeUnary(
+			AST::ID::TypeGroup,
+			tokenLParen.getRange(),
+			arg.getAST()->cloneAs<Type>()
+		)
+	);
 }
 
 ParserResult Parser::parseType(ParserContext &ctx) {
@@ -266,10 +321,10 @@ ParserResult Parser::parseExprTerm(ParserContext &ctx) {
 ParserResult Parser::parseExprAccessUnary(ParserContext &ctx) {
 	Token tokenOp = ctx.tryToken(Token::Period);
 	if (!tokenOp.isGood()) {
-		return ParserResult();
+		return parseExprTerm(ctx);
 	}
 
-	ParserResult res = ctx.expectParse(parseExprTerm, "expression");
+	ParserResult res = ctx.expectParse(parseExprAccessUnary, "expression");
 	if (!res.isGood()) {
 		return ParserResult();
 	}
@@ -288,7 +343,7 @@ ParserResult Parser::parseExprAccessBinary(ParserContext &ctx) {
 		return lhs;
 	}
 
-	ParserResult rhs = ctx.expectParse(parseExprTerm, "expression");
+	ParserResult rhs = ctx.expectParse(parseExprAccessBinary, "expression");
 	if (!rhs.isGood()) {
 		return ParserResult();
 	}
@@ -302,33 +357,49 @@ ParserResult Parser::parseExprCall(ParserContext &ctx) {
 		return ParserResult();
 	}
 
-	Token tokenLParen = ctx.expectToken(Token::LParen, "(");
+	Token tokenLParen = ctx.tryToken(Token::LParen);
 	if (!tokenLParen.isGood()) {
-		return ParserResult();
+		return ret;
 	}
 
 	Container<ExprCall> ast = new ExprCall(tokenLParen.getRange(), ret.getAST()->cloneAs<Expr>(), {});
 	bool endedCorrectly = false;
 	while (ctx.areMoreTokens()) {
+		Token tokenSep = ctx.getToken();
+		if (tokenSep.getID() == Token::RParen) {
+			ctx.eatToken();
+			endedCorrectly = true;
+			break;
+		}
+
 		ParserResult arg = ctx.expectParse(parseExpr, "expression");
 		if (arg.isGood()) {
 			ast->getArgs().push_back(arg.getAST()->cloneAs<Expr>());
+		} else {
+			return ParserResult();
 		}
-		Token tokenSep = ctx.getToken();
+		
+		tokenSep = ctx.getToken();
 		if (tokenSep.getID() == Token::Comma) {
 			ctx.eatToken();
+			tokenSep = ctx.getToken();
+			if (tokenSep.getID() == Token::RParen) {
+				ctx.emitMessageUnexpectedToken("expression");
+			return ParserResult();
+			}
 		} else if (tokenSep.getID() == Token::RParen) {
 			ctx.eatToken();
 			endedCorrectly = true;
 			break;
 		} else {
 			ctx.emitMessageUnexpectedToken(", or )");
-			ctx.eatToken();
+			return ParserResult();
 		}
 	}
 
 	if (!endedCorrectly) {
 		ctx.emitMessageUnexpectedToken("closing )");
+		return ParserResult();
 	}
 
 	return ParserResult(ast->clone());
@@ -341,6 +412,7 @@ ParserResult Parser::parseExprUnaryRight(ParserContext &ctx) {
 	}
 
 	if (tokenOp.getID() == Token::Inc) {
+		ctx.eatToken();
 		ParserResult res = ctx.expectParse(parseExprUnaryRight, "expression");
 		if (!res.isGood()) {
 			return ParserResult();
@@ -348,6 +420,7 @@ ParserResult Parser::parseExprUnaryRight(ParserContext &ctx) {
 
 		return ParserResult(new ExprUnary(AST::ID::ExprIncPre, tokenOp.getRange(), res.getAST()->cloneAs<Expr>()));
 	} else if (tokenOp.getID() == Token::Dec) {
+		ctx.eatToken();
 		ParserResult res = ctx.expectParse(parseExprUnaryRight, "expression");
 		if (!res.isGood()) {
 			return ParserResult();
@@ -355,6 +428,7 @@ ParserResult Parser::parseExprUnaryRight(ParserContext &ctx) {
 
 		return ParserResult(new ExprUnary(AST::ID::ExprDecPre, tokenOp.getRange(), res.getAST()->cloneAs<Expr>()));
 	} else if (tokenOp.getID() == Token::Sub) {
+		ctx.eatToken();
 		ParserResult res = ctx.expectParse(parseExprUnaryRight, "expression");
 		if (!res.isGood()) {
 			return ParserResult();
@@ -362,6 +436,7 @@ ParserResult Parser::parseExprUnaryRight(ParserContext &ctx) {
 
 		return ParserResult(new ExprUnary(AST::ID::ExprNegate, tokenOp.getRange(), res.getAST()->cloneAs<Expr>()));
 	} else if (tokenOp.getID() == Token::BitNot) {
+		ctx.eatToken();
 		ParserResult res = ctx.expectParse(parseExprUnaryRight, "expression");
 		if (!res.isGood()) {
 			return ParserResult();
@@ -386,8 +461,10 @@ ParserResult Parser::parseExprUnaryLeft(ParserContext &ctx) {
 		if (!tokenOp.isGood()) {
 			return ParserResult(ast->clone());
 		} else if (tokenOp.getID() == Token::Inc) {
+			ctx.eatToken();
 			ast = new ExprUnary(AST::ID::ExprIncPost, tokenOp.getRange(), ast->cloneAs<Expr>());
 		} else if (tokenOp.getID() == Token::Dec) {
+			ctx.eatToken();
 			ast = new ExprUnary(AST::ID::ExprDecPost, tokenOp.getRange(), ast->cloneAs<Expr>());
 		} else {
 			return ParserResult(ast->clone());
@@ -759,6 +836,138 @@ ParserResult Parser::parseExprBoolImplies(ParserContext &ctx) {
 	}
 }
 
+ParserResult Parser::parseExprAssign(ParserContext &ctx) {
+	ParserResult lhs = ctx.tryParse(parseExprBoolImplies);
+	if (!lhs.isGood()) {
+		return ParserResult();
+	}
+
+	Token tokenOp = ctx.getToken();
+	if (!tokenOp.isGood()) {
+		return lhs;
+	}
+
+	if (tokenOp.getID() == Token::ExpAssign) {
+		ctx.eatToken();
+		ParserResult rhs = ctx.expectParse(parseExprAssign, "expression");
+		if (!rhs.isGood()) {
+			return ParserResult();
+		}
+
+		return ParserResult(new ExprBinary(AST::ID::ExprExpAssign, tokenOp.getRange(), lhs.getAST()->cloneAs<Expr>(), rhs.getAST()->cloneAs<Expr>()));
+	} else if (tokenOp.getID() == Token::MulAssign) {
+		ctx.eatToken();
+		ParserResult rhs = ctx.expectParse(parseExprAssign, "expression");
+		if (!rhs.isGood()) {
+			return ParserResult();
+		}
+
+		return ParserResult(new ExprBinary(AST::ID::ExprMulAssign, tokenOp.getRange(), lhs.getAST()->cloneAs<Expr>(), rhs.getAST()->cloneAs<Expr>()));
+	} else if (tokenOp.getID() == Token::DivAssign) {
+		ctx.eatToken();
+		ParserResult rhs = ctx.expectParse(parseExprAssign, "expression");
+		if (!rhs.isGood()) {
+			return ParserResult();
+		}
+
+		return ParserResult(new ExprBinary(AST::ID::ExprDivAssign, tokenOp.getRange(), lhs.getAST()->cloneAs<Expr>(), rhs.getAST()->cloneAs<Expr>()));
+	} else if (tokenOp.getID() == Token::DivIntAssign) {
+		ctx.eatToken();
+		ParserResult rhs = ctx.expectParse(parseExprAssign, "expression");
+		if (!rhs.isGood()) {
+			return ParserResult();
+		}
+
+		return ParserResult(new ExprBinary(AST::ID::ExprDivIntAssign, tokenOp.getRange(), lhs.getAST()->cloneAs<Expr>(), rhs.getAST()->cloneAs<Expr>()));
+	} else if (tokenOp.getID() == Token::DivRealAssign) {
+		ctx.eatToken();
+		ParserResult rhs = ctx.expectParse(parseExprAssign, "expression");
+		if (!rhs.isGood()) {
+			return ParserResult();
+		}
+
+		return ParserResult(new ExprBinary(AST::ID::ExprDivRealAssign, tokenOp.getRange(), lhs.getAST()->cloneAs<Expr>(), rhs.getAST()->cloneAs<Expr>()));
+	} else if (tokenOp.getID() == Token::AddAssign) {
+		ctx.eatToken();
+		ParserResult rhs = ctx.expectParse(parseExprAssign, "expression");
+		if (!rhs.isGood()) {
+			return ParserResult();
+		}
+
+		return ParserResult(new ExprBinary(AST::ID::ExprAddAssign, tokenOp.getRange(), lhs.getAST()->cloneAs<Expr>(), rhs.getAST()->cloneAs<Expr>()));
+	} else if (tokenOp.getID() == Token::SubAssign) {
+		ctx.eatToken();
+		ParserResult rhs = ctx.expectParse(parseExprAssign, "expression");
+		if (!rhs.isGood()) {
+			return ParserResult();
+		}
+
+		return ParserResult(new ExprBinary(AST::ID::ExprSubAssign, tokenOp.getRange(), lhs.getAST()->cloneAs<Expr>(), rhs.getAST()->cloneAs<Expr>()));
+	} else if (tokenOp.getID() == Token::ModAssign) {
+		ctx.eatToken();
+		ParserResult rhs = ctx.expectParse(parseExprAssign, "expression");
+		if (!rhs.isGood()) {
+			return ParserResult();
+		}
+
+		return ParserResult(new ExprBinary(AST::ID::ExprModAssign, tokenOp.getRange(), lhs.getAST()->cloneAs<Expr>(), rhs.getAST()->cloneAs<Expr>()));
+	} else if (tokenOp.getID() == Token::BitShRAssign) {
+		ctx.eatToken();
+		ParserResult rhs = ctx.expectParse(parseExprAssign, "expression");
+		if (!rhs.isGood()) {
+			return ParserResult();
+		}
+
+		return ParserResult(new ExprBinary(AST::ID::ExprBitShRAssign, tokenOp.getRange(), lhs.getAST()->cloneAs<Expr>(), rhs.getAST()->cloneAs<Expr>()));
+	} else if (tokenOp.getID() == Token::BitShLAssign) {
+		ctx.eatToken();
+		ParserResult rhs = ctx.expectParse(parseExprAssign, "expression");
+		if (!rhs.isGood()) {
+			return ParserResult();
+		}
+
+		return ParserResult(new ExprBinary(AST::ID::ExprBitShLAssign, tokenOp.getRange(), lhs.getAST()->cloneAs<Expr>(), rhs.getAST()->cloneAs<Expr>()));
+	} else if (tokenOp.getID() == Token::BitAndAssign) {
+		ctx.eatToken();
+		ParserResult rhs = ctx.expectParse(parseExprAssign, "expression");
+		if (!rhs.isGood()) {
+			return ParserResult();
+		}
+
+		return ParserResult(new ExprBinary(AST::ID::ExprBitAndAssign, tokenOp.getRange(), lhs.getAST()->cloneAs<Expr>(), rhs.getAST()->cloneAs<Expr>()));
+	} else if (tokenOp.getID() == Token::BitOrAssign) {
+		ctx.eatToken();
+		ParserResult rhs = ctx.expectParse(parseExprAssign, "expression");
+		if (!rhs.isGood()) {
+			return ParserResult();
+		}
+
+		return ParserResult(new ExprBinary(AST::ID::ExprBitOrAssign, tokenOp.getRange(), lhs.getAST()->cloneAs<Expr>(), rhs.getAST()->cloneAs<Expr>()));
+	} else if (tokenOp.getID() == Token::BitXorAssign) {
+		ctx.eatToken();
+		ParserResult rhs = ctx.expectParse(parseExprAssign, "expression");
+		if (!rhs.isGood()) {
+			return ParserResult();
+		}
+
+		return ParserResult(new ExprBinary(AST::ID::ExprBitXorAssign, tokenOp.getRange(), lhs.getAST()->cloneAs<Expr>(), rhs.getAST()->cloneAs<Expr>()));
+	} else if (tokenOp.getID() == Token::Assign) {
+		ctx.eatToken();
+		ParserResult rhs = ctx.expectParse(parseExprAssign, "expression");
+		if (!rhs.isGood()) {
+			return ParserResult();
+		}
+
+		return ParserResult(new ExprBinary(AST::ID::ExprAssign, tokenOp.getRange(), lhs.getAST()->cloneAs<Expr>(), rhs.getAST()->cloneAs<Expr>()));
+	} else {
+		return lhs;
+	}
+}
+
+ParserResult Parser::parseExpr(ParserContext &ctx) {
+	return parseExprAssign(ctx);
+}
+
 ParserResult Parser::parseStmtEmpty(ParserContext &ctx) {
 	Token tokenSemicolon = ctx.tryToken(Token::Semicolon);
 	if (!tokenSemicolon.isGood()) {
@@ -782,7 +991,7 @@ ParserResult Parser::parseStmtExpr(ParserContext &ctx) {
 	return ParserResult(new StmtExpr(AST::ID::StmtExpr, tokenSemicolon.getRange(), res.getAST()->cloneAs<Expr>()));
 }
 
-ParserResult Parser::parseStmtExprReturn(ParserContext &ctx) {
+ParserResult Parser::parseStmtReturn(ParserContext &ctx) {
 	Token tokenReturn = ctx.tryToken(Token::KWReturn);
 	if (!tokenReturn.isGood()) {
 		return ParserResult();
@@ -805,7 +1014,7 @@ ParserResult Parser::parseStmtExprReturn(ParserContext &ctx) {
 		return ParserResult();
 	}
 
-	return ParserResult(new StmtExpr(AST::ID::StmtExprReturn, tokenSemicolon.getRange(), res.isGood() ? res.getAST()->cloneAs<Expr>() : nullptr));
+	return ParserResult(new StmtExpr(AST::ID::StmtReturn, tokenSemicolon.getRange(), res.isGood() ? res.getAST()->cloneAs<Expr>() : nullptr));
 }
 
 ParserResult Parser::parseStmtIf(ParserContext &ctx) {
@@ -1042,7 +1251,7 @@ ParserResult Parser::parseStmt(ParserContext &ctx) {
 		parseStmtWhile,
 		parseStmtFor,
 		parseStmtForEach,
-		parseStmtExprReturn,
+		parseStmtReturn,
 		parseStmtEmpty,
 		parseStmtExpr
 	});

@@ -14,7 +14,7 @@ private:
 	ValueType *value;
 
 public:
-	Ref(ValueType *value);
+	Ref(ValueType *value = nullptr);
 
 	operator bool() const;
 	operator CRef<ValueType>() const;

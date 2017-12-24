@@ -12,10 +12,13 @@ private:
 	std::vector<Container<Type>> args;
 
 protected:
-	AST *onClone() const;
-	bool onCompare(const AST &other) const;
+	virtual AST *onClone() const;
+
+	bool onCompareType(const Type &other) const;
+	void onGetChildrenType(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareTypeFunction(const TypeFunction &other) const;
+	virtual void onGetChildrenTypeFunction(std::queue<ContainerRef<AST>> &children);
 
 public:
 	TypeFunction(Container<Type> ret, std::vector<Container<Type>> args = {});

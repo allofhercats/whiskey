@@ -23,13 +23,22 @@ bool TypeSymbol::onCompareTypeLiteral(const TypeLiteral<std::string> &other) con
 	return true;
 }
 
+void TypeSymbol::onGetChildrenTypeLiteral(std::queue<ContainerRef<AST>> &children) {
+	for (Container<AST> &i : templateEvalArgs) {
+		children.push(ContainerRef<AST>(i));
+	}
+	onGetChildrenTypeSymbol(children);
+}
+
 bool TypeSymbol::onCompareTypeSymbol(const TypeSymbol &other) const {
 	return true;
 }
 
-TypeSymbol::TypeSymbol(std::string value) : TypeLiteral<std::string>(AST::ID::TypeSymbol, Range(), value) {}
+void TypeSymbol::onGetChildrenTypeSymbol(std::queue<ContainerRef<AST>> &children) {}
 
-TypeSymbol::TypeSymbol(Range range, std::string value) : TypeLiteral<std::string>(AST::ID::TypeSymbol, range, value) {}
+TypeSymbol::TypeSymbol(std::string value, std::vector<Container<AST>> templateEvalArgs) : TypeLiteral<std::string>(AST::ID::TypeSymbol, Range(), value), templateEvalArgs(templateEvalArgs) {}
+
+TypeSymbol::TypeSymbol(Range range, std::string value, std::vector<Container<AST>> templateEvalArgs) : TypeLiteral<std::string>(AST::ID::TypeSymbol, range, value), templateEvalArgs(templateEvalArgs) {}
 
 std::vector<Container<AST>> &TypeSymbol::getTemplateEvalArgs() {
 	return templateEvalArgs;

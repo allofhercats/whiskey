@@ -13,9 +13,12 @@ private:
 
 protected:
 	virtual AST *onClone() const;
-	bool onCompare(const AST &other) const;
+
+	bool onCompareExpr(const Expr &other) const;
+	void onGetChildrenExpr(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareExprBinary(const ExprBinary &other) const;
+	virtual void onGetChildrenExprBinary(std::queue<ContainerRef<AST>> &children);
 
 public:
 	ExprBinary(AST::ID id, Container<Expr> lhs, Container<Expr> rhs);

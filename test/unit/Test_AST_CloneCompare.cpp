@@ -162,11 +162,11 @@ TEST(Test_AST_CloneCompare, StmtEmpty) {
 TEST(Test_AST_CloneCompare, StmtExpr) {
 	testHelper({
 		new StmtExpr(AST::ID::StmtExpr),
-		new StmtExpr(AST::ID::StmtExprReturn),
+		new StmtExpr(AST::ID::StmtReturn),
 		new StmtExpr(AST::ID::StmtExpr, new ExprSymbol("x")),
-		new StmtExpr(AST::ID::StmtExprReturn, new ExprSymbol("x")),
+		new StmtExpr(AST::ID::StmtReturn, new ExprSymbol("x")),
 		new StmtExpr(AST::ID::StmtExpr, new ExprSymbol("y")),
-		new StmtExpr(AST::ID::StmtExprReturn, new ExprSymbol("y"))
+		new StmtExpr(AST::ID::StmtReturn, new ExprSymbol("y"))
 	});
 }
 
@@ -174,16 +174,16 @@ TEST(Test_AST_CloneCompare, StmtIf) {
 	testHelper({
 		new StmtIf(new ExprSymbol("x"), new StmtExpr(AST::ID::StmtExpr)),
 		new StmtIf(new ExprSymbol("y"), new StmtExpr(AST::ID::StmtExpr)),
-		new StmtIf(new ExprSymbol("x"), new StmtExpr(AST::ID::StmtExprReturn)),
-		new StmtIf(new ExprSymbol("y"), new StmtExpr(AST::ID::StmtExprReturn)),
+		new StmtIf(new ExprSymbol("x"), new StmtExpr(AST::ID::StmtReturn)),
+		new StmtIf(new ExprSymbol("y"), new StmtExpr(AST::ID::StmtReturn)),
 		new StmtIf(new ExprSymbol("x"), new StmtExpr(AST::ID::StmtExpr), new StmtExpr(AST::ID::StmtExpr)),
 		new StmtIf(new ExprSymbol("y"), new StmtExpr(AST::ID::StmtExpr), new StmtExpr(AST::ID::StmtExpr)),
-		new StmtIf(new ExprSymbol("x"), new StmtExpr(AST::ID::StmtExprReturn), new StmtExpr(AST::ID::StmtExpr)),
-		new StmtIf(new ExprSymbol("y"), new StmtExpr(AST::ID::StmtExprReturn), new StmtExpr(AST::ID::StmtExpr)),
-		new StmtIf(new ExprSymbol("x"), new StmtExpr(AST::ID::StmtExpr), new StmtExpr(AST::ID::StmtExprReturn)),
-		new StmtIf(new ExprSymbol("y"), new StmtExpr(AST::ID::StmtExpr), new StmtExpr(AST::ID::StmtExprReturn)),
-		new StmtIf(new ExprSymbol("x"), new StmtExpr(AST::ID::StmtExprReturn), new StmtExpr(AST::ID::StmtExprReturn)),
-		new StmtIf(new ExprSymbol("y"), new StmtExpr(AST::ID::StmtExprReturn), new StmtExpr(AST::ID::StmtExprReturn))
+		new StmtIf(new ExprSymbol("x"), new StmtExpr(AST::ID::StmtReturn), new StmtExpr(AST::ID::StmtExpr)),
+		new StmtIf(new ExprSymbol("y"), new StmtExpr(AST::ID::StmtReturn), new StmtExpr(AST::ID::StmtExpr)),
+		new StmtIf(new ExprSymbol("x"), new StmtExpr(AST::ID::StmtExpr), new StmtExpr(AST::ID::StmtReturn)),
+		new StmtIf(new ExprSymbol("y"), new StmtExpr(AST::ID::StmtExpr), new StmtExpr(AST::ID::StmtReturn)),
+		new StmtIf(new ExprSymbol("x"), new StmtExpr(AST::ID::StmtReturn), new StmtExpr(AST::ID::StmtReturn)),
+		new StmtIf(new ExprSymbol("y"), new StmtExpr(AST::ID::StmtReturn), new StmtExpr(AST::ID::StmtReturn))
 	});
 }
 
@@ -191,8 +191,8 @@ TEST(Test_AST_CloneCompare, StmtWhile) {
 	testHelper({
 		new StmtWhile(new ExprSymbol("x"), new StmtExpr(AST::ID::StmtExpr)),
 		new StmtWhile(new ExprSymbol("y"), new StmtExpr(AST::ID::StmtExpr)),
-		new StmtWhile(new ExprSymbol("x"), new StmtExpr(AST::ID::StmtExprReturn)),
-		new StmtWhile(new ExprSymbol("y"), new StmtExpr(AST::ID::StmtExprReturn))
+		new StmtWhile(new ExprSymbol("x"), new StmtExpr(AST::ID::StmtReturn)),
+		new StmtWhile(new ExprSymbol("y"), new StmtExpr(AST::ID::StmtReturn))
 	});
 }
 
@@ -323,10 +323,10 @@ TEST(Test_AST_CloneCompare, StmtForEach) {
 		new StmtForEach(new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new ExprSymbol("x"), new StmtExpr(AST::ID::StmtExpr)),
 		new StmtForEach(new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new ExprSymbol("y"), new StmtExpr(AST::ID::StmtExpr)),
 		new StmtForEach(new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new ExprSymbol("y"), new StmtExpr(AST::ID::StmtExpr)),
-		new StmtForEach(new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new ExprSymbol("x"), new StmtExpr(AST::ID::StmtExprReturn)),
-		new StmtForEach(new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new ExprSymbol("x"), new StmtExpr(AST::ID::StmtExprReturn)),
-		new StmtForEach(new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new ExprSymbol("y"), new StmtExpr(AST::ID::StmtExprReturn)),
-		new StmtForEach(new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new ExprSymbol("y"), new StmtExpr(AST::ID::StmtExprReturn))
+		new StmtForEach(new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new ExprSymbol("x"), new StmtExpr(AST::ID::StmtReturn)),
+		new StmtForEach(new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new ExprSymbol("x"), new StmtExpr(AST::ID::StmtReturn)),
+		new StmtForEach(new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new ExprSymbol("y"), new StmtExpr(AST::ID::StmtReturn)),
+		new StmtForEach(new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new ExprSymbol("y"), new StmtExpr(AST::ID::StmtReturn))
 	});
 }
 
@@ -334,11 +334,11 @@ TEST(Test_AST_CloneCompare, StmtBlock) {
 	testHelper({
 		new StmtBlock(),
 		new StmtBlock({new StmtExpr(AST::ID::StmtExpr)}),
-		new StmtBlock({new StmtExpr(AST::ID::StmtExprReturn)}),
+		new StmtBlock({new StmtExpr(AST::ID::StmtReturn)}),
 		new StmtBlock({new StmtExpr(AST::ID::StmtExpr), new StmtExpr(AST::ID::StmtExpr)}),
-		new StmtBlock({new StmtExpr(AST::ID::StmtExprReturn), new StmtExpr(AST::ID::StmtExpr)}),
-		new StmtBlock({new StmtExpr(AST::ID::StmtExpr), new StmtExpr(AST::ID::StmtExprReturn)}),
-		new StmtBlock({new StmtExpr(AST::ID::StmtExprReturn), new StmtExpr(AST::ID::StmtExprReturn)})
+		new StmtBlock({new StmtExpr(AST::ID::StmtReturn), new StmtExpr(AST::ID::StmtExpr)}),
+		new StmtBlock({new StmtExpr(AST::ID::StmtExpr), new StmtExpr(AST::ID::StmtReturn)}),
+		new StmtBlock({new StmtExpr(AST::ID::StmtReturn), new StmtExpr(AST::ID::StmtReturn)})
 	});
 }
 
@@ -372,34 +372,34 @@ TEST(Test_AST_CloneCompare, DeclFunction) {
 		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExpr)),
 		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExpr)),
 		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExpr)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "x", {}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExprReturn)),
-		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtExprReturn))
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "x", {}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "x"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "x", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicBool), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtReturn)),
+		new DeclFunction(new TypeAtomic(AST::ID::TypeAtomicInt8), "y", {new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y"), new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicBool), "y")}, new StmtExpr(AST::ID::StmtReturn))
 	});
 }
 

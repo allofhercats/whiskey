@@ -8,7 +8,7 @@
 namespace whiskey {
 class ExprLiteralInt : public ExprLiteral<int64_t> {
 protected:
-	AST *onClone() const;
+	virtual AST *onClone() const;
 
 public:
 	ExprLiteralInt(Container<Type> type, int64_t value);

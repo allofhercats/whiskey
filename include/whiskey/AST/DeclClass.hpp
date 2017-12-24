@@ -13,10 +13,13 @@ private:
 	std::vector<Container<Decl>> members;
 
 protected:
-	AST *onClone() const;
+	virtual AST *onClone() const;
+	
 	bool onCompareDecl(const Decl &other) const;
+	void onGetChildrenDecl(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareDeclClass(const DeclClass &other) const;
+	virtual void onGetChildrenDeclClass(std::queue<ContainerRef<AST>> &children);
 
 public:
 	DeclClass(std::string name, std::vector<Container<Type>> inherits = {}, std::vector<Container<Decl>> members = {});

@@ -11,14 +11,17 @@ private:
 	std::vector<Container<AST>> templateEvalArgs;
 
 protected:
-	AST *onClone() const;
+	virtual AST *onClone() const;
+
 	bool onCompareTypeLiteral(const TypeLiteral<std::string> &other) const;
+	void onGetChildrenTypeLiteral(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareTypeSymbol(const TypeSymbol &other) const;
+	virtual void onGetChildrenTypeSymbol(std::queue<ContainerRef<AST>> &children);
 
 public:
-	TypeSymbol(std::string value);
-	TypeSymbol(Range range, std::string value);
+	TypeSymbol(std::string value, std::vector<Container<AST>> templateEvalArgs = {});
+	TypeSymbol(Range range, std::string value, std::vector<Container<AST>> templateEvalArgs = {});
 
 	std::vector<Container<AST>> &getTemplateEvalArgs();
 	const std::vector<Container<AST>> &getTemplateEvalArgs() const;

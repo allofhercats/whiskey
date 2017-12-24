@@ -12,10 +12,13 @@ private:
 	Container<Expr> value;
 
 protected:
-	AST *onClone() const;
-	bool onCompare(const AST &other) const;
+	virtual AST *onClone() const;
+
+	bool onCompareStmt(const Stmt &other) const;
+	void onGetChildrenStmt(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareStmtExpr(const StmtExpr &other) const;
+	virtual void onGetChildrenStmtExpr(std::queue<ContainerRef<AST>> &children);
 
 public:
 	StmtExpr(AST::ID id, Container<Expr> value = nullptr);

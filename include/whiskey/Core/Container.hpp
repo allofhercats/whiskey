@@ -9,8 +9,14 @@
 #include <whiskey/Core/CRef.hpp>
 
 namespace whiskey {
+template<class ContainerRefType>
+class ContainerRef;
+
 template<class ValueType>
 class Container {
+	template<class ContainerRefType>
+	friend class ContainerRef;
+
 private:
 	ValueType *value;
 

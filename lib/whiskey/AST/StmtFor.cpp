@@ -9,7 +9,7 @@ AST *StmtFor::onClone() const {
 	return new StmtFor(getRange(), decls, condition, steps, bodyClause);
 }
 
-bool StmtFor::onCompare(const AST &other) const {
+bool StmtFor::onCompareStmt(const Stmt &other) const {
 	const StmtFor &casted = static_cast<const StmtFor &>(other);
 
 	if (!AST::compare(decls, casted.decls)) {
@@ -35,9 +35,23 @@ bool StmtFor::onCompare(const AST &other) const {
 	return true;
 }
 
+void StmtFor::onGetChildrenStmt(std::queue<ContainerRef<AST>> &children) {
+	for (Container<Decl> &i : decls) {
+		children.push(ContainerRef<AST>(i));
+	}
+	children.push(ContainerRef<AST>(condition));
+	for (Container<Expr> &i : steps) {
+		children.push(ContainerRef<AST>(i));
+	}
+	children.push(ContainerRef<AST>(bodyClause));
+	onGetChildrenStmtFor(children);
+}
+
 bool StmtFor::onCompareStmtFor(const StmtFor &other) const {
 	return true;
 }
+
+void StmtFor::onGetChildrenStmtFor(std::queue<ContainerRef<AST>> &children) {}
 
 StmtFor::StmtFor(Range range) : Stmt(AST::ID::StmtFor, range) {}
 

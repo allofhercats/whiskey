@@ -13,6 +13,8 @@ void printLiteralUInt64(std::ostream &os, uint64_t value, unsigned int base = 10
 void printLiteralReal(std::ostream &os, long double value, unsigned int precision = 5, bool truncate = true);
 void printLiteralChar(std::ostream &os, char32_t value);
 void printLiteralString(std::ostream &os, const std::string &value);
+void printLiteralString(std::ostream &os, const std::u16string &value);
+void printLiteralString(std::ostream &os, const std::u32string &value);
 }
 
 #endif

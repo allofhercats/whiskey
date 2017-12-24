@@ -7,7 +7,7 @@ AST *StmtWhile::onClone() const {
 	return new StmtWhile(getRange(), condition, bodyClause);
 }
 
-bool StmtWhile::onCompare(const AST &other) const {
+bool StmtWhile::onCompareStmt(const Stmt &other) const {
 	const StmtWhile &casted = static_cast<const StmtWhile &>(other);
 
 	if (!AST::compare(condition, casted.condition)) {
@@ -25,9 +25,17 @@ bool StmtWhile::onCompare(const AST &other) const {
 	return true;
 }
 
+void StmtWhile::onGetChildrenStmt(std::queue<ContainerRef<AST>> &children) {
+	children.push(ContainerRef<AST>(condition));
+	children.push(ContainerRef<AST>(bodyClause));
+	onGetChildrenStmtWhile(children);
+}
+
 bool StmtWhile::onCompareStmtWhile(const StmtWhile &other) const {
 	return true;
 }
+
+void StmtWhile::onGetChildrenStmtWhile(std::queue<ContainerRef<AST>> &children) {}
 
 StmtWhile::StmtWhile(Container<Expr> condition, Container<Stmt> bodyClause) : Stmt(AST::ID::StmtWhile, Range()), condition(condition), bodyClause(bodyClause) {}
 

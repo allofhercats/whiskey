@@ -16,10 +16,13 @@ private:
 	Container<Stmt> body;
 
 protected:
-	AST *onClone() const;
+	virtual AST *onClone() const;
+	
 	bool onCompareDecl(const Decl &other) const;
+	void onGetChildrenDecl(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareDeclFunction(const DeclFunction &other) const;
+	virtual void onGetChildrenDeclFunction(std::queue<ContainerRef<AST>> &children);
 
 public:
 	DeclFunction(Container<Type> ret, std::string name, std::vector<Container<DeclVariable>> args = {}, Container<Stmt> body = nullptr);

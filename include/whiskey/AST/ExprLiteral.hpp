@@ -14,9 +14,11 @@ private:
 	ValueExpr value;
 
 protected:
-	bool onCompare(const AST &other) const;
+	bool onCompareExpr(const Expr &other) const;
+	void onGetChildrenExpr(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareExprLiteral(const ExprLiteral &other) const;
+	virtual void onGetChildrenExprLiteral(std::queue<ContainerRef<AST>> &children);
 
 public:
 	ExprLiteral(AST::ID id, Range range, Container<Type> type, ValueExpr value);

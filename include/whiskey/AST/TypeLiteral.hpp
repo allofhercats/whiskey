@@ -12,9 +12,11 @@ private:
 	ValueType value;
 
 protected:
-	bool onCompare(const AST &other) const;
+	bool onCompareType(const Type &other) const;
+	void onGetChildrenType(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareTypeLiteral(const TypeLiteral &other) const;
+	virtual void onGetChildrenTypeLiteral(std::queue<ContainerRef<AST>> &children);
 
 public:
 	TypeLiteral(AST::ID id, Range range, ValueType value);

@@ -13,7 +13,7 @@ private:
 	const ValueType *value;
 
 public:
-	CRef(const ValueType *value);
+	CRef(const ValueType *value = nullptr);
 
 	operator bool() const;
 

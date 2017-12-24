@@ -14,10 +14,13 @@ private:
 	Container<Stmt> elseClause;
 
 protected:
-	AST *onClone() const;
-	bool onCompare(const AST &other) const;
+	virtual AST *onClone() const;
+
+	bool onCompareStmt(const Stmt &other) const;
+	void onGetChildrenStmt(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareStmtIf(const StmtIf &other) const;
+	virtual void onGetChildrenStmtIf(std::queue<ContainerRef<AST>> &children);
 
 public:
 	StmtIf(Container<Expr> condition, Container<Stmt> thenClause, Container<Stmt> elseClause = nullptr);

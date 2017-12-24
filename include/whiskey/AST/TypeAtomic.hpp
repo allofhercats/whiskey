@@ -8,10 +8,13 @@
 namespace whiskey {
 class TypeAtomic : public Type {
 protected:
-	AST *onClone() const;
-	bool onCompare(const AST &other) const;
+	virtual AST *onClone() const;
+
+	bool onCompareType(const Type &other) const;
+	void onGetChildrenType(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareTypeAtomic(const TypeAtomic &other) const;
+	virtual void onGetChildrenTypeAtomic(std::queue<ContainerRef<AST>> &children);
 
 public:
 	TypeAtomic(AST::ID id, Range range = Range());

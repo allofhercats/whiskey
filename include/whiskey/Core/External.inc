@@ -8,5 +8,9 @@
 #include <stack>
 #include <functional>
 #include <initializer_list>
+#include <memory>
+#include <queue>
+
+#include <unicode/utypes.h>
 
 #endif

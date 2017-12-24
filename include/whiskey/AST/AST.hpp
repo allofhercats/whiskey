@@ -20,6 +20,7 @@ public:
 		TypeAtomicFloat64,
 		TypeAtomicReal,
 		TypeSymbol,
+		TypeGroup,
 		TypeAccessUnary,
 		TypeAccessBinary,
 		TypeFunction,
@@ -58,10 +59,24 @@ public:
 		ExprBoolAnd,
 		ExprBoolOr,
 		ExprBoolImplies,
+		ExprExpAssign,
+		ExprMulAssign,
+		ExprDivAssign,
+		ExprDivIntAssign,
+		ExprDivRealAssign,
+		ExprAddAssign,
+		ExprSubAssign,
+		ExprModAssign,
+		ExprBitShRAssign,
+		ExprBitShLAssign,
+		ExprBitAndAssign,
+		ExprBitOrAssign,
+		ExprBitXorAssign,
+		ExprAssign,
 		ExprGroup,
 		StmtEmpty,
 		StmtExpr,
-		StmtExprReturn,
+		StmtReturn,
 		StmtIf,
 		StmtWhile,
 		StmtFor,
@@ -108,6 +123,7 @@ private:
 
 protected:
 	virtual bool onCompare(const AST &other) const = 0;
+	virtual void onGetChildren(std::queue<ContainerRef<AST>> &children) = 0;
 
 public:
 	template<class ValueType>
@@ -148,6 +164,8 @@ public:
 	bool compare(const CRef<ValueType> &other) const;
 	template<class ValueType>
 	bool compare(const Container<ValueType> &other) const;
+
+	std::queue<ContainerRef<AST>> getChildren();
 };
 }
 

@@ -11,10 +11,13 @@ private:
 	std::string path;
 
 protected:
-	AST *onClone() const;
+	virtual AST *onClone() const;
+	
 	bool onCompare(const AST &other) const;
+	void onGetChildren(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareImport(const Import &other) const;
+	virtual void onGetChildrenImport(std::queue<ContainerRef<AST>> &children);
 
 public:
 	Import(std::string path);

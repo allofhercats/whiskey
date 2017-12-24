@@ -11,10 +11,13 @@ private:
 	Container<Expr> arg;
 
 protected:
-	AST *onClone() const;
-	bool onCompare(const AST &other) const;
+	virtual AST *onClone() const;
+
+	bool onCompareExpr(const Expr &other) const;
+	void onGetChildrenExpr(std::queue<ContainerRef<AST>> &children);
 
 	virtual bool onCompareExprUnary(const ExprUnary &other) const;
+	virtual void onGetChildrenExprUnary(std::queue<ContainerRef<AST>> &children);
 
 public:
 	ExprUnary(AST::ID id, Container<Expr> arg);

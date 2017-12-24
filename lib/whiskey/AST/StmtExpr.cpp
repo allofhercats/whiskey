@@ -7,7 +7,7 @@ AST *StmtExpr::onClone() const {
 	return new StmtExpr(getID(), getRange(), value);
 }
 
-bool StmtExpr::onCompare(const AST &other) const {
+bool StmtExpr::onCompareStmt(const Stmt &other) const {
 	const StmtExpr &casted = static_cast<const StmtExpr &>(other);
 
 	if (!AST::compare(value, casted.value)) {
@@ -21,9 +21,16 @@ bool StmtExpr::onCompare(const AST &other) const {
 	return true;
 }
 
+void StmtExpr::onGetChildrenStmt(std::queue<ContainerRef<AST>> &children) {
+	children.push(ContainerRef<AST>(value));
+	onGetChildrenStmtExpr(children);
+}
+
 bool StmtExpr::onCompareStmtExpr(const StmtExpr &other) const {
 	return true;
 }
+
+void StmtExpr::onGetChildrenStmtExpr(std::queue<ContainerRef<AST>> &children) {}
 
 StmtExpr::StmtExpr(AST::ID id, Container<Expr> value) : Stmt(id, Range()), value(value) {}
 

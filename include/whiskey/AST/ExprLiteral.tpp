@@ -1,6 +1,6 @@
 namespace whiskey {
 template<typename ValueType>
-bool ExprLiteral<ValueType>::onCompare(const AST &other) const {
+bool ExprLiteral<ValueType>::onCompareExpr(const Expr &other) const {
 	const ExprLiteral<ValueType> &casted = static_cast<const ExprLiteral<ValueType> &>(other);
 	
 	if (!(value == casted.value)) {
@@ -19,9 +19,18 @@ bool ExprLiteral<ValueType>::onCompare(const AST &other) const {
 }
 
 template<typename ValueType>
+void ExprLiteral<ValueType>::onGetChildrenExpr(std::queue<ContainerRef<AST>> &children) {
+	children.push(ContainerRef<AST>(type));
+	onGetChildrenExprLiteral(children);
+}
+
+template<typename ValueType>
 bool ExprLiteral<ValueType>::onCompareExprLiteral(const ExprLiteral &other) const {
 	return true;
 }
+
+template<typename ValueType>
+void ExprLiteral<ValueType>::onGetChildrenExprLiteral(std::queue<ContainerRef<AST>> &children) {}
 
 template<typename ValueType>
 ExprLiteral<ValueType>::ExprLiteral(AST::ID id, Range range, Container<Type> type, ValueType value) : Expr(id, range), type(type), value(value) {}
