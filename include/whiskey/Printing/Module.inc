@@ -4,6 +4,6 @@
 #include <whiskey/Core.hpp>
 #include <whiskey/Source.hpp>
 #include <whiskey/Messages.hpp>
-#include <whiskey/AST.hpp>
+#include <whiskey/AST2.hpp>
 
 #endif

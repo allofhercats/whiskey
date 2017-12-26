@@ -4,7 +4,7 @@
 
 using namespace whiskey;
 
-TEST(Test_Lexing_LexerContext, Simple) {
+TEST(Unit_Lexing_LexerContext, Simple) {
 	std::string str = "abcdefghi";
 
 	Source *src = new Source();

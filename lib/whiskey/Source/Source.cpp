@@ -119,7 +119,7 @@ bool Source::loadCString(const char *text, size_t length, bool copy) {
 }
 
 bool Source::loadCWString(const wchar_t *text, size_t length, bool copy) {
-	return load((void *)text, 2, length, copy);
+	return load((void *)text, sizeof(wchar_t), length, copy);
 }
 
 bool Source::loadC16String(const char16_t *text, size_t length, bool copy) {
@@ -135,7 +135,7 @@ bool Source::loadString(const std::string &text, bool copy) {
 }
 
 bool Source::loadWString(const std::wstring &text, bool copy) {
-	return load((void *)text.c_str(), 2, text.size(), copy);
+	return load((void *)text.c_str(), sizeof(wchar_t), text.size(), copy);
 }
 
 bool Source::loadU16String(const std::u16string &text, bool copy) {

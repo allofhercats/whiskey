@@ -4,7 +4,7 @@
 
 using namespace whiskey;
 
-TEST(Test_Parsing_ParserContext, Simple) {
+TEST(Unit_Parsing_ParserContext, Simple) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Symbol)
@@ -37,7 +37,7 @@ TEST(Test_Parsing_ParserContext, Simple) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, Simple_Error) {
+TEST(Unit_Parsing_ParserContext, Simple_Error) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Symbol)
@@ -73,7 +73,7 @@ TEST(Test_Parsing_ParserContext, Simple_Error) {
 	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
-TEST(Test_Parsing_ParserContext, Injected) {
+TEST(Unit_Parsing_ParserContext, Injected) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Symbol)
@@ -121,7 +121,7 @@ TEST(Test_Parsing_ParserContext, Injected) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, Injected_Error) {
+TEST(Unit_Parsing_ParserContext, Injected_Error) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Symbol)
@@ -172,7 +172,7 @@ TEST(Test_Parsing_ParserContext, Injected_Error) {
 	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
-TEST(Test_Parsing_ParserContext, TryToken) {
+TEST(Unit_Parsing_ParserContext, TryToken) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Symbol)
@@ -209,7 +209,7 @@ TEST(Test_Parsing_ParserContext, TryToken) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, ExpectToken) {
+TEST(Unit_Parsing_ParserContext, ExpectToken) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Symbol)
@@ -262,7 +262,7 @@ ParserResult parseRule(ParserContext &ctx) {
 	return res;
 }
 
-TEST(Test_Parsing_ParserContext, Rule_0) {
+TEST(Unit_Parsing_ParserContext, Rule_0) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Symbol)
@@ -279,7 +279,7 @@ TEST(Test_Parsing_ParserContext, Rule_0) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, Rule_1) {
+TEST(Unit_Parsing_ParserContext, Rule_1) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Int)
@@ -296,7 +296,7 @@ TEST(Test_Parsing_ParserContext, Rule_1) {
 	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
-TEST(Test_Parsing_ParserContext, Rule_2) {
+TEST(Unit_Parsing_ParserContext, Rule_2) {
 	std::vector<Token> tokens = {
 		Token(Token::Add),
 		Token(Token::Symbol)
@@ -313,7 +313,7 @@ TEST(Test_Parsing_ParserContext, Rule_2) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, Rule_3) {
+TEST(Unit_Parsing_ParserContext, Rule_3) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub)
 	};
@@ -329,7 +329,7 @@ TEST(Test_Parsing_ParserContext, Rule_3) {
 	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
-TEST(Test_Parsing_ParserContext, Rule_4) {
+TEST(Unit_Parsing_ParserContext, Rule_4) {
 	std::vector<Token> tokens = {
 		Token(Token::Add)
 	};
@@ -345,7 +345,7 @@ TEST(Test_Parsing_ParserContext, Rule_4) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, Rule_5) {
+TEST(Unit_Parsing_ParserContext, Rule_5) {
 	std::vector<Token> tokens;
 
 	MessageBuffer msgs;
@@ -375,7 +375,7 @@ ParserResult parseRule2(ParserContext &ctx) {
 	return res;
 }
 
-TEST(Test_Parsing_ParserContext, Rule2_0) {
+TEST(Unit_Parsing_ParserContext, Rule2_0) {
 	std::vector<Token> tokens = {
 		Token(Token::Add),
 		Token(Token::Symbol)
@@ -392,7 +392,7 @@ TEST(Test_Parsing_ParserContext, Rule2_0) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, Rule2_1) {
+TEST(Unit_Parsing_ParserContext, Rule2_1) {
 	std::vector<Token> tokens = {
 		Token(Token::Add),
 		Token(Token::Int)
@@ -409,7 +409,7 @@ TEST(Test_Parsing_ParserContext, Rule2_1) {
 	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
-TEST(Test_Parsing_ParserContext, Rule2_2) {
+TEST(Unit_Parsing_ParserContext, Rule2_2) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Symbol)
@@ -426,7 +426,7 @@ TEST(Test_Parsing_ParserContext, Rule2_2) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, Rule2_3) {
+TEST(Unit_Parsing_ParserContext, Rule2_3) {
 	std::vector<Token> tokens = {
 		Token(Token::Add)
 	};
@@ -442,7 +442,7 @@ TEST(Test_Parsing_ParserContext, Rule2_3) {
 	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
-TEST(Test_Parsing_ParserContext, Rule2_4) {
+TEST(Unit_Parsing_ParserContext, Rule2_4) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub)
 	};
@@ -458,7 +458,7 @@ TEST(Test_Parsing_ParserContext, Rule2_4) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, Rule2_5) {
+TEST(Unit_Parsing_ParserContext, Rule2_5) {
 	std::vector<Token> tokens;
 
 	MessageBuffer msgs;
@@ -472,7 +472,7 @@ TEST(Test_Parsing_ParserContext, Rule2_5) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, TryParse_0) {
+TEST(Unit_Parsing_ParserContext, TryParse_0) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Symbol)
@@ -489,7 +489,7 @@ TEST(Test_Parsing_ParserContext, TryParse_0) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, TryParse_1) {
+TEST(Unit_Parsing_ParserContext, TryParse_1) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Int)
@@ -506,7 +506,7 @@ TEST(Test_Parsing_ParserContext, TryParse_1) {
 	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
-TEST(Test_Parsing_ParserContext, TryParse_2) {
+TEST(Unit_Parsing_ParserContext, TryParse_2) {
 	std::vector<Token> tokens = {
 		Token(Token::Add),
 		Token(Token::Symbol)
@@ -523,7 +523,7 @@ TEST(Test_Parsing_ParserContext, TryParse_2) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, TryParse_3) {
+TEST(Unit_Parsing_ParserContext, TryParse_3) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub)
 	};
@@ -539,7 +539,7 @@ TEST(Test_Parsing_ParserContext, TryParse_3) {
 	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
-TEST(Test_Parsing_ParserContext, TryParse_4) {
+TEST(Unit_Parsing_ParserContext, TryParse_4) {
 	std::vector<Token> tokens = {
 		Token(Token::Add)
 	};
@@ -555,7 +555,7 @@ TEST(Test_Parsing_ParserContext, TryParse_4) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, TryParse_5) {
+TEST(Unit_Parsing_ParserContext, TryParse_5) {
 	std::vector<Token> tokens;
 
 	MessageBuffer msgs;
@@ -569,7 +569,7 @@ TEST(Test_Parsing_ParserContext, TryParse_5) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, ExpectParse_0) {
+TEST(Unit_Parsing_ParserContext, ExpectParse_0) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Symbol)
@@ -586,7 +586,7 @@ TEST(Test_Parsing_ParserContext, ExpectParse_0) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, ExpectParse_1) {
+TEST(Unit_Parsing_ParserContext, ExpectParse_1) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Int)
@@ -603,7 +603,7 @@ TEST(Test_Parsing_ParserContext, ExpectParse_1) {
 	ASSERT_EQ(msgs.getNMessages(), 2);
 }
 
-TEST(Test_Parsing_ParserContext, ExpectParse_2) {
+TEST(Unit_Parsing_ParserContext, ExpectParse_2) {
 	std::vector<Token> tokens = {
 		Token(Token::Add),
 		Token(Token::Symbol)
@@ -620,7 +620,7 @@ TEST(Test_Parsing_ParserContext, ExpectParse_2) {
 	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
-TEST(Test_Parsing_ParserContext, ExpectParse_3) {
+TEST(Unit_Parsing_ParserContext, ExpectParse_3) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub)
 	};
@@ -636,7 +636,7 @@ TEST(Test_Parsing_ParserContext, ExpectParse_3) {
 	ASSERT_EQ(msgs.getNMessages(), 2);
 }
 
-TEST(Test_Parsing_ParserContext, ExpectParse_4) {
+TEST(Unit_Parsing_ParserContext, ExpectParse_4) {
 	std::vector<Token> tokens = {
 		Token(Token::Add)
 	};
@@ -652,7 +652,7 @@ TEST(Test_Parsing_ParserContext, ExpectParse_4) {
 	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
-TEST(Test_Parsing_ParserContext, ExpectParse_5) {
+TEST(Unit_Parsing_ParserContext, ExpectParse_5) {
 	std::vector<Token> tokens;
 
 	MessageBuffer msgs;
@@ -666,7 +666,7 @@ TEST(Test_Parsing_ParserContext, ExpectParse_5) {
 	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
-TEST(Test_Parsing_ParserContext, TryParseAny_0) {
+TEST(Unit_Parsing_ParserContext, TryParseAny_0) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Symbol)
@@ -686,7 +686,7 @@ TEST(Test_Parsing_ParserContext, TryParseAny_0) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, TryParseAny_1) {
+TEST(Unit_Parsing_ParserContext, TryParseAny_1) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Int)
@@ -706,7 +706,7 @@ TEST(Test_Parsing_ParserContext, TryParseAny_1) {
 	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
-TEST(Test_Parsing_ParserContext, TryParseAny_2) {
+TEST(Unit_Parsing_ParserContext, TryParseAny_2) {
 	std::vector<Token> tokens = {
 		Token(Token::Add),
 		Token(Token::Symbol)
@@ -726,7 +726,7 @@ TEST(Test_Parsing_ParserContext, TryParseAny_2) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, TryParseAny_3) {
+TEST(Unit_Parsing_ParserContext, TryParseAny_3) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub)
 	};
@@ -745,7 +745,7 @@ TEST(Test_Parsing_ParserContext, TryParseAny_3) {
 	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
-TEST(Test_Parsing_ParserContext, TryParseAny_4) {
+TEST(Unit_Parsing_ParserContext, TryParseAny_4) {
 	std::vector<Token> tokens = {
 		Token(Token::Add)
 	};
@@ -764,7 +764,7 @@ TEST(Test_Parsing_ParserContext, TryParseAny_4) {
 	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
-TEST(Test_Parsing_ParserContext, TryParseAny_5) {
+TEST(Unit_Parsing_ParserContext, TryParseAny_5) {
 	std::vector<Token> tokens;
 
 	MessageBuffer msgs;
@@ -781,7 +781,7 @@ TEST(Test_Parsing_ParserContext, TryParseAny_5) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, ExpectParseAny_0) {
+TEST(Unit_Parsing_ParserContext, ExpectParseAny_0) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Symbol)
@@ -801,7 +801,7 @@ TEST(Test_Parsing_ParserContext, ExpectParseAny_0) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, ExpectParseAny_1) {
+TEST(Unit_Parsing_ParserContext, ExpectParseAny_1) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub),
 		Token(Token::Int)
@@ -821,7 +821,7 @@ TEST(Test_Parsing_ParserContext, ExpectParseAny_1) {
 	ASSERT_EQ(msgs.getNMessages(), 2);
 }
 
-TEST(Test_Parsing_ParserContext, ExpectParseAny_2) {
+TEST(Unit_Parsing_ParserContext, ExpectParseAny_2) {
 	std::vector<Token> tokens = {
 		Token(Token::Add),
 		Token(Token::Symbol)
@@ -841,7 +841,7 @@ TEST(Test_Parsing_ParserContext, ExpectParseAny_2) {
 	ASSERT_EQ(msgs.getNMessages(), 0);
 }
 
-TEST(Test_Parsing_ParserContext, ExpectParseAny_3) {
+TEST(Unit_Parsing_ParserContext, ExpectParseAny_3) {
 	std::vector<Token> tokens = {
 		Token(Token::Sub)
 	};
@@ -860,7 +860,7 @@ TEST(Test_Parsing_ParserContext, ExpectParseAny_3) {
 	ASSERT_EQ(msgs.getNMessages(), 2);
 }
 
-TEST(Test_Parsing_ParserContext, ExpectParseAny_4) {
+TEST(Unit_Parsing_ParserContext, ExpectParseAny_4) {
 	std::vector<Token> tokens = {
 		Token(Token::Add)
 	};
@@ -879,7 +879,7 @@ TEST(Test_Parsing_ParserContext, ExpectParseAny_4) {
 	ASSERT_EQ(msgs.getNMessages(), 2);
 }
 
-TEST(Test_Parsing_ParserContext, ExpectParseAny_5) {
+TEST(Unit_Parsing_ParserContext, ExpectParseAny_5) {
 	std::vector<Token> tokens;
 
 	MessageBuffer msgs;

@@ -4,7 +4,7 @@
 
 using namespace whiskey;
 
-TEST(Test_Lexing_Lexer, Empty) {
+TEST(Integration_Lexing_Lexer, Empty) {
 	Source src;
 	src.loadString("", true);
 
@@ -18,7 +18,7 @@ TEST(Test_Lexing_Lexer, Empty) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, Whitespace) {
+TEST(Integration_Lexing_Lexer, Whitespace) {
 	Source src;
 	src.loadString(" \n\r\t", true);
 
@@ -32,7 +32,7 @@ TEST(Test_Lexing_Lexer, Whitespace) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, UnexpectedChar) {
+TEST(Integration_Lexing_Lexer, UnexpectedChar) {
 	Source src;
 	src.loadString("`", true);
 
@@ -46,7 +46,7 @@ TEST(Test_Lexing_Lexer, UnexpectedChar) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, CommentLineEmpty) {
+TEST(Integration_Lexing_Lexer, CommentLineEmpty) {
 	Source src;
 	src.loadString("#", true);
 
@@ -60,7 +60,7 @@ TEST(Test_Lexing_Lexer, CommentLineEmpty) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, CommentLine) {
+TEST(Integration_Lexing_Lexer, CommentLine) {
 	Source src;
 	src.loadString("#asdf", true);
 
@@ -74,7 +74,7 @@ TEST(Test_Lexing_Lexer, CommentLine) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, CommentLineMultiple) {
+TEST(Integration_Lexing_Lexer, CommentLineMultiple) {
 	Source src;
 	src.loadString("#asdf\n#asdf\n#asdf", true);
 
@@ -88,7 +88,7 @@ TEST(Test_Lexing_Lexer, CommentLineMultiple) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, CommentLineNested) {
+TEST(Integration_Lexing_Lexer, CommentLineNested) {
 	Source src;
 	src.loadString("####", true);
 
@@ -102,7 +102,7 @@ TEST(Test_Lexing_Lexer, CommentLineNested) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, CommentBlockEmpty) {
+TEST(Integration_Lexing_Lexer, CommentBlockEmpty) {
 	Source src;
 	src.loadString("#{}#", true);
 
@@ -116,7 +116,7 @@ TEST(Test_Lexing_Lexer, CommentBlockEmpty) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, CommentBlock) {
+TEST(Integration_Lexing_Lexer, CommentBlock) {
 	Source src;
 	src.loadString("#{asdf}#", true);
 
@@ -130,7 +130,7 @@ TEST(Test_Lexing_Lexer, CommentBlock) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, CommentBlockNested_0) {
+TEST(Integration_Lexing_Lexer, CommentBlockNested_0) {
 	Source src;
 	src.loadString("#{#{asdf}#}#", true);
 
@@ -144,7 +144,7 @@ TEST(Test_Lexing_Lexer, CommentBlockNested_0) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, CommentBlockNested_1) {
+TEST(Integration_Lexing_Lexer, CommentBlockNested_1) {
 	Source src;
 	src.loadString("#{#{#{}##{}#}##{#{}##{}#}##{#{#{}##{}#}#}#}#", true);
 
@@ -158,7 +158,7 @@ TEST(Test_Lexing_Lexer, CommentBlockNested_1) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, CommentBlockNested_2) {
+TEST(Integration_Lexing_Lexer, CommentBlockNested_2) {
 	Source src;
 	src.loadString("#{#}#", true);
 
@@ -172,7 +172,7 @@ TEST(Test_Lexing_Lexer, CommentBlockNested_2) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, CommentBlockMismatched_0) {
+TEST(Integration_Lexing_Lexer, CommentBlockMismatched_0) {
 	Source src;
 	src.loadString("#{asdf}", true);
 
@@ -186,7 +186,7 @@ TEST(Test_Lexing_Lexer, CommentBlockMismatched_0) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, CommentBlockMismatched_1) {
+TEST(Integration_Lexing_Lexer, CommentBlockMismatched_1) {
 	Source src;
 	src.loadString("#{asdf", true);
 
@@ -200,7 +200,7 @@ TEST(Test_Lexing_Lexer, CommentBlockMismatched_1) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, CommentBlockMismatched_2) {
+TEST(Integration_Lexing_Lexer, CommentBlockMismatched_2) {
 	Source src;
 	src.loadString("#{#{asdf}#", true);
 
@@ -214,7 +214,7 @@ TEST(Test_Lexing_Lexer, CommentBlockMismatched_2) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, Symbol_1) {
+TEST(Integration_Lexing_Lexer, Symbol_1) {
 	Source src;
 	src.loadString("x", true);
 
@@ -231,7 +231,7 @@ TEST(Test_Lexing_Lexer, Symbol_1) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "x");
 }
 
-TEST(Test_Lexing_Lexer, Symbol_2) {
+TEST(Integration_Lexing_Lexer, Symbol_2) {
 	Source src;
 	src.loadString("asdf", true);
 
@@ -248,7 +248,7 @@ TEST(Test_Lexing_Lexer, Symbol_2) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "asdf");
 }
 
-TEST(Test_Lexing_Lexer, Symbol_3) {
+TEST(Integration_Lexing_Lexer, Symbol_3) {
 	Source src;
 	src.loadString("x12309871", true);
 
@@ -265,7 +265,7 @@ TEST(Test_Lexing_Lexer, Symbol_3) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "x12309871");
 }
 
-TEST(Test_Lexing_Lexer, Symbol_4) {
+TEST(Integration_Lexing_Lexer, Symbol_4) {
 	Source src;
 	src.loadString("_12309871", true);
 
@@ -282,7 +282,7 @@ TEST(Test_Lexing_Lexer, Symbol_4) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "_12309871");
 }
 
-TEST(Test_Lexing_Lexer, Symbol_5) {
+TEST(Integration_Lexing_Lexer, Symbol_5) {
 	Source src;
 	src.loadString("x''''''", true);
 
@@ -299,7 +299,7 @@ TEST(Test_Lexing_Lexer, Symbol_5) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "x''''''");
 }
 
-TEST(Test_Lexing_Lexer, Symbol_6) {
+TEST(Integration_Lexing_Lexer, Symbol_6) {
 	Source src;
 	src.loadString("asdf''''''", true);
 
@@ -316,7 +316,7 @@ TEST(Test_Lexing_Lexer, Symbol_6) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "asdf''''''");
 }
 
-TEST(Test_Lexing_Lexer, Symbol_7) {
+TEST(Integration_Lexing_Lexer, Symbol_7) {
 	Source src;
 	src.loadString("x12309871''''''", true);
 
@@ -333,7 +333,7 @@ TEST(Test_Lexing_Lexer, Symbol_7) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "x12309871''''''");
 }
 
-TEST(Test_Lexing_Lexer, Symbol_8) {
+TEST(Integration_Lexing_Lexer, Symbol_8) {
 	Source src;
 	src.loadString("_12309871''''''", true);
 
@@ -350,7 +350,7 @@ TEST(Test_Lexing_Lexer, Symbol_8) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "_12309871''''''");
 }
 
-TEST(Test_Lexing_Lexer, KWNot) {
+TEST(Integration_Lexing_Lexer, KWNot) {
 	Source src;
 	src.loadString("not", true);
 
@@ -367,7 +367,7 @@ TEST(Test_Lexing_Lexer, KWNot) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "not");
 }
 
-TEST(Test_Lexing_Lexer, Int_0) {
+TEST(Integration_Lexing_Lexer, Int_0) {
 	Source src;
 	src.loadString("0", true);
 
@@ -384,7 +384,7 @@ TEST(Test_Lexing_Lexer, Int_0) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "0");
 }
 
-TEST(Test_Lexing_Lexer, Int_1) {
+TEST(Integration_Lexing_Lexer, Int_1) {
 	Source src;
 	src.loadString("5018238971", true);
 
@@ -401,7 +401,7 @@ TEST(Test_Lexing_Lexer, Int_1) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "5018238971");
 }
 
-TEST(Test_Lexing_Lexer, Int_2) {
+TEST(Integration_Lexing_Lexer, Int_2) {
 	Source src;
 	src.loadString("5asdfkjsdf", true);
 
@@ -418,7 +418,7 @@ TEST(Test_Lexing_Lexer, Int_2) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "5asdfkjsdf");
 }
 
-TEST(Test_Lexing_Lexer, Float_0) {
+TEST(Integration_Lexing_Lexer, Float_0) {
 	Source src;
 	src.loadString("0.0", true);
 
@@ -435,7 +435,7 @@ TEST(Test_Lexing_Lexer, Float_0) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "0.0");
 }
 
-TEST(Test_Lexing_Lexer, Float_1) {
+TEST(Integration_Lexing_Lexer, Float_1) {
 	Source src;
 	src.loadString("5018238971.0", true);
 
@@ -452,7 +452,7 @@ TEST(Test_Lexing_Lexer, Float_1) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "5018238971.0");
 }
 
-TEST(Test_Lexing_Lexer, Float_2) {
+TEST(Integration_Lexing_Lexer, Float_2) {
 	Source src;
 	src.loadString("5asdfkjsdf.0", true);
 
@@ -469,7 +469,7 @@ TEST(Test_Lexing_Lexer, Float_2) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "5asdfkjsdf.0");
 }
 
-TEST(Test_Lexing_Lexer, Float_3) {
+TEST(Integration_Lexing_Lexer, Float_3) {
 	Source src;
 	src.loadString("5asdfkjsdf.0faljkhasdkfjhsadkfh", true);
 
@@ -486,7 +486,7 @@ TEST(Test_Lexing_Lexer, Float_3) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "5asdfkjsdf.0faljkhasdkfjhsadkfh");
 }
 
-TEST(Test_Lexing_Lexer, Float_4) {
+TEST(Integration_Lexing_Lexer, Float_4) {
 	Source src;
 	src.loadString(".0", true);
 
@@ -503,7 +503,7 @@ TEST(Test_Lexing_Lexer, Float_4) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), ".0");
 }
 
-TEST(Test_Lexing_Lexer, Float_5) {
+TEST(Integration_Lexing_Lexer, Float_5) {
 	Source src;
 	src.loadString(".0faljkhasdkfjhsadkfh", true);
 
@@ -520,7 +520,7 @@ TEST(Test_Lexing_Lexer, Float_5) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), ".0faljkhasdkfjhsadkfh");
 }
 
-TEST(Test_Lexing_Lexer, Char_0) {
+TEST(Integration_Lexing_Lexer, Char_0) {
 	Source src;
 	src.loadString("'a'", true);
 
@@ -537,7 +537,7 @@ TEST(Test_Lexing_Lexer, Char_0) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "'a'");
 }
 
-TEST(Test_Lexing_Lexer, Char_1) {
+TEST(Integration_Lexing_Lexer, Char_1) {
 	Source src;
 	src.loadString("''", true);
 
@@ -554,7 +554,7 @@ TEST(Test_Lexing_Lexer, Char_1) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "''");
 }
 
-TEST(Test_Lexing_Lexer, Char_2) {
+TEST(Integration_Lexing_Lexer, Char_2) {
 	Source src;
 	src.loadString("'\\\\'", true);
 
@@ -571,7 +571,7 @@ TEST(Test_Lexing_Lexer, Char_2) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "'\\\\'");
 }
 
-TEST(Test_Lexing_Lexer, Char_3) {
+TEST(Integration_Lexing_Lexer, Char_3) {
 	Source src;
 	src.loadString("'\\''", true);
 
@@ -588,7 +588,7 @@ TEST(Test_Lexing_Lexer, Char_3) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "'\\''");
 }
 
-TEST(Test_Lexing_Lexer, Char_4) {
+TEST(Integration_Lexing_Lexer, Char_4) {
 	Source src;
 	src.loadString("'a", true);
 
@@ -602,7 +602,7 @@ TEST(Test_Lexing_Lexer, Char_4) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, Char_5) {
+TEST(Integration_Lexing_Lexer, Char_5) {
 	Source src;
 	src.loadString("'\\'", true);
 
@@ -616,7 +616,7 @@ TEST(Test_Lexing_Lexer, Char_5) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, Char_6) {
+TEST(Integration_Lexing_Lexer, Char_6) {
 	Source src;
 	src.loadString("'\"'", true);
 
@@ -633,7 +633,7 @@ TEST(Test_Lexing_Lexer, Char_6) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "'\"'");
 }
 
-TEST(Test_Lexing_Lexer, String_0) {
+TEST(Integration_Lexing_Lexer, String_0) {
 	Source src;
 	src.loadString("\"a\"", true);
 
@@ -650,7 +650,7 @@ TEST(Test_Lexing_Lexer, String_0) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "\"a\"");
 }
 
-TEST(Test_Lexing_Lexer, String_1) {
+TEST(Integration_Lexing_Lexer, String_1) {
 	Source src;
 	src.loadString("\"\"", true);
 
@@ -667,7 +667,7 @@ TEST(Test_Lexing_Lexer, String_1) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "\"\"");
 }
 
-TEST(Test_Lexing_Lexer, String_2) {
+TEST(Integration_Lexing_Lexer, String_2) {
 	Source src;
 	src.loadString("\"\\\\\"", true);
 
@@ -686,7 +686,7 @@ TEST(Test_Lexing_Lexer, String_2) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "\"\\\\\"");
 }
 
-TEST(Test_Lexing_Lexer, String_3) {
+TEST(Integration_Lexing_Lexer, String_3) {
 	Source src;
 	src.loadString("\"\\\"\"", true);
 
@@ -703,7 +703,7 @@ TEST(Test_Lexing_Lexer, String_3) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "\"\\\"\"");
 }
 
-TEST(Test_Lexing_Lexer, String_4) {
+TEST(Integration_Lexing_Lexer, String_4) {
 	Source src;
 	src.loadString("\"a", true);
 
@@ -717,7 +717,7 @@ TEST(Test_Lexing_Lexer, String_4) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, String_5) {
+TEST(Integration_Lexing_Lexer, String_5) {
 	Source src;
 	src.loadString("\"\\\"", true);
 
@@ -731,7 +731,7 @@ TEST(Test_Lexing_Lexer, String_5) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, String_6) {
+TEST(Integration_Lexing_Lexer, String_6) {
 	Source src;
 	src.loadString("\"'\"", true);
 
@@ -748,7 +748,7 @@ TEST(Test_Lexing_Lexer, String_6) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "\"'\"");
 }
 
-TEST(Test_Lexing_Lexer, LParen) {
+TEST(Integration_Lexing_Lexer, LParen) {
 	Source src;
 	src.loadString("(", true);
 
@@ -765,7 +765,7 @@ TEST(Test_Lexing_Lexer, LParen) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "(");
 }
 
-TEST(Test_Lexing_Lexer, RParen) {
+TEST(Integration_Lexing_Lexer, RParen) {
 	Source src;
 	src.loadString(")", true);
 
@@ -782,7 +782,7 @@ TEST(Test_Lexing_Lexer, RParen) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), ")");
 }
 
-TEST(Test_Lexing_Lexer, LBracket) {
+TEST(Integration_Lexing_Lexer, LBracket) {
 	Source src;
 	src.loadString("[", true);
 
@@ -799,7 +799,7 @@ TEST(Test_Lexing_Lexer, LBracket) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "[");
 }
 
-TEST(Test_Lexing_Lexer, RBracket) {
+TEST(Integration_Lexing_Lexer, RBracket) {
 	Source src;
 	src.loadString("]", true);
 
@@ -816,7 +816,7 @@ TEST(Test_Lexing_Lexer, RBracket) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "]");
 }
 
-TEST(Test_Lexing_Lexer, LBrace) {
+TEST(Integration_Lexing_Lexer, LBrace) {
 	Source src;
 	src.loadString("{", true);
 
@@ -833,7 +833,7 @@ TEST(Test_Lexing_Lexer, LBrace) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "{");
 }
 
-TEST(Test_Lexing_Lexer, RBrace) {
+TEST(Integration_Lexing_Lexer, RBrace) {
 	Source src;
 	src.loadString("}", true);
 
@@ -850,7 +850,7 @@ TEST(Test_Lexing_Lexer, RBrace) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "}");
 }
 
-TEST(Test_Lexing_Lexer, Comma) {
+TEST(Integration_Lexing_Lexer, Comma) {
 	Source src;
 	src.loadString(",", true);
 
@@ -867,7 +867,7 @@ TEST(Test_Lexing_Lexer, Comma) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), ",");
 }
 
-TEST(Test_Lexing_Lexer, Semicolon) {
+TEST(Integration_Lexing_Lexer, Semicolon) {
 	Source src;
 	src.loadString(";", true);
 
@@ -884,7 +884,7 @@ TEST(Test_Lexing_Lexer, Semicolon) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), ";");
 }
 
-TEST(Test_Lexing_Lexer, Period) {
+TEST(Integration_Lexing_Lexer, Period) {
 	Source src;
 	src.loadString(".", true);
 
@@ -901,7 +901,7 @@ TEST(Test_Lexing_Lexer, Period) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), ".");
 }
 
-TEST(Test_Lexing_Lexer, Add) {
+TEST(Integration_Lexing_Lexer, Add) {
 	Source src;
 	src.loadString("+", true);
 
@@ -918,7 +918,7 @@ TEST(Test_Lexing_Lexer, Add) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "+");
 }
 
-TEST(Test_Lexing_Lexer, Inc) {
+TEST(Integration_Lexing_Lexer, Inc) {
 	Source src;
 	src.loadString("++", true);
 
@@ -935,7 +935,7 @@ TEST(Test_Lexing_Lexer, Inc) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "++");
 }
 
-TEST(Test_Lexing_Lexer, AddAssign) {
+TEST(Integration_Lexing_Lexer, AddAssign) {
 	Source src;
 	src.loadString("+=", true);
 
@@ -952,7 +952,7 @@ TEST(Test_Lexing_Lexer, AddAssign) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "+=");
 }
 
-TEST(Test_Lexing_Lexer, Sub) {
+TEST(Integration_Lexing_Lexer, Sub) {
 	Source src;
 	src.loadString("-", true);
 
@@ -969,7 +969,7 @@ TEST(Test_Lexing_Lexer, Sub) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "-");
 }
 
-TEST(Test_Lexing_Lexer, Dec) {
+TEST(Integration_Lexing_Lexer, Dec) {
 	Source src;
 	src.loadString("--", true);
 
@@ -986,7 +986,7 @@ TEST(Test_Lexing_Lexer, Dec) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "--");
 }
 
-TEST(Test_Lexing_Lexer, SubAssign) {
+TEST(Integration_Lexing_Lexer, SubAssign) {
 	Source src;
 	src.loadString("-=", true);
 
@@ -1003,7 +1003,7 @@ TEST(Test_Lexing_Lexer, SubAssign) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "-=");
 }
 
-TEST(Test_Lexing_Lexer, Mul) {
+TEST(Integration_Lexing_Lexer, Mul) {
 	Source src;
 	src.loadString("*", true);
 
@@ -1020,7 +1020,7 @@ TEST(Test_Lexing_Lexer, Mul) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "*");
 }
 
-TEST(Test_Lexing_Lexer, Exp) {
+TEST(Integration_Lexing_Lexer, Exp) {
 	Source src;
 	src.loadString("**", true);
 
@@ -1037,7 +1037,7 @@ TEST(Test_Lexing_Lexer, Exp) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "**");
 }
 
-TEST(Test_Lexing_Lexer, ExpAssign) {
+TEST(Integration_Lexing_Lexer, ExpAssign) {
 	Source src;
 	src.loadString("**=", true);
 
@@ -1054,7 +1054,7 @@ TEST(Test_Lexing_Lexer, ExpAssign) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "**=");
 }
 
-TEST(Test_Lexing_Lexer, MulAssign) {
+TEST(Integration_Lexing_Lexer, MulAssign) {
 	Source src;
 	src.loadString("*=", true);
 
@@ -1071,7 +1071,7 @@ TEST(Test_Lexing_Lexer, MulAssign) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "*=");
 }
 
-TEST(Test_Lexing_Lexer, Div) {
+TEST(Integration_Lexing_Lexer, Div) {
 	Source src;
 	src.loadString("/", true);
 
@@ -1088,7 +1088,7 @@ TEST(Test_Lexing_Lexer, Div) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "/");
 }
 
-TEST(Test_Lexing_Lexer, DivInt) {
+TEST(Integration_Lexing_Lexer, DivInt) {
 	Source src;
 	src.loadString("//", true);
 
@@ -1105,7 +1105,7 @@ TEST(Test_Lexing_Lexer, DivInt) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "//");
 }
 
-TEST(Test_Lexing_Lexer, DivIntAssign) {
+TEST(Integration_Lexing_Lexer, DivIntAssign) {
 	Source src;
 	src.loadString("//=", true);
 
@@ -1122,7 +1122,7 @@ TEST(Test_Lexing_Lexer, DivIntAssign) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "//=");
 }
 
-TEST(Test_Lexing_Lexer, DivReal) {
+TEST(Integration_Lexing_Lexer, DivReal) {
 	Source src;
 	src.loadString("/.", true);
 
@@ -1139,7 +1139,7 @@ TEST(Test_Lexing_Lexer, DivReal) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "/.");
 }
 
-TEST(Test_Lexing_Lexer, DivRealAssign) {
+TEST(Integration_Lexing_Lexer, DivRealAssign) {
 	Source src;
 	src.loadString("/.=", true);
 
@@ -1156,7 +1156,7 @@ TEST(Test_Lexing_Lexer, DivRealAssign) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "/.=");
 }
 
-TEST(Test_Lexing_Lexer, DivAssign) {
+TEST(Integration_Lexing_Lexer, DivAssign) {
 	Source src;
 	src.loadString("/=", true);
 
@@ -1173,7 +1173,7 @@ TEST(Test_Lexing_Lexer, DivAssign) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "/=");
 }
 
-TEST(Test_Lexing_Lexer, Mod) {
+TEST(Integration_Lexing_Lexer, Mod) {
 	Source src;
 	src.loadString("%", true);
 
@@ -1190,7 +1190,7 @@ TEST(Test_Lexing_Lexer, Mod) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "%");
 }
 
-TEST(Test_Lexing_Lexer, ModAssign) {
+TEST(Integration_Lexing_Lexer, ModAssign) {
 	Source src;
 	src.loadString("%=", true);
 
@@ -1207,7 +1207,7 @@ TEST(Test_Lexing_Lexer, ModAssign) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "%=");
 }
 
-TEST(Test_Lexing_Lexer, BitNot) {
+TEST(Integration_Lexing_Lexer, BitNot) {
 	Source src;
 	src.loadString("~", true);
 
@@ -1224,7 +1224,7 @@ TEST(Test_Lexing_Lexer, BitNot) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "~");
 }
 
-TEST(Test_Lexing_Lexer, BitAnd) {
+TEST(Integration_Lexing_Lexer, BitAnd) {
 	Source src;
 	src.loadString("&", true);
 
@@ -1241,7 +1241,7 @@ TEST(Test_Lexing_Lexer, BitAnd) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "&");
 }
 
-TEST(Test_Lexing_Lexer, BitAndAssign) {
+TEST(Integration_Lexing_Lexer, BitAndAssign) {
 	Source src;
 	src.loadString("&=", true);
 
@@ -1258,7 +1258,7 @@ TEST(Test_Lexing_Lexer, BitAndAssign) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "&=");
 }
 
-TEST(Test_Lexing_Lexer, BitOr) {
+TEST(Integration_Lexing_Lexer, BitOr) {
 	Source src;
 	src.loadString("|", true);
 
@@ -1275,7 +1275,7 @@ TEST(Test_Lexing_Lexer, BitOr) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "|");
 }
 
-TEST(Test_Lexing_Lexer, BitOrAssign) {
+TEST(Integration_Lexing_Lexer, BitOrAssign) {
 	Source src;
 	src.loadString("|=", true);
 
@@ -1292,7 +1292,7 @@ TEST(Test_Lexing_Lexer, BitOrAssign) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "|=");
 }
 
-TEST(Test_Lexing_Lexer, BitXor) {
+TEST(Integration_Lexing_Lexer, BitXor) {
 	Source src;
 	src.loadString("^", true);
 
@@ -1309,7 +1309,7 @@ TEST(Test_Lexing_Lexer, BitXor) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "^");
 }
 
-TEST(Test_Lexing_Lexer, BitXorAssign) {
+TEST(Integration_Lexing_Lexer, BitXorAssign) {
 	Source src;
 	src.loadString("^=", true);
 
@@ -1326,7 +1326,7 @@ TEST(Test_Lexing_Lexer, BitXorAssign) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "^=");
 }
 
-TEST(Test_Lexing_Lexer, LT) {
+TEST(Integration_Lexing_Lexer, LT) {
 	Source src;
 	src.loadString("<", true);
 
@@ -1343,7 +1343,7 @@ TEST(Test_Lexing_Lexer, LT) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "<");
 }
 
-TEST(Test_Lexing_Lexer, BitShL) {
+TEST(Integration_Lexing_Lexer, BitShL) {
 	Source src;
 	src.loadString("<<", true);
 
@@ -1360,7 +1360,7 @@ TEST(Test_Lexing_Lexer, BitShL) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "<<");
 }
 
-TEST(Test_Lexing_Lexer, LE) {
+TEST(Integration_Lexing_Lexer, LE) {
 	Source src;
 	src.loadString("<=", true);
 
@@ -1377,7 +1377,7 @@ TEST(Test_Lexing_Lexer, LE) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "<=");
 }
 
-TEST(Test_Lexing_Lexer, LArrow) {
+TEST(Integration_Lexing_Lexer, LArrow) {
 	Source src;
 	src.loadString("<-", true);
 
@@ -1394,7 +1394,7 @@ TEST(Test_Lexing_Lexer, LArrow) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "<-");
 }
 
-TEST(Test_Lexing_Lexer, BitShLAssign) {
+TEST(Integration_Lexing_Lexer, BitShLAssign) {
 	Source src;
 	src.loadString("<<=", true);
 
@@ -1411,7 +1411,7 @@ TEST(Test_Lexing_Lexer, BitShLAssign) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "<<=");
 }
 
-TEST(Test_Lexing_Lexer, GT) {
+TEST(Integration_Lexing_Lexer, GT) {
 	Source src;
 	src.loadString(">", true);
 
@@ -1428,7 +1428,7 @@ TEST(Test_Lexing_Lexer, GT) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), ">");
 }
 
-TEST(Test_Lexing_Lexer, BitShR) {
+TEST(Integration_Lexing_Lexer, BitShR) {
 	Source src;
 	src.loadString(">>", true);
 
@@ -1445,7 +1445,7 @@ TEST(Test_Lexing_Lexer, BitShR) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), ">>");
 }
 
-TEST(Test_Lexing_Lexer, GE) {
+TEST(Integration_Lexing_Lexer, GE) {
 	Source src;
 	src.loadString(">=", true);
 
@@ -1462,7 +1462,7 @@ TEST(Test_Lexing_Lexer, GE) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), ">=");
 }
 
-TEST(Test_Lexing_Lexer, BitShRAssign) {
+TEST(Integration_Lexing_Lexer, BitShRAssign) {
 	Source src;
 	src.loadString(">>=", true);
 
@@ -1479,7 +1479,7 @@ TEST(Test_Lexing_Lexer, BitShRAssign) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), ">>=");
 }
 
-TEST(Test_Lexing_Lexer, ExclamationPointAlone) {
+TEST(Integration_Lexing_Lexer, ExclamationPointAlone) {
 	Source src;
 	src.loadString("!", true);
 
@@ -1493,7 +1493,7 @@ TEST(Test_Lexing_Lexer, ExclamationPointAlone) {
 	ASSERT_EQ(toks.size(), 0);
 }
 
-TEST(Test_Lexing_Lexer, NE) {
+TEST(Integration_Lexing_Lexer, NE) {
 	Source src;
 	src.loadString("!=", true);
 
@@ -1510,7 +1510,7 @@ TEST(Test_Lexing_Lexer, NE) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "!=");
 }
 
-TEST(Test_Lexing_Lexer, Assign) {
+TEST(Integration_Lexing_Lexer, Assign) {
 	Source src;
 	src.loadString("=", true);
 
@@ -1527,7 +1527,7 @@ TEST(Test_Lexing_Lexer, Assign) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "=");
 }
 
-TEST(Test_Lexing_Lexer, EQ) {
+TEST(Integration_Lexing_Lexer, EQ) {
 	Source src;
 	src.loadString("==", true);
 
@@ -1544,7 +1544,7 @@ TEST(Test_Lexing_Lexer, EQ) {
 	ASSERT_STREQ(toks[0].getRange().getText().c_str(), "==");
 }
 
-TEST(Test_Lexing_Lexer, BoolImplies) {
+TEST(Integration_Lexing_Lexer, BoolImplies) {
 	Source src;
 	src.loadString("=>", true);
 

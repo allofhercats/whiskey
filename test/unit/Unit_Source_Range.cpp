@@ -4,7 +4,7 @@
 
 using namespace whiskey;
 
-TEST(Test_Source_Range, Empty) {
+TEST(Unit_Source_Range, Empty) {
 	Source src;
 	src.loadString("abcdefghijklmnopqrstuvwxyz");
 
@@ -15,7 +15,7 @@ TEST(Test_Source_Range, Empty) {
 	ASSERT_STREQ(rng.getText().c_str(), "");
 }
 
-TEST(Test_Source_Range, Length5) {
+TEST(Unit_Source_Range, Length5) {
 	std::string str = "abcdefghijklmnopqrstuvwxyz";
 
 	Source *src = new Source();
@@ -30,7 +30,7 @@ TEST(Test_Source_Range, Length5) {
 	delete src;
 }
 
-TEST(Test_Source_Range, Length26) {
+TEST(Unit_Source_Range, Length26) {
 	std::string str = "abcdefghijklmnopqrstuvwxyz";
 
 	Source *src = new Source();
@@ -43,7 +43,7 @@ TEST(Test_Source_Range, Length26) {
 	ASSERT_STREQ(rng.getText().c_str(), "abcdefghijklmnopqrstuvwxyz");
 }
 
-TEST(Test_Source_Range, Length100) {
+TEST(Unit_Source_Range, Length100) {
 	std::string str = "abcdefghijklmnopqrstuvwxyz";
 
 	Source *src = new Source();

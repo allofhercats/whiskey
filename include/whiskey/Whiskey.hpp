@@ -2,6 +2,7 @@
 #define __WHISKEY_HPP
 
 #include <whiskey/AST.hpp>
+#include <whiskey/AST2.hpp>
 #include <whiskey/Core.hpp>
 #include <whiskey/Messages.hpp>
 #include <whiskey/Source.hpp>

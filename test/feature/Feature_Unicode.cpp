@@ -4,7 +4,7 @@
 
 using namespace whiskey;
 
-TEST(Test_Feature_Unicode, PrintLiteralChar) {
+TEST(Feature_Unicode, PrintLiteralChar) {
 	std::stringstream ss;
 
 	printLiteralChar(ss, 0x7f);
@@ -35,28 +35,28 @@ TEST(Test_Feature_Unicode, PrintLiteralChar) {
 	ASSERT_STREQ(ss.str().c_str(), "'\\Uffffffff'");
 }
 
-TEST(Test_Feature_Unicode, PrintLiteralString8) {
+TEST(Feature_Unicode, PrintLiteralString8) {
 	std::stringstream ss;
 
 	printLiteralString(ss, "a\xff");
 	ASSERT_STREQ(ss.str().c_str(), "\"a\\xff\"");
 }
 
-TEST(Test_Feature_Unicode, PrintLiteralString16) {
+TEST(Feature_Unicode, PrintLiteralString16) {
 	std::stringstream ss;
 
 	printLiteralString(ss, u"a\xff\uffff");
 	ASSERT_STREQ(ss.str().c_str(), "\"a\\xff\\uffff\"");
 }
 
-TEST(Test_Feature_Unicode, PrintLiteralString32) {
+TEST(Feature_Unicode, PrintLiteralString32) {
 	std::stringstream ss;
 
 	printLiteralString(ss, U"a\xff\uffff\U0002070e");
 	ASSERT_STREQ(ss.str().c_str(), "\"a\\xff\\uffff\\U0002070e\"");
 }
 
-TEST(Test_Feature_Unicode, AppendChar32ToString8) {
+TEST(Feature_Unicode, AppendChar32ToString8) {
 	std::string s;
 
 	appendChar32ToString(s, U'a');

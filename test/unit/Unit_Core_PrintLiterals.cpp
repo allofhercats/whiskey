@@ -4,7 +4,7 @@
 
 using namespace whiskey;
 
-TEST(Test_Core_PrintLiterals, Char32MinWidth) {
+TEST(Unit_Core_PrintLiterals, Char32MinWidth) {
 	ASSERT_EQ(getChar32MinWidth(U'\0'), 1);
 	ASSERT_EQ(getChar32MinWidth(U'\xff'), 1);
 	ASSERT_EQ(getChar32MinWidth(U'\u0100'), 2);
@@ -13,7 +13,7 @@ TEST(Test_Core_PrintLiterals, Char32MinWidth) {
 	ASSERT_EQ(getChar32MinWidth((char32_t)0xffffffffff), 4);
 }
 
-TEST(Test_Core_PrintLiterals, GetNDigits_Base2) {
+TEST(Unit_Core_PrintLiterals, GetNDigits_Base2) {
 	ASSERT_EQ(getNDigits(0, 2), 1);
 	ASSERT_EQ(getNDigits(1, 2), 1);
 	ASSERT_EQ(getNDigits(2, 2), 2);
@@ -22,7 +22,7 @@ TEST(Test_Core_PrintLiterals, GetNDigits_Base2) {
 	ASSERT_EQ(getNDigits(7, 2), 3);
 }
 
-TEST(Test_Core_PrintLiterals, GetNDigits_Base8) {
+TEST(Unit_Core_PrintLiterals, GetNDigits_Base8) {
 	ASSERT_EQ(getNDigits(0, 8), 1);
 	ASSERT_EQ(getNDigits(7, 8), 1);
 	ASSERT_EQ(getNDigits(8, 8), 2);
@@ -31,7 +31,7 @@ TEST(Test_Core_PrintLiterals, GetNDigits_Base8) {
 	ASSERT_EQ(getNDigits(511, 8), 3);
 }
 
-TEST(Test_Core_PrintLiterals, GetNDigits_Base10) {
+TEST(Unit_Core_PrintLiterals, GetNDigits_Base10) {
 	ASSERT_EQ(getNDigits(0, 10), 1);
 	ASSERT_EQ(getNDigits(9, 10), 1);
 	ASSERT_EQ(getNDigits(10, 10), 2);
@@ -40,7 +40,7 @@ TEST(Test_Core_PrintLiterals, GetNDigits_Base10) {
 	ASSERT_EQ(getNDigits(999, 10), 3);
 }
 
-TEST(Test_Core_PrintLiterals, GetNDigits_Base16) {
+TEST(Unit_Core_PrintLiterals, GetNDigits_Base16) {
 	ASSERT_EQ(getNDigits(0, 16), 1);
 	ASSERT_EQ(getNDigits(15, 16), 1);
 	ASSERT_EQ(getNDigits(16, 16), 2);
@@ -49,7 +49,7 @@ TEST(Test_Core_PrintLiterals, GetNDigits_Base16) {
 	ASSERT_EQ(getNDigits(4095, 16), 3);
 }
 
-TEST(Test_Core_PrintLiterals, Bool) {
+TEST(Unit_Core_PrintLiterals, Bool) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -61,7 +61,7 @@ TEST(Test_Core_PrintLiterals, Bool) {
 	ASSERT_STREQ("false", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base2_NoPrefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base2_NoPrefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -93,7 +93,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base2_NoPrefix_Width0) {
 	ASSERT_STREQ("1111111111111111111111111111111111111111111111111111111111111111", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base2_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base2_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -125,7 +125,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base2_NoPrefix_Width5) {
 	ASSERT_STREQ("1111111111111111111111111111111111111111111111111111111111111111", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base2_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base2_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -157,7 +157,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base2_Prefix_Width0) {
 	ASSERT_STREQ("0b1111111111111111111111111111111111111111111111111111111111111111", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base2_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base2_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -189,7 +189,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base2_Prefix_Width5) {
 	ASSERT_STREQ("0b1111111111111111111111111111111111111111111111111111111111111111", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base8_NoPrefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base8_NoPrefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -221,7 +221,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base8_NoPrefix_Width0) {
 	ASSERT_STREQ("1777777777777777777777", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base8_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base8_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -253,7 +253,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base8_NoPrefix_Width5) {
 	ASSERT_STREQ("1777777777777777777777", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base8_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base8_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -285,7 +285,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base8_Prefix_Width0) {
 	ASSERT_STREQ("01777777777777777777777", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base8_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base8_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -317,7 +317,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base8_Prefix_Width5) {
 	ASSERT_STREQ("01777777777777777777777", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base10_NoPrefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base10_NoPrefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -349,7 +349,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base10_NoPrefix_Width0) {
 	ASSERT_STREQ("18446744073709551615", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base10_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base10_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -381,7 +381,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base10_NoPrefix_Width5) {
 	ASSERT_STREQ("18446744073709551615", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base10_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base10_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -413,7 +413,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base10_Prefix_Width0) {
 	ASSERT_STREQ("18446744073709551615", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base10_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base10_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -445,7 +445,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base10_Prefix_Width5) {
 	ASSERT_STREQ("18446744073709551615", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base16_NoPrefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base16_NoPrefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -477,7 +477,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base16_NoPrefix_Width0) {
 	ASSERT_STREQ("ffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base16_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base16_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -509,7 +509,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base16_NoPrefix_Width5) {
 	ASSERT_STREQ("ffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base16_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base16_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -541,7 +541,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base16_Prefix_Width0) {
 	ASSERT_STREQ("0xffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, UInt64_Base16_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt64_Base16_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -573,7 +573,7 @@ TEST(Test_Core_PrintLiterals, UInt64_Base16_Prefix_Width5) {
 	ASSERT_STREQ("0xffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base2_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int64_Base2_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -605,7 +605,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base2_NoPrefix_Width5) {
 	ASSERT_STREQ("1111111111111111111111111111111111111111111111111111111111111111", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base2_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, Int64_Base2_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -637,7 +637,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base2_Prefix_Width0) {
 	ASSERT_STREQ("0b1111111111111111111111111111111111111111111111111111111111111111", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base2_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int64_Base2_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -669,7 +669,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base2_Prefix_Width5) {
 	ASSERT_STREQ("0b1111111111111111111111111111111111111111111111111111111111111111", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base8_NoPrefix_Width0) {
+TEST(Unit_Core_PrintLiterals, Int64_Base8_NoPrefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -701,7 +701,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base8_NoPrefix_Width0) {
 	ASSERT_STREQ("1777777777777777777777", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base8_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int64_Base8_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -733,7 +733,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base8_NoPrefix_Width5) {
 	ASSERT_STREQ("1777777777777777777777", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base8_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, Int64_Base8_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -765,7 +765,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base8_Prefix_Width0) {
 	ASSERT_STREQ("01777777777777777777777", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base8_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int64_Base8_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -797,7 +797,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base8_Prefix_Width5) {
 	ASSERT_STREQ("01777777777777777777777", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base10_NoPrefix_Width0) {
+TEST(Unit_Core_PrintLiterals, Int64_Base10_NoPrefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -829,7 +829,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base10_NoPrefix_Width0) {
 	ASSERT_STREQ("-1", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base10_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int64_Base10_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -861,7 +861,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base10_NoPrefix_Width5) {
 	ASSERT_STREQ("-00001", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base10_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, Int64_Base10_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -893,7 +893,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base10_Prefix_Width0) {
 	ASSERT_STREQ("-1", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base10_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int64_Base10_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -925,7 +925,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base10_Prefix_Width5) {
 	ASSERT_STREQ("-00001", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base10_NoPrefix_Width0_Negative) {
+TEST(Unit_Core_PrintLiterals, Int64_Base10_NoPrefix_Width0_Negative) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -949,7 +949,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base10_NoPrefix_Width0_Negative) {
 	ASSERT_STREQ("-69420", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base10_NoPrefix_Width5_Negative) {
+TEST(Unit_Core_PrintLiterals, Int64_Base10_NoPrefix_Width5_Negative) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -973,7 +973,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base10_NoPrefix_Width5_Negative) {
 	ASSERT_STREQ("-69420", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base10_Prefix_Width0_Negative) {
+TEST(Unit_Core_PrintLiterals, Int64_Base10_Prefix_Width0_Negative) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -997,7 +997,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base10_Prefix_Width0_Negative) {
 	ASSERT_STREQ("-69420", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base10_Prefix_Width5_Negative) {
+TEST(Unit_Core_PrintLiterals, Int64_Base10_Prefix_Width5_Negative) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -1021,7 +1021,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base10_Prefix_Width5_Negative) {
 	ASSERT_STREQ("-69420", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base16_NoPrefix_Width0) {
+TEST(Unit_Core_PrintLiterals, Int64_Base16_NoPrefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -1053,7 +1053,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base16_NoPrefix_Width0) {
 	ASSERT_STREQ("ffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base16_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int64_Base16_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -1085,7 +1085,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base16_NoPrefix_Width5) {
 	ASSERT_STREQ("ffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base16_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, Int64_Base16_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -1117,7 +1117,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base16_Prefix_Width0) {
 	ASSERT_STREQ("0xffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Int64_Base16_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int64_Base16_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -1149,7 +1149,7 @@ TEST(Test_Core_PrintLiterals, Int64_Base16_Prefix_Width5) {
 	ASSERT_STREQ("0xffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Real_Precision1_NoTruncate) {
+TEST(Unit_Core_PrintLiterals, Real_Precision1_NoTruncate) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -1201,7 +1201,7 @@ TEST(Test_Core_PrintLiterals, Real_Precision1_NoTruncate) {
 	ASSERT_STREQ("0.0", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Real_Precision1_Truncate) {
+TEST(Unit_Core_PrintLiterals, Real_Precision1_Truncate) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -1253,7 +1253,7 @@ TEST(Test_Core_PrintLiterals, Real_Precision1_Truncate) {
 	ASSERT_STREQ("0.0", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Real_Precision2_NoTruncate) {
+TEST(Unit_Core_PrintLiterals, Real_Precision2_NoTruncate) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -1305,7 +1305,7 @@ TEST(Test_Core_PrintLiterals, Real_Precision2_NoTruncate) {
 	ASSERT_STREQ("0.05", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Real_Precision2_Truncate) {
+TEST(Unit_Core_PrintLiterals, Real_Precision2_Truncate) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -1357,7 +1357,7 @@ TEST(Test_Core_PrintLiterals, Real_Precision2_Truncate) {
 	ASSERT_STREQ("0.05", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Real_Precision5_NoTruncate) {
+TEST(Unit_Core_PrintLiterals, Real_Precision5_NoTruncate) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -1445,7 +1445,7 @@ TEST(Test_Core_PrintLiterals, Real_Precision5_NoTruncate) {
 	ASSERT_STREQ("0.00005", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Real_Precision5_Truncate) {
+TEST(Unit_Core_PrintLiterals, Real_Precision5_Truncate) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -1533,7 +1533,7 @@ TEST(Test_Core_PrintLiterals, Real_Precision5_Truncate) {
 	ASSERT_STREQ("0.00005", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, Char) {
+TEST(Unit_Core_PrintLiterals, Char) {
 	std::stringstream ss;
 
 	ss.str("");
@@ -1577,7 +1577,7 @@ TEST(Test_Core_PrintLiterals, Char) {
 	ASSERT_STREQ("'\\\\'", ss.str().c_str());
 }
 
-TEST(Test_Core_PrintLiterals, String) {
+TEST(Unit_Core_PrintLiterals, String) {
 	std::stringstream ss;
 
 	ss.str("");

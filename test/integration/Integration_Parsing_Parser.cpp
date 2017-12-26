@@ -63,7 +63,7 @@ void testHelper(ParserContext::Rule rule, const char *text, AST *ast, bool succe
 	}
 }
 
-TEST(Test_Parsing_Parser, ParseTypeSymbol_0) {
+TEST(Integration_Parsing_Parser, ParseTypeSymbol_0) {
 	testHelper(
 		Parser::parseTypeSymbol,
 		"x",
@@ -72,7 +72,7 @@ TEST(Test_Parsing_Parser, ParseTypeSymbol_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeSymbol_1) {
+TEST(Integration_Parsing_Parser, ParseTypeSymbol_1) {
 	testHelper(
 		Parser::parseTypeSymbol,
 		";",
@@ -81,7 +81,7 @@ TEST(Test_Parsing_Parser, ParseTypeSymbol_1) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeAccessUnary_0) {
+TEST(Integration_Parsing_Parser, ParseTypeAccessUnary_0) {
 	testHelper(
 		Parser::parseTypeAccessUnary,
 		".x",
@@ -92,7 +92,7 @@ TEST(Test_Parsing_Parser, ParseTypeAccessUnary_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeAccessUnary_1) {
+TEST(Integration_Parsing_Parser, ParseTypeAccessUnary_1) {
 	testHelper(
 		Parser::parseTypeAccessUnary,
 		"..x",
@@ -105,7 +105,7 @@ TEST(Test_Parsing_Parser, ParseTypeAccessUnary_1) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeAccessUnary_2) {
+TEST(Integration_Parsing_Parser, ParseTypeAccessUnary_2) {
 	testHelper(
 		Parser::parseTypeAccessUnary,
 		"x",
@@ -114,7 +114,7 @@ TEST(Test_Parsing_Parser, ParseTypeAccessUnary_2) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeAccessUnary_3) {
+TEST(Integration_Parsing_Parser, ParseTypeAccessUnary_3) {
 	testHelper(
 		Parser::parseTypeAccessUnary,
 		";",
@@ -123,7 +123,7 @@ TEST(Test_Parsing_Parser, ParseTypeAccessUnary_3) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeAccessBinary_0) {
+TEST(Integration_Parsing_Parser, ParseTypeAccessBinary_0) {
 	testHelper(
 		Parser::parseTypeAccessBinary,
 		"x.y",
@@ -135,7 +135,7 @@ TEST(Test_Parsing_Parser, ParseTypeAccessBinary_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeAccessBinary_1) {
+TEST(Integration_Parsing_Parser, ParseTypeAccessBinary_1) {
 	testHelper(
 		Parser::parseTypeAccessBinary,
 		"x.y.z",
@@ -150,7 +150,7 @@ TEST(Test_Parsing_Parser, ParseTypeAccessBinary_1) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeAccessBinary_2) {
+TEST(Integration_Parsing_Parser, ParseTypeAccessBinary_2) {
 	testHelper(
 		Parser::parseTypeAccessBinary,
 		".x.y",
@@ -164,7 +164,7 @@ TEST(Test_Parsing_Parser, ParseTypeAccessBinary_2) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeAccessBinary_3) {
+TEST(Integration_Parsing_Parser, ParseTypeAccessBinary_3) {
 	testHelper(
 		Parser::parseTypeAccessBinary,
 		".x.y.z",
@@ -181,7 +181,7 @@ TEST(Test_Parsing_Parser, ParseTypeAccessBinary_3) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeAccessBinary_4) {
+TEST(Integration_Parsing_Parser, ParseTypeAccessBinary_4) {
 	testHelper(
 		Parser::parseTypeAccessBinary,
 		";",
@@ -190,7 +190,7 @@ TEST(Test_Parsing_Parser, ParseTypeAccessBinary_4) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeAccessBinary_5) {
+TEST(Integration_Parsing_Parser, ParseTypeAccessBinary_5) {
 	testHelper(
 		Parser::parseTypeAccessBinary,
 		"x.",
@@ -199,7 +199,7 @@ TEST(Test_Parsing_Parser, ParseTypeAccessBinary_5) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeFunction_0) {
+TEST(Integration_Parsing_Parser, ParseTypeFunction_0) {
 	testHelper(
 		Parser::parseTypeFunction,
 		"x <- ()",
@@ -210,7 +210,7 @@ TEST(Test_Parsing_Parser, ParseTypeFunction_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeFunction_1) {
+TEST(Integration_Parsing_Parser, ParseTypeFunction_1) {
 	testHelper(
 		Parser::parseTypeFunction,
 		"x <- (y)",
@@ -224,7 +224,7 @@ TEST(Test_Parsing_Parser, ParseTypeFunction_1) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeFunction_2) {
+TEST(Integration_Parsing_Parser, ParseTypeFunction_2) {
 	testHelper(
 		Parser::parseTypeFunction,
 		"x <- (y, z)",
@@ -239,7 +239,7 @@ TEST(Test_Parsing_Parser, ParseTypeFunction_2) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeFunction_3) {
+TEST(Integration_Parsing_Parser, ParseTypeFunction_3) {
 	testHelper(
 		Parser::parseTypeFunction,
 		"x <- (y, z <- (a, b))",
@@ -260,7 +260,7 @@ TEST(Test_Parsing_Parser, ParseTypeFunction_3) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeFunction_4) {
+TEST(Integration_Parsing_Parser, ParseTypeFunction_4) {
 	testHelper(
 		Parser::parseTypeFunction,
 		"x <- (",
@@ -269,7 +269,7 @@ TEST(Test_Parsing_Parser, ParseTypeFunction_4) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeFunction_5) {
+TEST(Integration_Parsing_Parser, ParseTypeFunction_5) {
 	testHelper(
 		Parser::parseTypeFunction,
 		"x <- )",
@@ -278,7 +278,7 @@ TEST(Test_Parsing_Parser, ParseTypeFunction_5) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeFunction_6) {
+TEST(Integration_Parsing_Parser, ParseTypeFunction_6) {
 	testHelper(
 		Parser::parseTypeFunction,
 		"x <- (,)",
@@ -287,7 +287,7 @@ TEST(Test_Parsing_Parser, ParseTypeFunction_6) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeFunction_7) {
+TEST(Integration_Parsing_Parser, ParseTypeFunction_7) {
 	testHelper(
 		Parser::parseTypeFunction,
 		"x <- (x,)",
@@ -296,7 +296,7 @@ TEST(Test_Parsing_Parser, ParseTypeFunction_7) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeGroup_0) {
+TEST(Integration_Parsing_Parser, ParseTypeGroup_0) {
 	testHelper(
 		Parser::parseTypeGroup,
 		"(x)",
@@ -307,7 +307,7 @@ TEST(Test_Parsing_Parser, ParseTypeGroup_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeGroup_1) {
+TEST(Integration_Parsing_Parser, ParseTypeGroup_1) {
 	testHelper(
 		Parser::parseTypeGroup,
 		"((x))",
@@ -320,7 +320,7 @@ TEST(Test_Parsing_Parser, ParseTypeGroup_1) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeGroup_2) {
+TEST(Integration_Parsing_Parser, ParseTypeGroup_2) {
 	testHelper(
 		Parser::parseTypeGroup,
 		"((x)",
@@ -329,7 +329,7 @@ TEST(Test_Parsing_Parser, ParseTypeGroup_2) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeGroup_3) {
+TEST(Integration_Parsing_Parser, ParseTypeGroup_3) {
 	testHelper(
 		Parser::parseTypeGroup,
 		"(x",
@@ -338,7 +338,7 @@ TEST(Test_Parsing_Parser, ParseTypeGroup_3) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeGroup_4) {
+TEST(Integration_Parsing_Parser, ParseTypeGroup_4) {
 	testHelper(
 		Parser::parseTypeGroup,
 		"x)",
@@ -347,7 +347,7 @@ TEST(Test_Parsing_Parser, ParseTypeGroup_4) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeGroup_5) {
+TEST(Integration_Parsing_Parser, ParseTypeGroup_5) {
 	testHelper(
 		Parser::parseTypeGroup,
 		"()",
@@ -356,7 +356,7 @@ TEST(Test_Parsing_Parser, ParseTypeGroup_5) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeGroup_6) {
+TEST(Integration_Parsing_Parser, ParseTypeGroup_6) {
 	testHelper(
 		Parser::parseTypeGroup,
 		"x",
@@ -365,7 +365,7 @@ TEST(Test_Parsing_Parser, ParseTypeGroup_6) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseTypeFunction_8) {
+TEST(Integration_Parsing_Parser, ParseTypeFunction_8) {
 	testHelper(
 		Parser::parseTypeFunction,
 		"(x <- ()) <- ()",
@@ -380,7 +380,7 @@ TEST(Test_Parsing_Parser, ParseTypeFunction_8) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprSymbol_0) {
+TEST(Integration_Parsing_Parser, ParseExprSymbol_0) {
 	testHelper(
 		Parser::parseExprSymbol,
 		"x",
@@ -389,7 +389,7 @@ TEST(Test_Parsing_Parser, ParseExprSymbol_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprSymbol_1) {
+TEST(Integration_Parsing_Parser, ParseExprSymbol_1) {
 	testHelper(
 		Parser::parseExprSymbol,
 		";",
@@ -398,7 +398,7 @@ TEST(Test_Parsing_Parser, ParseExprSymbol_1) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprLiteralInt_0) {
+TEST(Integration_Parsing_Parser, ParseExprLiteralInt_0) {
 	testHelper(
 		Parser::parseExprLiteralInt,
 		"5",
@@ -407,7 +407,7 @@ TEST(Test_Parsing_Parser, ParseExprLiteralInt_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprLiteralInt_1) {
+TEST(Integration_Parsing_Parser, ParseExprLiteralInt_1) {
 	testHelper(
 		Parser::parseExprLiteralInt,
 		";",
@@ -416,7 +416,7 @@ TEST(Test_Parsing_Parser, ParseExprLiteralInt_1) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprLiteralFloat_0) {
+TEST(Integration_Parsing_Parser, ParseExprLiteralFloat_0) {
 	testHelper(
 		Parser::parseExprLiteralFloat,
 		"3.14",
@@ -425,7 +425,7 @@ TEST(Test_Parsing_Parser, ParseExprLiteralFloat_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprLiteralFloat_1) {
+TEST(Integration_Parsing_Parser, ParseExprLiteralFloat_1) {
 	testHelper(
 		Parser::parseExprLiteralFloat,
 		";",
@@ -434,7 +434,7 @@ TEST(Test_Parsing_Parser, ParseExprLiteralFloat_1) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprAccessUnary_0) {
+TEST(Integration_Parsing_Parser, ParseExprAccessUnary_0) {
 	testHelper(
 		Parser::parseExprAccessUnary,
 		".x",
@@ -445,7 +445,7 @@ TEST(Test_Parsing_Parser, ParseExprAccessUnary_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprAccessUnary_1) {
+TEST(Integration_Parsing_Parser, ParseExprAccessUnary_1) {
 	testHelper(
 		Parser::parseExprAccessUnary,
 		"..x",
@@ -458,7 +458,7 @@ TEST(Test_Parsing_Parser, ParseExprAccessUnary_1) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprAccessUnary_2) {
+TEST(Integration_Parsing_Parser, ParseExprAccessUnary_2) {
 	testHelper(
 		Parser::parseExprAccessUnary,
 		"x",
@@ -467,7 +467,7 @@ TEST(Test_Parsing_Parser, ParseExprAccessUnary_2) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprAccessUnary_3) {
+TEST(Integration_Parsing_Parser, ParseExprAccessUnary_3) {
 	testHelper(
 		Parser::parseExprAccessUnary,
 		";",
@@ -476,7 +476,7 @@ TEST(Test_Parsing_Parser, ParseExprAccessUnary_3) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprAccessBinary_0) {
+TEST(Integration_Parsing_Parser, ParseExprAccessBinary_0) {
 	testHelper(
 		Parser::parseExprAccessBinary,
 		"x.y",
@@ -488,7 +488,7 @@ TEST(Test_Parsing_Parser, ParseExprAccessBinary_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprAccessBinary_1) {
+TEST(Integration_Parsing_Parser, ParseExprAccessBinary_1) {
 	testHelper(
 		Parser::parseExprAccessBinary,
 		"x.y.z",
@@ -503,7 +503,7 @@ TEST(Test_Parsing_Parser, ParseExprAccessBinary_1) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprAccessBinary_2) {
+TEST(Integration_Parsing_Parser, ParseExprAccessBinary_2) {
 	testHelper(
 		Parser::parseExprAccessBinary,
 		".x.y",
@@ -517,7 +517,7 @@ TEST(Test_Parsing_Parser, ParseExprAccessBinary_2) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprAccessBinary_3) {
+TEST(Integration_Parsing_Parser, ParseExprAccessBinary_3) {
 	testHelper(
 		Parser::parseExprAccessBinary,
 		".x.y.z",
@@ -534,7 +534,7 @@ TEST(Test_Parsing_Parser, ParseExprAccessBinary_3) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprAccessBinary_4) {
+TEST(Integration_Parsing_Parser, ParseExprAccessBinary_4) {
 	testHelper(
 		Parser::parseExprAccessBinary,
 		";",
@@ -543,7 +543,7 @@ TEST(Test_Parsing_Parser, ParseExprAccessBinary_4) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprAccessBinary_5) {
+TEST(Integration_Parsing_Parser, ParseExprAccessBinary_5) {
 	testHelper(
 		Parser::parseExprAccessBinary,
 		"x.",
@@ -552,7 +552,7 @@ TEST(Test_Parsing_Parser, ParseExprAccessBinary_5) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprAccessBinary_6) {
+TEST(Integration_Parsing_Parser, ParseExprAccessBinary_6) {
 	testHelper(
 		Parser::parseExprAccessBinary,
 		"x",
@@ -561,7 +561,7 @@ TEST(Test_Parsing_Parser, ParseExprAccessBinary_6) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprCall_0) {
+TEST(Integration_Parsing_Parser, ParseExprCall_0) {
 	testHelper(
 		Parser::parseExprCall,
 		"x()",
@@ -572,7 +572,7 @@ TEST(Test_Parsing_Parser, ParseExprCall_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprCall_1) {
+TEST(Integration_Parsing_Parser, ParseExprCall_1) {
 	testHelper(
 		Parser::parseExprCall,
 		"x(y)",
@@ -586,7 +586,7 @@ TEST(Test_Parsing_Parser, ParseExprCall_1) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprCall_2) {
+TEST(Integration_Parsing_Parser, ParseExprCall_2) {
 	testHelper(
 		Parser::parseExprCall,
 		"x(y, z)",
@@ -601,7 +601,7 @@ TEST(Test_Parsing_Parser, ParseExprCall_2) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprCall_3) {
+TEST(Integration_Parsing_Parser, ParseExprCall_3) {
 	testHelper(
 		Parser::parseExprCall,
 		"x(y, z(a, b))",
@@ -622,7 +622,7 @@ TEST(Test_Parsing_Parser, ParseExprCall_3) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprCall_4) {
+TEST(Integration_Parsing_Parser, ParseExprCall_4) {
 	testHelper(
 		Parser::parseExprCall,
 		"x(",
@@ -631,7 +631,7 @@ TEST(Test_Parsing_Parser, ParseExprCall_4) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprCall_5) {
+TEST(Integration_Parsing_Parser, ParseExprCall_5) {
 	testHelper(
 		Parser::parseExprCall,
 		"x)",
@@ -640,7 +640,7 @@ TEST(Test_Parsing_Parser, ParseExprCall_5) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprCall_6) {
+TEST(Integration_Parsing_Parser, ParseExprCall_6) {
 	testHelper(
 		Parser::parseExprCall,
 		"x(,)",
@@ -649,7 +649,7 @@ TEST(Test_Parsing_Parser, ParseExprCall_6) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprCall_7) {
+TEST(Integration_Parsing_Parser, ParseExprCall_7) {
 	testHelper(
 		Parser::parseExprCall,
 		"x(x,)",
@@ -658,7 +658,7 @@ TEST(Test_Parsing_Parser, ParseExprCall_7) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprCall_8) {
+TEST(Integration_Parsing_Parser, ParseExprCall_8) {
 	testHelper(
 		Parser::parseExprCall,
 		"x",
@@ -667,7 +667,7 @@ TEST(Test_Parsing_Parser, ParseExprCall_8) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprUnaryRight_0) {
+TEST(Integration_Parsing_Parser, ParseExprUnaryRight_0) {
 	testHelper(
 		Parser::parseExpr,
 		"++x",
@@ -678,7 +678,7 @@ TEST(Test_Parsing_Parser, ParseExprUnaryRight_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprUnaryLeft_0) {
+TEST(Integration_Parsing_Parser, ParseExprUnaryLeft_0) {
 	testHelper(
 		Parser::parseExpr,
 		"x++",
@@ -689,7 +689,7 @@ TEST(Test_Parsing_Parser, ParseExprUnaryLeft_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprBinary_0) {
+TEST(Integration_Parsing_Parser, ParseExprBinary_0) {
 	testHelper(
 		Parser::parseExpr,
 		"x=y",
@@ -701,7 +701,7 @@ TEST(Test_Parsing_Parser, ParseExprBinary_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprSymbol_2) {
+TEST(Integration_Parsing_Parser, ParseExprSymbol_2) {
 	testHelper(
 		Parser::parseExpr,
 		"x",
@@ -710,7 +710,7 @@ TEST(Test_Parsing_Parser, ParseExprSymbol_2) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprGroup_0) {
+TEST(Integration_Parsing_Parser, ParseExprGroup_0) {
 	testHelper(
 		Parser::parseExprGroup,
 		"(x)",
@@ -721,7 +721,7 @@ TEST(Test_Parsing_Parser, ParseExprGroup_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprGroup_1) {
+TEST(Integration_Parsing_Parser, ParseExprGroup_1) {
 	testHelper(
 		Parser::parseExprGroup,
 		"((x))",
@@ -734,7 +734,7 @@ TEST(Test_Parsing_Parser, ParseExprGroup_1) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprGroup_2) {
+TEST(Integration_Parsing_Parser, ParseExprGroup_2) {
 	testHelper(
 		Parser::parseExprGroup,
 		"((x)",
@@ -743,7 +743,7 @@ TEST(Test_Parsing_Parser, ParseExprGroup_2) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprGroup_3) {
+TEST(Integration_Parsing_Parser, ParseExprGroup_3) {
 	testHelper(
 		Parser::parseExprGroup,
 		"(x",
@@ -752,7 +752,7 @@ TEST(Test_Parsing_Parser, ParseExprGroup_3) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprGroup_4) {
+TEST(Integration_Parsing_Parser, ParseExprGroup_4) {
 	testHelper(
 		Parser::parseExprGroup,
 		"x)",
@@ -761,7 +761,7 @@ TEST(Test_Parsing_Parser, ParseExprGroup_4) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprGroup_5) {
+TEST(Integration_Parsing_Parser, ParseExprGroup_5) {
 	testHelper(
 		Parser::parseExprGroup,
 		"()",
@@ -770,7 +770,7 @@ TEST(Test_Parsing_Parser, ParseExprGroup_5) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseExprGroup_6) {
+TEST(Integration_Parsing_Parser, ParseExprGroup_6) {
 	testHelper(
 		Parser::parseExprGroup,
 		"x",
@@ -779,7 +779,7 @@ TEST(Test_Parsing_Parser, ParseExprGroup_6) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseStmtEmpty_0) {
+TEST(Integration_Parsing_Parser, ParseStmtEmpty_0) {
 	testHelper(
 		Parser::parseStmtEmpty,
 		";",
@@ -788,7 +788,7 @@ TEST(Test_Parsing_Parser, ParseStmtEmpty_0) {
 	);
 }
 
-TEST(Test_Parsing_Parser, ParseStmtEmpty_1) {
+TEST(Integration_Parsing_Parser, ParseStmtEmpty_1) {
 	testHelper(
 		Parser::parseStmtEmpty,
 		"x;",
