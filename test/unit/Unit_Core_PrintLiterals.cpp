@@ -61,1091 +61,1091 @@ TEST(Unit_Core_PrintLiterals, Bool) {
 	ASSERT_STREQ("false", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base2_NoPrefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt_Base2_NoPrefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 2, false, 0);
+	printLiteralUInt(ss, 0, 2, false, 0);
 	ASSERT_STREQ("0", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 2, false, 0);
+	printLiteralUInt(ss, 1, 2, false, 0);
 	ASSERT_STREQ("1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 2, 2, false, 0);
+	printLiteralUInt(ss, 2, 2, false, 0);
 	ASSERT_STREQ("10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 3, 2, false, 0);
+	printLiteralUInt(ss, 3, 2, false, 0);
 	ASSERT_STREQ("11", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 7, 2, false, 0);
+	printLiteralUInt(ss, 7, 2, false, 0);
 	ASSERT_STREQ("111", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 16, 2, false, 0);
+	printLiteralUInt(ss, 16, 2, false, 0);
 	ASSERT_STREQ("10000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 2, false, 0);
+	printLiteralUInt(ss, -1, 2, false, 0);
 	ASSERT_STREQ("1111111111111111111111111111111111111111111111111111111111111111", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base2_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt_Base2_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 2, false, 5);
+	printLiteralUInt(ss, 0, 2, false, 5);
 	ASSERT_STREQ("00000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 2, false, 5);
+	printLiteralUInt(ss, 1, 2, false, 5);
 	ASSERT_STREQ("00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 2, 2, false, 5);
+	printLiteralUInt(ss, 2, 2, false, 5);
 	ASSERT_STREQ("00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 3, 2, false, 5);
+	printLiteralUInt(ss, 3, 2, false, 5);
 	ASSERT_STREQ("00011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 7, 2, false, 5);
+	printLiteralUInt(ss, 7, 2, false, 5);
 	ASSERT_STREQ("00111", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 16, 2, false, 5);
+	printLiteralUInt(ss, 16, 2, false, 5);
 	ASSERT_STREQ("10000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 2, false, 5);
+	printLiteralUInt(ss, -1, 2, false, 5);
 	ASSERT_STREQ("1111111111111111111111111111111111111111111111111111111111111111", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base2_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt_Base2_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 2, true, 0);
+	printLiteralUInt(ss, 0, 2, true, 0);
 	ASSERT_STREQ("0b0", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 2, true, 0);
+	printLiteralUInt(ss, 1, 2, true, 0);
 	ASSERT_STREQ("0b1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 2, 2, true, 0);
+	printLiteralUInt(ss, 2, 2, true, 0);
 	ASSERT_STREQ("0b10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 3, 2, true, 0);
+	printLiteralUInt(ss, 3, 2, true, 0);
 	ASSERT_STREQ("0b11", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 7, 2, true, 0);
+	printLiteralUInt(ss, 7, 2, true, 0);
 	ASSERT_STREQ("0b111", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 16, 2, true, 0);
+	printLiteralUInt(ss, 16, 2, true, 0);
 	ASSERT_STREQ("0b10000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 2, true, 0);
+	printLiteralUInt(ss, -1, 2, true, 0);
 	ASSERT_STREQ("0b1111111111111111111111111111111111111111111111111111111111111111", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base2_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt_Base2_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 2, true, 5);
+	printLiteralUInt(ss, 0, 2, true, 5);
 	ASSERT_STREQ("0b00000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 2, true, 5);
+	printLiteralUInt(ss, 1, 2, true, 5);
 	ASSERT_STREQ("0b00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 2, 2, true, 5);
+	printLiteralUInt(ss, 2, 2, true, 5);
 	ASSERT_STREQ("0b00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 3, 2, true, 5);
+	printLiteralUInt(ss, 3, 2, true, 5);
 	ASSERT_STREQ("0b00011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 7, 2, true, 5);
+	printLiteralUInt(ss, 7, 2, true, 5);
 	ASSERT_STREQ("0b00111", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 16, 2, true, 5);
+	printLiteralUInt(ss, 16, 2, true, 5);
 	ASSERT_STREQ("0b10000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 2, true, 5);
+	printLiteralUInt(ss, -1, 2, true, 5);
 	ASSERT_STREQ("0b1111111111111111111111111111111111111111111111111111111111111111", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base8_NoPrefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt_Base8_NoPrefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 8, false, 0);
+	printLiteralUInt(ss, 0, 8, false, 0);
 	ASSERT_STREQ("0", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 8, false, 0);
+	printLiteralUInt(ss, 1, 8, false, 0);
 	ASSERT_STREQ("1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 7, 8, false, 0);
+	printLiteralUInt(ss, 7, 8, false, 0);
 	ASSERT_STREQ("7", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 8, 8, false, 0);
+	printLiteralUInt(ss, 8, 8, false, 0);
 	ASSERT_STREQ("10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 9, 8, false, 0);
+	printLiteralUInt(ss, 9, 8, false, 0);
 	ASSERT_STREQ("11", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 16, 8, false, 0);
+	printLiteralUInt(ss, 16, 8, false, 0);
 	ASSERT_STREQ("20", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 8, false, 0);
+	printLiteralUInt(ss, -1, 8, false, 0);
 	ASSERT_STREQ("1777777777777777777777", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base8_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt_Base8_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 8, false, 5);
+	printLiteralUInt(ss, 0, 8, false, 5);
 	ASSERT_STREQ("00000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 8, false, 5);
+	printLiteralUInt(ss, 1, 8, false, 5);
 	ASSERT_STREQ("00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 7, 8, false, 5);
+	printLiteralUInt(ss, 7, 8, false, 5);
 	ASSERT_STREQ("00007", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 8, 8, false, 5);
+	printLiteralUInt(ss, 8, 8, false, 5);
 	ASSERT_STREQ("00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 9, 8, false, 5);
+	printLiteralUInt(ss, 9, 8, false, 5);
 	ASSERT_STREQ("00011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 16, 8, false, 5);
+	printLiteralUInt(ss, 16, 8, false, 5);
 	ASSERT_STREQ("00020", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 8, false, 5);
+	printLiteralUInt(ss, -1, 8, false, 5);
 	ASSERT_STREQ("1777777777777777777777", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base8_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt_Base8_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 8, true, 0);
+	printLiteralUInt(ss, 0, 8, true, 0);
 	ASSERT_STREQ("00", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 8, true, 0);
+	printLiteralUInt(ss, 1, 8, true, 0);
 	ASSERT_STREQ("01", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 7, 8, true, 0);
+	printLiteralUInt(ss, 7, 8, true, 0);
 	ASSERT_STREQ("07", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 8, 8, true, 0);
+	printLiteralUInt(ss, 8, 8, true, 0);
 	ASSERT_STREQ("010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 9, 8, true, 0);
+	printLiteralUInt(ss, 9, 8, true, 0);
 	ASSERT_STREQ("011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 16, 8, true, 0);
+	printLiteralUInt(ss, 16, 8, true, 0);
 	ASSERT_STREQ("020", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 8, true, 0);
+	printLiteralUInt(ss, -1, 8, true, 0);
 	ASSERT_STREQ("01777777777777777777777", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base8_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt_Base8_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 8, true, 5);
+	printLiteralUInt(ss, 0, 8, true, 5);
 	ASSERT_STREQ("000000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 8, true, 5);
+	printLiteralUInt(ss, 1, 8, true, 5);
 	ASSERT_STREQ("000001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 7, 8, true, 5);
+	printLiteralUInt(ss, 7, 8, true, 5);
 	ASSERT_STREQ("000007", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 8, 8, true, 5);
+	printLiteralUInt(ss, 8, 8, true, 5);
 	ASSERT_STREQ("000010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 9, 8, true, 5);
+	printLiteralUInt(ss, 9, 8, true, 5);
 	ASSERT_STREQ("000011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 16, 8, true, 5);
+	printLiteralUInt(ss, 16, 8, true, 5);
 	ASSERT_STREQ("000020", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 8, true, 5);
+	printLiteralUInt(ss, -1, 8, true, 5);
 	ASSERT_STREQ("01777777777777777777777", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base10_NoPrefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt_Base10_NoPrefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 10, false, 0);
+	printLiteralUInt(ss, 0, 10, false, 0);
 	ASSERT_STREQ("0", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 10, false, 0);
+	printLiteralUInt(ss, 1, 10, false, 0);
 	ASSERT_STREQ("1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 9, 10, false, 0);
+	printLiteralUInt(ss, 9, 10, false, 0);
 	ASSERT_STREQ("9", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 10, 10, false, 0);
+	printLiteralUInt(ss, 10, 10, false, 0);
 	ASSERT_STREQ("10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 11, 10, false, 0);
+	printLiteralUInt(ss, 11, 10, false, 0);
 	ASSERT_STREQ("11", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 69420, 10, false, 0);
+	printLiteralUInt(ss, 69420, 10, false, 0);
 	ASSERT_STREQ("69420", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 10, false, 0);
+	printLiteralUInt(ss, -1, 10, false, 0);
 	ASSERT_STREQ("18446744073709551615", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base10_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt_Base10_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 10, false, 5);
+	printLiteralUInt(ss, 0, 10, false, 5);
 	ASSERT_STREQ("00000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 10, false, 5);
+	printLiteralUInt(ss, 1, 10, false, 5);
 	ASSERT_STREQ("00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 9, 10, false, 5);
+	printLiteralUInt(ss, 9, 10, false, 5);
 	ASSERT_STREQ("00009", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 10, 10, false, 5);
+	printLiteralUInt(ss, 10, 10, false, 5);
 	ASSERT_STREQ("00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 11, 10, false, 5);
+	printLiteralUInt(ss, 11, 10, false, 5);
 	ASSERT_STREQ("00011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 69420, 10, false, 5);
+	printLiteralUInt(ss, 69420, 10, false, 5);
 	ASSERT_STREQ("69420", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 10, false, 5);
+	printLiteralUInt(ss, -1, 10, false, 5);
 	ASSERT_STREQ("18446744073709551615", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base10_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt_Base10_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 10, true, 0);
+	printLiteralUInt(ss, 0, 10, true, 0);
 	ASSERT_STREQ("0", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 10, true, 0);
+	printLiteralUInt(ss, 1, 10, true, 0);
 	ASSERT_STREQ("1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 9, 10, true, 0);
+	printLiteralUInt(ss, 9, 10, true, 0);
 	ASSERT_STREQ("9", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 10, 10, true, 0);
+	printLiteralUInt(ss, 10, 10, true, 0);
 	ASSERT_STREQ("10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 11, 10, true, 0);
+	printLiteralUInt(ss, 11, 10, true, 0);
 	ASSERT_STREQ("11", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 69420, 10, true, 0);
+	printLiteralUInt(ss, 69420, 10, true, 0);
 	ASSERT_STREQ("69420", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 10, true, 0);
+	printLiteralUInt(ss, -1, 10, true, 0);
 	ASSERT_STREQ("18446744073709551615", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base10_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt_Base10_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 10, true, 5);
+	printLiteralUInt(ss, 0, 10, true, 5);
 	ASSERT_STREQ("00000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 10, true, 5);
+	printLiteralUInt(ss, 1, 10, true, 5);
 	ASSERT_STREQ("00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 9, 10, true, 5);
+	printLiteralUInt(ss, 9, 10, true, 5);
 	ASSERT_STREQ("00009", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 10, 10, true, 5);
+	printLiteralUInt(ss, 10, 10, true, 5);
 	ASSERT_STREQ("00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 11, 10, true, 5);
+	printLiteralUInt(ss, 11, 10, true, 5);
 	ASSERT_STREQ("00011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 69420, 10, true, 5);
+	printLiteralUInt(ss, 69420, 10, true, 5);
 	ASSERT_STREQ("69420", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 10, true, 5);
+	printLiteralUInt(ss, -1, 10, true, 5);
 	ASSERT_STREQ("18446744073709551615", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base16_NoPrefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt_Base16_NoPrefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 16, false, 0);
+	printLiteralUInt(ss, 0, 16, false, 0);
 	ASSERT_STREQ("0", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 16, false, 0);
+	printLiteralUInt(ss, 1, 16, false, 0);
 	ASSERT_STREQ("1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 15, 16, false, 0);
+	printLiteralUInt(ss, 15, 16, false, 0);
 	ASSERT_STREQ("f", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 16, 16, false, 0);
+	printLiteralUInt(ss, 16, 16, false, 0);
 	ASSERT_STREQ("10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 254, 16, false, 0);
+	printLiteralUInt(ss, 254, 16, false, 0);
 	ASSERT_STREQ("fe", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 255, 16, false, 0);
+	printLiteralUInt(ss, 255, 16, false, 0);
 	ASSERT_STREQ("ff", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 16, false, 0);
+	printLiteralUInt(ss, -1, 16, false, 0);
 	ASSERT_STREQ("ffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base16_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt_Base16_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 16, false, 5);
+	printLiteralUInt(ss, 0, 16, false, 5);
 	ASSERT_STREQ("00000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 16, false, 5);
+	printLiteralUInt(ss, 1, 16, false, 5);
 	ASSERT_STREQ("00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 15, 16, false, 5);
+	printLiteralUInt(ss, 15, 16, false, 5);
 	ASSERT_STREQ("0000f", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 16, 16, false, 5);
+	printLiteralUInt(ss, 16, 16, false, 5);
 	ASSERT_STREQ("00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 254, 16, false, 5);
+	printLiteralUInt(ss, 254, 16, false, 5);
 	ASSERT_STREQ("000fe", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 255, 16, false, 5);
+	printLiteralUInt(ss, 255, 16, false, 5);
 	ASSERT_STREQ("000ff", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 16, false, 5);
+	printLiteralUInt(ss, -1, 16, false, 5);
 	ASSERT_STREQ("ffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base16_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, UInt_Base16_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 16, true, 0);
+	printLiteralUInt(ss, 0, 16, true, 0);
 	ASSERT_STREQ("0x0", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 16, true, 0);
+	printLiteralUInt(ss, 1, 16, true, 0);
 	ASSERT_STREQ("0x1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 15, 16, true, 0);
+	printLiteralUInt(ss, 15, 16, true, 0);
 	ASSERT_STREQ("0xf", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 16, 16, true, 0);
+	printLiteralUInt(ss, 16, 16, true, 0);
 	ASSERT_STREQ("0x10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 254, 16, true, 0);
+	printLiteralUInt(ss, 254, 16, true, 0);
 	ASSERT_STREQ("0xfe", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 255, 16, true, 0);
+	printLiteralUInt(ss, 255, 16, true, 0);
 	ASSERT_STREQ("0xff", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 16, true, 0);
+	printLiteralUInt(ss, -1, 16, true, 0);
 	ASSERT_STREQ("0xffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, UInt64_Base16_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, UInt_Base16_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralUInt64(ss, 0, 16, true, 5);
+	printLiteralUInt(ss, 0, 16, true, 5);
 	ASSERT_STREQ("0x00000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 1, 16, true, 5);
+	printLiteralUInt(ss, 1, 16, true, 5);
 	ASSERT_STREQ("0x00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 15, 16, true, 5);
+	printLiteralUInt(ss, 15, 16, true, 5);
 	ASSERT_STREQ("0x0000f", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 16, 16, true, 5);
+	printLiteralUInt(ss, 16, 16, true, 5);
 	ASSERT_STREQ("0x00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 254, 16, true, 5);
+	printLiteralUInt(ss, 254, 16, true, 5);
 	ASSERT_STREQ("0x000fe", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, 255, 16, true, 5);
+	printLiteralUInt(ss, 255, 16, true, 5);
 	ASSERT_STREQ("0x000ff", ss.str().c_str());
 
 	ss.str("");
-	printLiteralUInt64(ss, -1, 16, true, 5);
+	printLiteralUInt(ss, -1, 16, true, 5);
 	ASSERT_STREQ("0xffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base2_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int_Base2_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 2, false, 5);
+	printLiteralInt(ss, 0, 2, false, 5);
 	ASSERT_STREQ("00000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 2, false, 5);
+	printLiteralInt(ss, 1, 2, false, 5);
 	ASSERT_STREQ("00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 2, 2, false, 5);
+	printLiteralInt(ss, 2, 2, false, 5);
 	ASSERT_STREQ("00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 3, 2, false, 5);
+	printLiteralInt(ss, 3, 2, false, 5);
 	ASSERT_STREQ("00011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 7, 2, false, 5);
+	printLiteralInt(ss, 7, 2, false, 5);
 	ASSERT_STREQ("00111", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 16, 2, false, 5);
+	printLiteralInt(ss, 16, 2, false, 5);
 	ASSERT_STREQ("10000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 2, false, 5);
+	printLiteralInt(ss, -1, 2, false, 5);
 	ASSERT_STREQ("1111111111111111111111111111111111111111111111111111111111111111", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base2_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, Int_Base2_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 2, true, 0);
+	printLiteralInt(ss, 0, 2, true, 0);
 	ASSERT_STREQ("0b0", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 2, true, 0);
+	printLiteralInt(ss, 1, 2, true, 0);
 	ASSERT_STREQ("0b1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 2, 2, true, 0);
+	printLiteralInt(ss, 2, 2, true, 0);
 	ASSERT_STREQ("0b10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 3, 2, true, 0);
+	printLiteralInt(ss, 3, 2, true, 0);
 	ASSERT_STREQ("0b11", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 7, 2, true, 0);
+	printLiteralInt(ss, 7, 2, true, 0);
 	ASSERT_STREQ("0b111", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 16, 2, true, 0);
+	printLiteralInt(ss, 16, 2, true, 0);
 	ASSERT_STREQ("0b10000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 2, true, 0);
+	printLiteralInt(ss, -1, 2, true, 0);
 	ASSERT_STREQ("0b1111111111111111111111111111111111111111111111111111111111111111", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base2_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int_Base2_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 2, true, 5);
+	printLiteralInt(ss, 0, 2, true, 5);
 	ASSERT_STREQ("0b00000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 2, true, 5);
+	printLiteralInt(ss, 1, 2, true, 5);
 	ASSERT_STREQ("0b00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 2, 2, true, 5);
+	printLiteralInt(ss, 2, 2, true, 5);
 	ASSERT_STREQ("0b00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 3, 2, true, 5);
+	printLiteralInt(ss, 3, 2, true, 5);
 	ASSERT_STREQ("0b00011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 7, 2, true, 5);
+	printLiteralInt(ss, 7, 2, true, 5);
 	ASSERT_STREQ("0b00111", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 16, 2, true, 5);
+	printLiteralInt(ss, 16, 2, true, 5);
 	ASSERT_STREQ("0b10000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 2, true, 5);
+	printLiteralInt(ss, -1, 2, true, 5);
 	ASSERT_STREQ("0b1111111111111111111111111111111111111111111111111111111111111111", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base8_NoPrefix_Width0) {
+TEST(Unit_Core_PrintLiterals, Int_Base8_NoPrefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 8, false, 0);
+	printLiteralInt(ss, 0, 8, false, 0);
 	ASSERT_STREQ("0", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 8, false, 0);
+	printLiteralInt(ss, 1, 8, false, 0);
 	ASSERT_STREQ("1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 7, 8, false, 0);
+	printLiteralInt(ss, 7, 8, false, 0);
 	ASSERT_STREQ("7", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 8, 8, false, 0);
+	printLiteralInt(ss, 8, 8, false, 0);
 	ASSERT_STREQ("10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 9, 8, false, 0);
+	printLiteralInt(ss, 9, 8, false, 0);
 	ASSERT_STREQ("11", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 16, 8, false, 0);
+	printLiteralInt(ss, 16, 8, false, 0);
 	ASSERT_STREQ("20", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 8, false, 0);
+	printLiteralInt(ss, -1, 8, false, 0);
 	ASSERT_STREQ("1777777777777777777777", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base8_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int_Base8_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 8, false, 5);
+	printLiteralInt(ss, 0, 8, false, 5);
 	ASSERT_STREQ("00000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 8, false, 5);
+	printLiteralInt(ss, 1, 8, false, 5);
 	ASSERT_STREQ("00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 7, 8, false, 5);
+	printLiteralInt(ss, 7, 8, false, 5);
 	ASSERT_STREQ("00007", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 8, 8, false, 5);
+	printLiteralInt(ss, 8, 8, false, 5);
 	ASSERT_STREQ("00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 9, 8, false, 5);
+	printLiteralInt(ss, 9, 8, false, 5);
 	ASSERT_STREQ("00011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 16, 8, false, 5);
+	printLiteralInt(ss, 16, 8, false, 5);
 	ASSERT_STREQ("00020", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 8, false, 5);
+	printLiteralInt(ss, -1, 8, false, 5);
 	ASSERT_STREQ("1777777777777777777777", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base8_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, Int_Base8_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 8, true, 0);
+	printLiteralInt(ss, 0, 8, true, 0);
 	ASSERT_STREQ("00", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 8, true, 0);
+	printLiteralInt(ss, 1, 8, true, 0);
 	ASSERT_STREQ("01", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 7, 8, true, 0);
+	printLiteralInt(ss, 7, 8, true, 0);
 	ASSERT_STREQ("07", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 8, 8, true, 0);
+	printLiteralInt(ss, 8, 8, true, 0);
 	ASSERT_STREQ("010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 9, 8, true, 0);
+	printLiteralInt(ss, 9, 8, true, 0);
 	ASSERT_STREQ("011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 16, 8, true, 0);
+	printLiteralInt(ss, 16, 8, true, 0);
 	ASSERT_STREQ("020", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 8, true, 0);
+	printLiteralInt(ss, -1, 8, true, 0);
 	ASSERT_STREQ("01777777777777777777777", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base8_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int_Base8_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 8, true, 5);
+	printLiteralInt(ss, 0, 8, true, 5);
 	ASSERT_STREQ("000000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 8, true, 5);
+	printLiteralInt(ss, 1, 8, true, 5);
 	ASSERT_STREQ("000001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 7, 8, true, 5);
+	printLiteralInt(ss, 7, 8, true, 5);
 	ASSERT_STREQ("000007", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 8, 8, true, 5);
+	printLiteralInt(ss, 8, 8, true, 5);
 	ASSERT_STREQ("000010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 9, 8, true, 5);
+	printLiteralInt(ss, 9, 8, true, 5);
 	ASSERT_STREQ("000011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 16, 8, true, 5);
+	printLiteralInt(ss, 16, 8, true, 5);
 	ASSERT_STREQ("000020", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 8, true, 5);
+	printLiteralInt(ss, -1, 8, true, 5);
 	ASSERT_STREQ("01777777777777777777777", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base10_NoPrefix_Width0) {
+TEST(Unit_Core_PrintLiterals, Int_Base10_NoPrefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 10, false, 0);
+	printLiteralInt(ss, 0, 10, false, 0);
 	ASSERT_STREQ("0", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 10, false, 0);
+	printLiteralInt(ss, 1, 10, false, 0);
 	ASSERT_STREQ("1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 9, 10, false, 0);
+	printLiteralInt(ss, 9, 10, false, 0);
 	ASSERT_STREQ("9", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 10, 10, false, 0);
+	printLiteralInt(ss, 10, 10, false, 0);
 	ASSERT_STREQ("10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 11, 10, false, 0);
+	printLiteralInt(ss, 11, 10, false, 0);
 	ASSERT_STREQ("11", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 69420, 10, false, 0);
+	printLiteralInt(ss, 69420, 10, false, 0);
 	ASSERT_STREQ("69420", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 10, false, 0);
+	printLiteralInt(ss, -1, 10, false, 0);
 	ASSERT_STREQ("-1", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base10_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int_Base10_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 10, false, 5);
+	printLiteralInt(ss, 0, 10, false, 5);
 	ASSERT_STREQ("00000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 10, false, 5);
+	printLiteralInt(ss, 1, 10, false, 5);
 	ASSERT_STREQ("00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 9, 10, false, 5);
+	printLiteralInt(ss, 9, 10, false, 5);
 	ASSERT_STREQ("00009", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 10, 10, false, 5);
+	printLiteralInt(ss, 10, 10, false, 5);
 	ASSERT_STREQ("00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 11, 10, false, 5);
+	printLiteralInt(ss, 11, 10, false, 5);
 	ASSERT_STREQ("00011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 69420, 10, false, 5);
+	printLiteralInt(ss, 69420, 10, false, 5);
 	ASSERT_STREQ("69420", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 10, false, 5);
+	printLiteralInt(ss, -1, 10, false, 5);
 	ASSERT_STREQ("-00001", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base10_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, Int_Base10_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 10, true, 0);
+	printLiteralInt(ss, 0, 10, true, 0);
 	ASSERT_STREQ("0", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 10, true, 0);
+	printLiteralInt(ss, 1, 10, true, 0);
 	ASSERT_STREQ("1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 9, 10, true, 0);
+	printLiteralInt(ss, 9, 10, true, 0);
 	ASSERT_STREQ("9", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 10, 10, true, 0);
+	printLiteralInt(ss, 10, 10, true, 0);
 	ASSERT_STREQ("10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 11, 10, true, 0);
+	printLiteralInt(ss, 11, 10, true, 0);
 	ASSERT_STREQ("11", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 69420, 10, true, 0);
+	printLiteralInt(ss, 69420, 10, true, 0);
 	ASSERT_STREQ("69420", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 10, true, 0);
+	printLiteralInt(ss, -1, 10, true, 0);
 	ASSERT_STREQ("-1", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base10_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int_Base10_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 10, true, 5);
+	printLiteralInt(ss, 0, 10, true, 5);
 	ASSERT_STREQ("00000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 10, true, 5);
+	printLiteralInt(ss, 1, 10, true, 5);
 	ASSERT_STREQ("00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 9, 10, true, 5);
+	printLiteralInt(ss, 9, 10, true, 5);
 	ASSERT_STREQ("00009", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 10, 10, true, 5);
+	printLiteralInt(ss, 10, 10, true, 5);
 	ASSERT_STREQ("00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 11, 10, true, 5);
+	printLiteralInt(ss, 11, 10, true, 5);
 	ASSERT_STREQ("00011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 69420, 10, true, 5);
+	printLiteralInt(ss, 69420, 10, true, 5);
 	ASSERT_STREQ("69420", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 10, true, 5);
+	printLiteralInt(ss, -1, 10, true, 5);
 	ASSERT_STREQ("-00001", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base10_NoPrefix_Width0_Negative) {
+TEST(Unit_Core_PrintLiterals, Int_Base10_NoPrefix_Width0_Negative) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 10, false, 0);
+	printLiteralInt(ss, -1, 10, false, 0);
 	ASSERT_STREQ("-1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -9, 10, false, 0);
+	printLiteralInt(ss, -9, 10, false, 0);
 	ASSERT_STREQ("-9", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -10, 10, false, 0);
+	printLiteralInt(ss, -10, 10, false, 0);
 	ASSERT_STREQ("-10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -11, 10, false, 0);
+	printLiteralInt(ss, -11, 10, false, 0);
 	ASSERT_STREQ("-11", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -69420, 10, false, 0);
+	printLiteralInt(ss, -69420, 10, false, 0);
 	ASSERT_STREQ("-69420", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base10_NoPrefix_Width5_Negative) {
+TEST(Unit_Core_PrintLiterals, Int_Base10_NoPrefix_Width5_Negative) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 10, false, 5);
+	printLiteralInt(ss, -1, 10, false, 5);
 	ASSERT_STREQ("-00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -9, 10, false, 5);
+	printLiteralInt(ss, -9, 10, false, 5);
 	ASSERT_STREQ("-00009", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -10, 10, false, 5);
+	printLiteralInt(ss, -10, 10, false, 5);
 	ASSERT_STREQ("-00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -11, 10, false, 5);
+	printLiteralInt(ss, -11, 10, false, 5);
 	ASSERT_STREQ("-00011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -69420, 10, false, 5);
+	printLiteralInt(ss, -69420, 10, false, 5);
 	ASSERT_STREQ("-69420", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base10_Prefix_Width0_Negative) {
+TEST(Unit_Core_PrintLiterals, Int_Base10_Prefix_Width0_Negative) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 10, true, 0);
+	printLiteralInt(ss, -1, 10, true, 0);
 	ASSERT_STREQ("-1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -9, 10, true, 0);
+	printLiteralInt(ss, -9, 10, true, 0);
 	ASSERT_STREQ("-9", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -10, 10, true, 0);
+	printLiteralInt(ss, -10, 10, true, 0);
 	ASSERT_STREQ("-10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -11, 10, true, 0);
+	printLiteralInt(ss, -11, 10, true, 0);
 	ASSERT_STREQ("-11", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -69420, 10, true, 0);
+	printLiteralInt(ss, -69420, 10, true, 0);
 	ASSERT_STREQ("-69420", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base10_Prefix_Width5_Negative) {
+TEST(Unit_Core_PrintLiterals, Int_Base10_Prefix_Width5_Negative) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 10, true, 5);
+	printLiteralInt(ss, -1, 10, true, 5);
 	ASSERT_STREQ("-00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -9, 10, true, 5);
+	printLiteralInt(ss, -9, 10, true, 5);
 	ASSERT_STREQ("-00009", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -10, 10, true, 5);
+	printLiteralInt(ss, -10, 10, true, 5);
 	ASSERT_STREQ("-00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -11, 10, true, 5);
+	printLiteralInt(ss, -11, 10, true, 5);
 	ASSERT_STREQ("-00011", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -69420, 10, true, 5);
+	printLiteralInt(ss, -69420, 10, true, 5);
 	ASSERT_STREQ("-69420", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base16_NoPrefix_Width0) {
+TEST(Unit_Core_PrintLiterals, Int_Base16_NoPrefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 16, false, 0);
+	printLiteralInt(ss, 0, 16, false, 0);
 	ASSERT_STREQ("0", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 16, false, 0);
+	printLiteralInt(ss, 1, 16, false, 0);
 	ASSERT_STREQ("1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 15, 16, false, 0);
+	printLiteralInt(ss, 15, 16, false, 0);
 	ASSERT_STREQ("f", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 16, 16, false, 0);
+	printLiteralInt(ss, 16, 16, false, 0);
 	ASSERT_STREQ("10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 254, 16, false, 0);
+	printLiteralInt(ss, 254, 16, false, 0);
 	ASSERT_STREQ("fe", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 255, 16, false, 0);
+	printLiteralInt(ss, 255, 16, false, 0);
 	ASSERT_STREQ("ff", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 16, false, 0);
+	printLiteralInt(ss, -1, 16, false, 0);
 	ASSERT_STREQ("ffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base16_NoPrefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int_Base16_NoPrefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 16, false, 5);
+	printLiteralInt(ss, 0, 16, false, 5);
 	ASSERT_STREQ("00000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 16, false, 5);
+	printLiteralInt(ss, 1, 16, false, 5);
 	ASSERT_STREQ("00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 15, 16, false, 5);
+	printLiteralInt(ss, 15, 16, false, 5);
 	ASSERT_STREQ("0000f", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 16, 16, false, 5);
+	printLiteralInt(ss, 16, 16, false, 5);
 	ASSERT_STREQ("00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 254, 16, false, 5);
+	printLiteralInt(ss, 254, 16, false, 5);
 	ASSERT_STREQ("000fe", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 255, 16, false, 5);
+	printLiteralInt(ss, 255, 16, false, 5);
 	ASSERT_STREQ("000ff", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 16, false, 5);
+	printLiteralInt(ss, -1, 16, false, 5);
 	ASSERT_STREQ("ffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base16_Prefix_Width0) {
+TEST(Unit_Core_PrintLiterals, Int_Base16_Prefix_Width0) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 16, true, 0);
+	printLiteralInt(ss, 0, 16, true, 0);
 	ASSERT_STREQ("0x0", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 16, true, 0);
+	printLiteralInt(ss, 1, 16, true, 0);
 	ASSERT_STREQ("0x1", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 15, 16, true, 0);
+	printLiteralInt(ss, 15, 16, true, 0);
 	ASSERT_STREQ("0xf", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 16, 16, true, 0);
+	printLiteralInt(ss, 16, 16, true, 0);
 	ASSERT_STREQ("0x10", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 254, 16, true, 0);
+	printLiteralInt(ss, 254, 16, true, 0);
 	ASSERT_STREQ("0xfe", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 255, 16, true, 0);
+	printLiteralInt(ss, 255, 16, true, 0);
 	ASSERT_STREQ("0xff", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 16, true, 0);
+	printLiteralInt(ss, -1, 16, true, 0);
 	ASSERT_STREQ("0xffffffffffffffff", ss.str().c_str());
 }
 
-TEST(Unit_Core_PrintLiterals, Int64_Base16_Prefix_Width5) {
+TEST(Unit_Core_PrintLiterals, Int_Base16_Prefix_Width5) {
 	std::stringstream ss;
 
 	ss.str("");
-	printLiteralInt64(ss, 0, 16, true, 5);
+	printLiteralInt(ss, 0, 16, true, 5);
 	ASSERT_STREQ("0x00000", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 1, 16, true, 5);
+	printLiteralInt(ss, 1, 16, true, 5);
 	ASSERT_STREQ("0x00001", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 15, 16, true, 5);
+	printLiteralInt(ss, 15, 16, true, 5);
 	ASSERT_STREQ("0x0000f", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 16, 16, true, 5);
+	printLiteralInt(ss, 16, 16, true, 5);
 	ASSERT_STREQ("0x00010", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 254, 16, true, 5);
+	printLiteralInt(ss, 254, 16, true, 5);
 	ASSERT_STREQ("0x000fe", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, 255, 16, true, 5);
+	printLiteralInt(ss, 255, 16, true, 5);
 	ASSERT_STREQ("0x000ff", ss.str().c_str());
 
 	ss.str("");
-	printLiteralInt64(ss, -1, 16, true, 5);
+	printLiteralInt(ss, -1, 16, true, 5);
 	ASSERT_STREQ("0xffffffffffffffff", ss.str().c_str());
 }
 

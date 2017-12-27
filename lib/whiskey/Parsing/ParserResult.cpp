@@ -3,20 +3,20 @@
 #include <whiskey/Parsing/ParserResult.hpp>
 
 namespace whiskey {
-ParserResult::ParserResult() : good(false) {}
+ParserResult::ParserResult() : node(nullptr), good(false) {}
 
-ParserResult::ParserResult(Container<AST> ast) : ast(ast), good(true) {}
+ParserResult::ParserResult(Node *node) : node(node), good(true) {}
 
-Ref<AST> ParserResult::getAST() {
-	return ast;
+Node *ParserResult::getNode() {
+	return node;
 }
 
-CRef<AST> ParserResult::getAST() const {
-	return ast;
+const Node *ParserResult::getNode() const {
+	return node;
 }
 
-void ParserResult::setAST(Container<AST> value) {
-	ast = value;
+void ParserResult::setNode(Node *value) {
+	node = value;
 }
 
 bool ParserResult::isGood() const {

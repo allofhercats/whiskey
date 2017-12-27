@@ -6,16 +6,16 @@
 namespace whiskey {
 class ParserResult {
 private:
-	Container<AST> ast;
+	Node *node;
 	bool good;
 
 public:
 	ParserResult();
-	ParserResult(Container<AST> ast);
+	ParserResult(Node *node);
 
-	Ref<AST> getAST();
-	CRef<AST> getAST() const;
-	void setAST(Container<AST> value);
+	Node *getNode();
+	const Node *getNode() const;
+	void setNode(Node *value);
 
 	bool isGood() const;
 	void setGood(bool value);

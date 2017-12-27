@@ -11,8 +11,8 @@ TEST(Unit_AST2_Node, StmtFor_0) {
 	ASSERT_EQ(n0->getKind(), Node::Kind::StmtEmpty);
 	ASSERT_EQ(n1->getKind(), Node::Kind::StmtEmpty);
 
-	ASSERT_EQ(n0->getNFields(), 0);
-	ASSERT_EQ(n1->getNFields(), 0);
+	ASSERT_EQ(Node::getKindInfo(n0->getKind()).getNFields(), 0);
+	ASSERT_EQ(Node::getKindInfo(n1->getKind()).getNFields(), 0);
 
 	ASSERT_EQ(n0->getNext(), nullptr);
 	ASSERT_EQ(n1->getNext(), nullptr);

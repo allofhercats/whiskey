@@ -5,6 +5,7 @@
 
 namespace whiskey {
 typedef int64_t Int;
+typedef uint64_t UInt;
 typedef long double Real;
 typedef char Char8;
 typedef char16_t Char16;

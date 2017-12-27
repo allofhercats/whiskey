@@ -59,14 +59,14 @@ TEST(Feature_Unicode, PrintLiteralString32) {
 TEST(Feature_Unicode, AppendChar32ToString8) {
 	std::string s;
 
-	appendChar32ToString(s, U'a');
+	appendChar32ToString8(s, U'a');
 	ASSERT_STREQ(s.c_str(), "a");
 
 	s = "";
-	appendChar32ToString(s, U'\xff');
+	appendChar32ToString8(s, U'\xff');
 	ASSERT_STREQ(s.c_str(), "\xff");
 
 	s = "";
-	appendChar32ToString(s, u'\u7702');
+	appendChar32ToString8(s, u'\u7702');
 	ASSERT_STREQ(s.c_str(), "\xc9\xb7");
 }

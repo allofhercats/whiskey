@@ -69,6 +69,8 @@ public:
 	void setNode(Node *value);
 
 	bool compare(const Field *other) const;
+
+	void printLiteral(std::ostream &os) const;
 };
 }
 

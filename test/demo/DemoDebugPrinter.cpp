@@ -7,310 +7,305 @@ using namespace whiskey;
 int main() {
 	DebugPrinter dp;
 
-	dp.print(std::cout, new TypeAtomic(AST::ID::TypeAtomicBool));
+	dp.print(std::cout, Node::createTypeAtomicBool());
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new TypeAtomic(AST::ID::TypeAtomicInt8));
+	dp.print(std::cout, Node::createTypeAtomicInt8());
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new TypeAtomic(AST::ID::TypeAtomicInt16));
+	dp.print(std::cout, Node::createTypeAtomicInt16());
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new TypeAtomic(AST::ID::TypeAtomicInt32));
+	dp.print(std::cout, Node::createTypeAtomicInt32());
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new TypeAtomic(AST::ID::TypeAtomicInt64));
+	dp.print(std::cout, Node::createTypeAtomicInt64());
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new TypeAtomic(AST::ID::TypeAtomicUInt8));
+	dp.print(std::cout, Node::createTypeAtomicUInt8());
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new TypeAtomic(AST::ID::TypeAtomicUInt16));
+	dp.print(std::cout, Node::createTypeAtomicUInt16());
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new TypeAtomic(AST::ID::TypeAtomicUInt32));
+	dp.print(std::cout, Node::createTypeAtomicUInt32());
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new TypeAtomic(AST::ID::TypeAtomicUInt64));
+	dp.print(std::cout, Node::createTypeAtomicUInt64());
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new TypeAtomic(AST::ID::TypeAtomicFloat32));
+	dp.print(std::cout, Node::createTypeAtomicFloat32());
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new TypeAtomic(AST::ID::TypeAtomicFloat64));
+	dp.print(std::cout, Node::createTypeAtomicFloat64());
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new TypeAtomic(AST::ID::TypeAtomicReal));
+	dp.print(std::cout, Node::createTypeAtomicReal());
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new TypeSymbol("x", {
-		new TypeAtomic(AST::ID::TypeAtomicInt32),
-		new ExprSymbol("x")
+	dp.print(std::cout, Node::createTypeSymbol(Field::createString8("x"), {
+		Node::createTypeAtomicInt32(),
+		Node::createExprSymbol(Field::createString8("x"))
 	}));
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new TypeUnary(AST::ID::TypeAccessUnary,
-		new TypeSymbol("x")
+	dp.print(std::cout, Node::createTypeAccessUnary(
+		Node::createTypeSymbol(Field::createString8("x"))
 	));
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new TypeFunction(
-		new TypeAtomic(AST::ID::TypeAtomicInt32),
+	dp.print(std::cout, Node::createTypeFunction(
+		Node::createTypeAtomicInt32(),
 		{
-			new TypeAtomic(AST::ID::TypeAtomicInt32),
-			new TypeAtomic(AST::ID::TypeAtomicInt32)
+			Node::createTypeAtomicInt32(),
+			Node::createTypeAtomicInt32()
 		}
 	));
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new ExprLiteralInt(
-		new TypeAtomic(AST::ID::TypeAtomicInt32),
+	dp.print(std::cout, Node::createExprLiteralInt(
+		Node::createTypeAtomicInt32(),
 		5
 	));
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new ExprLiteralFloat(
-		new TypeAtomic(AST::ID::TypeAtomicFloat64),
+	dp.print(std::cout, Node::createExprLiteralReal(
+		Node::createTypeAtomicFloat64(),
 		3.14
 	));
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new ExprSymbol("x", {
-		new TypeAtomic(AST::ID::TypeAtomicInt32),
-		new ExprSymbol("x")
+	dp.print(std::cout, Node::createExprSymbol(Field::createString8("x"), {
+		Node::createTypeAtomicInt32(),
+		Node::createExprSymbol(Field::createString8("x"))
 	}));
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new ExprCall(
-		new ExprSymbol("f"),
+	dp.print(std::cout, Node::createExprCall(
+		Node::createExprSymbol(Field::createString8("f")),
 		{
-			new ExprSymbol("x"),
-			new ExprSymbol("y")
+			Node::createExprSymbol(Field::createString8("x")),
+			Node::createExprSymbol(Field::createString8("y"))
 		}
 	));
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new ExprUnary(AST::ID::ExprBoolNot,
-		new ExprSymbol("x")
+	dp.print(std::cout, Node::createExprBoolNot(
+		Node::createExprSymbol(Field::createString8("x"))
 	));
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new ExprBinary(AST::ID::ExprBoolAnd,
-		new ExprSymbol("x"),
-		new ExprSymbol("y")
-	));
-	std::cout << "\n\n";
-
-	dp.print(std::cout, new ExprUnary(AST::ID::ExprGroup,
-		new ExprSymbol("x")
-	));
-	std::cout << "\n\n";
-
-	dp.print(std::cout, new StmtEmpty());
-	std::cout << "\n\n";
-
-	dp.print(std::cout, new StmtExpr(AST::ID::StmtExpr, new ExprSymbol("x")));
-	std::cout << "\n\n";
-
-	dp.print(std::cout, new StmtExpr(AST::ID::StmtReturn, new ExprSymbol("x")));
-	std::cout << "\n\n";
-
-	dp.print(std::cout, new StmtIf(
-		new ExprSymbol("x"),
-		new StmtEmpty()
-	));
-	std::cout << "\n\n";
-
-	dp.print(std::cout, new StmtIf(
-		new ExprSymbol("x"),
-		new StmtEmpty(),
-		new StmtEmpty()
-	));
-	std::cout << "\n\n";
-
-	dp.print(std::cout, new StmtWhile(
-		new ExprSymbol("x")
-	));
-	std::cout << "\n\n";
-
-	dp.print(std::cout, new StmtWhile(
-		new ExprSymbol("x"),
-		new StmtEmpty()
-	));
-	std::cout << "\n\n";
-
-	dp.print(std::cout, new StmtFor());
-	std::cout << "\n\n";
-
-	dp.print(std::cout, new StmtFor({
-		new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicInt32), "x"),
-		new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicInt32), "y")
-	},
-	new ExprSymbol("x"),
-	{
-		new ExprSymbol("x"),
-		new ExprSymbol("y")
-	},
-	new StmtEmpty()));
-	std::cout << "\n\n";
-
-	dp.print(std::cout, new StmtForEach(
-		new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicInt32), "x"),
-		new ExprSymbol("y")
-	));
-	std::cout << "\n\n";
-
-	dp.print(std::cout, new StmtForEach(
-		new DeclVariable(new TypeAtomic(AST::ID::TypeAtomicInt32), "x"),
-		new ExprSymbol("y"),
-		new StmtEmpty()
-	));
-	std::cout << "\n\n";
-
-	dp.print(std::cout, new StmtBlock());
-	std::cout << "\n\n";
-
-	dp.print(std::cout, new StmtBlock({
-		new StmtEmpty(),
-		new StmtEmpty()
+	dp.print(std::cout, Node::createExprBoolAnd({
+		Node::createExprSymbol(Field::createString8("x")),
+		Node::createExprSymbol(Field::createString8("y"))
 	}));
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new DeclVariable(
-		new TypeAtomic(AST::ID::TypeAtomicInt32),
-		"x"
+	dp.print(std::cout, Node::createExprGroup(
+		Node::createExprSymbol(Field::createString8("x"))
 	));
 	std::cout << "\n\n";
 
-	DeclVariable *dv0 = new DeclVariable(
-		new TypeAtomic(AST::ID::TypeAtomicInt32),
-		"x",
-		new ExprSymbol("y")
-	);
-	dv0->getTemplateDeclArgs().push_back(
-		new DeclVariable(
-			new TypeAtomic(AST::ID::TypeAtomicInt32),
-			"z"
-		)
-	);
-	dv0->getTemplateDeclArgs().push_back(
-		new DeclVariable(
-			new TypeAtomic(AST::ID::TypeAtomicInt32),
-			"w"
-		)
+	dp.print(std::cout, Node::createStmtEmpty());
+	std::cout << "\n\n";
+
+	dp.print(std::cout, Node::createStmtExpr(Node::createExprSymbol(Field::createString8("x"))));
+	std::cout << "\n\n";
+
+	dp.print(std::cout, Node::createStmtReturn(Node::createExprSymbol(Field::createString8("x"))));
+	std::cout << "\n\n";
+
+	dp.print(std::cout, Node::createStmtIf(
+		Node::createExprSymbol(Field::createString8("x")),
+		Node::createStmtEmpty()
+	));
+	std::cout << "\n\n";
+
+	dp.print(std::cout, Node::createStmtIf(
+		Node::createExprSymbol(Field::createString8("x")),
+		Node::createStmtEmpty(),
+		Node::createStmtEmpty()
+	));
+	std::cout << "\n\n";
+
+	dp.print(std::cout, Node::createStmtWhile(
+		Node::createExprSymbol(Field::createString8("x"))
+	));
+	std::cout << "\n\n";
+
+	dp.print(std::cout, Node::createStmtWhile(
+		Node::createExprSymbol(Field::createString8("x")),
+		Node::createStmtEmpty()
+	));
+	std::cout << "\n\n";
+
+	dp.print(std::cout, Node::createStmtFor({}, nullptr, {}));
+	std::cout << "\n\n";
+
+	dp.print(std::cout, Node::createStmtFor({
+		Node::createDeclVariable(Node::createTypeAtomicInt32(), Field::createString8("x")),
+		Node::createDeclVariable(Node::createTypeAtomicInt32(), Field::createString8("y"))
+	},
+	Node::createExprSymbol(Field::createString8("x")),
+	{
+		Node::createExprSymbol(Field::createString8("x")),
+		Node::createExprSymbol(Field::createString8("y"))
+	},
+	Node::createStmtEmpty()));
+	std::cout << "\n\n";
+
+	dp.print(std::cout, Node::createStmtForEach(
+		{Node::createDeclVariable(Node::createTypeAtomicInt32(), Field::createString8("x"))},
+		{Node::createExprSymbol(Field::createString8("y"))}
+	));
+	std::cout << "\n\n";
+
+	dp.print(std::cout, Node::createStmtForEach(
+		{Node::createDeclVariable(Node::createTypeAtomicInt32(), Field::createString8("x"))},
+		{Node::createExprSymbol(Field::createString8("y"))},
+		Node::createStmtEmpty()
+	));
+	std::cout << "\n\n";
+
+	dp.print(std::cout, Node::createStmtBlock());
+	std::cout << "\n\n";
+
+	dp.print(std::cout, Node::createStmtBlock({
+		Node::createStmtEmpty(),
+		Node::createStmtEmpty()
+	}));
+	std::cout << "\n\n";
+
+	dp.print(std::cout, Node::createDeclVariable(
+		Node::createTypeAtomicInt32(),
+		Field::createString8("x")
+	));
+	std::cout << "\n\n";
+
+	Node *dv0 = Node::createDeclVariable(
+		Node::createTypeAtomicInt32(),
+		Field::createString8("x"),
+		{
+			Node::createDeclVariable(
+				Node::createTypeAtomicInt32(),
+				Field::createString8("z")
+			),
+			Node::createDeclVariable(
+					Node::createTypeAtomicInt32(),
+					Field::createString8("w")
+			)
+		},
+		Node::createExprSymbol(Field::createString8("y"))
 	);
 	dp.print(std::cout, dv0);
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new DeclFunction(
-		new TypeAtomic(AST::ID::TypeAtomicInt32),
-		"f"
+	dp.print(std::cout, Node::createDeclFunction(
+		Node::createTypeAtomicInt32(),
+		Field::createString8("f"),
+		{}
 	));
 	std::cout << "\n\n";
 
-	DeclFunction *df0 = new DeclFunction(
-		new TypeAtomic(AST::ID::TypeAtomicInt32),
-		"f",
+	Node *df0 = Node::createDeclFunction(
+		Node::createTypeAtomicInt32(),
+		Field::createString8("f"),
 		{
-			new DeclVariable(
-				new TypeAtomic(AST::ID::TypeAtomicInt32),
-				"x"
+			Node::createDeclVariable(
+				Node::createTypeAtomicInt32(),
+				Field::createString8("z")
 			),
-			new DeclVariable(
-				new TypeAtomic(AST::ID::TypeAtomicInt32),
-				"y"
+			Node::createDeclVariable(
+				Node::createTypeAtomicInt32(),
+				Field::createString8("w")
 			)
 		},
-		new StmtEmpty()
-	);
-	df0->getTemplateDeclArgs().push_back(
-		new DeclVariable(
-			new TypeAtomic(AST::ID::TypeAtomicInt32),
-			"z"
-		)
-	);
-	df0->getTemplateDeclArgs().push_back(
-		new DeclVariable(
-			new TypeAtomic(AST::ID::TypeAtomicInt32),
-			"w"
-		)
+		{
+			Node::createDeclVariable(
+				Node::createTypeAtomicInt32(),
+				Field::createString8("x")
+			),
+			Node::createDeclVariable(
+				Node::createTypeAtomicInt32(),
+				Field::createString8("y")
+			)
+		},
+		Node::createStmtEmpty()
 	);
 	dp.print(std::cout, df0);
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new DeclClass(
-		"a"
+	dp.print(std::cout, Node::createDeclClass(
+		Field::createString8("a")
 	));
 	std::cout << "\n\n";
 
-	DeclClass *dc0 = new DeclClass(
-		"a",
+	Node *dc0 = Node::createDeclClass(
+		Field::createString8("a"),
 		{
-			new TypeAtomic(AST::ID::TypeAtomicInt32),
-			new TypeAtomic(AST::ID::TypeAtomicInt64)
+			Node::createDeclVariable(
+				Node::createTypeAtomicInt32(),
+				Field::createString8("z")
+			),
+			Node::createDeclVariable(
+				Node::createTypeAtomicInt32(),
+				Field::createString8("w")
+			)
 		},
 		{
-			new DeclVariable(
-				new TypeAtomic(AST::ID::TypeAtomicInt32),
-				"x"
+			Node::createTypeAtomicInt32(),
+			Node::createTypeAtomicInt64()
+		},
+		{
+			Node::createDeclVariable(
+				Node::createTypeAtomicInt32(),
+				Field::createString8("x")
 			),
-			new DeclVariable(
-				new TypeAtomic(AST::ID::TypeAtomicInt32),
-				"y"
+			Node::createDeclVariable(
+				Node::createTypeAtomicInt32(),
+				Field::createString8("y")
 			)
 		}
-	);
-	dc0->getTemplateDeclArgs().push_back(
-		new DeclVariable(
-			new TypeAtomic(AST::ID::TypeAtomicInt32),
-			"z"
-		)
-	);
-	dc0->getTemplateDeclArgs().push_back(
-		new DeclVariable(
-			new TypeAtomic(AST::ID::TypeAtomicInt32),
-			"w"
-		)
 	);
 	dp.print(std::cout, dc0);
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new DeclNamespace(
-		"a"
+	dp.print(std::cout, Node::createDeclNamespace(
+		Field::createString8("a")
 	));
 	std::cout << "\n\n";
 
-	DeclNamespace *dn0 = new DeclNamespace(
-		"a",
+	Node *dn0 = Node::createDeclNamespace(
+		Field::createString8("a"),
 		{
-			new DeclVariable(
-				new TypeAtomic(AST::ID::TypeAtomicInt32),
-				"x"
+			Node::createDeclVariable(
+				Node::createTypeAtomicInt32(),
+				Field::createString8("x")
 			),
-			new DeclVariable(
-				new TypeAtomic(AST::ID::TypeAtomicInt32),
-				"y"
+			Node::createDeclVariable(
+				Node::createTypeAtomicInt32(),
+				Field::createString8("y")
 			)
 		}
-	);
-	dn0->getTemplateDeclArgs().push_back(
-		new DeclVariable(
-			new TypeAtomic(AST::ID::TypeAtomicInt32),
-			"z"
-		)
-	);
-	dn0->getTemplateDeclArgs().push_back(
-		new DeclVariable(
-			new TypeAtomic(AST::ID::TypeAtomicInt32),
-			"w"
-		)
 	);
 	dp.print(std::cout, dn0);
 	std::cout << "\n\n";
 
-	dp.print(std::cout, new Import(
-		"M"
+	dp.print(std::cout, Node::createImport(
+		Field::createString8("M")
 	));
+	std::cout << "\n\n";
+
+	dp.print(std::cout, Node::createUnit({
+		Node::createDeclVariable(
+			Node::createTypeAtomicInt32(),
+			Field::createString8("x")
+		),
+		Node::createDeclVariable(
+			Node::createTypeAtomicInt32(),
+			Field::createString8("y")
+		)
+	}));
 	std::cout << "\n\n";
 
 	return 0;

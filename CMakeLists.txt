@@ -27,8 +27,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -std=c++11 -Wall -fno-rtti")
 
 # Fix for Ninja/Clang colored errors
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics -ferror-limit=5")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics -ferror-limit=5")
 endif()
 
 # File lists
@@ -79,9 +79,9 @@ add_executable(test_fuzz_lexer_fuzzer_simple test/fuzz/FuzzLexerFuzzerSimple.cpp
 set_target_properties(test_fuzz_lexer_fuzzer_simple PROPERTIES OUTPUT_NAME whiskey-test-fuzz-lexer-fuzzer-simple)
 target_link_libraries(test_fuzz_lexer_fuzzer_simple ${whiskey_libs})
 
-add_executable(test_fuzz_literals_reflexive_uint64 test/fuzz/FuzzLiteralsReflexiveUInt64.cpp)
-set_target_properties(test_fuzz_literals_reflexive_uint64 PROPERTIES OUTPUT_NAME whiskey-test-fuzz-literals-reflexive-uint64)
-target_link_libraries(test_fuzz_literals_reflexive_uint64 ${whiskey_libs})
+add_executable(test_fuzz_literals_reflexive_uint test/fuzz/FuzzLiteralsReflexiveUInt.cpp)
+set_target_properties(test_fuzz_literals_reflexive_uint PROPERTIES OUTPUT_NAME whiskey-test-fuzz-literals-reflexive-uint)
+target_link_libraries(test_fuzz_literals_reflexive_uint ${whiskey_libs})
 
 add_executable(test_fuzz_literals_reflexive_real test/fuzz/FuzzLiteralsReflexiveReal.cpp)
 set_target_properties(test_fuzz_literals_reflexive_real PROPERTIES OUTPUT_NAME whiskey-test-fuzz-literals-reflexive-real)
@@ -101,3 +101,12 @@ target_link_libraries(test_fuzz_literals_reflexive_string ${whiskey_libs})
 add_executable(demo_debug_printer test/demo/DemoDebugPrinter.cpp)
 set_target_properties(demo_debug_printer PROPERTIES OUTPUT_NAME whiskey-demo-debug-printer)
 target_link_libraries(demo_debug_printer ${whiskey_libs})
+
+# CMake Tests
+#-----------------------------------------------------------------------
+
+enable_testing()
+
+add_test(NAME ctest_unit COMMAND ./whiskey-test-unit)
+add_test(NAME ctest_integration COMMAND ./whiskey-test-integration)
+add_test(NAME ctest_feature COMMAND ./whiskey-test-feature)

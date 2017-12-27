@@ -24,12 +24,12 @@ void Printer::setTabWidth(unsigned int value) {
 	tabWidth = value;
 }
 
-void Printer::print(std::ostream &os, CRef<AST> ast, unsigned int indent, Precedence outer) {
-	bool np = needsParenthesis(getPrecedence(ast->getID()), outer);
+void Printer::print(std::ostream &os, const Node *node, unsigned int indent, Precedence outer) {
+	bool np = needsParenthesis(getPrecedence(node->getKind()), outer);
 	if (np) {
 		os << "(";
 	}
-	onPrint(os, ast, indent);
+	onPrint(os, node, indent);
 	if (np) {
 		os << ")";
 	}

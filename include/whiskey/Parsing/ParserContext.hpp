@@ -27,16 +27,10 @@ public:
 
 	MessageBuffer &getMsgs() const;
 
-	void emitMessageUnexpectedToken(const std::string &expected) const;
+	void errorUnexpectedToken(const std::string &expected) const;
 
-	Token tryToken(Token::ID id);
-	Token expectToken(Token::ID id, const std::string &expected);
-
-	ParserResult tryParse(Rule rule);
-	ParserResult expectParse(Rule rule, const std::string &expected);
-
-	ParserResult tryParseAny(std::initializer_list<Rule> rules);
-	ParserResult expectParseAny(std::initializer_list<Rule> rules, const std::string &expected);
+	ParserResult parse(Rule rule);
+	ParserResult parseAny(std::initializer_list<Rule> rules);
 };
 }
 

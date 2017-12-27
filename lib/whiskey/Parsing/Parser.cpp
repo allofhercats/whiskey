@@ -3,86 +3,260 @@
 #include <whiskey/Parsing/Parser.hpp>
 
 namespace whiskey {
-// ParserResult Parser::parseTemplateEvalArg(ParserContext &ctx) {
-// 	return ctx.tryParseAny({
-// 		parseType,
-// 		parseExpr
-// 	});
-// }
+ParserResult Parser::parseBoundList(ParserContext &ctx, Token::ID left, ParserContext::Rule rule, const std::string &expected, Token::ID right) {
+	Token leftToken = ctx.getToken();
+	if (leftToken.getID() == left) {
+		ctx.eatToken();
+	} else {
+		return ParserResult();
+	}
 
-// ParserResult Parser::parseTypeSymbol(ParserContext &ctx) {
-// 	Token tokenSymbol = ctx.tryToken(Token::Symbol);
-// 	if (!tokenSymbol.isGood()) {
-// 		return ParserResult();
-// 	}
+	Node *front = nullptr;
+	Node *back = nullptr;
 
-// 	Token tokenLBracket = ctx.tryToken(Token::LT);
-// 	if (!tokenLBracket.isGood()) {
-// 		return ParserResult(new TypeSymbol(tokenSymbol.getRange(), tokenSymbol.getRange().getText()));
-// 	} else {
-// 		Container<TypeSymbol> ast = new TypeSymbol(tokenSymbol.getRange(), tokenSymbol.getRange().getText());
-// 		bool endedCorrectly = false;
-// 		while (ctx.areMoreTokens()) {
-// 			ParserResult arg = ctx.expectParse(parseTemplateEvalArg, "template arg");
-// 			if (arg.isGood()) {
-// 				ast->getTemplateEvalArgs().push_back(arg.getAST()->clone());
-// 			}
-// 			Token tokenSep = ctx.getToken();
-// 			if (tokenSep.getID() == Token::Comma) {
-// 				ctx.eatToken();
-// 			} else if (tokenSep.getID() == Token::GT) {
-// 				ctx.eatToken();
-// 				endedCorrectly = true;
-// 				break;
-// 			} else if (tokenSep.getID() == Token::GE) {
-// 				ctx.eatToken();
-// 				ctx.injectToken(Token(Token::Assign));
-// 				endedCorrectly = true;
-// 				break;
-// 			} else if (tokenSep.getID() == Token::BitShR) {
-// 				ctx.eatToken();
-// 				ctx.injectToken(Token(Token::GT));
-// 				endedCorrectly = true;
-// 				break;
-// 			} else if (tokenSep.getID() == Token::BitShRAssign) {
-// 				ctx.eatToken();
-// 				ctx.injectToken(Token(Token::GE));
-// 				endedCorrectly = true;
-// 				break;
-// 			} else {
-// 				ctx.emitMessageUnexpectedToken(", or >");
-// 				ctx.eatToken();
-// 			}
-// 		}
+	bool endedCorrectly = false;
 
-// 		if (!endedCorrectly) {
-// 			ctx.emitMessageUnexpectedToken("closing >");
-// 		}
+	while (ctx.areMoreTokens()) {
+		Token rightToken = ctx.getToken();
+		if (rightToken.getID() == right) {
+			ctx.eatToken();
+			endedCorrectly = true;
+			break;
+		}
 
-// 		return ParserResult(ast->clone());
-// 	}
-// }
+		ParserResult arg = ctx.parse(rule);
+		if (!arg.isGood()) {
+			ctx.errorUnexpectedToken(expected);
+			return ParserResult();
+		}
 
-// ParserResult Parser::parseTypeTerm(ParserContext &ctx) {
-// 	return ctx.tryParseAny({
-// 		parseTypeSymbol,
-// 		parseTypeGroup
-// 	});
-// }
+		if (front == nullptr) {
+			front = back = arg.getNode();
+		} else {
+			back->setNext(arg.getNode());
+			back = arg.getNode();
+		}
+	}
 
-// ParserResult Parser::parseTypeAccessUnary(ParserContext &ctx) {
-// 	Token tokenOp = ctx.tryToken(Token::Period);
-// 	if (!tokenOp.isGood()) {
-// 		return parseTypeTerm(ctx);
-// 	}
+	if (!endedCorrectly) {
+		std::stringstream ss;
+		ss << "closing ";
+		Token::printTokenID(ss, right);
+		ctx.errorUnexpectedToken(ss.str());
+		return ParserResult();
+	}
 
-// 	ParserResult res = ctx.expectParse(parseTypeAccessUnary, "type");
-// 	if (!res.isGood()) {
-// 		return ParserResult();
-// 	}
+	return ParserResult(front);
+}
 
-// 	return ParserResult(new TypeUnary(AST::ID::TypeAccessUnary, tokenOp.getRange(), res.getAST()->cloneAs<Type>()));
-// }
+ParserResult Parser::parseBoundSeparatedList(ParserContext &ctx, Token::ID left, ParserContext::Rule rule, const std::string &expected, Token::ID sep, Token::ID right) {
+	Token leftToken = ctx.getToken();
+	if (leftToken.getID() == left) {
+		ctx.eatToken();
+	} else {
+		return ParserResult();
+	}
+
+	Node *front = nullptr;
+	Node *back = nullptr;
+
+	bool endedCorrectly = false;
+
+	while (ctx.areMoreTokens()) {
+		Token rightToken = ctx.getToken();
+		if (rightToken.getID() == right) {
+			ctx.eatToken();
+			endedCorrectly = true;
+			break;
+		} else if (rightToken.getID() == sep) {
+			std::stringstream ss;
+			Token::printTokenID(ss, sep);
+			ctx.errorUnexpectedToken(ss.str());
+			return ParserResult();
+		}
+
+		ParserResult arg = ctx.parse(rule);
+		if (!arg.isGood()) {
+			ctx.errorUnexpectedToken(expected);
+			return ParserResult();
+		}
+
+		if (front == nullptr) {
+			front = back = arg.getNode();
+		} else {
+			back->setNext(arg.getNode());
+			back = arg.getNode();
+		}
+
+		rightToken = ctx.getToken();
+		if (rightToken.getID() == sep) {
+			ctx.eatToken();
+		} else if (rightToken.getID() == right) {
+			continue;
+		} else {
+			std::stringstream ss;
+			Token::printTokenID(ss, sep);
+			ctx.errorUnexpectedToken(ss.str());
+			return ParserResult();
+		}
+	}
+
+	if (!endedCorrectly) {
+		std::stringstream ss;
+		ss << "closing ";
+		Token::printTokenID(ss, right);
+		ctx.errorUnexpectedToken(ss.str());
+		return ParserResult();
+	}
+
+	return ParserResult(front);
+}
+
+ParserResult Parser::parseTemplateList(ParserContext &ctx, ParserContext::Rule rule, const std::string &expected) {
+	Token leftToken = ctx.getToken();
+	if (leftToken.getID() == Token::LT) {
+		ctx.eatToken();
+	} else {
+		return ParserResult();
+	}
+
+	Node *front = nullptr;
+	Node *back = nullptr;
+
+	bool endedCorrectly = false;
+
+	while (ctx.areMoreTokens()) {
+		Token rightToken = ctx.getToken();
+		if (rightToken.getID() == Token::GT) {
+			ctx.eatToken();
+			endedCorrectly = true;
+			break;
+		} else if (rightToken.getID() == Token::GE) {
+			ctx.eatToken();
+			ctx.injectToken(Token(Token::Assign));
+			endedCorrectly = true;
+			break;
+		} else if (rightToken.getID() == Token::BitShR) {
+			ctx.eatToken();
+			ctx.injectToken(Token(Token::GT));
+			endedCorrectly = true;
+			break;
+		} else if (rightToken.getID() == Token::BitShRAssign) {
+			ctx.eatToken();
+			ctx.injectToken(Token(Token::GE));
+			endedCorrectly = true;
+			break;
+		} else if (rightToken.getID() == Token::Comma) {
+			ctx.errorUnexpectedToken(",");
+			return ParserResult();
+		}
+
+		ParserResult arg = ctx.parse(rule);
+		if (!arg.isGood()) {
+			ctx.errorUnexpectedToken(expected);
+			return ParserResult();
+		}
+
+		if (front == nullptr) {
+			front = back = arg.getNode();
+		} else {
+			back->setNext(arg.getNode());
+			back = arg.getNode();
+		}
+
+		rightToken = ctx.getToken();
+		if (rightToken.getID() == Token::Comma) {
+			ctx.eatToken();
+		} else if (rightToken.getID() == Token::GT || rightToken.getID() == Token::GE || rightToken.getID() == Token::BitShR || rightToken.getID() == Token::BitShRAssign) {
+			continue;
+		} else {
+			ctx.errorUnexpectedToken(",");
+			return ParserResult();
+		}
+	}
+
+	if (!endedCorrectly) {
+		ctx.errorUnexpectedToken("closing >");
+		return ParserResult();
+	}
+
+	return ParserResult(front);
+}
+
+ParserResult Parser::parseSymbol(ParserContext &ctx, ParserContext::Rule templateArgRule, std::function<ParserResult(Range, Node *)> builder) {
+	Token symbolToken = ctx.getToken();
+	if (symbolToken.getID() == Token::Symbol) {
+		ctx.eatToken();
+	} else {
+		return ParserResult();
+	}
+
+	Token tokenLT = ctx.getToken();
+	if (tokenLT.getID() == Token::LT) {
+		ParserResult templateArgs = parseTemplateList(ctx, templateArgRule, "template arg");
+		if (templateArgs.isGood()) {
+			return builder(symbolToken.getRange(), templateArgs.getNode());
+		} else {
+			return ParserResult();
+		}
+	} else {
+		return builder(symbolToken.getRange(), nullptr);
+	}
+}
+
+ParserResult Parser::parseUnaryRight(ParserContext &ctx, Token::ID op, ParserContext::Rule rhsRule, ParserContext::Rule baseRule, const std::string &expected, std::function<ParserResult(Range, Node *)> builder) {
+	Token opToken = ctx.getToken();
+	if (opToken.getID() == op) {
+		ctx.eatToken();
+
+		ParserResult arg = parseUnaryRight(ctx, op, rhsRule, baseRule, expected, builder);
+		if (arg.isGood()) {
+			return builder(opToken.getRange(), arg.getNode());
+		} else {
+			ctx.errorUnexpectedToken(expected);
+			return ParserResult();
+		}
+	} else {
+		return ctx.parse(baseRule);
+	}
+}
+
+ParserResult Parser::parseUnaryLeft(ParserContext &ctx, Token::ID op, ParserContext::Rule rhsRule, ParserContext::Rule baseRule, const std::string &expected, std::function<ParserResult(Range, Node *)> builder) {
+
+}
+
+ParserResult Parser::parseTemplateEvalArg(ParserContext &ctx) {
+	return ctx.parseAny({
+		parseType,
+		parseExpr
+	});
+}
+
+ParserResult Parser::parseTypeSymbol(ParserContext &ctx) {
+	return parseSymbol(ctx, parseTemplateEvalArg, [](Range range, Node *args) {
+		return Node::createTypeSymbol(Field::createString8(range.getText().c_str()), {args}, range);
+	})	;
+}
+
+ParserResult Parser::parseTypeTerm(ParserContext &ctx) {
+	return ctx.parseAny({
+		parseTypeSymbol,
+		parseTypeGroup
+	});
+}
+
+ParserResult Parser::parseTypeAccessUnary(ParserContext &ctx) {
+	return parseUnaryRight(
+		ctx,
+		Token::Period,
+		parseTypeAccessUnary,
+		parseTypeTerm,
+		"symbol",
+		[](Range range, Node *arg) {
+			return ParserResult(Node::createTypeAccessUnary(arg, range));
+		}
+	);
+}
 
 // ParserResult Parser::parseTypeAccessBinary(ParserContext &ctx) {
 // 	ParserResult lhs = ctx.tryParse(parseTypeAccessUnary);
@@ -1670,18 +1844,26 @@ namespace whiskey {
 // 	});
 // }
 
+	// FIX HERE
+
 Parser::Parser(const std::vector<Token> &tokens, MessageBuffer &msgs, unsigned int offset) : ctx(tokens, msgs, offset) {}
 
-std::vector<Container<AST>> Parser::parse() {
-	std::vector<Container<AST>> rtn;
+// Node *Parser::parse() {
+// 	Node *rtn = Node::createUnit();
 
-	while (ctx.areMoreTokens()) {
-		ParserResult res = ctx.expectParse(parseTopLevel, "top-level statement");
-		if (res.isGood()) {
-			rtn.push_back(res.getAST()->clone());
-		}
-	}
+// 	Node *tmp = nullptr;
+// 	while (ctx.areMoreTokens()) {
+// 		ParserResult res = ctx.expectParse(parseTopLevel, "top-level statement");
+// 		if (res.isGood()) {
+// 			if (tmp == nullptr) {
+// 				rtn->getField(Node::FieldTag::Unit_Members)->setNode(tmp);
+// 				tmp->setNext(res.getNode());
+// 			} else {
+// 				tmp = res.getNode();
+// 			}
+// 		}
+// 	}
 
-	return rtn;
-}
+// 	return rtn;
+// }
 }

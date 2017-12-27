@@ -35,16 +35,16 @@ void printLiteralBool(std::ostream &os, bool value) {
 	}
 }
 
-void printLiteralInt64(std::ostream &os, int64_t value, unsigned int base, bool prefix, unsigned int width) {
+void printLiteralInt(std::ostream &os, int64_t value, unsigned int base, bool prefix, unsigned int width) {
 	if (value < 0 && base == 10) {
 		os << "-";
-		printLiteralUInt64(os, -value, base, prefix, width);
+		printLiteralUInt(os, -value, base, prefix, width);
 	} else {
-		printLiteralUInt64(os, value, base, prefix, width);
+		printLiteralUInt(os, value, base, prefix, width);
 	}
 }
 
-void printLiteralUInt64(std::ostream &os, uint64_t value, unsigned int base, bool prefix, unsigned int width) {
+void printLiteralUInt(std::ostream &os, uint64_t value, unsigned int base, bool prefix, unsigned int width) {
 	if (prefix) {
 		switch (base) {
 			case 2: os << "0b"; break;
@@ -80,7 +80,7 @@ void printLiteralUInt64(std::ostream &os, uint64_t value, unsigned int base, boo
 }
 
 void printLiteralReal(std::ostream &os, long double value, unsigned int precision, bool truncate) {
-	printLiteralInt64(os, (int64_t)value);
+	printLiteralInt(os, (int64_t)value);
 	long double dec = value - floor(value);
 
 	os << '.';
@@ -128,10 +128,10 @@ void printLiteralCharHelper(std::ostream &os, char32_t value, char quote) {
 		os << "\\" << quote;
 	} else if (getChar32MinWidth(value) == 4) {
 		os << "\\U";
-		printLiteralUInt64(os, value, 16, false, 8);
+		printLiteralUInt(os, value, 16, false, 8);
 	} else if (getChar32MinWidth(value) == 2) {
 		os << "\\u";
-		printLiteralUInt64(os, value, 16, false, 4);
+		printLiteralUInt(os, value, 16, false, 4);
 	} else if (value == '\a') {
 		os << "\\a";
 	} else if (value == '\b') {
@@ -156,7 +156,7 @@ void printLiteralCharHelper(std::ostream &os, char32_t value, char quote) {
 		os << (char)value;
 	} else {
 		os << "\\x";
-		printLiteralUInt64(os, value, 16, false, 2);
+		printLiteralUInt(os, value, 16, false, 2);
 	}
 }
 }

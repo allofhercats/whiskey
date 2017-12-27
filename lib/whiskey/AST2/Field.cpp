@@ -262,4 +262,20 @@ bool Field::compare(const Field *other) const {
 
 	return true;
 }
+
+void Field::printLiteral(std::ostream &os) const {
+	if (kind == Field::Kind::Int) {
+		printLiteralInt(os, dataAtomic.asInt);
+	} else if (kind == Field::Kind::Real) {
+		printLiteralReal(os, dataAtomic.asReal);
+	} else if (kind == Field::Kind::String8) {
+		printLiteralString(os, std::string(dataAtomic.asString8, length));
+	} else if (kind == Field::Kind::String16) {
+		printLiteralString(os, std::u16string(dataAtomic.asString16, length));
+	} else if (kind == Field::Kind::String32) {
+		printLiteralString(os, std::u32string(dataAtomic.asString32, length));
+	} else {
+		W_ASSERT_UNREACHABLE("Cannot print field as literal.");
+	}
+}
 }

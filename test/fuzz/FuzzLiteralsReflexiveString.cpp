@@ -73,7 +73,7 @@ TEST(FuzzLiteralsReflexiveString, All) {
 
 		std::string evaled;
 
-		bool res = evalLiteralString(rng, evaled);
+		bool res = evalLiteralString8(rng, evaled);
 		if (!res) {
 			std::cout << "Invalid format.\n";
 		}

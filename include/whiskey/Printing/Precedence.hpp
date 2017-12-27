@@ -23,15 +23,16 @@ enum class Precedence {
 	ExprUnaryLeft,
 	ExprUnaryRight,
 	ExprCall,
+	ExprAccessUnary,
 	ExprAccess,
 	ExprTerm,
 	TypeFunction,
-	TypeBinary,
-	TypeUnary,
+	TypeAccessUnary,
+	TypeAccess,
 	TypeTerm
 };
 
-Precedence getPrecedence(AST::ID astID);
+Precedence getPrecedence(Node::Kind kind);
 bool needsParenthesis(Precedence inner, Precedence outer);
 }
 

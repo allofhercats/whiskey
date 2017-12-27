@@ -11,7 +11,7 @@ private:
 	unsigned int tabWidth;
 
 protected:
-	virtual void onPrint(std::ostream &os, CRef<AST> ast, unsigned int indent) = 0;
+	virtual void onPrint(std::ostream &os, const Node *ast, unsigned int indent) = 0;
 
 public:
 	static const unsigned int defaultTabWidth;
@@ -25,7 +25,7 @@ public:
 	unsigned int getTabWidth() const;
 	void setTabWidth(unsigned int value);
 
-	void print(std::ostream &os, CRef<AST> ast, unsigned int indent = 0, Precedence outer = Precedence::None);
+	void print(std::ostream &os, const Node *node, unsigned int indent = 0, Precedence outer = Precedence::None);
 };
 }
 

@@ -11,7 +11,7 @@ TEST(Unit_Parsing_ParserResult, Empty) {
 }
 
 TEST(Unit_Parsing_ParserResult, Filled) {
-	ParserResult res(new TypeAtomic(AST::ID::TypeAtomicBool, Range()));
+	ParserResult res(Node::createTypeAtomicInt32());
 
 	ASSERT_TRUE(res.isGood());
 }

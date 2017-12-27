@@ -58,7 +58,7 @@ TEST(Unit_Parsing_ParserContext, Simple_Error) {
 	ASSERT_TRUE(ctx.areMoreTokens());
 	tok = ctx.getToken();
 	ASSERT_EQ(tok.getID(), Token::Symbol);
-	ctx.emitMessageUnexpectedToken("not a symbol");
+	ctx.errorUnexpectedToken("not a symbol");
 	tok = ctx.getToken();
 	ASSERT_EQ(tok.getID(), Token::Symbol);
 	tok = ctx.eatToken();
@@ -145,7 +145,7 @@ TEST(Unit_Parsing_ParserContext, Injected_Error) {
 	ASSERT_TRUE(ctx.areMoreTokens());
 	tok = ctx.getToken();
 	ASSERT_EQ(tok.getID(), Token::Mul);
-	ctx.emitMessageUnexpectedToken("not a *");
+	ctx.errorUnexpectedToken("not a *");
 	tok = ctx.getToken();
 	ASSERT_EQ(tok.getID(), Token::Mul);
 	tok = ctx.eatToken();
@@ -156,80 +156,6 @@ TEST(Unit_Parsing_ParserContext, Injected_Error) {
 	ASSERT_EQ(tok.getID(), Token::Add);
 	tok = ctx.eatToken();
 	ASSERT_EQ(tok.getID(), Token::Add);
-
-	ASSERT_TRUE(ctx.areMoreTokens());
-	tok = ctx.getToken();
-	ASSERT_EQ(tok.getID(), Token::Symbol);
-	tok = ctx.eatToken();
-	ASSERT_EQ(tok.getID(), Token::Symbol);
-
-	ASSERT_FALSE(ctx.areMoreTokens());
-	tok = ctx.getToken();
-	ASSERT_EQ(tok.getID(), Token::None);
-	tok = ctx.eatToken();
-	ASSERT_EQ(tok.getID(), Token::None);
-
-	ASSERT_EQ(msgs.getNMessages(), 1);
-}
-
-TEST(Unit_Parsing_ParserContext, TryToken) {
-	std::vector<Token> tokens = {
-		Token(Token::Sub),
-		Token(Token::Symbol)
-	};
-
-	MessageBuffer msgs;
-
-	ParserContext ctx(tokens, msgs);
-
-	Token tok;
-
-	ASSERT_TRUE(ctx.areMoreTokens());
-	tok = ctx.getToken();
-	ASSERT_EQ(tok.getID(), Token::Sub);
-
-	tok = ctx.tryToken(Token::Symbol);
-	ASSERT_EQ(tok.getID(), Token::None);
-
-	tok = ctx.tryToken(Token::Sub);
-	ASSERT_EQ(tok.getID(), Token::Sub);
-
-	ASSERT_TRUE(ctx.areMoreTokens());
-	tok = ctx.getToken();
-	ASSERT_EQ(tok.getID(), Token::Symbol);
-	tok = ctx.eatToken();
-	ASSERT_EQ(tok.getID(), Token::Symbol);
-
-	ASSERT_FALSE(ctx.areMoreTokens());
-	tok = ctx.getToken();
-	ASSERT_EQ(tok.getID(), Token::None);
-	tok = ctx.eatToken();
-	ASSERT_EQ(tok.getID(), Token::None);
-
-	ASSERT_EQ(msgs.getNMessages(), 0);
-}
-
-TEST(Unit_Parsing_ParserContext, ExpectToken) {
-	std::vector<Token> tokens = {
-		Token(Token::Sub),
-		Token(Token::Symbol)
-	};
-
-	MessageBuffer msgs;
-
-	ParserContext ctx(tokens, msgs);
-
-	Token tok;
-
-	ASSERT_TRUE(ctx.areMoreTokens());
-	tok = ctx.getToken();
-	ASSERT_EQ(tok.getID(), Token::Sub);
-
-	tok = ctx.expectToken(Token::Symbol, "a symbol");
-	ASSERT_EQ(tok.getID(), Token::None);
-
-	tok = ctx.expectToken(Token::Sub, "a -");
-	ASSERT_EQ(tok.getID(), Token::Sub);
 
 	ASSERT_TRUE(ctx.areMoreTokens());
 	tok = ctx.getToken();
@@ -247,13 +173,18 @@ TEST(Unit_Parsing_ParserContext, ExpectToken) {
 }
 
 ParserResult parseRule(ParserContext &ctx) {
-	Token tokenSub = ctx.tryToken(Token::Sub);
-	if (!tokenSub.isGood()) {
+	Token tokenSub = ctx.getToken();
+	if (tokenSub.getID() == Token::Sub) {
+		ctx.eatToken();
+	} else {
 		return ParserResult();
 	}
 
-	Token tokenSymbol = ctx.expectToken(Token::Symbol, "symbol");
-	if (!tokenSymbol.isGood()) {
+	Token tokenSymbol = ctx.getToken();
+	if (tokenSymbol.getID() == Token::Symbol) {
+		ctx.eatToken();
+	} else {
+		ctx.errorUnexpectedToken("symbol");
 		return ParserResult();
 	}
 
@@ -360,13 +291,18 @@ TEST(Unit_Parsing_ParserContext, Rule_5) {
 }
 
 ParserResult parseRule2(ParserContext &ctx) {
-	Token tokenSub = ctx.tryToken(Token::Add);
-	if (!tokenSub.isGood()) {
+	Token tokenAdd = ctx.getToken();
+	if (tokenAdd.getID() == Token::Add) {
+		ctx.eatToken();
+	} else {
 		return ParserResult();
 	}
 
-	Token tokenSymbol = ctx.expectToken(Token::Symbol, "symbol");
-	if (!tokenSymbol.isGood()) {
+	Token tokenSymbol = ctx.getToken();
+	if (tokenSymbol.getID() == Token::Symbol) {
+		ctx.eatToken();
+	} else {
+		ctx.errorUnexpectedToken("symbol");
 		return ParserResult();
 	}
 
@@ -482,7 +418,7 @@ TEST(Unit_Parsing_ParserContext, TryParse_0) {
 
 	ParserContext ctx(tokens, msgs);
 
-	ParserResult res = ctx.tryParse(parseRule);
+	ParserResult res = ctx.parse(parseRule);
 
 	ASSERT_TRUE(res.isGood());
 	ASSERT_EQ(ctx.getToken().getID(), Token::None);
@@ -499,7 +435,7 @@ TEST(Unit_Parsing_ParserContext, TryParse_1) {
 
 	ParserContext ctx(tokens, msgs);
 
-	ParserResult res = ctx.tryParse(parseRule);
+	ParserResult res = ctx.parse(parseRule);
 
 	ASSERT_FALSE(res.isGood());
 	ASSERT_EQ(ctx.getToken().getID(), Token::Sub);
@@ -516,7 +452,7 @@ TEST(Unit_Parsing_ParserContext, TryParse_2) {
 
 	ParserContext ctx(tokens, msgs);
 
-	ParserResult res = ctx.tryParse(parseRule);
+	ParserResult res = ctx.parse(parseRule);
 
 	ASSERT_FALSE(res.isGood());
 	ASSERT_EQ(ctx.getToken().getID(), Token::Add);
@@ -532,7 +468,7 @@ TEST(Unit_Parsing_ParserContext, TryParse_3) {
 
 	ParserContext ctx(tokens, msgs);
 
-	ParserResult res = ctx.tryParse(parseRule);
+	ParserResult res = ctx.parse(parseRule);
 
 	ASSERT_FALSE(res.isGood());
 	ASSERT_EQ(ctx.getToken().getID(), Token::Sub);
@@ -548,7 +484,7 @@ TEST(Unit_Parsing_ParserContext, TryParse_4) {
 
 	ParserContext ctx(tokens, msgs);
 
-	ParserResult res = ctx.tryParse(parseRule);
+	ParserResult res = ctx.parse(parseRule);
 
 	ASSERT_FALSE(res.isGood());
 	ASSERT_EQ(ctx.getToken().getID(), Token::Add);
@@ -562,108 +498,11 @@ TEST(Unit_Parsing_ParserContext, TryParse_5) {
 
 	ParserContext ctx(tokens, msgs);
 
-	ParserResult res = ctx.tryParse(parseRule);
+	ParserResult res = ctx.parse(parseRule);
 
 	ASSERT_FALSE(res.isGood());
 	ASSERT_EQ(ctx.getToken().getID(), Token::None);
 	ASSERT_EQ(msgs.getNMessages(), 0);
-}
-
-TEST(Unit_Parsing_ParserContext, ExpectParse_0) {
-	std::vector<Token> tokens = {
-		Token(Token::Sub),
-		Token(Token::Symbol)
-	};
-
-	MessageBuffer msgs;
-
-	ParserContext ctx(tokens, msgs);
-
-	ParserResult res = ctx.expectParse(parseRule, "test syntax");
-
-	ASSERT_TRUE(res.isGood());
-	ASSERT_EQ(ctx.getToken().getID(), Token::None);
-	ASSERT_EQ(msgs.getNMessages(), 0);
-}
-
-TEST(Unit_Parsing_ParserContext, ExpectParse_1) {
-	std::vector<Token> tokens = {
-		Token(Token::Sub),
-		Token(Token::Int)
-	};
-
-	MessageBuffer msgs;
-
-	ParserContext ctx(tokens, msgs);
-
-	ParserResult res = ctx.expectParse(parseRule, "test syntax");
-
-	ASSERT_FALSE(res.isGood());
-	ASSERT_EQ(ctx.getToken().getID(), Token::Sub);
-	ASSERT_EQ(msgs.getNMessages(), 2);
-}
-
-TEST(Unit_Parsing_ParserContext, ExpectParse_2) {
-	std::vector<Token> tokens = {
-		Token(Token::Add),
-		Token(Token::Symbol)
-	};
-
-	MessageBuffer msgs;
-
-	ParserContext ctx(tokens, msgs);
-
-	ParserResult res = ctx.expectParse(parseRule, "test syntax");
-
-	ASSERT_FALSE(res.isGood());
-	ASSERT_EQ(ctx.getToken().getID(), Token::Add);
-	ASSERT_EQ(msgs.getNMessages(), 1);
-}
-
-TEST(Unit_Parsing_ParserContext, ExpectParse_3) {
-	std::vector<Token> tokens = {
-		Token(Token::Sub)
-	};
-
-	MessageBuffer msgs;
-
-	ParserContext ctx(tokens, msgs);
-
-	ParserResult res = ctx.expectParse(parseRule, "test syntax");
-
-	ASSERT_FALSE(res.isGood());
-	ASSERT_EQ(ctx.getToken().getID(), Token::Sub);
-	ASSERT_EQ(msgs.getNMessages(), 2);
-}
-
-TEST(Unit_Parsing_ParserContext, ExpectParse_4) {
-	std::vector<Token> tokens = {
-		Token(Token::Add)
-	};
-
-	MessageBuffer msgs;
-
-	ParserContext ctx(tokens, msgs);
-
-	ParserResult res = ctx.expectParse(parseRule, "test syntax");
-
-	ASSERT_FALSE(res.isGood());
-	ASSERT_EQ(ctx.getToken().getID(), Token::Add);
-	ASSERT_EQ(msgs.getNMessages(), 1);
-}
-
-TEST(Unit_Parsing_ParserContext, ExpectParse_5) {
-	std::vector<Token> tokens;
-
-	MessageBuffer msgs;
-
-	ParserContext ctx(tokens, msgs);
-
-	ParserResult res = ctx.expectParse(parseRule, "test syntax");
-
-	ASSERT_FALSE(res.isGood());
-	ASSERT_EQ(ctx.getToken().getID(), Token::None);
-	ASSERT_EQ(msgs.getNMessages(), 1);
 }
 
 TEST(Unit_Parsing_ParserContext, TryParseAny_0) {
@@ -676,7 +515,7 @@ TEST(Unit_Parsing_ParserContext, TryParseAny_0) {
 
 	ParserContext ctx(tokens, msgs);
 
-	ParserResult res = ctx.tryParseAny({
+	ParserResult res = ctx.parseAny({
 		parseRule,
 		parseRule2
 	});
@@ -696,7 +535,7 @@ TEST(Unit_Parsing_ParserContext, TryParseAny_1) {
 
 	ParserContext ctx(tokens, msgs);
 
-	ParserResult res = ctx.tryParseAny({
+	ParserResult res = ctx.parseAny({
 		parseRule,
 		parseRule2
 	});
@@ -716,7 +555,7 @@ TEST(Unit_Parsing_ParserContext, TryParseAny_2) {
 
 	ParserContext ctx(tokens, msgs);
 
-	ParserResult res = ctx.tryParseAny({
+	ParserResult res = ctx.parseAny({
 		parseRule,
 		parseRule2
 	});
@@ -735,7 +574,7 @@ TEST(Unit_Parsing_ParserContext, TryParseAny_3) {
 
 	ParserContext ctx(tokens, msgs);
 
-	ParserResult res = ctx.tryParseAny({
+	ParserResult res = ctx.parseAny({
 		parseRule,
 		parseRule2
 	});
@@ -754,7 +593,7 @@ TEST(Unit_Parsing_ParserContext, TryParseAny_4) {
 
 	ParserContext ctx(tokens, msgs);
 
-	ParserResult res = ctx.tryParseAny({
+	ParserResult res = ctx.parseAny({
 		parseRule,
 		parseRule2
 	});
@@ -771,7 +610,7 @@ TEST(Unit_Parsing_ParserContext, TryParseAny_5) {
 
 	ParserContext ctx(tokens, msgs);
 
-	ParserResult res = ctx.tryParseAny({
+	ParserResult res = ctx.parseAny({
 		parseRule,
 		parseRule2
 	});
@@ -779,119 +618,4 @@ TEST(Unit_Parsing_ParserContext, TryParseAny_5) {
 	ASSERT_FALSE(res.isGood());
 	ASSERT_EQ(ctx.getToken().getID(), Token::None);
 	ASSERT_EQ(msgs.getNMessages(), 0);
-}
-
-TEST(Unit_Parsing_ParserContext, ExpectParseAny_0) {
-	std::vector<Token> tokens = {
-		Token(Token::Sub),
-		Token(Token::Symbol)
-	};
-
-	MessageBuffer msgs;
-
-	ParserContext ctx(tokens, msgs);
-
-	ParserResult res = ctx.expectParseAny({
-		parseRule,
-		parseRule2
-	}, "test syntax");
-
-	ASSERT_TRUE(res.isGood());
-	ASSERT_EQ(ctx.getToken().getID(), Token::None);
-	ASSERT_EQ(msgs.getNMessages(), 0);
-}
-
-TEST(Unit_Parsing_ParserContext, ExpectParseAny_1) {
-	std::vector<Token> tokens = {
-		Token(Token::Sub),
-		Token(Token::Int)
-	};
-
-	MessageBuffer msgs;
-
-	ParserContext ctx(tokens, msgs);
-
-	ParserResult res = ctx.expectParseAny({
-		parseRule,
-		parseRule2
-	}, "test syntax");
-
-	ASSERT_FALSE(res.isGood());
-	ASSERT_EQ(ctx.getToken().getID(), Token::Sub);
-	ASSERT_EQ(msgs.getNMessages(), 2);
-}
-
-TEST(Unit_Parsing_ParserContext, ExpectParseAny_2) {
-	std::vector<Token> tokens = {
-		Token(Token::Add),
-		Token(Token::Symbol)
-	};
-
-	MessageBuffer msgs;
-
-	ParserContext ctx(tokens, msgs);
-
-	ParserResult res = ctx.expectParseAny({
-		parseRule,
-		parseRule2
-	}, "test syntax");
-
-	ASSERT_TRUE(res.isGood());
-	ASSERT_EQ(ctx.getToken().getID(), Token::None);
-	ASSERT_EQ(msgs.getNMessages(), 0);
-}
-
-TEST(Unit_Parsing_ParserContext, ExpectParseAny_3) {
-	std::vector<Token> tokens = {
-		Token(Token::Sub)
-	};
-
-	MessageBuffer msgs;
-
-	ParserContext ctx(tokens, msgs);
-
-	ParserResult res = ctx.expectParseAny({
-		parseRule,
-		parseRule2
-	}, "test syntax");
-
-	ASSERT_FALSE(res.isGood());
-	ASSERT_EQ(ctx.getToken().getID(), Token::Sub);
-	ASSERT_EQ(msgs.getNMessages(), 2);
-}
-
-TEST(Unit_Parsing_ParserContext, ExpectParseAny_4) {
-	std::vector<Token> tokens = {
-		Token(Token::Add)
-	};
-
-	MessageBuffer msgs;
-
-	ParserContext ctx(tokens, msgs);
-
-	ParserResult res = ctx.expectParseAny({
-		parseRule,
-		parseRule2
-	}, "test syntax");
-
-	ASSERT_FALSE(res.isGood());
-	ASSERT_EQ(ctx.getToken().getID(), Token::Add);
-	ASSERT_EQ(msgs.getNMessages(), 2);
-}
-
-TEST(Unit_Parsing_ParserContext, ExpectParseAny_5) {
-	std::vector<Token> tokens;
-
-	MessageBuffer msgs;
-
-	ParserContext ctx(tokens, msgs);
-
-	ParserResult res = ctx.expectParseAny({
-		parseRule,
-		parseRule2
-	}, "test syntax");
-
-	ASSERT_FALSE(res.isGood());
-	ASSERT_EQ(ctx.getToken().getID(), Token::None);
-	ASSERT_EQ(msgs.getNMessages(), 1);
 }

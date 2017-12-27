@@ -12,6 +12,14 @@ class Parser {
 private:
 	ParserContext ctx;
 
+	static ParserResult parseBoundList(ParserContext &ctx, Token::ID left, ParserContext::Rule rule, const std::string &expected, Token::ID right);
+	static ParserResult parseBoundSeparatedList(ParserContext &ctx, Token::ID left, ParserContext::Rule rule, const std::string &expected, Token::ID sep, Token::ID right);
+	static ParserResult parseTemplateList(ParserContext &ctx, ParserContext::Rule rule, const std::string &expected);
+	static ParserResult parseSymbol(ParserContext &ctx, ParserContext::Rule templateArgRule, std::function<ParserResult(Range, Node *)> builder);
+	static ParserResult parseUnaryRight(ParserContext &ctx, Token::ID op, ParserContext::Rule rhsRule, ParserContext::Rule baseRule, const std::string &expected, std::function<ParserResult(Range, Node *)> builder);
+	static ParserResult parseUnaryLeft(ParserContext &ctx, Token::ID op, ParserContext::Rule rhsRule, ParserContext::Rule baseRule, const std::string &expected, std::function<ParserResult(Range, Node *)> builder);
+	static ParserResult parseBinary(ParserContext &ctx, Token::ID op, ParserContext::Rule lhsRule, ParserContext::Rule rhsRule, ParserContext::Rule baseRule, const std::string &expected, std::function<ParserResult(Range, Node *, Node *)> builder);
+
 public:
 	static ParserResult parseTemplateEvalArg(ParserContext &ctx);
 
@@ -70,7 +78,7 @@ public:
 
 	Parser(const std::vector<Token> &tokens, MessageBuffer &msgs, unsigned int offset = 0);
 
-	std::vector<Container<AST>> parse();
+	Node *parse();
 };
 }
 

@@ -43,78 +43,32 @@ MessageBuffer &ParserContext::getMsgs() const {
 	return *msgs;
 }
 
-void ParserContext::emitMessageUnexpectedToken(const std::string &expected) const {
+void ParserContext::errorUnexpectedToken(const std::string &expected) const {
 	msgs->describe() << "expected " << expected << ", not ";
 	Token::printTokenID(msgs->describe(), getToken().getID());
 	msgs->emit(getToken().getRange(), Message::UnexpectedToken);
 }
 
-Token ParserContext::tryToken(Token::ID id) {
-	Token rtn = getToken();
-	if (rtn.getID() != id) {
-		return Token();
-	} else {
-		eatToken();
-		return rtn;
-	}
-}
-
-Token ParserContext::expectToken(Token::ID id, const std::string &expected) {
-	Token rtn = getToken();
-	if (rtn.getID() != id) {
-		emitMessageUnexpectedToken(expected);
-		return Token();
-	} else {
-		eatToken();
-		return rtn;
-	}
-}
-
-ParserResult ParserContext::tryParse(ParserContext::Rule rule) {
+ParserResult ParserContext::parse(ParserContext::Rule rule) {
 	ParserContext save = *this;
 	ParserResult res = rule(save);
 	if (res.isGood()) {
 		*this = save;
 	} else {
-		res.setAST(nullptr);
+		return ParserResult();
 	}
 	return res;
 }
 
-ParserResult ParserContext::expectParse(Rule rule, const std::string &expected) {
-	ParserContext save = *this;
-	ParserResult res = rule(save);
-	if (res.isGood()) {
-		*this = save;
-		return res;
-	} else {
-		emitMessageUnexpectedToken(expected);
-		return ParserResult();
-	}
-}
-
-ParserResult ParserContext::tryParseAny(std::initializer_list<ParserContext::Rule> rules) {
+ParserResult ParserContext::parseAny(std::initializer_list<ParserContext::Rule> rules) {
 	ParserResult res;
 	for (const Rule &rule : rules) {
-		res = tryParse(rule);
+		res = parse(rule);
 		if (res.isGood()) {
 			return res;
 		}
 	}
 
-	return ParserResult();
-}
-
-ParserResult ParserContext::expectParseAny(std::initializer_list<ParserContext::Rule> rules, const std::string &expected) {
-	ParserResult res;
-	for (const Rule &rule : rules) {
-		res = tryParse(rule);
-		if (res.isGood()) {
-			return res;
-		}
-	}
-
-	emitMessageUnexpectedToken(expected);
 	return ParserResult();
 }
 }

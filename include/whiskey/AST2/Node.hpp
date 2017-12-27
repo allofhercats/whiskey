@@ -32,6 +32,7 @@ public:
 		ExprAccessUnary,
 		ExprAccess,
 		ExprGroup,
+		ExprCall,
 		ExprAdd,
 		ExprIncPre,
 		ExprIncPost,
@@ -51,6 +52,12 @@ public:
 		ExprBitXor,
 		ExprBitShL,
 		ExprBitShR,
+		ExprLT,
+		ExprLE,
+		ExprGT,
+		ExprGE,
+		ExprNE,
+		ExprEQ,
 		ExprBoolNot,
 		ExprBoolAnd,
 		ExprBoolOr,
@@ -88,120 +95,168 @@ public:
 		Unit
 	};
 
-	static int getNFields(Kind kind);
-
 	enum class FieldTag {
-		TypeSymbol_Name = 0,
-		TypeSymbol_TemplateEvalArgs = 1,
-		TypeAccessUnary_Arg = 0,
-		TypeAccess_Args = 0,
-		TypeGroup_Arg = 0,
-		TypeFunction_Return = 0,
-		TypeFunction_Args = 1,
-		ExprLiteralInt_Type = 0,
-		ExprLiteralInt_Value = 1,
-		ExprLiteralReal_Type = 0,
-		ExprLiteralReal_Value = 1,
-		ExprSymbol_Name = 0,
-		ExprSymbol_TemplateEvalArgs = 1,
-		ExprAccessUnary_Arg = 0,
-		ExprAccess_Args = 0,
-		ExprGroup_Arg = 0,
-		ExprAdd_Args = 0,
-		ExprIncPre_Arg = 0,
-		ExprIncPost_Arg = 0,
-		ExprSub_LHS = 0,
-		ExprSub_RHS = 1,
-		ExprNeg_Arg = 0,
-		ExprDecPre_Arg = 0,
-		ExprDecPost_Arg = 0,
-		ExprMul_Args = 0,
-		ExprExp_LHS = 0,
-		ExprExp_RHS = 1,
-		ExprDiv_LHS = 0,
-		ExprDiv_RHS = 1,
-		ExprDivInt_LHS = 0,
-		ExprDivInt_RHS = 1,
-		ExprDivReal_LHS = 0,
-		ExprDivReal_RHS = 1,
-		ExprMod_LHS = 0,
-		ExprMod_RHS = 1,
-		ExprBitNot_Arg = 0,
-		ExprBitAnd_Args = 0,
-		ExprBitOr_Args = 0,
-		ExprBitXor_Args = 0,
-		ExprBitShL_LHS = 0,
-		ExprBitShL_RHS = 1,
-		ExprBitShR_LHS = 0,
-		ExprBitShR_RHS = 1,
-		ExprBoolNot_Arg = 0,
-		ExprBoolAnd_Args = 0,
-		ExprBoolOr_Args = 0,
-		ExprBoolImplies_Args = 0,
-		ExprAddAssign_LHS = 0,
-		ExprAddAssign_RHS = 1,
-		ExprSubAssign_LHS = 0,
-		ExprSubAssign_RHS = 1,
-		ExprMulAssign_LHS = 0,
-		ExprMulAssign_RHS = 1,
-		ExprExpAssign_LHS = 0,
-		ExprExpAssign_RHS = 1,
-		ExprDivAssign_LHS = 0,
-		ExprDivAssign_RHS = 1,
-		ExprDivIntAssign_LHS = 0,
-		ExprDivIntAssign_RHS = 1,
-		ExprDivRealAssign_LHS = 0,
-		ExprDivRealAssign_RHS = 1,
-		ExprModAssign_LHS = 0,
-		ExprModAssign_RHS = 1,
-		ExprBitAndAssign_LHS = 0,
-		ExprBitAndAssign_RHS = 1,
-		ExprBitOrAssign_LHS = 0,
-		ExprBitOrAssign_RHS = 1,
-		ExprBitXorAssign_LHS = 0,
-		ExprBitXorAssign_RHS = 1,
-		ExprBitShLAssign_LHS = 0,
-		ExprBitShLAssign_RHS = 1,
-		ExprBitShRAssign_LHS = 0,
-		ExprBitShRAssign_RHS = 1,
-		ExprAssign_LHS = 0,
-		ExprAssign_RHS = 1,
-		StmtExpr_Expr = 0,
-		StmtDecl_Decl = 0,
-		StmtReturn_Arg = 0,
-		StmtContinue_Name = 0,
-		StmtBreak_Name = 0,
-		StmtIf_Condition = 0,
-		StmtIf_Then = 1,
-		StmtIf_Else = 2,
-		StmtWhile_Condition = 0,
-		StmtWhile_Body = 1,
-		StmtFor_Decls = 0,
-		StmtFor_Condition = 1,
-		StmtFor_Steps = 2,
-		StmtFor_Body = 3,
-		StmtForEach_Decls = 0,
-		StmtForEach_Sequences = 1,
-		StmtForEach_Body = 2,
-		StmtBlock_Stmts = 0,
-		DeclVariable_Type = 0,
-		DeclVariable_Name = 1,
-		DeclVariable_TemplateDeclArgs = 2,
-		DeclVariable_Initial = 3,
-		DeclFunction_Return = 0,
-		DeclFunction_Name = 1,
-		DeclFunction_TemplateDeclArgs = 2,
-		DeclFunction_Args = 3,
-		DeclFunction_Body = 4,
-		DeclClass_Name = 0,
-		DeclClass_TemplateDeclArgs = 1,
-		DeclClass_Inherits = 2,
-		DeclClass_Members = 3,
-		DeclNamespace_Name = 0,
-		DeclNamespace_Members = 1,
-		Import_Path = 0,
-		Unit_Members = 0
+		TypeSymbol_Name,
+		TypeSymbol_TemplateEvalArgs,
+		TypeAccessUnary_Arg,
+		TypeAccess_Args,
+		TypeGroup_Arg,
+		TypeFunction_Return,
+		TypeFunction_Args,
+		ExprLiteralInt_Type,
+		ExprLiteralInt_Value,
+		ExprLiteralReal_Type,
+		ExprLiteralReal_Value,
+		ExprSymbol_Name,
+		ExprSymbol_TemplateEvalArgs,
+		ExprAccessUnary_Arg,
+		ExprAccess_Args,
+		ExprGroup_Arg,
+		ExprCall_Callee,
+		ExprCall_Args,
+		ExprAdd_Args,
+		ExprIncPre_Arg,
+		ExprIncPost_Arg,
+		ExprSub_LHS,
+		ExprSub_RHS,
+		ExprNeg_Arg,
+		ExprDecPre_Arg,
+		ExprDecPost_Arg,
+		ExprMul_Args,
+		ExprExp_LHS,
+		ExprExp_RHS,
+		ExprDiv_LHS,
+		ExprDiv_RHS,
+		ExprDivInt_LHS,
+		ExprDivInt_RHS,
+		ExprDivReal_LHS,
+		ExprDivReal_RHS,
+		ExprMod_LHS,
+		ExprMod_RHS,
+		ExprBitNot_Arg,
+		ExprBitAnd_Args,
+		ExprBitOr_Args,
+		ExprBitXor_Args,
+		ExprBitShL_LHS,
+		ExprBitShL_RHS,
+		ExprBitShR_LHS,
+		ExprBitShR_RHS,
+		ExprLT_LHS,
+		ExprLT_RHS,
+		ExprLE_LHS,
+		ExprLE_RHS,
+		ExprGT_LHS,
+		ExprGT_RHS,
+		ExprGE_LHS,
+		ExprGE_RHS,
+		ExprNE_LHS,
+		ExprNE_RHS,
+		ExprEQ_LHS,
+		ExprEQ_RHS,
+		ExprBoolNot_Arg,
+		ExprBoolAnd_Args,
+		ExprBoolOr_Args,
+		ExprBoolImplies_Args,
+		ExprAddAssign_LHS,
+		ExprAddAssign_RHS,
+		ExprSubAssign_LHS,
+		ExprSubAssign_RHS,
+		ExprMulAssign_LHS,
+		ExprMulAssign_RHS,
+		ExprExpAssign_LHS,
+		ExprExpAssign_RHS,
+		ExprDivAssign_LHS,
+		ExprDivAssign_RHS,
+		ExprDivIntAssign_LHS,
+		ExprDivIntAssign_RHS,
+		ExprDivRealAssign_LHS,
+		ExprDivRealAssign_RHS,
+		ExprModAssign_LHS,
+		ExprModAssign_RHS,
+		ExprBitAndAssign_LHS,
+		ExprBitAndAssign_RHS,
+		ExprBitOrAssign_LHS,
+		ExprBitOrAssign_RHS,
+		ExprBitXorAssign_LHS,
+		ExprBitXorAssign_RHS,
+		ExprBitShLAssign_LHS,
+		ExprBitShLAssign_RHS,
+		ExprBitShRAssign_LHS,
+		ExprBitShRAssign_RHS,
+		ExprAssign_LHS,
+		ExprAssign_RHS,
+		StmtExpr_Expr,
+		StmtDecl_Decl,
+		StmtReturn_Arg,
+		StmtContinue_Name,
+		StmtBreak_Name,
+		StmtIf_Condition,
+		StmtIf_Then,
+		StmtIf_Else,
+		StmtWhile_Condition,
+		StmtWhile_Body,
+		StmtFor_Decls,
+		StmtFor_Condition,
+		StmtFor_Steps,
+		StmtFor_Body,
+		StmtForEach_Decls,
+		StmtForEach_Sequences,
+		StmtForEach_Body,
+		StmtBlock_Stmts,
+		DeclVariable_Type,
+		DeclVariable_Name,
+		DeclVariable_TemplateDeclArgs,
+		DeclVariable_Initial,
+		DeclFunction_Return,
+		DeclFunction_Name,
+		DeclFunction_TemplateDeclArgs,
+		DeclFunction_Args,
+		DeclFunction_Body,
+		DeclClass_Name,
+		DeclClass_TemplateDeclArgs,
+		DeclClass_Inherits,
+		DeclClass_Members,
+		DeclNamespace_Name,
+		DeclNamespace_Members,
+		Import_Path,
+		Unit_Members
 	};
+
+	class KindInfo {
+	private:
+		const char *name;
+		std::vector<Node::FieldTag> fieldTags;
+
+	public:
+		KindInfo(const char *name, std::vector<FieldTag> fieldTags);
+
+		const char *getName() const;
+		unsigned int getNFields() const;
+		FieldTag getFieldTag(int index) const;
+	};
+
+	class FieldTagInfo {
+	private:
+		unsigned int index;
+		const char *name;
+		bool _isExpectingKind;
+		Field::Kind expectedKind;
+		bool _isExpectingList;
+
+	public:
+		FieldTagInfo(unsigned int index, const char *name);
+		FieldTagInfo(unsigned int index, const char *name, Field::Kind expectedKind, bool isExpectingList = false);
+
+		unsigned int getIndex() const;
+		const char *getName() const;
+		bool isExpectingKind() const;
+		Field::Kind getExpectedKind() const;
+		bool isExpectingList() const;
+	};
+
+	static FieldTagInfo getFieldTagInfo(FieldTag value);
+
+	static KindInfo getKindInfo(Kind value);
 
 private:
 	Range range;
@@ -240,6 +295,7 @@ public:
 	static Node *createExprAccessUnary(Node *arg, Range range = Range());
 	static Node *createExprAccess(std::initializer_list<Node *> args, Range range = Range());
 	static Node *createExprGroup(Node *arg, Range range = Range());
+	static Node *createExprCall(Node *callee, std::initializer_list<Node *> args, Range range = Range());
 	static Node *createExprAdd(std::initializer_list<Node *> args, Range range = Range());
 	static Node *createExprIncPre(Node *arg, Range range = Range());
 	static Node *createExprIncPost(Node *arg, Range range = Range());
@@ -285,9 +341,13 @@ public:
 	static Node *createStmtBreak(Field *name, Range range = Range());
 	static Node *createStmtIf(Node *condition, Node *then, Range range = Range());
 	static Node *createStmtIf(Node *condition, Node *then, Node *_else, Range range = Range());
+	static Node *createStmtWhile(Node *condition, Range range = Range());
 	static Node *createStmtWhile(Node *condition, Node *body, Range range = Range());
+	static Node *createStmtFor(std::initializer_list<Node *> decls, Node *condition, std::initializer_list<Node *> steps, Range range = Range());
 	static Node *createStmtFor(std::initializer_list<Node *> decls, Node *condition, std::initializer_list<Node *> steps, Node *body, Range range = Range());
+	static Node *createStmtForEach(std::initializer_list<Node *> decls, std::initializer_list<Node *> sequences, Range range = Range());
 	static Node *createStmtForEach(std::initializer_list<Node *> decls, std::initializer_list<Node *> sequences, Node *body, Range range = Range());
+	static Node *createStmtBlock(Range range = Range());
 	static Node *createStmtBlock(std::initializer_list<Node *> stmts, Range range = Range());
 	static Node *createDeclVariable(Node *type, Field *name, Range range = Range());
 	static Node *createDeclVariable(Node *type, Field *name, Node *initial, Range range = Range());
@@ -297,11 +357,14 @@ public:
 	static Node *createDeclFunction(Node *ret, Field *name, std::initializer_list<Node *> templateDeclArgs, std::initializer_list<Node *> args, Range range = Range());
 	static Node *createDeclFunction(Node *ret, Field *name, std::initializer_list<Node *> args, Node *body, Range range = Range());
 	static Node *createDeclFunction(Node *ret, Field *name, std::initializer_list<Node *> templateDeclArgs, std::initializer_list<Node *> args, Node *body, Range range = Range());
+	static Node *createDeclClass(Field *name, Range range = Range());
 	static Node *createDeclClass(Field *name, std::initializer_list<Node *> members, Range range = Range());
 	static Node *createDeclClass(Field *name, std::initializer_list<Node *> inherits, std::initializer_list<Node *> members, Range range = Range());
 	static Node *createDeclClass(Field *name, std::initializer_list<Node *> templateDeclArgs, std::initializer_list<Node *> inherits, std::initializer_list<Node *> members, Range range = Range());
+	static Node *createDeclNamespace(Field *name, Range range = Range());
 	static Node *createDeclNamespace(Field *name, std::initializer_list<Node *> members, Range range = Range());
 	static Node *createImport(Field *path, Range range = Range());
+	static Node *createUnit();
 	static Node *createUnit(std::initializer_list<Node *> members);
 
 	Node *clone() const;
@@ -311,10 +374,10 @@ public:
 
 	Kind getKind() const;
 
-	int getNFields() const;
+	Field *getField(FieldTag tag);
 	Field *getField(int index);
+	const Field *getField(FieldTag tag) const;
 	const Field *getField(int index) const;
-	void setField(int index, Field *value);
 
 	Node *getNext();
 	const Node *getNext() const;

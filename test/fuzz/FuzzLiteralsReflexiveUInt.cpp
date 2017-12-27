@@ -32,12 +32,12 @@ int main(int argc, char *argv[]) {
 	return RUN_ALL_TESTS();
 }
 
-TEST(FuzzLiteralsReflexiveUInt64, All) {
+TEST(FuzzLiteralsReflexiveUInt, All) {
 	ASSERT_GT(nSamples, 0);
 
 	const int nFormats = 10;
 
-	std::cout << "Printing and evaluating " << nSamples << " UInt64s.\n";
+	std::cout << "Printing and evaluating " << nSamples << " UInts.\n";
 
 	for (int i = 0; i < nSamples; i++) {
 		uint32_t origBase[4] = {
@@ -50,16 +50,16 @@ TEST(FuzzLiteralsReflexiveUInt64, All) {
 
 		std::stringstream ss[nFormats];
 
-		printLiteralUInt64(ss[0], orig, 2, true, 0);
-		printLiteralUInt64(ss[1], orig, 2, true, 32);
-		printLiteralUInt64(ss[2], orig, 2, true, 64);
-		printLiteralUInt64(ss[3], orig, 8, true, 0);
-		printLiteralUInt64(ss[4], orig, 8, true, 32);
-		printLiteralUInt64(ss[5], orig, 8, true, 64);
-		printLiteralUInt64(ss[6], orig, 10, true, 0);
-		printLiteralUInt64(ss[7], orig, 16, true, 0);
-		printLiteralUInt64(ss[8], orig, 16, true, 32);
-		printLiteralUInt64(ss[9], orig, 16, true, 64);
+		printLiteralUInt(ss[0], orig, 2, true, 0);
+		printLiteralUInt(ss[1], orig, 2, true, 32);
+		printLiteralUInt(ss[2], orig, 2, true, 64);
+		printLiteralUInt(ss[3], orig, 8, true, 0);
+		printLiteralUInt(ss[4], orig, 8, true, 32);
+		printLiteralUInt(ss[5], orig, 8, true, 64);
+		printLiteralUInt(ss[6], orig, 10, true, 0);
+		printLiteralUInt(ss[7], orig, 16, true, 0);
+		printLiteralUInt(ss[8], orig, 16, true, 32);
+		printLiteralUInt(ss[9], orig, 16, true, 64);
 
 		for (int j = 0; j < nFormats; j++) {
 			Source src;
@@ -73,7 +73,7 @@ TEST(FuzzLiteralsReflexiveUInt64, All) {
 
 			uint64_t evaled;
 
-			bool res = evalLiteralUInt64(rng, evaled);
+			bool res = evalLiteralUInt(rng, evaled);
 			if (!res) {
 				std::cout << "Invalid format:\n";
 				std::cout << "  Original: " << orig << "\n";

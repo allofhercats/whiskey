@@ -4,7 +4,7 @@
 
 using namespace whiskey;
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base2_0) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base2_0) {
 	uint64_t value;
 
 	std::string str = "0b";
@@ -16,10 +16,10 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base2_0) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralUInt64(rng, value));
+	ASSERT_FALSE(evalLiteralUInt(rng, value));
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base2_1) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base2_1) {
 	uint64_t value;
 
 	std::string str = "0b0";
@@ -31,11 +31,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base2_1) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 0);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base2_2) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base2_2) {
 	uint64_t value;
 
 	std::string str = "0b1";
@@ -47,11 +47,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base2_2) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 1);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base2_3) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base2_3) {
 	uint64_t value;
 
 	std::string str = "0b2";
@@ -63,10 +63,10 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base2_3) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralUInt64(rng, value));
+	ASSERT_FALSE(evalLiteralUInt(rng, value));
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base2_4) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base2_4) {
 	uint64_t value;
 
 	std::string str = "0b10";
@@ -78,11 +78,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base2_4) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 2);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base2_5) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base2_5) {
 	uint64_t value;
 
 	std::string str = "0b11";
@@ -94,11 +94,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base2_5) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 3);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base2_6) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base2_6) {
 	uint64_t value;
 
 	std::string str = "0b10011011";
@@ -110,11 +110,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base2_6) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 155);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base8_0) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base8_0) {
 	uint64_t value;
 
 	std::string str = "0";
@@ -126,11 +126,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base8_0) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 0);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base8_1) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base8_1) {
 	uint64_t value;
 
 	std::string str = "00";
@@ -142,11 +142,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base8_1) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 0);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base8_2) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base8_2) {
 	uint64_t value;
 
 	std::string str = "01";
@@ -158,11 +158,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base8_2) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 1);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base8_3) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base8_3) {
 	uint64_t value;
 
 	std::string str = "07";
@@ -174,11 +174,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base8_3) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 7);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base8_4) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base8_4) {
 	uint64_t value;
 
 	std::string str = "08";
@@ -190,10 +190,10 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base8_4) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralUInt64(rng, value));
+	ASSERT_FALSE(evalLiteralUInt(rng, value));
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base8_5) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base8_5) {
 	uint64_t value;
 
 	std::string str = "033";
@@ -205,11 +205,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base8_5) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 27);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base8_6) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base8_6) {
 	uint64_t value;
 
 	std::string str = "07777";
@@ -221,11 +221,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base8_6) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 4095);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base10_0) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base10_0) {
 	uint64_t value;
 
 	std::string str = "1";
@@ -237,11 +237,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base10_0) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 1);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base10_1) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base10_1) {
 	uint64_t value;
 
 	std::string str = "9";
@@ -253,11 +253,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base10_1) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 9);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base10_2) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base10_2) {
 	uint64_t value;
 
 	std::string str = "19";
@@ -269,11 +269,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base10_2) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 19);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base10_3) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base10_3) {
 	uint64_t value;
 
 	std::string str = "123456789";
@@ -285,11 +285,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base10_3) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 123456789);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_0) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base16_0) {
 	uint64_t value;
 
 	std::string str = "0x";
@@ -301,10 +301,10 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_0) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralUInt64(rng, value));
+	ASSERT_FALSE(evalLiteralUInt(rng, value));
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_1) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base16_1) {
 	uint64_t value;
 
 	std::string str = "0x0";
@@ -316,11 +316,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_1) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 0);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_2) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base16_2) {
 	uint64_t value;
 
 	std::string str = "0x9";
@@ -332,11 +332,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_2) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 9);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_3) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base16_3) {
 	uint64_t value;
 
 	std::string str = "0xa";
@@ -348,11 +348,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_3) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 10);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_4) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base16_4) {
 	uint64_t value;
 
 	std::string str = "0xA";
@@ -364,11 +364,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_4) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 10);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_5) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base16_5) {
 	uint64_t value;
 
 	std::string str = "0xf";
@@ -380,11 +380,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_5) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 15);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_6) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base16_6) {
 	uint64_t value;
 
 	std::string str = "0xF";
@@ -396,11 +396,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_6) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 15);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_7) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base16_7) {
 	uint64_t value;
 
 	std::string str = "0xdeadbeef";
@@ -412,11 +412,11 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_7) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralUInt64(rng, value));
+	ASSERT_TRUE(evalLiteralUInt(rng, value));
 	ASSERT_EQ(value, 0xdeadbeef);
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_8) {
+TEST(Unit_Parsing_EvalLiterals, UInt_Base16_8) {
 	uint64_t value;
 
 	std::string str = "0xgeadbeef";
@@ -428,10 +428,10 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_Base16_8) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralUInt64(rng, value));
+	ASSERT_FALSE(evalLiteralUInt(rng, value));
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_NoBase_0) {
+TEST(Unit_Parsing_EvalLiterals, UInt_NoBase_0) {
 	uint64_t value;
 
 	std::string str = "a";
@@ -443,10 +443,10 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_NoBase_0) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralUInt64(rng, value));
+	ASSERT_FALSE(evalLiteralUInt(rng, value));
 }
 
-TEST(Unit_Parsing_EvalLiterals, UInt64_NoBase_1) {
+TEST(Unit_Parsing_EvalLiterals, UInt_NoBase_1) {
 	uint64_t value;
 
 	std::string str = "5a";
@@ -458,7 +458,7 @@ TEST(Unit_Parsing_EvalLiterals, UInt64_NoBase_1) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralUInt64(rng, value));
+	ASSERT_FALSE(evalLiteralUInt(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, Real_0) {
@@ -1038,7 +1038,7 @@ TEST(Unit_Parsing_EvalLiterals, String_0) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "a");
 }
 
@@ -1054,7 +1054,7 @@ TEST(Unit_Parsing_EvalLiterals, String_1) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralString(rng, value));
+	ASSERT_FALSE(evalLiteralString8(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_2) {
@@ -1069,7 +1069,7 @@ TEST(Unit_Parsing_EvalLiterals, String_2) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralString(rng, value));
+	ASSERT_FALSE(evalLiteralString8(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_3) {
@@ -1084,7 +1084,7 @@ TEST(Unit_Parsing_EvalLiterals, String_3) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "");
 }
 
@@ -1100,7 +1100,7 @@ TEST(Unit_Parsing_EvalLiterals, String_4) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralString(rng, value));
+	ASSERT_FALSE(evalLiteralString8(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_5) {
@@ -1115,7 +1115,7 @@ TEST(Unit_Parsing_EvalLiterals, String_5) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "\a");
 }
 
@@ -1131,7 +1131,7 @@ TEST(Unit_Parsing_EvalLiterals, String_6) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "\0");
 }
 
@@ -1147,7 +1147,7 @@ TEST(Unit_Parsing_EvalLiterals, String_7) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "\7");
 }
 
@@ -1163,7 +1163,7 @@ TEST(Unit_Parsing_EvalLiterals, String_8) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "\0");
 }
 
@@ -1179,7 +1179,7 @@ TEST(Unit_Parsing_EvalLiterals, String_9) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "\0");
 }
 
@@ -1195,7 +1195,7 @@ TEST(Unit_Parsing_EvalLiterals, String_10) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "\177");
 }
 
@@ -1211,7 +1211,7 @@ TEST(Unit_Parsing_EvalLiterals, String_11) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "\0");
 }
 
@@ -1227,7 +1227,7 @@ TEST(Unit_Parsing_EvalLiterals, String_12) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralString(rng, value));
+	ASSERT_FALSE(evalLiteralString8(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_13) {
@@ -1242,7 +1242,7 @@ TEST(Unit_Parsing_EvalLiterals, String_13) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralString(rng, value));
+	ASSERT_FALSE(evalLiteralString8(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_14) {
@@ -1257,7 +1257,7 @@ TEST(Unit_Parsing_EvalLiterals, String_14) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "");
 }
 
@@ -1273,7 +1273,7 @@ TEST(Unit_Parsing_EvalLiterals, String_15) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralString(rng, value));
+	ASSERT_FALSE(evalLiteralString8(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_16) {
@@ -1288,7 +1288,7 @@ TEST(Unit_Parsing_EvalLiterals, String_16) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralString(rng, value));
+	ASSERT_FALSE(evalLiteralString8(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_17) {
@@ -1303,7 +1303,7 @@ TEST(Unit_Parsing_EvalLiterals, String_17) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralString(rng, value));
+	ASSERT_FALSE(evalLiteralString8(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_18) {
@@ -1318,7 +1318,7 @@ TEST(Unit_Parsing_EvalLiterals, String_18) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralString(rng, value));
+	ASSERT_FALSE(evalLiteralString8(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_19) {
@@ -1333,7 +1333,7 @@ TEST(Unit_Parsing_EvalLiterals, String_19) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "\xff\xff");
 }
 
@@ -1349,7 +1349,7 @@ TEST(Unit_Parsing_EvalLiterals, String_20) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "\xff\xff");
 }
 
@@ -1365,7 +1365,7 @@ TEST(Unit_Parsing_EvalLiterals, String_21) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "");
 }
 
@@ -1381,7 +1381,7 @@ TEST(Unit_Parsing_EvalLiterals, String_22) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_FALSE(evalLiteralString(rng, value));
+	ASSERT_FALSE(evalLiteralString8(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_23) {
@@ -1396,7 +1396,7 @@ TEST(Unit_Parsing_EvalLiterals, String_23) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "\xff\xff\xff\xff");
 }
 
@@ -1412,7 +1412,7 @@ TEST(Unit_Parsing_EvalLiterals, String_24) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "\xff\xff\xff\xff");
 }
 
@@ -1428,7 +1428,7 @@ TEST(Unit_Parsing_EvalLiterals, String_25) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "\\");
 }
 
@@ -1444,7 +1444,7 @@ TEST(Unit_Parsing_EvalLiterals, String_26) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "\'");
 }
 
@@ -1460,7 +1460,7 @@ TEST(Unit_Parsing_EvalLiterals, String_27) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "\"");
 }
 
@@ -1476,7 +1476,7 @@ TEST(Unit_Parsing_EvalLiterals, String_28) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "?");
 }
 
@@ -1492,6 +1492,6 @@ TEST(Unit_Parsing_EvalLiterals, String_29) {
 
 	Range rng(loc, str.size());
 
-	ASSERT_TRUE(evalLiteralString(rng, value));
+	ASSERT_TRUE(evalLiteralString8(rng, value));
 	ASSERT_STREQ(value.c_str(), "Hello, world.\n");
 }

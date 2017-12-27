@@ -3,7 +3,11 @@
 #include <whiskey/Parsing/EvalLiterals.hpp>
 
 namespace whiskey {
-void appendChar32ToString(std::string &value, char32_t chr) {
+void appendChar16ToString8(std::string &value, char16_t chr) {
+	appendChar32ToString8(value, chr);
+}
+
+void appendChar32ToString8(std::string &value, char32_t chr) {
 	int width = getChar32MinWidth(chr);
 	if (width == 1) {
 		value.push_back((char)chr);
@@ -23,7 +27,20 @@ void appendChar32ToString(std::string &value, char32_t chr) {
 	}
 }
 
-bool evalLiteralUInt64(Range range, uint64_t &value) {
+void appendChar32ToString16(std::u16string &value, char32_t chr) {
+	int width = getChar32MinWidth(chr);
+	if (width == 1 || width == 2) {
+		value.push_back((char16_t)chr);
+	} else if (width == 4) {
+		const char16_t *ptr = (const char16_t *)&chr;
+		value.push_back(ptr[0]);
+		value.push_back(ptr[1]);
+	} else {
+		W_ASSERT_UNREACHABLE("Unsupported min character width " << width << ".");
+	}
+}
+
+bool evalLiteralUInt(Range range, uint64_t &value) {
 	value = 0;
 
 	Location i = range.getStart();
@@ -357,7 +374,7 @@ bool evalLiteralChar(Range range, char32_t &value) {
 	}
 }
 
-bool evalLiteralString(Range range, std::string &value) {
+bool evalLiteralString8(Range range, std::string &value) {
 	value = "";
 
 	Location i = range.getStart();
@@ -386,7 +403,80 @@ bool evalLiteralString(Range range, std::string &value) {
 				return false;
 			}
 			
-			appendChar32ToString(value, tmp);
+			appendChar32ToString8(value, tmp);
+		}
+	}
+
+	return endedCorrectly;
+}
+
+bool evalLiteralString16(Range range, std::u16string &value) {
+	value = u"";
+
+	Location i = range.getStart();
+	size_t n = 0;
+
+	if (n >= range.getLength()) {
+		return false;
+	}
+
+	if (i.getChar() != '\"') {
+		return false;
+	}
+
+	i.eatChar();
+	n++;
+
+	bool endedCorrectly = false;
+
+	while (i.getOffset() - range.getStart().getOffset() < range.getLength()) {
+		if (i.getChar() == '\"') {
+			endedCorrectly = true;
+			break;
+		} else {
+			char32_t tmp;
+			if (!evalLiteralCharHelper(i, range.getLength() - (i.getOffset() - range.getStart().getOffset()), tmp)) {
+				return false;
+			}
+			
+			appendChar32ToString16(value, tmp);
+		}
+	}
+
+	return endedCorrectly;
+}
+
+bool evalLiteralString32(Range range, std::u32string &value) {
+	value = U"";
+
+	Location i = range.getStart();
+	size_t n = 0;
+
+	if (n >= range.getLength()) {
+		return false;
+	}
+
+	if (i.getChar() != '\"') {
+		return false;
+	}
+
+	i.eatChar();
+	n++;
+
+	bool endedCorrectly = false;
+
+	while (i.getOffset() - range.getStart().getOffset() < range.getLength()) {
+		if (i.getChar() == '\"') {
+			endedCorrectly = true;
+			break;
+		} else {
+			char32_t tmp;
+			if (!evalLiteralCharHelper(i, range.getLength() - (i.getOffset() - range.getStart().getOffset()), tmp)) {
+				return false;
+			}
+			
+			// appendChar32ToString8(value, tmp);
+			value.push_back(tmp);
 		}
 	}
 
