@@ -5,27 +5,27 @@
 using namespace whiskey;
 
 TEST(Unit_Core_Color, Enabled) {
-	std::stringstream ss;
+  std::stringstream ss;
 
-	Color tmp("hi");
+  Color tmp("hi");
 
-	ASSERT_STREQ(ss.str().c_str(), "");
+  ASSERT_STREQ(ss.str().c_str(), "");
 
-	Color::enabled = true;
-	ss << tmp;
+  Color::enabled = true;
+  ss << tmp;
 
-	ASSERT_STREQ(ss.str().c_str(), "hi");
+  ASSERT_STREQ(ss.str().c_str(), "hi");
 }
 
 TEST(Unit_Core_Color, Disabled) {
-	std::stringstream ss;
+  std::stringstream ss;
 
-	Color tmp("hi");
+  Color tmp("hi");
 
-	ASSERT_STREQ(ss.str().c_str(), "");
+  ASSERT_STREQ(ss.str().c_str(), "");
 
-	Color::enabled = false;
-	ss << tmp;
+  Color::enabled = false;
+  ss << tmp;
 
-	ASSERT_STREQ(ss.str().c_str(), "");
+  ASSERT_STREQ(ss.str().c_str(), "");
 }

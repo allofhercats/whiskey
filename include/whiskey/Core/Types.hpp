@@ -10,6 +10,6 @@ typedef long double Real;
 typedef char Char8;
 typedef char16_t Char16;
 typedef char32_t Char32;
-}
+} // namespace whiskey
 
 #endif

@@ -8,15 +8,15 @@
 namespace whiskey {
 class Expr : public AST {
 protected:
-	bool onCompare(const AST &other) const;
-	void onGetChildren(std::queue<ContainerRef<AST>> &children);
+  bool onCompare(const AST &other) const;
+  void onGetChildren(std::queue<ContainerRef<AST>> &children);
 
-	virtual bool onCompareExpr(const Expr &other) const = 0;
-	virtual void onGetChildrenExpr(std::queue<ContainerRef<AST>> &children) = 0;
+  virtual bool onCompareExpr(const Expr &other) const = 0;
+  virtual void onGetChildrenExpr(std::queue<ContainerRef<AST>> &children) = 0;
 
 public:
-	Expr(AST::ID id, Range range);
+  Expr(AST::ID id, Range range);
 };
-}
+} // namespace whiskey
 
 #endif

@@ -8,24 +8,27 @@
 namespace whiskey {
 class TypeSymbol : public TypeLiteral<std::string> {
 private:
-	std::vector<Container<AST>> templateEvalArgs;
+  std::vector<Container<AST>> templateEvalArgs;
 
 protected:
-	virtual AST *onClone() const;
+  virtual AST *onClone() const;
 
-	bool onCompareTypeLiteral(const TypeLiteral<std::string> &other) const;
-	void onGetChildrenTypeLiteral(std::queue<ContainerRef<AST>> &children);
+  bool onCompareTypeLiteral(const TypeLiteral<std::string> &other) const;
+  void onGetChildrenTypeLiteral(std::queue<ContainerRef<AST>> &children);
 
-	virtual bool onCompareTypeSymbol(const TypeSymbol &other) const;
-	virtual void onGetChildrenTypeSymbol(std::queue<ContainerRef<AST>> &children);
+  virtual bool onCompareTypeSymbol(const TypeSymbol &other) const;
+  virtual void onGetChildrenTypeSymbol(std::queue<ContainerRef<AST>> &children);
 
 public:
-	TypeSymbol(std::string value, std::vector<Container<AST>> templateEvalArgs = {});
-	TypeSymbol(Range range, std::string value, std::vector<Container<AST>> templateEvalArgs = {});
+  TypeSymbol(std::string value,
+             std::vector<Container<AST>> templateEvalArgs = {});
+  TypeSymbol(Range range,
+             std::string value,
+             std::vector<Container<AST>> templateEvalArgs = {});
 
-	std::vector<Container<AST>> &getTemplateEvalArgs();
-	const std::vector<Container<AST>> &getTemplateEvalArgs() const;
+  std::vector<Container<AST>> &getTemplateEvalArgs();
+  const std::vector<Container<AST>> &getTemplateEvalArgs() const;
 };
-}
+} // namespace whiskey
 
 #endif

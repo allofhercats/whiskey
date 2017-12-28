@@ -8,30 +8,32 @@
 namespace whiskey {
 class ParserContext {
 public:
-	typedef std::function<ParserResult(ParserContext &)> Rule;
+  typedef std::function<ParserResult(ParserContext &)> Rule;
 
 private:
-	const std::vector<Token> *tokens;
-	std::stack<Token> injected;
-	unsigned int offset;
-	MessageBuffer *msgs;
+  const std::vector<Token> *tokens;
+  std::stack<Token> injected;
+  unsigned int offset;
+  MessageBuffer *msgs;
 
 public:
-	ParserContext(const std::vector<Token> &tokens, MessageBuffer &msgs, unsigned int offset = 0);
+  ParserContext(const std::vector<Token> &tokens,
+                MessageBuffer &msgs,
+                unsigned int offset = 0);
 
-	bool areMoreTokens() const;
-	Token getToken() const;
-	Token eatToken();
+  bool areMoreTokens() const;
+  Token getToken() const;
+  Token eatToken();
 
-	void injectToken(Token token);
+  void injectToken(Token token);
 
-	MessageBuffer &getMsgs() const;
+  MessageBuffer &getMsgs() const;
 
-	void errorUnexpectedToken(const std::string &expected) const;
+  void errorUnexpectedToken(const std::string &expected) const;
 
-	ParserResult parse(Rule rule);
-	ParserResult parseAny(std::initializer_list<Rule> rules);
+  ParserResult parse(Rule rule);
+  ParserResult parseAny(std::initializer_list<Rule> rules);
 };
-}
+} // namespace whiskey
 
 #endif

@@ -5,13 +5,13 @@
 using namespace whiskey;
 
 TEST(Unit_Parsing_ParserResult, Empty) {
-	ParserResult res;
+  ParserResult res;
 
-	ASSERT_FALSE(res.isGood());
+  ASSERT_FALSE(res.isGood());
 }
 
 TEST(Unit_Parsing_ParserResult, Filled) {
-	ParserResult res(Node::createTypeAtomicInt32());
+  ParserResult res(Node::createTypeAtomicInt32());
 
-	ASSERT_TRUE(res.isGood());
+  ASSERT_TRUE(res.isGood());
 }

@@ -6,20 +6,20 @@
 namespace whiskey {
 class ParserResult {
 private:
-	Node *node;
-	bool good;
+  Node *node;
+  bool good;
 
 public:
-	ParserResult();
-	ParserResult(Node *node);
+  ParserResult();
+  ParserResult(Node *node);
 
-	Node *getNode();
-	const Node *getNode() const;
-	void setNode(Node *value);
+  Node *getNode();
+  const Node *getNode() const;
+  void setNode(Node *value);
 
-	bool isGood() const;
-	void setGood(bool value);
+  bool isGood() const;
+  void setGood(bool value);
 };
-}
+} // namespace whiskey
 
 #endif

@@ -4,18 +4,19 @@
 
 namespace whiskey {
 bool Type::onCompare(const AST &other) const {
-	const Type &casted = static_cast<const Type &>(other);
+  const Type &casted = static_cast<const Type &>(other);
 
-	if (!onCompareType(casted)) {
-		return false;
-	}
+  if (!onCompareType(casted)) {
+    return false;
+  }
 
-	return true;
+  return true;
 }
 
 void Type::onGetChildren(std::queue<ContainerRef<AST>> &children) {
-	onGetChildrenType(children);
+  onGetChildrenType(children);
 }
 
-Type::Type(AST::ID id, Range range) : AST(id, range) {}
+Type::Type(AST::ID id, Range range) : AST(id, range) {
 }
+} // namespace whiskey

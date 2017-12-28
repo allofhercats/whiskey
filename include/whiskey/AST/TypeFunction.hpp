@@ -8,29 +8,32 @@
 namespace whiskey {
 class TypeFunction : public Type {
 private:
-	Container<Type> ret;
-	std::vector<Container<Type>> args;
+  Container<Type> ret;
+  std::vector<Container<Type>> args;
 
 protected:
-	virtual AST *onClone() const;
+  virtual AST *onClone() const;
 
-	bool onCompareType(const Type &other) const;
-	void onGetChildrenType(std::queue<ContainerRef<AST>> &children);
+  bool onCompareType(const Type &other) const;
+  void onGetChildrenType(std::queue<ContainerRef<AST>> &children);
 
-	virtual bool onCompareTypeFunction(const TypeFunction &other) const;
-	virtual void onGetChildrenTypeFunction(std::queue<ContainerRef<AST>> &children);
+  virtual bool onCompareTypeFunction(const TypeFunction &other) const;
+  virtual void
+  onGetChildrenTypeFunction(std::queue<ContainerRef<AST>> &children);
 
 public:
-	TypeFunction(Container<Type> ret, std::vector<Container<Type>> args = {});
-	TypeFunction(Range range, Container<Type> ret, std::vector<Container<Type>> args = {});
+  TypeFunction(Container<Type> ret, std::vector<Container<Type>> args = {});
+  TypeFunction(Range range,
+               Container<Type> ret,
+               std::vector<Container<Type>> args = {});
 
-	Ref<Type> getRet();
-	CRef<Type> getRet() const;
-	void setRet(Container<Type> value);
+  Ref<Type> getRet();
+  CRef<Type> getRet() const;
+  void setRet(Container<Type> value);
 
-	std::vector<Container<Type>> &getArgs();
-	const std::vector<Container<Type>> &getArgs() const;
+  std::vector<Container<Type>> &getArgs();
+  const std::vector<Container<Type>> &getArgs() const;
 };
-}
+} // namespace whiskey
 
 #endif

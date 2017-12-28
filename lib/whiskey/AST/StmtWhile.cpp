@@ -4,64 +4,74 @@
 
 namespace whiskey {
 AST *StmtWhile::onClone() const {
-	return new StmtWhile(getRange(), condition, bodyClause);
+  return new StmtWhile(getRange(), condition, bodyClause);
 }
 
 bool StmtWhile::onCompareStmt(const Stmt &other) const {
-	const StmtWhile &casted = static_cast<const StmtWhile &>(other);
+  const StmtWhile &casted = static_cast<const StmtWhile &>(other);
 
-	if (!AST::compare(condition, casted.condition)) {
-		return false;
-	}
+  if (!AST::compare(condition, casted.condition)) {
+    return false;
+  }
 
-	if (!AST::compare(bodyClause, casted.bodyClause)) {
-		return false;
-	}
+  if (!AST::compare(bodyClause, casted.bodyClause)) {
+    return false;
+  }
 
-	if (!onCompareStmtWhile(casted)) {
-		return false;
-	}
+  if (!onCompareStmtWhile(casted)) {
+    return false;
+  }
 
-	return true;
+  return true;
 }
 
 void StmtWhile::onGetChildrenStmt(std::queue<ContainerRef<AST>> &children) {
-	children.push(ContainerRef<AST>(condition));
-	children.push(ContainerRef<AST>(bodyClause));
-	onGetChildrenStmtWhile(children);
+  children.push(ContainerRef<AST>(condition));
+  children.push(ContainerRef<AST>(bodyClause));
+  onGetChildrenStmtWhile(children);
 }
 
 bool StmtWhile::onCompareStmtWhile(const StmtWhile &other) const {
-	return true;
+  return true;
 }
 
-void StmtWhile::onGetChildrenStmtWhile(std::queue<ContainerRef<AST>> &children) {}
+void StmtWhile::onGetChildrenStmtWhile(
+    std::queue<ContainerRef<AST>> &children) {
+}
 
-StmtWhile::StmtWhile(Container<Expr> condition, Container<Stmt> bodyClause) : Stmt(AST::ID::StmtWhile, Range()), condition(condition), bodyClause(bodyClause) {}
+StmtWhile::StmtWhile(Container<Expr> condition, Container<Stmt> bodyClause)
+    : Stmt(AST::ID::StmtWhile, Range()), condition(condition),
+      bodyClause(bodyClause) {
+}
 
-StmtWhile::StmtWhile(Range range, Container<Expr> condition, Container<Stmt> bodyClause) : Stmt(AST::ID::StmtWhile, range), condition(condition), bodyClause(bodyClause) {}
+StmtWhile::StmtWhile(Range range,
+                     Container<Expr> condition,
+                     Container<Stmt> bodyClause)
+    : Stmt(AST::ID::StmtWhile, range), condition(condition),
+      bodyClause(bodyClause) {
+}
 
 Ref<Expr> StmtWhile::getCondition() {
-	return condition;
+  return condition;
 }
 
 CRef<Expr> StmtWhile::getCondition() const {
-	return condition;
+  return condition;
 }
 
 void StmtWhile::setCondition(Container<Expr> value) {
-	condition = value;
+  condition = value;
 }
 
 Ref<Stmt> StmtWhile::getBodyClause() {
-	return bodyClause;
+  return bodyClause;
 }
 
 CRef<Stmt> StmtWhile::getBodyClause() const {
-	return bodyClause;
+  return bodyClause;
 }
 
 void StmtWhile::setBodyClause(Container<Stmt> value) {
-	bodyClause = value;
+  bodyClause = value;
 }
-}
+} // namespace whiskey

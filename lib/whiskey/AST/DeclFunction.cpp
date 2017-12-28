@@ -6,79 +6,94 @@
 
 namespace whiskey {
 AST *DeclFunction::onClone() const {
-	return new DeclFunction(getRange(), ret, getName(), args, body);
+  return new DeclFunction(getRange(), ret, getName(), args, body);
 }
 
 bool DeclFunction::onCompareDecl(const Decl &other) const {
-	const DeclFunction &casted = static_cast<const DeclFunction &>(other);
+  const DeclFunction &casted = static_cast<const DeclFunction &>(other);
 
-	if (!AST::compare(ret, casted.ret)) {
-		return false;
-	}
+  if (!AST::compare(ret, casted.ret)) {
+    return false;
+  }
 
-	if (!AST::compare(args, casted.args)) {
-		return false;
-	}
+  if (!AST::compare(args, casted.args)) {
+    return false;
+  }
 
-	if (!AST::compare(body, casted.body)) {
-		return false;
-	}
+  if (!AST::compare(body, casted.body)) {
+    return false;
+  }
 
-	if (!onCompareDeclFunction(casted)) {
-		return false;
-	}
+  if (!onCompareDeclFunction(casted)) {
+    return false;
+  }
 
-	return true;
+  return true;
 }
 
 void DeclFunction::onGetChildrenDecl(std::queue<ContainerRef<AST>> &children) {
-	children.push(ContainerRef<AST>(ret));
-	for (Container<DeclVariable> &i : args) {
-		children.push(ContainerRef<AST>(i));
-	}
-	children.push(ContainerRef<AST>(body));
-	onGetChildrenDeclFunction(children);
+  children.push(ContainerRef<AST>(ret));
+  for (Container<DeclVariable> &i : args) {
+    children.push(ContainerRef<AST>(i));
+  }
+  children.push(ContainerRef<AST>(body));
+  onGetChildrenDeclFunction(children);
 }
 
 bool DeclFunction::onCompareDeclFunction(const DeclFunction &other) const {
-	return true;
+  return true;
 }
 
-void DeclFunction::onGetChildrenDeclFunction(std::queue<ContainerRef<AST>> &children) {}
+void DeclFunction::onGetChildrenDeclFunction(
+    std::queue<ContainerRef<AST>> &children) {
+}
 
-DeclFunction::DeclFunction(Container<Type> ret, std::string name, std::vector<Container<DeclVariable>> args, Container<Stmt> body) : Decl(AST::ID::DeclFunction, Range(), name), ret(ret), args(args), body(body) {}
+DeclFunction::DeclFunction(Container<Type> ret,
+                           std::string name,
+                           std::vector<Container<DeclVariable>> args,
+                           Container<Stmt> body)
+    : Decl(AST::ID::DeclFunction, Range(), name), ret(ret), args(args),
+      body(body) {
+}
 
-DeclFunction::DeclFunction(Range range, Container<Type> ret, std::string name, std::vector<Container<DeclVariable>> args, Container<Stmt> body) : Decl(AST::ID::DeclFunction, range, name), ret(ret), args(args), body(body) {}
+DeclFunction::DeclFunction(Range range,
+                           Container<Type> ret,
+                           std::string name,
+                           std::vector<Container<DeclVariable>> args,
+                           Container<Stmt> body)
+    : Decl(AST::ID::DeclFunction, range, name), ret(ret), args(args),
+      body(body) {
+}
 
 Ref<Type> DeclFunction::getRet() {
-	return ret;
+  return ret;
 }
 
 CRef<Type> DeclFunction::getRet() const {
-	return ret;
+  return ret;
 }
 
 void DeclFunction::setRet(Container<Type> value) {
-	ret = value;
+  ret = value;
 }
 
 std::vector<Container<DeclVariable>> &DeclFunction::getArgs() {
-	return args;
+  return args;
 }
 
 const std::vector<Container<DeclVariable>> &DeclFunction::getArgs() const {
-	return args;
+  return args;
 }
 
 Ref<Stmt> DeclFunction::getBody() {
-	return body;
+  return body;
 }
 
 CRef<Stmt> DeclFunction::getBody() const {
-	return body;
+  return body;
 }
 
 void DeclFunction::setBody(Container<Stmt> value) {
-	body = value;
+  body = value;
 }
-}
+} // namespace whiskey

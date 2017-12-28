@@ -15,6 +15,7 @@
 #include <whiskey/AST/ExprLiteralInt.hpp>
 #include <whiskey/AST/ExprSymbol.hpp>
 #include <whiskey/AST/ExprUnary.hpp>
+#include <whiskey/AST/Import.hpp>
 #include <whiskey/AST/Stmt.hpp>
 #include <whiskey/AST/StmtBlock.hpp>
 #include <whiskey/AST/StmtEmpty.hpp>
@@ -24,12 +25,11 @@
 #include <whiskey/AST/StmtIf.hpp>
 #include <whiskey/AST/StmtWhile.hpp>
 #include <whiskey/AST/Type.hpp>
+#include <whiskey/AST/TypeAtomic.hpp>
 #include <whiskey/AST/TypeBinary.hpp>
 #include <whiskey/AST/TypeFunction.hpp>
 #include <whiskey/AST/TypeLiteral.hpp>
 #include <whiskey/AST/TypeSymbol.hpp>
 #include <whiskey/AST/TypeUnary.hpp>
-#include <whiskey/AST/TypeAtomic.hpp>
-#include <whiskey/AST/Import.hpp>
 
 #endif

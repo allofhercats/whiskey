@@ -8,24 +8,24 @@
 namespace whiskey {
 class Import : public AST {
 private:
-	std::string path;
+  std::string path;
 
 protected:
-	virtual AST *onClone() const;
-	
-	bool onCompare(const AST &other) const;
-	void onGetChildren(std::queue<ContainerRef<AST>> &children);
+  virtual AST *onClone() const;
 
-	virtual bool onCompareImport(const Import &other) const;
-	virtual void onGetChildrenImport(std::queue<ContainerRef<AST>> &children);
+  bool onCompare(const AST &other) const;
+  void onGetChildren(std::queue<ContainerRef<AST>> &children);
+
+  virtual bool onCompareImport(const Import &other) const;
+  virtual void onGetChildrenImport(std::queue<ContainerRef<AST>> &children);
 
 public:
-	Import(std::string path);
-	Import(Range range, std::string path);
+  Import(std::string path);
+  Import(Range range, std::string path);
 
-	const std::string &getPath() const;
-	void setPath(std::string value);
+  const std::string &getPath() const;
+  void setPath(std::string value);
 };
-}
+} // namespace whiskey
 
 #endif

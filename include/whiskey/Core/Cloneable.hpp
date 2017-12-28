@@ -6,25 +6,25 @@
 #include <whiskey/Core/Assert.hpp>
 
 namespace whiskey {
-template<class SelfType>
+template <class SelfType>
 class Cloneable {
 protected:
-	virtual SelfType *onClone() const = 0;
+  virtual SelfType *onClone() const = 0;
 
 public:
-	Cloneable();
-	Cloneable(const Cloneable &) = delete;
-	Cloneable(Cloneable &&) = delete;
-	Cloneable &operator=(const Cloneable &) = delete;
-	Cloneable &operator=(Cloneable &&) = delete;
-	virtual ~Cloneable();
+  Cloneable();
+  Cloneable(const Cloneable &) = delete;
+  Cloneable(Cloneable &&) = delete;
+  Cloneable &operator=(const Cloneable &) = delete;
+  Cloneable &operator=(Cloneable &&) = delete;
+  virtual ~Cloneable();
 
-	SelfType *clone() const;
-	
-	template<class ResType>
-	ResType *cloneAs() const;
+  SelfType *clone() const;
+
+  template <class ResType>
+  ResType *cloneAs() const;
 };
-}
+} // namespace whiskey
 
 #include <whiskey/Core/Cloneable.tpp>
 

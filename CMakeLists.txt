@@ -34,7 +34,7 @@ endif()
 # File lists
 #-----------------------------------------------------------------------
 
-set(whiskey_libs lib_whiskey gtest m ${ICU_LIBRARIES})
+set(whiskey_libs lib_whiskey gtest m ${ICU_LIBRARIES} bfd)
 
 file(GLOB_RECURSE lib_whiskey_files lib/whiskey/*.cpp)
 file(GLOB_RECURSE test_unit_files test/unit/*.cpp)

@@ -4,28 +4,31 @@
 
 namespace whiskey {
 AST *TypeAtomic::onClone() const {
-	return new TypeAtomic(getID(), getRange());
+  return new TypeAtomic(getID(), getRange());
 }
 
 bool TypeAtomic::onCompareType(const Type &other) const {
-	const TypeAtomic &casted = static_cast<const TypeAtomic &>(other);
+  const TypeAtomic &casted = static_cast<const TypeAtomic &>(other);
 
-	if (!onCompareTypeAtomic(casted)) {
-		return false;
-	}
+  if (!onCompareTypeAtomic(casted)) {
+    return false;
+  }
 
-	return true;
+  return true;
 }
 
 void TypeAtomic::onGetChildrenType(std::queue<ContainerRef<AST>> &children) {
-	onGetChildrenTypeAtomic(children);
+  onGetChildrenTypeAtomic(children);
 }
 
 bool TypeAtomic::onCompareTypeAtomic(const TypeAtomic &other) const {
-	return true;
+  return true;
 }
 
-void TypeAtomic::onGetChildrenTypeAtomic(std::queue<ContainerRef<AST>> &children) {}
-
-TypeAtomic::TypeAtomic(AST::ID id, Range range) : Type(id, range) {}
+void TypeAtomic::onGetChildrenTypeAtomic(
+    std::queue<ContainerRef<AST>> &children) {
 }
+
+TypeAtomic::TypeAtomic(AST::ID id, Range range) : Type(id, range) {
+}
+} // namespace whiskey

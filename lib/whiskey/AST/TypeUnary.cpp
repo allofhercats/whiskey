@@ -4,47 +4,53 @@
 
 namespace whiskey {
 AST *TypeUnary::onClone() const {
-	return new TypeUnary(getID(), getRange(), arg);
+  return new TypeUnary(getID(), getRange(), arg);
 }
 
 bool TypeUnary::onCompareType(const Type &other) const {
-	const TypeUnary &casted = static_cast<const TypeUnary &>(other);
+  const TypeUnary &casted = static_cast<const TypeUnary &>(other);
 
-	if (!AST::compare(arg, casted.arg)) {
-		return false;
-	}
+  if (!AST::compare(arg, casted.arg)) {
+    return false;
+  }
 
-	if (!onCompareTypeUnary(casted)) {
-		return false;
-	}
+  if (!onCompareTypeUnary(casted)) {
+    return false;
+  }
 
-	return true;
+  return true;
 }
 
 void TypeUnary::onGetChildrenType(std::queue<ContainerRef<AST>> &children) {
-	children.push(ContainerRef<AST>(arg));
-	onGetChildrenTypeUnary(children);
+  children.push(ContainerRef<AST>(arg));
+  onGetChildrenTypeUnary(children);
 }
 
 bool TypeUnary::onCompareTypeUnary(const TypeUnary &other) const {
-	return true;
+  return true;
 }
 
-void TypeUnary::onGetChildrenTypeUnary(std::queue<ContainerRef<AST>> &children) {}
+void TypeUnary::onGetChildrenTypeUnary(
+    std::queue<ContainerRef<AST>> &children) {
+}
 
-TypeUnary::TypeUnary(AST::ID id, Container<Type> arg) : Type(id, Range()), arg(arg) {}
+TypeUnary::TypeUnary(AST::ID id, Container<Type> arg)
+    : Type(id, Range()), arg(arg) {
+}
 
-TypeUnary::TypeUnary(AST::ID id, Range range, Container<Type> arg) : Type(id, range), arg(arg) {}
+TypeUnary::TypeUnary(AST::ID id, Range range, Container<Type> arg)
+    : Type(id, range), arg(arg) {
+}
 
 Ref<Type> TypeUnary::getArg() {
-	return arg;
+  return arg;
 }
 
 CRef<Type> TypeUnary::getArg() const {
-	return arg;
+  return arg;
 }
 
 void TypeUnary::setArg(Container<Type> value) {
-	arg = value;
+  arg = value;
 }
-}
+} // namespace whiskey

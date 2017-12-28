@@ -4,40 +4,42 @@
 
 namespace whiskey {
 void TokenFuzzer::emitChar(char value) {
-	textStream << value;
-	lastChar = value;
-	length++;
+  textStream << value;
+  lastChar = value;
+  length++;
 }
 
 void TokenFuzzer::emitToken(Token::ID id) {
-	tokenIDs.push_back(id);
+  tokenIDs.push_back(id);
 }
 
 char TokenFuzzer::getLastChar() const {
-	return lastChar;
+  return lastChar;
 }
 
 size_t TokenFuzzer::getLength() const {
-	return length;
+  return length;
 }
 
 Token::ID TokenFuzzer::getLastTokenID() const {
-	return tokenIDs.back();
+  return tokenIDs.back();
 }
 
-TokenFuzzer::TokenFuzzer() : lastChar(0), length(0) {}
+TokenFuzzer::TokenFuzzer() : lastChar(0), length(0) {
+}
 
-TokenFuzzer::~TokenFuzzer() {}
+TokenFuzzer::~TokenFuzzer() {
+}
 
 std::string TokenFuzzer::getText() const {
-	return textStream.str();
+  return textStream.str();
 }
 
 const std::vector<Token::ID> &TokenFuzzer::getTokenIDs() const {
-	return tokenIDs;
+  return tokenIDs;
 }
 
 void TokenFuzzer::fuzz() {
-	onFuzz();
+  onFuzz();
 }
-}
+} // namespace whiskey

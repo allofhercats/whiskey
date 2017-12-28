@@ -4,18 +4,19 @@
 
 namespace whiskey {
 bool Expr::onCompare(const AST &other) const {
-	const Expr &casted = static_cast<const Expr &>(other);
+  const Expr &casted = static_cast<const Expr &>(other);
 
-	if (!onCompareExpr(casted)) {
-		return false;
-	}
+  if (!onCompareExpr(casted)) {
+    return false;
+  }
 
-	return true;
+  return true;
 }
 
 void Expr::onGetChildren(std::queue<ContainerRef<AST>> &children) {
-	onGetChildrenExpr(children);
+  onGetChildrenExpr(children);
 }
 
-Expr::Expr(AST::ID id, Range range) : AST(id, range) {}
+Expr::Expr(AST::ID id, Range range) : AST(id, range) {
 }
+} // namespace whiskey

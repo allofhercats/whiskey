@@ -3,451 +3,521 @@
 #include <whiskey/Passes/Pass.hpp>
 
 namespace whiskey {
-void Pass::onAST(PassContext<AST> &ctx) {}
-void Pass::onType(PassContext<Type> &ctx) {}
-void Pass::onTypeAtomic(PassContext<TypeAtomic> &ctx) {}
-void Pass::onTypeSymbol(PassContext<TypeSymbol> &ctx) {}
-void Pass::onTypeUnary(PassContext<TypeUnary> &ctx) {}
-void Pass::onTypeBinary(PassContext<TypeBinary> &ctx) {}
-void Pass::onTypeFunction(PassContext<TypeFunction> &ctx) {}
-void Pass::onExpr(PassContext<Expr> &ctx) {}
-void Pass::onExprLiteralInt(PassContext<ExprLiteralInt> &ctx) {}
-void Pass::onExprLiteralFloat(PassContext<ExprLiteralFloat> &ctx) {}
-void Pass::onExprSymbol(PassContext<ExprSymbol> &ctx) {}
-void Pass::onExprUnary(PassContext<ExprUnary> &ctx) {}
-void Pass::onExprBinary(PassContext<ExprBinary> &ctx) {}
-void Pass::onExprCall(PassContext<ExprCall> &ctx) {}
-void Pass::onStmt(PassContext<Stmt> &ctx) {}
-void Pass::onStmtEmpty(PassContext<StmtEmpty> &ctx) {}
-void Pass::onStmtExpr(PassContext<StmtExpr> &ctx) {}
-void Pass::onStmtIf(PassContext<StmtIf> &ctx) {}
-void Pass::onStmtWhile(PassContext<StmtWhile> &ctx) {}
-void Pass::onStmtFor(PassContext<StmtFor> &ctx) {}
-void Pass::onStmtForEach(PassContext<StmtForEach> &ctx) {}
-void Pass::onStmtBlock(PassContext<StmtBlock> &ctx) {}
-void Pass::onDecl(PassContext<Decl> &ctx) {}
-void Pass::onDeclVariable(PassContext<DeclVariable> &ctx) {}
-void Pass::onDeclFunction(PassContext<DeclFunction> &ctx) {}
-void Pass::onDeclClass(PassContext<DeclClass> &ctx) {}
-void Pass::onDeclNamespace(PassContext<DeclNamespace> &ctx) {}
-void Pass::onImport(PassContext<Import> &ctx) {}
-
-void Pass::onASTPost(PassContext<AST> &ctx) {}
-void Pass::onTypePost(PassContext<Type> &ctx) {}
-void Pass::onTypeAtomicPost(PassContext<TypeAtomic> &ctx) {}
-void Pass::onTypeSymbolPost(PassContext<TypeSymbol> &ctx) {}
-void Pass::onTypeUnaryPost(PassContext<TypeUnary> &ctx) {}
-void Pass::onTypeBinaryPost(PassContext<TypeBinary> &ctx) {}
-void Pass::onTypeFunctionPost(PassContext<TypeFunction> &ctx) {}
-void Pass::onExprPost(PassContext<Expr> &ctx) {}
-void Pass::onExprLiteralIntPost(PassContext<ExprLiteralInt> &ctx) {}
-void Pass::onExprLiteralFloatPost(PassContext<ExprLiteralFloat> &ctx) {}
-void Pass::onExprSymbolPost(PassContext<ExprSymbol> &ctx) {}
-void Pass::onExprUnaryPost(PassContext<ExprUnary> &ctx) {}
-void Pass::onExprBinaryPost(PassContext<ExprBinary> &ctx) {}
-void Pass::onExprCallPost(PassContext<ExprCall> &ctx) {}
-void Pass::onStmtPost(PassContext<Stmt> &ctx) {}
-void Pass::onStmtEmptyPost(PassContext<StmtEmpty> &ctx) {}
-void Pass::onStmtExprPost(PassContext<StmtExpr> &ctx) {}
-void Pass::onStmtIfPost(PassContext<StmtIf> &ctx) {}
-void Pass::onStmtWhilePost(PassContext<StmtWhile> &ctx) {}
-void Pass::onStmtForPost(PassContext<StmtFor> &ctx) {}
-void Pass::onStmtForEachPost(PassContext<StmtForEach> &ctx) {}
-void Pass::onStmtBlockPost(PassContext<StmtBlock> &ctx) {}
-void Pass::onDeclPost(PassContext<Decl> &ctx) {}
-void Pass::onDeclVariablePost(PassContext<DeclVariable> &ctx) {}
-void Pass::onDeclFunctionPost(PassContext<DeclFunction> &ctx) {}
-void Pass::onDeclClassPost(PassContext<DeclClass> &ctx) {}
-void Pass::onDeclNamespacePost(PassContext<DeclNamespace> &ctx) {}
-void Pass::onImportPost(PassContext<Import> &ctx) {}
-
-Pass::Pass(std::string name, std::initializer_list<std::string> dependencies) : name(name), dependencies(dependencies) {
-	W_ASSERT_GT(name.size(), 0, "Cannot have pass with empty name.");
+void Pass::onAST(PassContext<AST> &ctx) {
+}
+void Pass::onType(PassContext<Type> &ctx) {
+}
+void Pass::onTypeAtomic(PassContext<TypeAtomic> &ctx) {
+}
+void Pass::onTypeSymbol(PassContext<TypeSymbol> &ctx) {
+}
+void Pass::onTypeUnary(PassContext<TypeUnary> &ctx) {
+}
+void Pass::onTypeBinary(PassContext<TypeBinary> &ctx) {
+}
+void Pass::onTypeFunction(PassContext<TypeFunction> &ctx) {
+}
+void Pass::onExpr(PassContext<Expr> &ctx) {
+}
+void Pass::onExprLiteralInt(PassContext<ExprLiteralInt> &ctx) {
+}
+void Pass::onExprLiteralFloat(PassContext<ExprLiteralFloat> &ctx) {
+}
+void Pass::onExprSymbol(PassContext<ExprSymbol> &ctx) {
+}
+void Pass::onExprUnary(PassContext<ExprUnary> &ctx) {
+}
+void Pass::onExprBinary(PassContext<ExprBinary> &ctx) {
+}
+void Pass::onExprCall(PassContext<ExprCall> &ctx) {
+}
+void Pass::onStmt(PassContext<Stmt> &ctx) {
+}
+void Pass::onStmtEmpty(PassContext<StmtEmpty> &ctx) {
+}
+void Pass::onStmtExpr(PassContext<StmtExpr> &ctx) {
+}
+void Pass::onStmtIf(PassContext<StmtIf> &ctx) {
+}
+void Pass::onStmtWhile(PassContext<StmtWhile> &ctx) {
+}
+void Pass::onStmtFor(PassContext<StmtFor> &ctx) {
+}
+void Pass::onStmtForEach(PassContext<StmtForEach> &ctx) {
+}
+void Pass::onStmtBlock(PassContext<StmtBlock> &ctx) {
+}
+void Pass::onDecl(PassContext<Decl> &ctx) {
+}
+void Pass::onDeclVariable(PassContext<DeclVariable> &ctx) {
+}
+void Pass::onDeclFunction(PassContext<DeclFunction> &ctx) {
+}
+void Pass::onDeclClass(PassContext<DeclClass> &ctx) {
+}
+void Pass::onDeclNamespace(PassContext<DeclNamespace> &ctx) {
+}
+void Pass::onImport(PassContext<Import> &ctx) {
 }
 
-Pass::~Pass() {}
+void Pass::onASTPost(PassContext<AST> &ctx) {
+}
+void Pass::onTypePost(PassContext<Type> &ctx) {
+}
+void Pass::onTypeAtomicPost(PassContext<TypeAtomic> &ctx) {
+}
+void Pass::onTypeSymbolPost(PassContext<TypeSymbol> &ctx) {
+}
+void Pass::onTypeUnaryPost(PassContext<TypeUnary> &ctx) {
+}
+void Pass::onTypeBinaryPost(PassContext<TypeBinary> &ctx) {
+}
+void Pass::onTypeFunctionPost(PassContext<TypeFunction> &ctx) {
+}
+void Pass::onExprPost(PassContext<Expr> &ctx) {
+}
+void Pass::onExprLiteralIntPost(PassContext<ExprLiteralInt> &ctx) {
+}
+void Pass::onExprLiteralFloatPost(PassContext<ExprLiteralFloat> &ctx) {
+}
+void Pass::onExprSymbolPost(PassContext<ExprSymbol> &ctx) {
+}
+void Pass::onExprUnaryPost(PassContext<ExprUnary> &ctx) {
+}
+void Pass::onExprBinaryPost(PassContext<ExprBinary> &ctx) {
+}
+void Pass::onExprCallPost(PassContext<ExprCall> &ctx) {
+}
+void Pass::onStmtPost(PassContext<Stmt> &ctx) {
+}
+void Pass::onStmtEmptyPost(PassContext<StmtEmpty> &ctx) {
+}
+void Pass::onStmtExprPost(PassContext<StmtExpr> &ctx) {
+}
+void Pass::onStmtIfPost(PassContext<StmtIf> &ctx) {
+}
+void Pass::onStmtWhilePost(PassContext<StmtWhile> &ctx) {
+}
+void Pass::onStmtForPost(PassContext<StmtFor> &ctx) {
+}
+void Pass::onStmtForEachPost(PassContext<StmtForEach> &ctx) {
+}
+void Pass::onStmtBlockPost(PassContext<StmtBlock> &ctx) {
+}
+void Pass::onDeclPost(PassContext<Decl> &ctx) {
+}
+void Pass::onDeclVariablePost(PassContext<DeclVariable> &ctx) {
+}
+void Pass::onDeclFunctionPost(PassContext<DeclFunction> &ctx) {
+}
+void Pass::onDeclClassPost(PassContext<DeclClass> &ctx) {
+}
+void Pass::onDeclNamespacePost(PassContext<DeclNamespace> &ctx) {
+}
+void Pass::onImportPost(PassContext<Import> &ctx) {
+}
+
+Pass::Pass(std::string name, std::initializer_list<std::string> dependencies)
+    : name(name), dependencies(dependencies) {
+  W_ASSERT_GT(name.size(), 0, "Cannot have pass with empty name.");
+}
+
+Pass::~Pass() {
+}
 
 const std::string &Pass::getName() const {
-	return name;
+  return name;
 }
 
 const std::vector<std::string> &Pass::getDependencies() const {
-	return dependencies;
+  return dependencies;
 }
 
 void Pass::run(PassContext<AST> &ctx) {
-	onAST(ctx);
+  onAST(ctx);
 
-	AST::ID id = ctx.getOriginal()->getID();
+  AST::ID id = ctx.getOriginal()->getID();
 
-	if (AST::isType(id)) {
-		PassContext<Type> ctxType = ctx.branch<Type>();
+  if (AST::isType(id)) {
+    PassContext<Type> ctxType = ctx.branch<Type>();
 
-		onType(ctxType);
+    onType(ctxType);
 
-		if (AST::isTypeAtomic(id)) {
-			PassContext<TypeAtomic> ctxTypeAtomic = ctxType.branch<TypeAtomic>();
+    if (AST::isTypeAtomic(id)) {
+      PassContext<TypeAtomic> ctxTypeAtomic = ctxType.branch<TypeAtomic>();
 
-			onTypeAtomic(ctxTypeAtomic);
+      onTypeAtomic(ctxTypeAtomic);
 
-			ctxType.merge<TypeAtomic>(ctxTypeAtomic);
-		} else if (AST::isTypeSymbol(id)) {
-			PassContext<TypeSymbol> ctxTypeSymbol = ctxType.branch<TypeSymbol>();
+      ctxType.merge<TypeAtomic>(ctxTypeAtomic);
+    } else if (AST::isTypeSymbol(id)) {
+      PassContext<TypeSymbol> ctxTypeSymbol = ctxType.branch<TypeSymbol>();
 
-			onTypeSymbol(ctxTypeSymbol);
+      onTypeSymbol(ctxTypeSymbol);
 
-			ctxType.merge<TypeSymbol>(ctxTypeSymbol);
-		} else if (AST::isTypeUnary(id)) {
-			PassContext<TypeUnary> ctxTypeUnary = ctxType.branch<TypeUnary>();
+      ctxType.merge<TypeSymbol>(ctxTypeSymbol);
+    } else if (AST::isTypeUnary(id)) {
+      PassContext<TypeUnary> ctxTypeUnary = ctxType.branch<TypeUnary>();
 
-			onTypeUnary(ctxTypeUnary);
+      onTypeUnary(ctxTypeUnary);
 
-			ctxType.merge<TypeUnary>(ctxTypeUnary);
-		} else if (AST::isTypeBinary(id)) {
-			PassContext<TypeBinary> ctxTypeBinary = ctxType.branch<TypeBinary>();
+      ctxType.merge<TypeUnary>(ctxTypeUnary);
+    } else if (AST::isTypeBinary(id)) {
+      PassContext<TypeBinary> ctxTypeBinary = ctxType.branch<TypeBinary>();
 
-			onTypeBinary(ctxTypeBinary);
+      onTypeBinary(ctxTypeBinary);
 
-			ctxType.merge<TypeBinary>(ctxTypeBinary);
-		} else if (AST::isTypeFunction(id)) {
-			PassContext<TypeFunction> ctxTypeFunction = ctxType.branch<TypeFunction>();
+      ctxType.merge<TypeBinary>(ctxTypeBinary);
+    } else if (AST::isTypeFunction(id)) {
+      PassContext<TypeFunction> ctxTypeFunction =
+          ctxType.branch<TypeFunction>();
 
-			onTypeFunction(ctxTypeFunction);
+      onTypeFunction(ctxTypeFunction);
 
-			ctxType.merge<TypeFunction>(ctxTypeFunction);
-		} else {
-			W_ASSERT_UNREACHABLE("Unsupported AST ID.");
-		}
+      ctxType.merge<TypeFunction>(ctxTypeFunction);
+    } else {
+      W_ASSERT_UNREACHABLE("Unsupported AST ID.");
+    }
 
-		ctx.merge<Type>(ctxType);
-	} else if (AST::isExpr(id)) {
-		PassContext<Expr> ctxExpr = ctx.branch<Expr>();
+    ctx.merge<Type>(ctxType);
+  } else if (AST::isExpr(id)) {
+    PassContext<Expr> ctxExpr = ctx.branch<Expr>();
 
-		onExpr(ctxExpr);
+    onExpr(ctxExpr);
 
-		if (AST::isExprLiteralInt(id)) {
-			PassContext<ExprLiteralInt> ctxExprLiteralInt = ctxExpr.branch<ExprLiteralInt>();
+    if (AST::isExprLiteralInt(id)) {
+      PassContext<ExprLiteralInt> ctxExprLiteralInt =
+          ctxExpr.branch<ExprLiteralInt>();
 
-			onExprLiteralInt(ctxExprLiteralInt);
+      onExprLiteralInt(ctxExprLiteralInt);
 
-			ctxExpr.merge<ExprLiteralInt>(ctxExprLiteralInt);
-		} else if (AST::isExprLiteralFloat(id)) {
-			PassContext<ExprLiteralFloat> ctxExprLiteralFloat = ctxExpr.branch<ExprLiteralFloat>();
+      ctxExpr.merge<ExprLiteralInt>(ctxExprLiteralInt);
+    } else if (AST::isExprLiteralFloat(id)) {
+      PassContext<ExprLiteralFloat> ctxExprLiteralFloat =
+          ctxExpr.branch<ExprLiteralFloat>();
 
-			onExprLiteralFloat(ctxExprLiteralFloat);
+      onExprLiteralFloat(ctxExprLiteralFloat);
 
-			ctxExpr.merge<ExprLiteralFloat>(ctxExprLiteralFloat);
-		} else if (AST::isExprSymbol(id)) {
-			PassContext<ExprSymbol> ctxExprSymbol = ctxExpr.branch<ExprSymbol>();
+      ctxExpr.merge<ExprLiteralFloat>(ctxExprLiteralFloat);
+    } else if (AST::isExprSymbol(id)) {
+      PassContext<ExprSymbol> ctxExprSymbol = ctxExpr.branch<ExprSymbol>();
 
-			onExprSymbol(ctxExprSymbol);
+      onExprSymbol(ctxExprSymbol);
 
-			ctxExpr.merge<ExprSymbol>(ctxExprSymbol);
-		} else if (AST::isExprUnary(id)) {
-			PassContext<ExprUnary> ctxExprUnary = ctxExpr.branch<ExprUnary>();
+      ctxExpr.merge<ExprSymbol>(ctxExprSymbol);
+    } else if (AST::isExprUnary(id)) {
+      PassContext<ExprUnary> ctxExprUnary = ctxExpr.branch<ExprUnary>();
 
-			onExprUnary(ctxExprUnary);
+      onExprUnary(ctxExprUnary);
 
-			ctxExpr.merge<ExprUnary>(ctxExprUnary);
-		} else if (AST::isExprBinary(id)) {
-			PassContext<ExprBinary> ctxExprBinary = ctxExpr.branch<ExprBinary>();
+      ctxExpr.merge<ExprUnary>(ctxExprUnary);
+    } else if (AST::isExprBinary(id)) {
+      PassContext<ExprBinary> ctxExprBinary = ctxExpr.branch<ExprBinary>();
 
-			onExprBinary(ctxExprBinary);
+      onExprBinary(ctxExprBinary);
 
-			ctxExpr.merge<ExprBinary>(ctxExprBinary);
-		} else if (AST::isExprCall(id)) {
-			PassContext<ExprCall> ctxExprCall = ctxExpr.branch<ExprCall>();
+      ctxExpr.merge<ExprBinary>(ctxExprBinary);
+    } else if (AST::isExprCall(id)) {
+      PassContext<ExprCall> ctxExprCall = ctxExpr.branch<ExprCall>();
 
-			onExprCall(ctxExprCall);
+      onExprCall(ctxExprCall);
 
-			ctxExpr.merge<ExprCall>(ctxExprCall);
-		} else {
-			W_ASSERT_UNREACHABLE("Unsupported AST ID.");
-		}
+      ctxExpr.merge<ExprCall>(ctxExprCall);
+    } else {
+      W_ASSERT_UNREACHABLE("Unsupported AST ID.");
+    }
 
-		ctx.merge<Expr>(ctxExpr);
-	} else if (AST::isStmt(id)) {
-		PassContext<Stmt> ctxStmt = ctx.branch<Stmt>();
+    ctx.merge<Expr>(ctxExpr);
+  } else if (AST::isStmt(id)) {
+    PassContext<Stmt> ctxStmt = ctx.branch<Stmt>();
 
-		onStmt(ctxStmt);
+    onStmt(ctxStmt);
 
-		if (AST::isStmtEmpty(id)) {
-			PassContext<StmtEmpty> ctxStmtEmpty = ctxStmt.branch<StmtEmpty>();
+    if (AST::isStmtEmpty(id)) {
+      PassContext<StmtEmpty> ctxStmtEmpty = ctxStmt.branch<StmtEmpty>();
 
-			onStmtEmpty(ctxStmtEmpty);
+      onStmtEmpty(ctxStmtEmpty);
 
-			ctxStmt.merge<StmtEmpty>(ctxStmtEmpty);
-		} else if (AST::isStmtExpr(id)) {
-			PassContext<StmtExpr> ctxStmtExpr = ctxStmt.branch<StmtExpr>();
+      ctxStmt.merge<StmtEmpty>(ctxStmtEmpty);
+    } else if (AST::isStmtExpr(id)) {
+      PassContext<StmtExpr> ctxStmtExpr = ctxStmt.branch<StmtExpr>();
 
-			onStmtExpr(ctxStmtExpr);
+      onStmtExpr(ctxStmtExpr);
 
-			ctxStmt.merge<StmtExpr>(ctxStmtExpr);
-		} else if (AST::isStmtIf(id)) {
-			PassContext<StmtIf> ctxStmtIf = ctxStmt.branch<StmtIf>();
+      ctxStmt.merge<StmtExpr>(ctxStmtExpr);
+    } else if (AST::isStmtIf(id)) {
+      PassContext<StmtIf> ctxStmtIf = ctxStmt.branch<StmtIf>();
 
-			onStmtIf(ctxStmtIf);
+      onStmtIf(ctxStmtIf);
 
-			ctxStmt.merge<StmtIf>(ctxStmtIf);
-		} else if (AST::isStmtWhile(id)) {
-			PassContext<StmtWhile> ctxStmtWhile = ctxStmt.branch<StmtWhile>();
+      ctxStmt.merge<StmtIf>(ctxStmtIf);
+    } else if (AST::isStmtWhile(id)) {
+      PassContext<StmtWhile> ctxStmtWhile = ctxStmt.branch<StmtWhile>();
 
-			onStmtWhile(ctxStmtWhile);
+      onStmtWhile(ctxStmtWhile);
 
-			ctxStmt.merge<StmtWhile>(ctxStmtWhile);
-		} else if (AST::isStmtFor(id)) {
-			PassContext<StmtFor> ctxStmtFor = ctxStmt.branch<StmtFor>();
+      ctxStmt.merge<StmtWhile>(ctxStmtWhile);
+    } else if (AST::isStmtFor(id)) {
+      PassContext<StmtFor> ctxStmtFor = ctxStmt.branch<StmtFor>();
 
-			onStmtFor(ctxStmtFor);
+      onStmtFor(ctxStmtFor);
 
-			ctxStmt.merge<StmtFor>(ctxStmtFor);
-		} else if (AST::isStmtForEach(id)) {
-			PassContext<StmtForEach> ctxStmtForEach = ctxStmt.branch<StmtForEach>();
+      ctxStmt.merge<StmtFor>(ctxStmtFor);
+    } else if (AST::isStmtForEach(id)) {
+      PassContext<StmtForEach> ctxStmtForEach = ctxStmt.branch<StmtForEach>();
 
-			onStmtForEach(ctxStmtForEach);
+      onStmtForEach(ctxStmtForEach);
 
-			ctxStmt.merge<StmtForEach>(ctxStmtForEach);
-		} else if (AST::isStmtBlock(id)) {
-			PassContext<StmtBlock> ctxStmtBlock = ctxStmt.branch<StmtBlock>();
+      ctxStmt.merge<StmtForEach>(ctxStmtForEach);
+    } else if (AST::isStmtBlock(id)) {
+      PassContext<StmtBlock> ctxStmtBlock = ctxStmt.branch<StmtBlock>();
 
-			onStmtBlock(ctxStmtBlock);
+      onStmtBlock(ctxStmtBlock);
 
-			ctxStmt.merge<StmtBlock>(ctxStmtBlock);
-		} else {
-			W_ASSERT_UNREACHABLE("Unsupported AST ID.");
-		}
+      ctxStmt.merge<StmtBlock>(ctxStmtBlock);
+    } else {
+      W_ASSERT_UNREACHABLE("Unsupported AST ID.");
+    }
 
-		ctx.merge<Stmt>(ctxStmt);
-	} else if (AST::isDecl(id)) {
-		PassContext<Decl> ctxDecl = ctx.branch<Decl>();
+    ctx.merge<Stmt>(ctxStmt);
+  } else if (AST::isDecl(id)) {
+    PassContext<Decl> ctxDecl = ctx.branch<Decl>();
 
-		onDecl(ctxDecl);
+    onDecl(ctxDecl);
 
-		if (AST::isDeclVariable(id)) {
-			PassContext<DeclVariable> ctxDeclVariable = ctxDecl.branch<DeclVariable>();
+    if (AST::isDeclVariable(id)) {
+      PassContext<DeclVariable> ctxDeclVariable =
+          ctxDecl.branch<DeclVariable>();
 
-			onDeclVariable(ctxDeclVariable);
+      onDeclVariable(ctxDeclVariable);
 
-			ctxDecl.merge<DeclVariable>(ctxDeclVariable);
-		} else if (AST::isDeclFunction(id)) {
-			PassContext<DeclFunction> ctxDeclFunction = ctxDecl.branch<DeclFunction>();
+      ctxDecl.merge<DeclVariable>(ctxDeclVariable);
+    } else if (AST::isDeclFunction(id)) {
+      PassContext<DeclFunction> ctxDeclFunction =
+          ctxDecl.branch<DeclFunction>();
 
-			onDeclFunction(ctxDeclFunction);
+      onDeclFunction(ctxDeclFunction);
 
-			ctxDecl.merge<DeclFunction>(ctxDeclFunction);
-		} else if (AST::isDeclClass(id)) {
-			PassContext<DeclClass> ctxDeclClass = ctxDecl.branch<DeclClass>();
+      ctxDecl.merge<DeclFunction>(ctxDeclFunction);
+    } else if (AST::isDeclClass(id)) {
+      PassContext<DeclClass> ctxDeclClass = ctxDecl.branch<DeclClass>();
 
-			onDeclClass(ctxDeclClass);
+      onDeclClass(ctxDeclClass);
 
-			ctxDecl.merge<DeclClass>(ctxDeclClass);
-		} else if (AST::isDeclNamespace(id)) {
-			PassContext<DeclNamespace> ctxDeclNamespace = ctxDecl.branch<DeclNamespace>();
+      ctxDecl.merge<DeclClass>(ctxDeclClass);
+    } else if (AST::isDeclNamespace(id)) {
+      PassContext<DeclNamespace> ctxDeclNamespace =
+          ctxDecl.branch<DeclNamespace>();
 
-			onDeclNamespace(ctxDeclNamespace);
+      onDeclNamespace(ctxDeclNamespace);
 
-			ctxDecl.merge<DeclNamespace>(ctxDeclNamespace);
-		} else {
-			W_ASSERT_UNREACHABLE("Unsupported AST ID.");
-		}
+      ctxDecl.merge<DeclNamespace>(ctxDeclNamespace);
+    } else {
+      W_ASSERT_UNREACHABLE("Unsupported AST ID.");
+    }
 
-		ctx.merge<Decl>(ctxDecl);
-	} else if (AST::isImport(id)) {
-		PassContext<Import> ctxImport = ctx.branch<Import>();
+    ctx.merge<Decl>(ctxDecl);
+  } else if (AST::isImport(id)) {
+    PassContext<Import> ctxImport = ctx.branch<Import>();
 
-		onImport(ctxImport);
+    onImport(ctxImport);
 
-		ctx.merge<Import>(ctxImport);
-	} else {
-		W_ASSERT_UNREACHABLE("Unsupported AST ID.");
-	}
+    ctx.merge<Import>(ctxImport);
+  } else {
+    W_ASSERT_UNREACHABLE("Unsupported AST ID.");
+  }
 }
 
 void Pass::runPost(PassContext<AST> &ctx) {
-	onASTPost(ctx);
+  onASTPost(ctx);
 
-	AST::ID id = ctx.getOriginal()->getID();
+  AST::ID id = ctx.getOriginal()->getID();
 
-	if (AST::isType(id)) {
-		PassContext<Type> ctxType = ctx.branch<Type>();
+  if (AST::isType(id)) {
+    PassContext<Type> ctxType = ctx.branch<Type>();
 
-		onTypePost(ctxType);
+    onTypePost(ctxType);
 
-		if (AST::isTypeAtomic(id)) {
-			PassContext<TypeAtomic> ctxTypeAtomic = ctxType.branch<TypeAtomic>();
+    if (AST::isTypeAtomic(id)) {
+      PassContext<TypeAtomic> ctxTypeAtomic = ctxType.branch<TypeAtomic>();
 
-			onTypeAtomicPost(ctxTypeAtomic);
+      onTypeAtomicPost(ctxTypeAtomic);
 
-			ctxType.merge<TypeAtomic>(ctxTypeAtomic);
-		} else if (AST::isTypeSymbol(id)) {
-			PassContext<TypeSymbol> ctxTypeSymbol = ctxType.branch<TypeSymbol>();
+      ctxType.merge<TypeAtomic>(ctxTypeAtomic);
+    } else if (AST::isTypeSymbol(id)) {
+      PassContext<TypeSymbol> ctxTypeSymbol = ctxType.branch<TypeSymbol>();
 
-			onTypeSymbolPost(ctxTypeSymbol);
+      onTypeSymbolPost(ctxTypeSymbol);
 
-			ctxType.merge<TypeSymbol>(ctxTypeSymbol);
-		} else if (AST::isTypeUnary(id)) {
-			PassContext<TypeUnary> ctxTypeUnary = ctxType.branch<TypeUnary>();
+      ctxType.merge<TypeSymbol>(ctxTypeSymbol);
+    } else if (AST::isTypeUnary(id)) {
+      PassContext<TypeUnary> ctxTypeUnary = ctxType.branch<TypeUnary>();
 
-			onTypeUnaryPost(ctxTypeUnary);
+      onTypeUnaryPost(ctxTypeUnary);
 
-			ctxType.merge<TypeUnary>(ctxTypeUnary);
-		} else if (AST::isTypeBinary(id)) {
-			PassContext<TypeBinary> ctxTypeBinary = ctxType.branch<TypeBinary>();
+      ctxType.merge<TypeUnary>(ctxTypeUnary);
+    } else if (AST::isTypeBinary(id)) {
+      PassContext<TypeBinary> ctxTypeBinary = ctxType.branch<TypeBinary>();
 
-			onTypeBinaryPost(ctxTypeBinary);
+      onTypeBinaryPost(ctxTypeBinary);
 
-			ctxType.merge<TypeBinary>(ctxTypeBinary);
-		} else if (AST::isTypeFunction(id)) {
-			PassContext<TypeFunction> ctxTypeFunction = ctxType.branch<TypeFunction>();
+      ctxType.merge<TypeBinary>(ctxTypeBinary);
+    } else if (AST::isTypeFunction(id)) {
+      PassContext<TypeFunction> ctxTypeFunction =
+          ctxType.branch<TypeFunction>();
 
-			onTypeFunctionPost(ctxTypeFunction);
+      onTypeFunctionPost(ctxTypeFunction);
 
-			ctxType.merge<TypeFunction>(ctxTypeFunction);
-		} else {
-			W_ASSERT_UNREACHABLE("Unsupported AST ID.");
-		}
+      ctxType.merge<TypeFunction>(ctxTypeFunction);
+    } else {
+      W_ASSERT_UNREACHABLE("Unsupported AST ID.");
+    }
 
-		ctx.merge<Type>(ctxType);
-	} else if (AST::isExpr(id)) {
-		PassContext<Expr> ctxExpr = ctx.branch<Expr>();
+    ctx.merge<Type>(ctxType);
+  } else if (AST::isExpr(id)) {
+    PassContext<Expr> ctxExpr = ctx.branch<Expr>();
 
-		onExprPost(ctxExpr);
+    onExprPost(ctxExpr);
 
-		if (AST::isExprLiteralInt(id)) {
-			PassContext<ExprLiteralInt> ctxExprLiteralInt = ctxExpr.branch<ExprLiteralInt>();
+    if (AST::isExprLiteralInt(id)) {
+      PassContext<ExprLiteralInt> ctxExprLiteralInt =
+          ctxExpr.branch<ExprLiteralInt>();
 
-			onExprLiteralIntPost(ctxExprLiteralInt);
+      onExprLiteralIntPost(ctxExprLiteralInt);
 
-			ctxExpr.merge<ExprLiteralInt>(ctxExprLiteralInt);
-		} else if (AST::isExprLiteralFloat(id)) {
-			PassContext<ExprLiteralFloat> ctxExprLiteralFloat = ctxExpr.branch<ExprLiteralFloat>();
+      ctxExpr.merge<ExprLiteralInt>(ctxExprLiteralInt);
+    } else if (AST::isExprLiteralFloat(id)) {
+      PassContext<ExprLiteralFloat> ctxExprLiteralFloat =
+          ctxExpr.branch<ExprLiteralFloat>();
 
-			onExprLiteralFloatPost(ctxExprLiteralFloat);
+      onExprLiteralFloatPost(ctxExprLiteralFloat);
 
-			ctxExpr.merge<ExprLiteralFloat>(ctxExprLiteralFloat);
-		} else if (AST::isExprSymbol(id)) {
-			PassContext<ExprSymbol> ctxExprSymbol = ctxExpr.branch<ExprSymbol>();
+      ctxExpr.merge<ExprLiteralFloat>(ctxExprLiteralFloat);
+    } else if (AST::isExprSymbol(id)) {
+      PassContext<ExprSymbol> ctxExprSymbol = ctxExpr.branch<ExprSymbol>();
 
-			onExprSymbolPost(ctxExprSymbol);
+      onExprSymbolPost(ctxExprSymbol);
 
-			ctxExpr.merge<ExprSymbol>(ctxExprSymbol);
-		} else if (AST::isExprUnary(id)) {
-			PassContext<ExprUnary> ctxExprUnary = ctxExpr.branch<ExprUnary>();
+      ctxExpr.merge<ExprSymbol>(ctxExprSymbol);
+    } else if (AST::isExprUnary(id)) {
+      PassContext<ExprUnary> ctxExprUnary = ctxExpr.branch<ExprUnary>();
 
-			onExprUnaryPost(ctxExprUnary);
+      onExprUnaryPost(ctxExprUnary);
 
-			ctxExpr.merge<ExprUnary>(ctxExprUnary);
-		} else if (AST::isExprBinary(id)) {
-			PassContext<ExprBinary> ctxExprBinary = ctxExpr.branch<ExprBinary>();
+      ctxExpr.merge<ExprUnary>(ctxExprUnary);
+    } else if (AST::isExprBinary(id)) {
+      PassContext<ExprBinary> ctxExprBinary = ctxExpr.branch<ExprBinary>();
 
-			onExprBinaryPost(ctxExprBinary);
+      onExprBinaryPost(ctxExprBinary);
 
-			ctxExpr.merge<ExprBinary>(ctxExprBinary);
-		} else if (AST::isExprCall(id)) {
-			PassContext<ExprCall> ctxExprCall = ctxExpr.branch<ExprCall>();
+      ctxExpr.merge<ExprBinary>(ctxExprBinary);
+    } else if (AST::isExprCall(id)) {
+      PassContext<ExprCall> ctxExprCall = ctxExpr.branch<ExprCall>();
 
-			onExprCallPost(ctxExprCall);
+      onExprCallPost(ctxExprCall);
 
-			ctxExpr.merge<ExprCall>(ctxExprCall);
-		} else {
-			W_ASSERT_UNREACHABLE("Unsupported AST ID.");
-		}
+      ctxExpr.merge<ExprCall>(ctxExprCall);
+    } else {
+      W_ASSERT_UNREACHABLE("Unsupported AST ID.");
+    }
 
-		ctx.merge<Expr>(ctxExpr);
-	} else if (AST::isStmt(id)) {
-		PassContext<Stmt> ctxStmt = ctx.branch<Stmt>();
+    ctx.merge<Expr>(ctxExpr);
+  } else if (AST::isStmt(id)) {
+    PassContext<Stmt> ctxStmt = ctx.branch<Stmt>();
 
-		onStmtPost(ctxStmt);
+    onStmtPost(ctxStmt);
 
-		if (AST::isStmtEmpty(id)) {
-			PassContext<StmtEmpty> ctxStmtEmpty = ctxStmt.branch<StmtEmpty>();
+    if (AST::isStmtEmpty(id)) {
+      PassContext<StmtEmpty> ctxStmtEmpty = ctxStmt.branch<StmtEmpty>();
 
-			onStmtEmptyPost(ctxStmtEmpty);
+      onStmtEmptyPost(ctxStmtEmpty);
 
-			ctxStmt.merge<StmtEmpty>(ctxStmtEmpty);
-		} else if (AST::isStmtExpr(id)) {
-			PassContext<StmtExpr> ctxStmtExpr = ctxStmt.branch<StmtExpr>();
+      ctxStmt.merge<StmtEmpty>(ctxStmtEmpty);
+    } else if (AST::isStmtExpr(id)) {
+      PassContext<StmtExpr> ctxStmtExpr = ctxStmt.branch<StmtExpr>();
 
-			onStmtExprPost(ctxStmtExpr);
+      onStmtExprPost(ctxStmtExpr);
 
-			ctxStmt.merge<StmtExpr>(ctxStmtExpr);
-		} else if (AST::isStmtIf(id)) {
-			PassContext<StmtIf> ctxStmtIf = ctxStmt.branch<StmtIf>();
+      ctxStmt.merge<StmtExpr>(ctxStmtExpr);
+    } else if (AST::isStmtIf(id)) {
+      PassContext<StmtIf> ctxStmtIf = ctxStmt.branch<StmtIf>();
 
-			onStmtIfPost(ctxStmtIf);
+      onStmtIfPost(ctxStmtIf);
 
-			ctxStmt.merge<StmtIf>(ctxStmtIf);
-		} else if (AST::isStmtWhile(id)) {
-			PassContext<StmtWhile> ctxStmtWhile = ctxStmt.branch<StmtWhile>();
+      ctxStmt.merge<StmtIf>(ctxStmtIf);
+    } else if (AST::isStmtWhile(id)) {
+      PassContext<StmtWhile> ctxStmtWhile = ctxStmt.branch<StmtWhile>();
 
-			onStmtWhilePost(ctxStmtWhile);
+      onStmtWhilePost(ctxStmtWhile);
 
-			ctxStmt.merge<StmtWhile>(ctxStmtWhile);
-		} else if (AST::isStmtFor(id)) {
-			PassContext<StmtFor> ctxStmtFor = ctxStmt.branch<StmtFor>();
+      ctxStmt.merge<StmtWhile>(ctxStmtWhile);
+    } else if (AST::isStmtFor(id)) {
+      PassContext<StmtFor> ctxStmtFor = ctxStmt.branch<StmtFor>();
 
-			onStmtForPost(ctxStmtFor);
+      onStmtForPost(ctxStmtFor);
 
-			ctxStmt.merge<StmtFor>(ctxStmtFor);
-		} else if (AST::isStmtForEach(id)) {
-			PassContext<StmtForEach> ctxStmtForEach = ctxStmt.branch<StmtForEach>();
+      ctxStmt.merge<StmtFor>(ctxStmtFor);
+    } else if (AST::isStmtForEach(id)) {
+      PassContext<StmtForEach> ctxStmtForEach = ctxStmt.branch<StmtForEach>();
 
-			onStmtForEachPost(ctxStmtForEach);
+      onStmtForEachPost(ctxStmtForEach);
 
-			ctxStmt.merge<StmtForEach>(ctxStmtForEach);
-		} else if (AST::isStmtBlock(id)) {
-			PassContext<StmtBlock> ctxStmtBlock = ctxStmt.branch<StmtBlock>();
+      ctxStmt.merge<StmtForEach>(ctxStmtForEach);
+    } else if (AST::isStmtBlock(id)) {
+      PassContext<StmtBlock> ctxStmtBlock = ctxStmt.branch<StmtBlock>();
 
-			onStmtBlockPost(ctxStmtBlock);
+      onStmtBlockPost(ctxStmtBlock);
 
-			ctxStmt.merge<StmtBlock>(ctxStmtBlock);
-		} else {
-			W_ASSERT_UNREACHABLE("Unsupported AST ID.");
-		}
+      ctxStmt.merge<StmtBlock>(ctxStmtBlock);
+    } else {
+      W_ASSERT_UNREACHABLE("Unsupported AST ID.");
+    }
 
-		ctx.merge<Stmt>(ctxStmt);
-	} else if (AST::isDecl(id)) {
-		PassContext<Decl> ctxDecl = ctx.branch<Decl>();
+    ctx.merge<Stmt>(ctxStmt);
+  } else if (AST::isDecl(id)) {
+    PassContext<Decl> ctxDecl = ctx.branch<Decl>();
 
-		onDeclPost(ctxDecl);
+    onDeclPost(ctxDecl);
 
-		if (AST::isDeclVariable(id)) {
-			PassContext<DeclVariable> ctxDeclVariable = ctxDecl.branch<DeclVariable>();
+    if (AST::isDeclVariable(id)) {
+      PassContext<DeclVariable> ctxDeclVariable =
+          ctxDecl.branch<DeclVariable>();
 
-			onDeclVariablePost(ctxDeclVariable);
+      onDeclVariablePost(ctxDeclVariable);
 
-			ctxDecl.merge<DeclVariable>(ctxDeclVariable);
-		} else if (AST::isDeclFunction(id)) {
-			PassContext<DeclFunction> ctxDeclFunction = ctxDecl.branch<DeclFunction>();
+      ctxDecl.merge<DeclVariable>(ctxDeclVariable);
+    } else if (AST::isDeclFunction(id)) {
+      PassContext<DeclFunction> ctxDeclFunction =
+          ctxDecl.branch<DeclFunction>();
 
-			onDeclFunctionPost(ctxDeclFunction);
+      onDeclFunctionPost(ctxDeclFunction);
 
-			ctxDecl.merge<DeclFunction>(ctxDeclFunction);
-		} else if (AST::isDeclClass(id)) {
-			PassContext<DeclClass> ctxDeclClass = ctxDecl.branch<DeclClass>();
+      ctxDecl.merge<DeclFunction>(ctxDeclFunction);
+    } else if (AST::isDeclClass(id)) {
+      PassContext<DeclClass> ctxDeclClass = ctxDecl.branch<DeclClass>();
 
-			onDeclClassPost(ctxDeclClass);
+      onDeclClassPost(ctxDeclClass);
 
-			ctxDecl.merge<DeclClass>(ctxDeclClass);
-		} else if (AST::isDeclNamespace(id)) {
-			PassContext<DeclNamespace> ctxDeclNamespace = ctxDecl.branch<DeclNamespace>();
+      ctxDecl.merge<DeclClass>(ctxDeclClass);
+    } else if (AST::isDeclNamespace(id)) {
+      PassContext<DeclNamespace> ctxDeclNamespace =
+          ctxDecl.branch<DeclNamespace>();
 
-			onDeclNamespacePost(ctxDeclNamespace);
+      onDeclNamespacePost(ctxDeclNamespace);
 
-			ctxDecl.merge<DeclNamespace>(ctxDeclNamespace);
-		} else {
-			W_ASSERT_UNREACHABLE("Unsupported AST ID.");
-		}
+      ctxDecl.merge<DeclNamespace>(ctxDeclNamespace);
+    } else {
+      W_ASSERT_UNREACHABLE("Unsupported AST ID.");
+    }
 
-		ctx.merge<Decl>(ctxDecl);
-	} else if (AST::isImport(id)) {
-		PassContext<Import> ctxImport = ctx.branch<Import>();
+    ctx.merge<Decl>(ctxDecl);
+  } else if (AST::isImport(id)) {
+    PassContext<Import> ctxImport = ctx.branch<Import>();
 
-		onImportPost(ctxImport);
+    onImportPost(ctxImport);
 
-		ctx.merge<Import>(ctxImport);
-	} else {
-		W_ASSERT_UNREACHABLE("Unsupported AST ID.");
-	}
+    ctx.merge<Import>(ctxImport);
+  } else {
+    W_ASSERT_UNREACHABLE("Unsupported AST ID.");
+  }
 }
-}
+} // namespace whiskey

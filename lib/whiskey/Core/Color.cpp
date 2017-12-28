@@ -5,7 +5,8 @@
 namespace whiskey {
 bool Color::enabled = true;
 
-Color::Color(const char *text) : text(text) {}
+Color::Color(const char *text) : text(text) {
+}
 
 const Color Color::reset("\033[39m");
 const Color Color::red("\033[31m");
@@ -25,13 +26,13 @@ const Color Color::cyanLight("\033[96m");
 const Color Color::white("\033[97m");
 
 void Color::print(std::ostream &os) const {
-	if (enabled) {
-		os << text;
-	}
+  if (enabled) {
+    os << text;
+  }
 }
 
 std::ostream &operator<<(std::ostream &os, const Color &value) {
-	value.print(os);
-	return os;
+  value.print(os);
+  return os;
 }
-}
+} // namespace whiskey

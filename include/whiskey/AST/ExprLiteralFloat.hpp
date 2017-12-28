@@ -8,12 +8,12 @@
 namespace whiskey {
 class ExprLiteralFloat : public ExprLiteral<long double> {
 protected:
-	virtual AST *onClone() const;
+  virtual AST *onClone() const;
 
 public:
-	ExprLiteralFloat(Container<Type> type, long double value);
-	ExprLiteralFloat(Range range, Container<Type> type, long double value);
+  ExprLiteralFloat(Container<Type> type, long double value);
+  ExprLiteralFloat(Range range, Container<Type> type, long double value);
 };
-}
+} // namespace whiskey
 
 #endif

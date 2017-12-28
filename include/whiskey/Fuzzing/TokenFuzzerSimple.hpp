@@ -8,14 +8,14 @@
 namespace whiskey {
 class TokenFuzzerSimple : public TokenFuzzer {
 private:
-	unsigned int nChars;
+  unsigned int nChars;
 
 protected:
-	void onFuzz();
+  void onFuzz();
 
 public:
-	TokenFuzzerSimple(unsigned int nChars);
+  TokenFuzzerSimple(unsigned int nChars);
 };
-}
+} // namespace whiskey
 
 #endif

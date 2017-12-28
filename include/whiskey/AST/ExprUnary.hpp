@@ -8,25 +8,25 @@
 namespace whiskey {
 class ExprUnary : public Expr {
 private:
-	Container<Expr> arg;
+  Container<Expr> arg;
 
 protected:
-	virtual AST *onClone() const;
+  virtual AST *onClone() const;
 
-	bool onCompareExpr(const Expr &other) const;
-	void onGetChildrenExpr(std::queue<ContainerRef<AST>> &children);
+  bool onCompareExpr(const Expr &other) const;
+  void onGetChildrenExpr(std::queue<ContainerRef<AST>> &children);
 
-	virtual bool onCompareExprUnary(const ExprUnary &other) const;
-	virtual void onGetChildrenExprUnary(std::queue<ContainerRef<AST>> &children);
+  virtual bool onCompareExprUnary(const ExprUnary &other) const;
+  virtual void onGetChildrenExprUnary(std::queue<ContainerRef<AST>> &children);
 
 public:
-	ExprUnary(AST::ID id, Container<Expr> arg);
-	ExprUnary(AST::ID id, Range range, Container<Expr> arg);
+  ExprUnary(AST::ID id, Container<Expr> arg);
+  ExprUnary(AST::ID id, Range range, Container<Expr> arg);
 
-	Ref<Expr> getArg();
-	CRef<Expr> getArg() const;
-	void setArg(Container<Expr> value);
+  Ref<Expr> getArg();
+  CRef<Expr> getArg() const;
+  void setArg(Container<Expr> value);
 };
-}
+} // namespace whiskey
 
 #endif

@@ -10,25 +10,25 @@ class DeclVariable;
 
 class Decl : public AST {
 private:
-	std::string name;
-	std::vector<Container<DeclVariable>> templateDeclArgs;
+  std::string name;
+  std::vector<Container<DeclVariable>> templateDeclArgs;
 
 protected:
-	bool onCompare(const AST &other) const;
-	void onGetChildren(std::queue<ContainerRef<AST>> &children);
+  bool onCompare(const AST &other) const;
+  void onGetChildren(std::queue<ContainerRef<AST>> &children);
 
-	virtual bool onCompareDecl(const Decl &other) const = 0;
-	virtual void onGetChildrenDecl(std::queue<ContainerRef<AST>> &children) = 0;
+  virtual bool onCompareDecl(const Decl &other) const = 0;
+  virtual void onGetChildrenDecl(std::queue<ContainerRef<AST>> &children) = 0;
 
 public:
-	Decl(AST::ID id, Range range, std::string name);
+  Decl(AST::ID id, Range range, std::string name);
 
-	const std::string &getName() const;
-	void setName(std::string value);
+  const std::string &getName() const;
+  void setName(std::string value);
 
-	std::vector<Container<DeclVariable>> &getTemplateDeclArgs();
-	const std::vector<Container<DeclVariable>> &getTemplateDeclArgs() const;
+  std::vector<Container<DeclVariable>> &getTemplateDeclArgs();
+  const std::vector<Container<DeclVariable>> &getTemplateDeclArgs() const;
 };
-}
+} // namespace whiskey
 
 #endif

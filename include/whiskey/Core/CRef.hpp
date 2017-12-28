@@ -7,20 +7,20 @@
 #include <whiskey/Core/Cloneable.hpp>
 
 namespace whiskey {
-template<class ValueType>
+template <class ValueType>
 class CRef {
 private:
-	const ValueType *value;
+  const ValueType *value;
 
 public:
-	CRef(const ValueType *value = nullptr);
+  CRef(const ValueType *value = nullptr);
 
-	operator bool() const;
+  operator bool() const;
 
-	const ValueType *operator->() const;
-	const ValueType &operator*() const;
+  const ValueType *operator->() const;
+  const ValueType &operator*() const;
 };
-}
+} // namespace whiskey
 
 #include <whiskey/Core/CRef.tpp>
 

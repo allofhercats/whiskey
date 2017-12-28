@@ -4,40 +4,40 @@
 #include <whiskey/Core/Module.inc>
 
 #include <whiskey/Core/Assert.hpp>
+#include <whiskey/Core/CRef.hpp>
 #include <whiskey/Core/Cloneable.hpp>
 #include <whiskey/Core/Ref.hpp>
-#include <whiskey/Core/CRef.hpp>
 
 namespace whiskey {
-template<class ContainerRefType>
+template <class ContainerRefType>
 class ContainerRef;
 
-template<class ValueType>
+template <class ValueType>
 class Container {
-	template<class ContainerRefType>
-	friend class ContainerRef;
+  template <class ContainerRefType>
+  friend class ContainerRef;
 
 private:
-	ValueType *value;
+  ValueType *value;
 
 public:
-	Container(ValueType *value = nullptr);
-	Container(const Container &other);
-	Container(Container &&other);
-	Container &operator=(const Container &other);
-	Container &operator=(Container &&other);
-	~Container();
+  Container(ValueType *value = nullptr);
+  Container(const Container &other);
+  Container(Container &&other);
+  Container &operator=(const Container &other);
+  Container &operator=(Container &&other);
+  ~Container();
 
-	operator bool() const;
-	operator Ref<ValueType>();
-	operator CRef<ValueType>() const;
+  operator bool() const;
+  operator Ref<ValueType>();
+  operator CRef<ValueType>() const;
 
-	ValueType *operator->();
-	const ValueType *operator->() const;
-	ValueType &operator*();
-	const ValueType &operator*() const;
+  ValueType *operator->();
+  const ValueType *operator->() const;
+  ValueType &operator*();
+  const ValueType &operator*() const;
 };
-}
+} // namespace whiskey
 
 #include <whiskey/Core/Container.tpp>
 

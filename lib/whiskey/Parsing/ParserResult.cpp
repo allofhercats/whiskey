@@ -3,27 +3,29 @@
 #include <whiskey/Parsing/ParserResult.hpp>
 
 namespace whiskey {
-ParserResult::ParserResult() : node(nullptr), good(false) {}
+ParserResult::ParserResult() : node(nullptr), good(false) {
+}
 
-ParserResult::ParserResult(Node *node) : node(node), good(true) {}
+ParserResult::ParserResult(Node *node) : node(node), good(true) {
+}
 
 Node *ParserResult::getNode() {
-	return node;
+  return node;
 }
 
 const Node *ParserResult::getNode() const {
-	return node;
+  return node;
 }
 
 void ParserResult::setNode(Node *value) {
-	node = value;
+  node = value;
 }
 
 bool ParserResult::isGood() const {
-	return good;
+  return good;
 }
 
 void ParserResult::setGood(bool value) {
-	good = value;
+  good = value;
 }
-}
+} // namespace whiskey

@@ -9,11 +9,11 @@
 namespace whiskey {
 class DebugPrinter : public Printer {
 protected:
-	void onPrint(std::ostream &os, const Node *node, unsigned int indent);
+  void onPrint(std::ostream &os, const Node *node, unsigned int indent);
 
 public:
-	DebugPrinter(unsigned int tabWidth = Printer::defaultTabWidth);
+  DebugPrinter(unsigned int tabWidth = Printer::defaultTabWidth);
 };
-}
+} // namespace whiskey
 
 #endif

@@ -8,28 +8,31 @@
 namespace whiskey {
 class ExprSymbol : public Expr {
 private:
-	std::string value;
-	std::vector<Container<AST>> templateEvalArgs;
+  std::string value;
+  std::vector<Container<AST>> templateEvalArgs;
 
 protected:
-	virtual AST *onClone() const;
+  virtual AST *onClone() const;
 
-	bool onCompareExpr(const Expr &other) const;
-	void onGetChildrenExpr(std::queue<ContainerRef<AST>> &children);
+  bool onCompareExpr(const Expr &other) const;
+  void onGetChildrenExpr(std::queue<ContainerRef<AST>> &children);
 
-	virtual bool onCompareExprSymbol(const ExprSymbol &other) const;
-	virtual void onGetChildrenExprSymbol(std::queue<ContainerRef<AST>> &children);
+  virtual bool onCompareExprSymbol(const ExprSymbol &other) const;
+  virtual void onGetChildrenExprSymbol(std::queue<ContainerRef<AST>> &children);
 
 public:
-	ExprSymbol(std::string value, std::vector<Container<AST>> templateEvalArgs = {});
-	ExprSymbol(Range range, std::string value, std::vector<Container<AST>> templateEvalArgs = {});
+  ExprSymbol(std::string value,
+             std::vector<Container<AST>> templateEvalArgs = {});
+  ExprSymbol(Range range,
+             std::string value,
+             std::vector<Container<AST>> templateEvalArgs = {});
 
-	const std::string &getValue() const;
-	void setValue(std::string value);
+  const std::string &getValue() const;
+  void setValue(std::string value);
 
-	std::vector<Container<AST>> &getTemplateEvalArgs();
-	const std::vector<Container<AST>> &getTemplateEvalArgs() const;
+  std::vector<Container<AST>> &getTemplateEvalArgs();
+  const std::vector<Container<AST>> &getTemplateEvalArgs() const;
 };
-}
+} // namespace whiskey
 
 #endif

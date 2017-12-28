@@ -8,17 +8,17 @@
 namespace whiskey {
 class StmtEmpty : public Stmt {
 protected:
-	virtual AST *onClone() const;
+  virtual AST *onClone() const;
 
-	bool onCompareStmt(const Stmt &other) const;
-	void onGetChildrenStmt(std::queue<ContainerRef<AST>> &children);
+  bool onCompareStmt(const Stmt &other) const;
+  void onGetChildrenStmt(std::queue<ContainerRef<AST>> &children);
 
-	virtual bool onCompareStmtEmpty(const StmtEmpty &other) const;
-	virtual void onGetChildrenStmtEmpty(std::queue<ContainerRef<AST>> &children);
+  virtual bool onCompareStmtEmpty(const StmtEmpty &other) const;
+  virtual void onGetChildrenStmtEmpty(std::queue<ContainerRef<AST>> &children);
 
 public:
-	StmtEmpty(Range range = Range());
+  StmtEmpty(Range range = Range());
 };
-}
+} // namespace whiskey
 
 #endif

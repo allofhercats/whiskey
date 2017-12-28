@@ -8,14 +8,14 @@ std::ostream *assertStream = nullptr;
 }
 
 std::ostream &getAssertStream() {
-	if (assertStream == nullptr) {
-		assertStream = &std::cerr;
-	}
+  if (assertStream == nullptr) {
+    assertStream = &std::cerr;
+  }
 
-	return *assertStream;
+  return *assertStream;
 }
 
 void setAssertStream(std::ostream &os) {
-	assertStream = &os;
+  assertStream = &os;
 }
-}
+} // namespace whiskey

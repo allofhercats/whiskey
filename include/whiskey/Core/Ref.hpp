@@ -4,27 +4,27 @@
 #include <whiskey/Core/Module.inc>
 
 #include <whiskey/Core/Assert.hpp>
-#include <whiskey/Core/Cloneable.hpp>
 #include <whiskey/Core/CRef.hpp>
+#include <whiskey/Core/Cloneable.hpp>
 
 namespace whiskey {
-template<class ValueType>
+template <class ValueType>
 class Ref {
 private:
-	ValueType *value;
+  ValueType *value;
 
 public:
-	Ref(ValueType *value = nullptr);
+  Ref(ValueType *value = nullptr);
 
-	operator bool() const;
-	operator CRef<ValueType>() const;
+  operator bool() const;
+  operator CRef<ValueType>() const;
 
-	ValueType *operator->();
-	const ValueType *operator->() const;
-	ValueType &operator*();
-	const ValueType &operator*() const;
+  ValueType *operator->();
+  const ValueType *operator->() const;
+  ValueType &operator*();
+  const ValueType &operator*() const;
 };
-}
+} // namespace whiskey
 
 #include <whiskey/Core/Ref.tpp>
 

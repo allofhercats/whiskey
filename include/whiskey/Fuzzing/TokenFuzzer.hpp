@@ -6,30 +6,30 @@
 namespace whiskey {
 class TokenFuzzer {
 private:
-	std::stringstream textStream;
-	char lastChar;
-	size_t length;
-	std::vector<Token::ID> tokenIDs;
+  std::stringstream textStream;
+  char lastChar;
+  size_t length;
+  std::vector<Token::ID> tokenIDs;
 
 protected:
-	void emitChar(char value);
-	void emitToken(Token::ID id);
-	char getLastChar() const;
-	size_t getLength() const;
-	Token::ID getLastTokenID() const;
+  void emitChar(char value);
+  void emitToken(Token::ID id);
+  char getLastChar() const;
+  size_t getLength() const;
+  Token::ID getLastTokenID() const;
 
-	virtual void onFuzz() = 0;
+  virtual void onFuzz() = 0;
 
 public:
-	TokenFuzzer();
-	TokenFuzzer(const TokenFuzzer &) = delete;
-	virtual ~TokenFuzzer();
+  TokenFuzzer();
+  TokenFuzzer(const TokenFuzzer &) = delete;
+  virtual ~TokenFuzzer();
 
-	std::string getText() const;
-	const std::vector<Token::ID> &getTokenIDs() const;
+  std::string getText() const;
+  const std::vector<Token::ID> &getTokenIDs() const;
 
-	void fuzz();
+  void fuzz();
 };
-}
+} // namespace whiskey
 
 #endif

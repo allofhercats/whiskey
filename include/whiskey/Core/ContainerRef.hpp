@@ -7,30 +7,30 @@
 #include <whiskey/Core/Container.hpp>
 
 namespace whiskey {
-template<class ValueType>
+template <class ValueType>
 class ContainerRef {
 private:
-	ValueType **value;
+  ValueType **value;
 
 public:
-	ContainerRef();
+  ContainerRef();
 
-	template<class ContainerType>
-	ContainerRef(Container<ContainerType> &value);
+  template <class ContainerType>
+  ContainerRef(Container<ContainerType> &value);
 
-	operator bool() const;
-	operator Container<ValueType>();
-	operator Ref<ValueType>();
-	operator CRef<ValueType>() const;
+  operator bool() const;
+  operator Container<ValueType>();
+  operator Ref<ValueType>();
+  operator CRef<ValueType>() const;
 
-	ValueType *operator->();
-	const ValueType *operator->() const;
-	ValueType &operator*();
-	const ValueType &operator*() const;
+  ValueType *operator->();
+  const ValueType *operator->() const;
+  ValueType &operator*();
+  const ValueType &operator*() const;
 
-	void replace(ValueType *value);
+  void replace(ValueType *value);
 };
-}
+} // namespace whiskey
 
 #include <whiskey/Core/ContainerRef.tpp>
 

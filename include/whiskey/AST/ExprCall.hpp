@@ -8,29 +8,31 @@
 namespace whiskey {
 class ExprCall : public Expr {
 private:
-	Container<Expr> callee;
-	std::vector<Container<Expr>> args;
+  Container<Expr> callee;
+  std::vector<Container<Expr>> args;
 
 protected:
-	virtual AST *onClone() const;
+  virtual AST *onClone() const;
 
-	bool onCompareExpr(const Expr &other) const;
-	void onGetChildrenExpr(std::queue<ContainerRef<AST>> &children);
+  bool onCompareExpr(const Expr &other) const;
+  void onGetChildrenExpr(std::queue<ContainerRef<AST>> &children);
 
-	virtual bool onCompareExprCall(const ExprCall &other) const;
-	virtual void onGetChildrenExprCall(std::queue<ContainerRef<AST>> &children);
+  virtual bool onCompareExprCall(const ExprCall &other) const;
+  virtual void onGetChildrenExprCall(std::queue<ContainerRef<AST>> &children);
 
 public:
-	ExprCall(Container<Expr> callee, std::vector<Container<Expr>> args = {});
-	ExprCall(Range range, Container<Expr> callee, std::vector<Container<Expr>> args = {});
+  ExprCall(Container<Expr> callee, std::vector<Container<Expr>> args = {});
+  ExprCall(Range range,
+           Container<Expr> callee,
+           std::vector<Container<Expr>> args = {});
 
-	Ref<Expr> getCallee();
-	CRef<Expr> getCallee() const;
-	void setCallee(Container<Expr> value);
+  Ref<Expr> getCallee();
+  CRef<Expr> getCallee() const;
+  void setCallee(Container<Expr> value);
 
-	std::vector<Container<Expr>> &getArgs();
-	const std::vector<Container<Expr>> &getArgs() const;
+  std::vector<Container<Expr>> &getArgs();
+  const std::vector<Container<Expr>> &getArgs() const;
 };
-}
+} // namespace whiskey
 
 #endif
