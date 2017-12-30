@@ -1,9 +1,9 @@
-#ifndef __WHISKEY_AST2_Node_HPP
-#define __WHISKEY_AST2_Node_HPP
+#ifndef __WHISKEY_AST_Node_HPP
+#define __WHISKEY_AST_Node_HPP
 
-#include <whiskey/AST2/Module.inc>
+#include <whiskey/AST/Module.inc>
 
-#include <whiskey/AST2/Field.hpp>
+#include <whiskey/AST/Field.hpp>
 
 namespace whiskey {
 class Node {

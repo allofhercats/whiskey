@@ -1,6 +1,6 @@
 #include "Module.inc"
 
-#include <whiskey/AST2/Node.hpp>
+#include <whiskey/AST/Node.hpp>
 
 namespace whiskey {
 Node::KindInfo::KindInfo(const char *name,

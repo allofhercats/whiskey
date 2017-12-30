@@ -1,8 +1,8 @@
 #include "Module.inc"
 
-#include <whiskey/AST2/Field.hpp>
+#include <whiskey/AST/Field.hpp>
 
-#include <whiskey/AST2/Node.hpp>
+#include <whiskey/AST/Node.hpp>
 
 namespace whiskey {
 Field::Field(Field::Kind kind) : kind(kind) {

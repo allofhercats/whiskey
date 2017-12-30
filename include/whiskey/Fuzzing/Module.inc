@@ -3,6 +3,6 @@
 
 #include <whiskey/Core.hpp>
 #include <whiskey/Source.hpp>
-#include <whiskey/AST2.hpp>
+#include <whiskey/AST.hpp>
 
 #endif
