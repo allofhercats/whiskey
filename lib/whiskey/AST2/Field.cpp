@@ -53,8 +53,8 @@ Field *Field::createString8(const Char8 *value, unsigned int length) {
     rtn->dataAtomic.asString8 = nullptr;
     rtn->length = 0;
   } else {
-    rtn->dataAtomic.asString8 = new Char8[length];
-    memcpy(rtn->dataAtomic.asString8, value, length);
+    rtn->dataAtomic.asString8 = new Char8[length+1];
+    memcpy(rtn->dataAtomic.asString8, value, length+1);
     rtn->length = length;
   }
   return rtn;
@@ -72,8 +72,8 @@ Field *Field::createString16(const Char16 *value, unsigned int length) {
     rtn->dataAtomic.asString16 = nullptr;
     rtn->length = 0;
   } else {
-    rtn->dataAtomic.asString16 = new Char16[length];
-    memcpy(rtn->dataAtomic.asString16, value, length * 2);
+    rtn->dataAtomic.asString16 = new Char16[length+1];
+    memcpy(rtn->dataAtomic.asString16, value, (length+1) * 2);
     rtn->length = length;
   }
   return rtn;
@@ -91,8 +91,8 @@ Field *Field::createString32(const Char32 *value, unsigned int length) {
     rtn->dataAtomic.asString32 = nullptr;
     rtn->length = 0;
   } else {
-    rtn->dataAtomic.asString32 = new Char32[length];
-    memcpy(rtn->dataAtomic.asString32, value, length * 4);
+    rtn->dataAtomic.asString32 = new Char32[length+1];
+    memcpy(rtn->dataAtomic.asString32, value, (length+1) * 4);
     rtn->length = length;
   }
   return rtn;

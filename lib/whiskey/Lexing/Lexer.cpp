@@ -85,7 +85,32 @@ void Lexer::lex() {
           ctx.eatChar();
         }
       }
-      if (ctx.hasText("not")) {
+      
+      if (ctx.hasText("bool")) {
+        ctx.emitToken(Token::KWBool);
+      } else if (ctx.hasText("int8")) {
+        ctx.emitToken(Token::KWInt8);
+      } else if (ctx.hasText("int16")) {
+        ctx.emitToken(Token::KWInt16);
+      } else if (ctx.hasText("int32")) {
+        ctx.emitToken(Token::KWInt32);
+      } else if (ctx.hasText("int64")) {
+        ctx.emitToken(Token::KWInt64);
+      } else if (ctx.hasText("uint8")) {
+        ctx.emitToken(Token::KWUInt8);
+      } else if (ctx.hasText("uint16")) {
+        ctx.emitToken(Token::KWUInt16);
+      } else if (ctx.hasText("uint32")) {
+        ctx.emitToken(Token::KWUInt32);
+      } else if (ctx.hasText("uint64")) {
+        ctx.emitToken(Token::KWUInt64);
+      } else if (ctx.hasText("float32")) {
+        ctx.emitToken(Token::KWFloat32);
+      } else if (ctx.hasText("float64")) {
+        ctx.emitToken(Token::KWFloat64);
+      } else if (ctx.hasText("real")) {
+        ctx.emitToken(Token::Real);
+      } else if (ctx.hasText("not")) {
         ctx.emitToken(Token::KWNot);
       } else if (ctx.hasText("and")) {
         ctx.emitToken(Token::KWAnd);

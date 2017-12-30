@@ -11,6 +11,42 @@ void Token::printTokenIDDebug(std::ostream &os, Token::ID value) {
   case Symbol:
     os << "Symbol";
     break;
+  case KWBool:
+    os << "KWBool";
+    break;
+  case KWInt8:
+    os << "KWInt8";
+    break;
+  case KWInt16:
+    os << "KWInt16";
+    break;
+  case KWInt32:
+    os << "KWInt32";
+    break;
+  case KWInt64:
+    os << "KWInt64";
+    break;
+  case KWUInt8:
+    os << "KWUInt8";
+    break;
+  case KWUInt16:
+    os << "KWUInt16";
+    break;
+  case KWUInt32:
+    os << "KWUInt32";
+    break;
+  case KWUInt64:
+    os << "KWUInt64";
+    break;
+  case KWFloat32:
+    os << "KWFloat32";
+    break;
+  case KWFloat64:
+    os << "KWFloat64";
+    break;
+  case KWReal:
+    os << "KWReal";
+    break;
   case KWNot:
     os << "KWNot";
     break;
@@ -221,6 +257,42 @@ void Token::printTokenID(std::ostream &os, Token::ID value) {
     break;
   case Symbol:
     os << "symbol";
+    break;
+  case KWBool:
+    os << "'bool'";
+    break;
+  case KWInt8:
+    os << "'int8'";
+    break;
+  case KWInt16:
+    os << "'int16'";
+    break;
+  case KWInt32:
+    os << "'int32'";
+    break;
+  case KWInt64:
+    os << "'int64'";
+    break;
+  case KWUInt8:
+    os << "'uint8'";
+    break;
+  case KWUInt16:
+    os << "'uint16'";
+    break;
+  case KWUInt32:
+    os << "'uint32'";
+    break;
+  case KWUInt64:
+    os << "'uint64'";
+    break;
+  case KWFloat32:
+    os << "'float32'";
+    break;
+  case KWFloat64:
+    os << "'float64'";
+    break;
+  case KWReal:
+    os << "'real'";
     break;
   case KWNot:
     os << "'not'";

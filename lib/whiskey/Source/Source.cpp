@@ -133,16 +133,48 @@ bool Source::isLoaded() const {
   return data != nullptr;
 }
 
+bool Source::loadCString(const char *text) {
+  return loadCString(text, 0, false);
+}
+
+bool Source::loadCString(const char *text, bool copy) {
+  return loadCString(text, 0, copy);
+}
+
 bool Source::loadCString(const char *text, size_t length, bool copy) {
   return load((void *)text, 1, length, copy);
+}
+
+bool Source::loadCWString(const wchar_t *text) {
+  return loadCWString(text, 0, false);
+}
+
+bool Source::loadCWString(const wchar_t *text, bool copy) {
+  return loadCWString(text, 0, copy);
 }
 
 bool Source::loadCWString(const wchar_t *text, size_t length, bool copy) {
   return load((void *)text, sizeof(wchar_t), length, copy);
 }
 
+bool Source::loadC16String(const char16_t *text) {
+  return loadC16String(text, 0, false);
+}
+
+bool Source::loadC16String(const char16_t *text, bool copy) {
+  return loadC16String(text, 0, copy);
+}
+
 bool Source::loadC16String(const char16_t *text, size_t length, bool copy) {
   return load((void *)text, 2, length, copy);
+}
+
+bool Source::loadC32String(const char32_t *text) {
+  return loadC32String(text, 0, false);
+}
+
+bool Source::loadC32String(const char32_t *text, bool copy) {
+  return loadC32String(text, 0, copy);
 }
 
 bool Source::loadC32String(const char32_t *text, size_t length, bool copy) {

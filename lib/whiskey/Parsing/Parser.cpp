@@ -8,14 +8,15 @@ ParserResult Parser::parseBoundList(ParserContext &ctx,
                                     ParserContext::Rule rule,
                                     const std::string &expected,
                                     Token::ID right) {
+  ParserContext save = ctx;
+
   Token leftToken = ctx.getToken();
   if (leftToken.getID() == left) {
     ctx.eatToken();
   } else {
+    ctx = save;
     return ParserResult();
   }
-
-  ParserContext save = ctx;
 
   Node *front = nullptr;
   Node *back = nullptr;
@@ -32,8 +33,8 @@ ParserResult Parser::parseBoundList(ParserContext &ctx,
 
     ParserResult arg = ctx.parse(rule);
     if (!arg.isGood()) {
-      ctx = save;
       ctx.errorUnexpectedToken(expected);
+      ctx = save;
       return ParserResult();
     }
 
@@ -46,11 +47,11 @@ ParserResult Parser::parseBoundList(ParserContext &ctx,
   }
 
   if (!endedCorrectly) {
-    ctx = save;
     std::stringstream ss;
     ss << "closing ";
     Token::printTokenID(ss, right);
     ctx.errorUnexpectedToken(ss.str());
+    ctx = save;
     return ParserResult();
   }
 
@@ -63,14 +64,15 @@ ParserResult Parser::parseBoundSeparatedList(ParserContext &ctx,
                                              const std::string &expected,
                                              Token::ID sep,
                                              Token::ID right) {
+  ParserContext save = ctx;
+
   Token leftToken = ctx.getToken();
   if (leftToken.getID() == left) {
     ctx.eatToken();
   } else {
+    ctx = save;
     return ParserResult();
   }
-
-  ParserContext save = ctx;
 
   Node *front = nullptr;
   Node *back = nullptr;
@@ -84,17 +86,17 @@ ParserResult Parser::parseBoundSeparatedList(ParserContext &ctx,
       endedCorrectly = true;
       break;
     } else if (rightToken.getID() == sep) {
-      ctx = save;
       std::stringstream ss;
       Token::printTokenID(ss, sep);
       ctx.errorUnexpectedToken(ss.str());
+      ctx = save;
       return ParserResult();
     }
 
     ParserResult arg = ctx.parse(rule);
     if (!arg.isGood()) {
-      ctx = save;
       ctx.errorUnexpectedToken(expected);
+      ctx = save;
       return ParserResult();
     }
 
@@ -108,23 +110,30 @@ ParserResult Parser::parseBoundSeparatedList(ParserContext &ctx,
     rightToken = ctx.getToken();
     if (rightToken.getID() == sep) {
       ctx.eatToken();
+
+      rightToken = ctx.getToken();
+      if (rightToken.getID() == right) {
+        ctx.errorUnexpectedToken(expected);
+        ctx = save;
+        return ParserResult();
+      }
     } else if (rightToken.getID() == right) {
       continue;
     } else {
-      ctx = save;
       std::stringstream ss;
       Token::printTokenID(ss, sep);
       ctx.errorUnexpectedToken(ss.str());
+      ctx = save;
       return ParserResult();
     }
   }
 
   if (!endedCorrectly) {
-    ctx = save;
     std::stringstream ss;
     ss << "closing ";
     Token::printTokenID(ss, right);
     ctx.errorUnexpectedToken(ss.str());
+    ctx = save;
     return ParserResult();
   }
 
@@ -134,14 +143,15 @@ ParserResult Parser::parseBoundSeparatedList(ParserContext &ctx,
 ParserResult Parser::parseTemplateList(ParserContext &ctx,
                                        ParserContext::Rule rule,
                                        const std::string &expected) {
+  ParserContext save = ctx;
+
   Token leftToken = ctx.getToken();
   if (leftToken.getID() == Token::LT) {
     ctx.eatToken();
   } else {
+    ctx = save;
     return ParserResult();
   }
-
-  ParserContext save = ctx;
 
   Node *front = nullptr;
   Node *back = nullptr;
@@ -170,15 +180,15 @@ ParserResult Parser::parseTemplateList(ParserContext &ctx,
       endedCorrectly = true;
       break;
     } else if (rightToken.getID() == Token::Comma) {
-      ctx = save;
       ctx.errorUnexpectedToken(",");
+      ctx = save;
       return ParserResult();
     }
 
     ParserResult arg = ctx.parse(rule);
     if (!arg.isGood()) {
-      ctx = save;
       ctx.errorUnexpectedToken(expected);
+      ctx = save;
       return ParserResult();
     }
 
@@ -198,15 +208,15 @@ ParserResult Parser::parseTemplateList(ParserContext &ctx,
                rightToken.getID() == Token::BitShRAssign) {
       continue;
     } else {
-      ctx = save;
       ctx.errorUnexpectedToken(",");
+      ctx = save;
       return ParserResult();
     }
   }
 
   if (!endedCorrectly) {
-    ctx = save;
     ctx.errorUnexpectedToken("closing >");
+    ctx = save;
     return ParserResult();
   }
 
@@ -216,10 +226,13 @@ ParserResult Parser::parseTemplateList(ParserContext &ctx,
 ParserResult Parser::parseSymbol(ParserContext &ctx,
                                  ParserContext::Rule templateArgRule,
                                  std::function<Node *(Node *, Range)> builder) {
+  ParserContext save = ctx;
+
   Token symbolToken = ctx.getToken();
   if (symbolToken.getID() == Token::Symbol) {
     ctx.eatToken();
   } else {
+    ctx = save;
     return ParserResult();
   }
 
@@ -230,6 +243,7 @@ ParserResult Parser::parseSymbol(ParserContext &ctx,
     if (templateArgs.isGood()) {
       return builder(templateArgs.getNode(), symbolToken.getRange());
     } else {
+      ctx = save;
       return ParserResult();
     }
   } else {
@@ -243,8 +257,10 @@ ParserResult Parser::parseUnaryRight(
     const std::string &expected,
     std::initializer_list<
         std::pair<Token::ID, std::function<Node *(Node *, Range)>>> builders) {
-  Token opToken = ctx.getToken();
   ParserContext save = ctx;
+
+  Token opToken = ctx.getToken();
+
   for (const std::pair<Token::ID, std::function<Node *(Node *, Range)>> &kv :
        builders) {
     ctx = save;
@@ -272,14 +288,13 @@ ParserResult Parser::parseUnaryLeft(
     const std::string &expected,
     std::initializer_list<
         std::pair<Token::ID, std::function<Node *(Node *, Range)>>> builders) {
+  ParserContext save = ctx;
 
   ParserResult res = ctx.parse(baseRule);
   if (res.isGood()) {
     bool gotOp = false;
 
-    ParserContext save = ctx;
-
-    while (true) {
+    while (ctx.areMoreTokens()) {
       save = ctx;
       for (const std::pair<Token::ID, std::function<Node *(Node *, Range)>>
                &kv : builders) {
@@ -301,6 +316,7 @@ ParserResult Parser::parseUnaryLeft(
     return res;
   } else {
     ctx.errorUnexpectedToken(expected);
+    ctx = save;
     return ParserResult();
   }
 }
@@ -312,16 +328,15 @@ ParserResult Parser::parseBinary(
     std::initializer_list<
         std::pair<Token::ID, std::function<Node *(Node *, Node *, Range)>>>
         builders) {
+  ParserContext save = ctx;
+
   ParserResult lhs = ctx.parse(lhsRule);
   if (!lhs.isGood()) {
     return ParserResult();
   }
 
-  ParserContext save = ctx;
-
   for (const std::pair<Token::ID, std::function<Node *(Node *, Node *, Range)>>
            &kv : builders) {
-    ctx = save;
     Token opToken = ctx.getToken();
     if (opToken.getID() == kv.first) {
       ctx.eatToken();
@@ -331,6 +346,7 @@ ParserResult Parser::parseBinary(
       });
       if (!rhs.isGood()) {
         ctx.errorUnexpectedToken(expected);
+        ctx = save;
         return ParserResult();
       }
 
@@ -338,8 +354,6 @@ ParserResult Parser::parseBinary(
           kv.second(lhs.getNode(), rhs.getNode(), opToken.getRange()));
     }
   }
-
-  ctx = save;
   return lhs;
 }
 
@@ -350,19 +364,20 @@ Parser::parseBoundTerm(ParserContext &ctx,
                        const std::string &expected,
                        Token::ID right,
                        std::function<Node *(Node *, Range)> builder) {
+  ParserContext save = ctx;
+
   Token leftToken = ctx.getToken();
   if (leftToken.getID() == left) {
     ctx.eatToken();
   } else {
+    ctx = save;
     return ParserResult();
   }
 
-  ParserContext save = ctx;
-
-  ParserResult rtn = ctx.parse(parseType);
+  ParserResult rtn = ctx.parse(rule);
   if (!rtn.isGood()) {
-    ctx = save;
     ctx.errorUnexpectedToken(expected);
+    ctx = save;
     return ParserResult();
   }
 
@@ -370,20 +385,62 @@ Parser::parseBoundTerm(ParserContext &ctx,
   if (rightToken.getID() == Token::RParen) {
     ctx.eatToken();
   } else {
-    ctx = save;
     std::stringstream ss;
     ss << "closing ";
     Token::printTokenID(ss, right);
     ctx.errorUnexpectedToken(ss.str());
+    ctx = save;
     return ParserResult();
   }
 
-  ctx = save;
   return ParserResult(builder(rtn.getNode(), leftToken.getRange()));
 }
 
 ParserResult Parser::parseTemplateEvalArg(ParserContext &ctx) {
   return ctx.parseAny({parseType, parseExpr});
+}
+
+ParserResult Parser::parseTypeAtomic(ParserContext &ctx) {
+  Token tokenSymbol = ctx.getToken();
+  if (tokenSymbol.getID() == Token::KWBool) {
+    ctx.eatToken();
+    return ParserResult(Node::createTypeAtomicBool(tokenSymbol.getRange()));
+  } else if (tokenSymbol.getID() == Token::KWInt8) {
+    ctx.eatToken();
+    return ParserResult(Node::createTypeAtomicInt8(tokenSymbol.getRange()));
+  } else if (tokenSymbol.getID() == Token::KWInt16) {
+    ctx.eatToken();
+    return ParserResult(Node::createTypeAtomicInt16(tokenSymbol.getRange()));
+  } else if (tokenSymbol.getID() == Token::KWInt32) {
+    ctx.eatToken();
+    return ParserResult(Node::createTypeAtomicInt32(tokenSymbol.getRange()));
+  } else if (tokenSymbol.getID() == Token::KWInt64) {
+    ctx.eatToken();
+    return ParserResult(Node::createTypeAtomicInt64(tokenSymbol.getRange()));
+  } else if (tokenSymbol.getID() == Token::KWUInt8) {
+    ctx.eatToken();
+    return ParserResult(Node::createTypeAtomicUInt8(tokenSymbol.getRange()));
+  } else if (tokenSymbol.getID() == Token::KWUInt16) {
+    ctx.eatToken();
+    return ParserResult(Node::createTypeAtomicUInt16(tokenSymbol.getRange()));
+  } else if (tokenSymbol.getID() == Token::KWUInt32) {
+    ctx.eatToken();
+    return ParserResult(Node::createTypeAtomicUInt32(tokenSymbol.getRange()));
+  } else if (tokenSymbol.getID() == Token::KWUInt64) {
+    ctx.eatToken();
+    return ParserResult(Node::createTypeAtomicUInt64(tokenSymbol.getRange()));
+  } else if (tokenSymbol.getID() == Token::KWFloat32) {
+    ctx.eatToken();
+    return ParserResult(Node::createTypeAtomicFloat32(tokenSymbol.getRange()));
+  } else if (tokenSymbol.getID() == Token::KWFloat64) {
+    ctx.eatToken();
+    return ParserResult(Node::createTypeAtomicFloat64(tokenSymbol.getRange()));
+  } else if (tokenSymbol.getID() == Token::KWReal) {
+    ctx.eatToken();
+    return ParserResult(Node::createTypeAtomicReal(tokenSymbol.getRange()));
+  } else {
+    return ParserResult();
+  }
 }
 
 ParserResult Parser::parseTypeSymbol(ParserContext &ctx) {
@@ -394,7 +451,7 @@ ParserResult Parser::parseTypeSymbol(ParserContext &ctx) {
 }
 
 ParserResult Parser::parseTypeTerm(ParserContext &ctx) {
-  return ctx.parseAny({parseTypeSymbol, parseTypeGroup});
+  return ctx.parseAny({parseTypeSymbol, parseTypeAtomic, parseTypeGroup});
 }
 
 ParserResult Parser::parseTypeAccess(ParserContext &ctx) {
@@ -408,7 +465,7 @@ ParserResult Parser::parseTypeAccess(ParserContext &ctx) {
 
 ParserResult Parser::parseTypeAccessUnary(ParserContext &ctx) {
   return parseUnaryRight(
-      ctx, parseTypeTerm, "type", {{Token::Period, [](Node *arg, Range range) {
+      ctx, parseTypeAccess, "type", {{Token::Period, [](Node *arg, Range range) {
                                       return Node::createTypeAccessUnary(arg,
                                                                          range);
                                     }}});
@@ -526,7 +583,7 @@ ParserResult Parser::parseExprAccess(ParserContext &ctx) {
 
 ParserResult Parser::parseExprAccessUnary(ParserContext &ctx) {
   return parseUnaryRight(ctx,
-                         parseExprTerm,
+                         parseExprAccess,
                          "value",
                          {{Token::Period, [](Node *arg, Range range) {
                              return Node::createExprAccessUnary(arg, range);
@@ -550,8 +607,7 @@ ParserResult Parser::parseExprCall(ParserContext &ctx) {
     return Node::createExprCall(
         callee.getNode(), {args.getNode()}, lParenToken.getRange());
   } else {
-    ctx.errorUnexpectedToken("(");
-    return ParserResult();
+    return callee;
   }
 }
 
@@ -837,23 +893,15 @@ ParserResult Parser::parseStmtExpr(ParserContext &ctx) {
       Node::createStmtExpr(arg.getNode(), tokenSemicolon.getRange()));
 }
 
-// ParserResult Parser::parseStmtDecl(ParserContext &ctx) {
-//   ParserResult arg = ctx.parse(parseDecl);
-//   if (!arg.isGood()) {
-//     return ParserResult();
-//   }
+ParserResult Parser::parseStmtDecl(ParserContext &ctx) {
+  ParserResult arg = ctx.parse(parseDecl);
+  if (!arg.isGood()) {
+    return ParserResult();
+  }
 
-//   Token tokenSemicolon = ctx.getToken();
-//   if (tokenSemicolon.getID() == Token::Semicolon) {
-//     ctx.eatToken();
-//   } else {
-//     ctx.errorUnexpectedToken(";");
-//     return ParserResult();
-//   }
-
-//   return ParserResult(
-//       Node::createStmtDecl(arg.getNode(), tokenSemicolon.getRange()));
-// }
+  return ParserResult(
+      Node::createStmtDecl(arg.getNode(), arg.getNode()->getRange()));
+}
 
 ParserResult Parser::parseStmtReturn(ParserContext &ctx) {
   Token tokenKWReturn = ctx.getToken();
@@ -1096,240 +1144,255 @@ ParserResult Parser::parseStmtWhile(ParserContext &ctx) {
       condition.getNode(), body.getNode(), tokenKWWhile.getRange()));
 }
 
-// ParserResult Parser::parseStmtFor(ParserContext &ctx) {
-//   Token tokenFor = ctx.getToken();
-//   if (tokenFor.getID() == Token::KWFor) {
-//     ctx.eatToken();
-//   } else {
-//     return ParserResult();
-//   }
+ParserResult Parser::parseStmtFor(ParserContext &ctx) {
+  Token tokenFor = ctx.getToken();
+  if (tokenFor.getID() == Token::KWFor) {
+    ctx.eatToken();
+  } else {
+    return ParserResult();
+  }
 
-//   Token tokenLParen = ctx.getToken();
-//   if (tokenLParen.getID() == Token::LParen) {
-//     ctx.eatToken();
-//   } else {
-//     ctx.errorUnexpectedToken("(");
-//     return ParserResult();
-//   }
+  Token tokenLParen = ctx.getToken();
+  if (tokenLParen.getID() == Token::LParen) {
+    ctx.eatToken();
+  } else {
+    ctx.errorUnexpectedToken("(");
+    return ParserResult();
+  }
 
-//   ParserResult res =
-//       ParserResult(Node::createStmtFor({}, nullptr, {},
-//       tokenFor.getRange()));
+  ParserResult res =
+      ParserResult(Node::createStmtFor({}, nullptr, {},
+      tokenFor.getRange()));
 
-//   Node *front = nullptr;
-//   Node *back = nullptr;
+  Node *front = nullptr;
+  Node *back = nullptr;
 
-//   bool endedCorrectly = false;
-//   while (ctx.areMoreTokens()) {
-//     Token tokenSepFirst = ctx.getToken();
-//     if (!tokenSepFirst.isGood()) {
-//       ctx.errorUnexpectedToken("variable declaration or ;");
-//       return ParserResult();
-//     } else if (tokenSepFirst.getID() == Token::Semicolon) {
-//       ctx.eatToken();
-//       endedCorrectly = true;
-//       break;
-//     } else if (tokenSepFirst.getID() == Token::Comma) {
-//       ctx.eatToken();
-//     } else {
-//       ParserResult decl = ctx.parse(parseDeclVariable);
-//       if (!decl.isGood()) {
-//         ctx.errorUnexpectedToken("variable declaration");
-//         return ParserResult();
-//       }
-//       if (front == nullptr) {
-//         front = back = decl.getNode();
-//       } else {
-//         back->setNext(decl.getNode());
-//         back = decl.getNode();
-//       }
-//     }
-//   }
+  bool endedCorrectly = false;
+  while (ctx.areMoreTokens()) {
+    Token tokenSepFirst = ctx.getToken();
+    if (!tokenSepFirst.isGood()) {
+      ctx.errorUnexpectedToken("variable declaration or ;");
+      return ParserResult();
+    } else if (tokenSepFirst.getID() == Token::Semicolon) {
+      ctx.eatToken();
+      endedCorrectly = true;
+      break;
+    } else if (tokenSepFirst.getID() == Token::Comma) {
+      ctx.eatToken();
+    } else {
+      ParserResult decl = ctx.parse(parseDeclVariableNoSemicolon);
+      if (!decl.isGood()) {
+        ctx.errorUnexpectedToken("variable declaration");
+        return ParserResult();
+      }
+      if (front == nullptr) {
+        front = back = decl.getNode();
+      } else {
+        back->setNext(decl.getNode());
+        back = decl.getNode();
+      }
+    }
+  }
 
-//   res.getNode()->getField(Node::FieldTag::StmtFor_Decls)->setNode(front);
+  res.getNode()->getField(Node::FieldTag::StmtFor_Decls)->setNode(front);
 
-//   if (!endedCorrectly) {
-//     ctx.errorUnexpectedToken(";");
-//     return ParserResult();
-//   }
+  if (!endedCorrectly) {
+    ctx.errorUnexpectedToken(";");
+    return ParserResult();
+  }
 
-//   ParserResult cond = ctx.parse(parseExpr);
-//   if (!cond.isGood()) {
-//     ctx.errorUnexpectedToken("condition");
-//     return ParserResult();
-//   }
+  Token tokenSepSecond = ctx.getToken();
+  if (tokenSepSecond.getID() != Token::Semicolon) {
+    ParserResult cond = ctx.parse(parseExpr);
+    if (!cond.isGood()) {
+      ctx.errorUnexpectedToken("condition");
+      return ParserResult();
+    }
 
-//   res.getNode()
-//       ->getField(Node::FieldTag::StmtFor_Condition)
-//       ->setNode(cond.getNode());
+    res.getNode()
+        ->getField(Node::FieldTag::StmtFor_Condition)
+        ->setNode(cond.getNode());
+  }
 
-//   Token tokenSepSecond = ctx.getToken();
-//   if (tokenSepSecond.getID() == Token::Semicolon) {
-//     ctx.eatToken();
-//   } else {
-//     ctx.errorUnexpectedToken(";");
-//     return ParserResult();
-//   }
+  tokenSepSecond = ctx.getToken();
+  if (tokenSepSecond.getID() == Token::Semicolon) {
+    ctx.eatToken();
+  } else {
+    ctx.errorUnexpectedToken(";");
+    return ParserResult();
+  }
 
-//   front = back = nullptr;
+  front = back = nullptr;
 
-//   endedCorrectly = false;
-//   while (ctx.areMoreTokens()) {
-//     Token tokenSepThird = ctx.getToken();
-//     if (!tokenSepThird.isGood()) {
-//       ctx.errorUnexpectedToken("expression or )");
-//     } else if (tokenSepThird.getID() == Token::RParen) {
-//       ctx.eatToken();
-//       break;
-//     } else if (tokenSepThird.getID() == Token::Comma) {
-//       ctx.eatToken();
-//     } else {
-//       ParserResult step = ctx.parse(parseExpr);
-//       if (!step.isGood()) {
-//         ctx.errorUnexpectedToken("expression");
-//         return ParserResult();
-//       }
-//       if (front == nullptr) {
-//         front = back = step.getNode();
-//       } else {
-//         back->setNext(step.getNode());
-//         back = step.getNode();
-//       }
-//     }
-//   }
+  endedCorrectly = false;
+  while (ctx.areMoreTokens()) {
+    Token tokenSepThird = ctx.getToken();
+    if (!tokenSepThird.isGood()) {
+      ctx.errorUnexpectedToken("expression or )");
+    } else if (tokenSepThird.getID() == Token::RParen) {
+      endedCorrectly = true;
+      ctx.eatToken();
+      break;
+    } else if (tokenSepThird.getID() == Token::Comma) {
+      ctx.eatToken();
+    } else {
+      ParserResult step = ctx.parse(parseExpr);
+      if (!step.isGood()) {
+        ctx.errorUnexpectedToken("expression");
+        return ParserResult();
+      }
+      if (front == nullptr) {
+        front = back = step.getNode();
+      } else {
+        back->setNext(step.getNode());
+        back = step.getNode();
+      }
+    }
+  }
 
-//   res.getNode()->getField(Node::FieldTag::StmtFor_Steps)->setNode(front);
+  res.getNode()->getField(Node::FieldTag::StmtFor_Steps)->setNode(front);
 
-//   if (!endedCorrectly) {
-//     ctx.errorUnexpectedToken(")");
-//     return ParserResult();
-//   }
+  if (!endedCorrectly) {
+    ctx.errorUnexpectedToken(")");
+    return ParserResult();
+  }
 
-//   ParserResult body = ctx.parse(parseStmt);
-//   if (!body.isGood()) {
-//     ctx.errorUnexpectedToken("body clause");
-//     return ParserResult();
-//   }
+  ParserResult body = ctx.parse(parseStmt);
+  if (!body.isGood()) {
+    ctx.errorUnexpectedToken("body clause");
+    return ParserResult();
+  }
 
-//   res.getNode()
-//       ->getField(Node::FieldTag::StmtFor_Body)
-//       ->setNode(body.getNode());
+  res.getNode()
+      ->getField(Node::FieldTag::StmtFor_Body)
+      ->setNode(body.getNode());
 
-//   return res;
-// }
+  return res;
+}
 
-// ParserResult Parser::parseStmtForEach(ParserContext &ctx) {
-//   Token tokenFor = ctx.getToken();
-//   if (tokenFor.getID() == Token::KWFor) {
-//     ctx.eatToken();
-//   } else {
-//     return ParserResult();
-//   }
+ParserResult Parser::parseStmtForEach(ParserContext &ctx) {
+  Token tokenForEach = ctx.getToken();
+  if (tokenForEach.getID() == Token::KWForEach) {
+    ctx.eatToken();
+  } else {
+    return ParserResult();
+  }
 
-//   Token tokenLParen = ctx.getToken();
-//   if (tokenLParen.getID() == Token::LParen) {
-//     ctx.eatToken();
-//   } else {
-//     ctx.errorUnexpectedToken("(");
-//     return ParserResult();
-//   }
+  Token tokenLParen = ctx.getToken();
+  if (tokenLParen.getID() == Token::LParen) {
+    ctx.eatToken();
+  } else {
+    ctx.errorUnexpectedToken("(");
+    return ParserResult();
+  }
 
-//   ParserResult res =
-//       ParserResult(Node::createStmtForEach({}, {}, tokenFor.getRange()));
+  ParserResult res =
+      ParserResult(Node::createStmtForEach({}, {}, tokenForEach.getRange()));
 
-//   Node *front = nullptr;
-//   Node *back = nullptr;
+  Node *front = nullptr;
+  Node *back = nullptr;
 
-//   bool endedCorrectly = false;
-//   while (ctx.areMoreTokens()) {
-//     Token tokenSepFirst = ctx.getToken();
-//     if (!tokenSepFirst.isGood()) {
-//       ctx.errorUnexpectedToken("variable declaration or ;");
-//       return ParserResult();
-//     } else if (tokenSepFirst.getID() == Token::Semicolon) {
-//       ctx.eatToken();
-//       endedCorrectly = true;
-//       break;
-//     } else if (tokenSepFirst.getID() == Token::Comma) {
-//       ctx.eatToken();
-//     } else {
-//       ParserResult decl = ctx.parse(parseDeclVariable);
-//       if (!decl.isGood()) {
-//         ctx.errorUnexpectedToken("variable declaration");
-//         return ParserResult();
-//       }
-//       if (front == nullptr) {
-//         front = back = decl.getNode();
-//       } else {
-//         back->setNext(decl.getNode());
-//         back = decl.getNode();
-//       }
-//     }
-//   }
+  bool endedCorrectly = false;
+  while (ctx.areMoreTokens()) {
+    Token tokenSepFirst = ctx.getToken();
+    if (!tokenSepFirst.isGood()) {
+      ctx.errorUnexpectedToken("variable declaration or ;");
+      return ParserResult();
+    } else if (tokenSepFirst.getID() == Token::Semicolon) {
+      ctx.eatToken();
+      endedCorrectly = true;
+      break;
+    } else if (tokenSepFirst.getID() == Token::Comma) {
+      ctx.eatToken();
+    } else {
+      ParserResult decl = ctx.parse(parseDeclVariableNoSemicolon);
+      if (!decl.isGood()) {
+        ctx.errorUnexpectedToken("variable declaration");
+        return ParserResult();
+      }
+      
+      if (front == nullptr) {
+        front = back = decl.getNode();
+      } else {
+        back->setNext(decl.getNode());
+        back = decl.getNode();
+      }
 
-//   res.getNode()->getField(Node::FieldTag::StmtForEach_Decls)->setNode(front);
+      tokenSepFirst = ctx.getToken();
+      if (tokenSepFirst.getID() == Token::Comma) {
+        continue;
+      } else if (tokenSepFirst.getID() == Token::Semicolon) {
+        ctx.eatToken();
+        endedCorrectly = true;
+        break;
+      }
+    }
+  }
 
-//   if (!endedCorrectly) {
-//     ctx.errorUnexpectedToken(";");
-//     return ParserResult();
-//   }
+  res.getNode()->getField(Node::FieldTag::StmtForEach_Decls)->setNode(front);
 
-//   Token tokenSepSecond = ctx.getToken();
-//   if (tokenSepSecond.getID() == Token::Semicolon) {
-//     ctx.eatToken();
-//   } else {
-//     ctx.errorUnexpectedToken(";");
-//     return ParserResult();
-//   }
+  if (!endedCorrectly) {
+    ctx.errorUnexpectedToken(";");
+    return ParserResult();
+  }
 
-//   front = back = nullptr;
+  front = back = nullptr;
 
-//   endedCorrectly = false;
-//   while (ctx.areMoreTokens()) {
-//     Token tokenSepThird = ctx.getToken();
-//     if (!tokenSepThird.isGood()) {
-//       ctx.errorUnexpectedToken("expression or )");
-//     } else if (tokenSepThird.getID() == Token::RParen) {
-//       ctx.eatToken();
-//       break;
-//     } else if (tokenSepThird.getID() == Token::Comma) {
-//       ctx.eatToken();
-//     } else {
-//       ParserResult sequence = ctx.parse(parseExpr);
-//       if (!sequence.isGood()) {
-//         ctx.errorUnexpectedToken("expression");
-//         return ParserResult();
-//       }
-//       if (front == nullptr) {
-//         front = back = sequence.getNode();
-//       } else {
-//         back->setNext(sequence.getNode());
-//         back = sequence.getNode();
-//       }
-//     }
-//   }
+  endedCorrectly = false;
+  while (ctx.areMoreTokens()) {
+    Token tokenSepThird = ctx.getToken();
+    if (!tokenSepThird.isGood()) {
+      ctx.errorUnexpectedToken("expression or )");
+    } else if (tokenSepThird.getID() == Token::RParen) {
+      ctx.eatToken();
+      endedCorrectly = true;
+      break;
+    } else if (tokenSepThird.getID() == Token::Comma) {
+      ctx.eatToken();
+    } else {
+      ParserResult sequence = ctx.parse(parseExpr);
+      if (!sequence.isGood()) {
+        ctx.errorUnexpectedToken("expression");
+        return ParserResult();
+      }
 
-//   res.getNode()
-//       ->getField(Node::FieldTag::StmtForEach_Sequences)
-//       ->setNode(front);
+      if (front == nullptr) {
+        front = back = sequence.getNode();
+      } else {
+        back->setNext(sequence.getNode());
+        back = sequence.getNode();
+      }
 
-//   if (!endedCorrectly) {
-//     ctx.errorUnexpectedToken(")");
-//     return ParserResult();
-//   }
+      tokenSepThird = ctx.getToken();
+      if (tokenSepThird.getID() == Token::RParen) {
+        ctx.eatToken();
+        endedCorrectly = true;
+        break;
+      }
+    }
+  }
 
-//   ParserResult body = ctx.parse(parseStmt);
-//   if (!body.isGood()) {
-//     ctx.errorUnexpectedToken("body clause");
-//     return ParserResult();
-//   }
+  res.getNode()
+      ->getField(Node::FieldTag::StmtForEach_Sequences)
+      ->setNode(front);
 
-//   res.getNode()
-//       ->getField(Node::FieldTag::StmtForEach_Body)
-//       ->setNode(body.getNode());
+  if (!endedCorrectly) {
+    ctx.errorUnexpectedToken(")");
+    return ParserResult();
+  }
 
-//   return res;
-// }
+  ParserResult body = ctx.parse(parseStmt);
+  if (!body.isGood()) {
+    ctx.errorUnexpectedToken("body clause");
+    return ParserResult();
+  }
+
+  res.getNode()
+      ->getField(Node::FieldTag::StmtForEach_Body)
+      ->setNode(body.getNode());
+
+  return res;
+}
 
 ParserResult Parser::parseStmtBlock(ParserContext &ctx) {
   Token tokenLBrace = ctx.getToken();
@@ -1384,394 +1447,433 @@ ParserResult Parser::parseStmt(ParserContext &ctx) {
   return ctx.parseAny({parseStmtBlock,
                        parseStmtIf,
                        parseStmtWhile,
-                       // parseStmtFor,
-                       // parseStmtForEach,
+                       parseStmtFor,
+                       parseStmtForEach,
                        parseStmtReturn,
                        parseStmtEmpty,
-                       parseStmtExpr});
+                       parseStmtExpr,
+                       parseStmtDecl});
 }
 
-// ParserResult Parser::parseDeclVariable(ParserContext &ctx) {
-// 	ParserResult type = ctx.expectParse(parseType, "type");
-// 	if (!type.isGood()) {
-// 		return ParserResult();
-// 	}
+ParserResult Parser::parseDeclVariableNoSemicolon(ParserContext &ctx) {
+  ParserResult type = ctx.parse(parseType);
+	if (!type.isGood()) {
+    ctx.errorUnexpectedToken("type");
+		return ParserResult();
+	}
 
-// 	Token tokenSymbol = ctx.tryToken(Token::Symbol);
-// 	if (!tokenSymbol.isGood()) {
-// 		return ParserResult();
-// 	}
+	Token tokenSymbol = ctx.getToken();
+  if (tokenSymbol.getID() == Token::Symbol) {
+    ctx.eatToken();
+  } else {
+    ctx.errorUnexpectedToken("symbol");
+    return ParserResult();
+  }
+	
+	ParserResult res = ParserResult(Node::createDeclVariable(type.getNode(), Field::createString8(tokenSymbol.getRange().getText().c_str())));
 
-// 	ParserResult res = ParserResult(new DeclVariable(tokenSymbol.getRange(),
-// type.getAST()->cloneAs<Type>(), tokenSymbol.getRange().getText()));
+	Token tokenLT = ctx.getToken();
+  if (tokenLT.getID() == Token::LT) {
+    ParserResult templateArgs =
+        parseTemplateList(ctx, parseDeclVariableNoSemicolon, "template arg");
+    if (templateArgs.isGood()) {
+      res.getNode()->getField(Node::FieldTag::DeclVariable_TemplateDeclArgs)->setNode(templateArgs.getNode());
+    } else {
+      return ParserResult();
+    }
+  }
 
-// 	Token tokenLBracket = ctx.tryToken(Token::LT);
-// 	if (tokenLBracket.isGood()) {
-// 		// put template args here
-// 	}
+	Token tokenSep = ctx.getToken();
+	if (tokenSep.getID() == Token::Assign) {
+		ctx.eatToken();
+		ParserResult init = ctx.parse(parseExpr);
+		if (!init.isGood()) {
+      ctx.errorUnexpectedToken("value");
+			return ParserResult();
+		}
 
-// 	Token tokenSep = ctx.getToken();
-// 	if (!tokenSep.isGood()) {
-// 		ctx.errorUnexpectedToken("= or ;");
-// 		return ParserResult();
-// 	} else if (tokenSep.getID() == Token::Semicolon) {
-// 		ctx.eatToken();
-// 		return res;
-// 	} else if (tokenSep.getID() == Token::Assign) {
-// 		ctx.eatToken();
-// 		ParserResult init = ctx.expectParse(parseExpr, "expression");
-// 		if (!init.isGood()) {
-// 			return ParserResult();
-// 		}
+		res.getNode()->getField(Node::FieldTag::DeclVariable_Initial)->setNode(init.getNode());
+	}
 
-// 		tokenSep = ctx.expectToken(Token::Semicolon, ";");
-// 		if (!tokenSep.isGood()) {
-// 			return ParserResult();
-// 		}
+	return res;
+}
 
-// 		res.getAST()->as<DeclVariable>()->setInit(init.getAST()->cloneAs<Expr>());
-// 	}
+ParserResult Parser::parseDeclVariable(ParserContext &ctx) {
+  ParserResult res = ctx.parse(parseDeclVariableNoSemicolon);
+  if (!res.isGood()) {
+    return ParserResult();
+  }
 
-// 	return res;
-// }
+  Token tokenSymbol = ctx.getToken();
+  if (tokenSymbol.getID() == Token::Semicolon) {
+    ctx.eatToken();
+  } else {
+    ctx.errorUnexpectedToken(";");
+    return ParserResult();
+  }
 
-// ParserResult Parser::parseDeclFunction(ParserContext &ctx) {
-// 	ParserResult type = ctx.expectParse(parseType, "type");
-// 	if (!type.isGood()) {
-// 		return ParserResult();
-// 	}
+  return res;
+}
 
-// 	Token tokenSymbol = ctx.tryToken(Token::Symbol);
-// 	if (!tokenSymbol.isGood()) {
-// 		return ParserResult();
-// 	}
+ParserResult Parser::parseDeclFunction(ParserContext &ctx) {
+  ParserResult type = ctx.parse(parseType);
+  if (!type.isGood()) {
+    ctx.errorUnexpectedToken("type");
+    return ParserResult();
+  }
 
-// 	ParserResult res = ParserResult(new DeclFunction(tokenSymbol.getRange(),
-// type.getAST()->cloneAs<Type>(), tokenSymbol.getRange().getText()));
+  Token tokenSymbol = ctx.getToken();
+  if (tokenSymbol.getID() == Token::Symbol) {
+    ctx.eatToken();
+  } else {
+    ctx.errorUnexpectedToken("symbol");
+    return ParserResult();
+  }
+  
+  ParserResult res = ParserResult(Node::createDeclFunction(type.getNode(), Field::createString8(tokenSymbol.getRange().getText().c_str()), {}));
 
-// 	Token tokenLBracket = ctx.tryToken(Token::LT);
-// 	if (tokenLBracket.isGood()) {
-// 		bool endedCorrectly = false;
-// 		while (ctx.areMoreTokens()) {
-// 			ParserResult arg = ctx.expectParse(parseDeclVariable,
-// "template arg"); 			if (arg.isGood()) {
-// 				res.getAST()->as<DeclFunction>()->getTemplateDeclArgs().push_back(arg.getAST()->cloneAs<DeclVariable>());
-// 			}
-// 			Token tokenSep = ctx.getToken();
-// 			if (tokenSep.getID() == Token::Comma) {
-// 				ctx.eatToken();
-// 			} else if (tokenSep.getID() == Token::GT) {
-// 				ctx.eatToken();
-// 				endedCorrectly = true;
-// 				break;
-// 			} else if (tokenSep.getID() == Token::GE) {
-// 				ctx.eatToken();
-// 				ctx.injectToken(Token(Token::Assign));
-// 				endedCorrectly = true;
-// 				break;
-// 			} else if (tokenSep.getID() == Token::BitShR) {
-// 				ctx.eatToken();
-// 				ctx.injectToken(Token(Token::GT));
-// 				endedCorrectly = true;
-// 				break;
-// 			} else if (tokenSep.getID() == Token::BitShRAssign) {
-// 				ctx.eatToken();
-// 				ctx.injectToken(Token(Token::GE));
-// 				endedCorrectly = true;
-// 				break;
-// 			} else {
-// 				ctx.errorUnexpectedToken(", or >");
-// 				ctx.eatToken();
-// 			}
-// 		}
+  Token tokenLT = ctx.getToken();
+  if (tokenLT.getID() == Token::LT) {
+    ParserResult templateArgs =
+        parseTemplateList(ctx, parseDeclVariableNoSemicolon, "template arg");
+    if (templateArgs.isGood()) {
+      res.getNode()->getField(Node::FieldTag::DeclFunction_TemplateDeclArgs)->setNode(templateArgs.getNode());
+    } else {
+      return ParserResult();
+    }
+  }
 
-// 		if (!endedCorrectly) {
-// 			ctx.errorUnexpectedToken("closing >");
-// 			return ParserResult();
-// 		}
-// 	}
+  Token tokenLParen = ctx.getToken();
+  if (tokenLParen.getID() == Token::LParen) {
+   ParserResult args = parseBoundSeparatedList(ctx, Token::LParen, parseDeclVariableNoSemicolon, "arg", Token::Comma, Token::RParen);
+   if (!args.isGood()) {
+    return ParserResult();
+   } else {
+    res.getNode()->getField(Node::FieldTag::DeclFunction_Args)->setNode(args.getNode());
+   }
+  } else {
+    return ParserResult();
+  }
 
-// 	Token tokenLBrace = ctx.expectToken(Token::LParen, "(");
-// 	if (!tokenLBrace.isGood()) {
-// 		return ParserResult();
-// 	}
+  Token tokenSep = ctx.getToken();
+  if (!tokenSep.isGood()) {
+    ctx.errorUnexpectedToken("function body");
+    return ParserResult();
+  } else if (tokenSep.getID() == Token::Semicolon) {
+    ctx.eatToken();
+    return res;
+  } else if (tokenSep.getID() == Token::Assign) {
+    ctx.eatToken();
+    ParserResult body = ctx.parse(parseStmtExpr);
+    if (!body.isGood()) {
+      ctx.errorUnexpectedToken("value");
+      return ParserResult();
+    }
 
-// 	bool endedCorrectly = false;
-// 	while (ctx.areMoreTokens()) {
-// 		Token tokenSep = ctx.getToken();
-// 		if (!tokenSep.isGood()) {
-// 			ctx.errorUnexpectedToken("argument or )");
-// 			return ParserResult();
-// 		} else if (tokenSep.getID() == Token::RParen) {
-// 			ctx.eatToken();
-// 			endedCorrectly = true;
-// 			break;
-// 		} else {
-// 			ParserResult arg = ctx.expectParse(parseDeclVariable,
-// "argument"); 			if (!arg.isGood()) {
-// 				return ParserResult();
-// 			}
-// 			res.getAST()->as<DeclFunction>()->getArgs().push_back(arg.getAST()->cloneAs<DeclVariable>());
-// 		}
-// 	}
+    res.getNode()->getField(Node::FieldTag::DeclFunction_Body)->setNode(body.getNode());
+  } else {
+    ParserResult body = ctx.parse(parseStmtBlock);
+    if (!body.isGood()) {
+      ctx.errorUnexpectedToken("body");
+      return ParserResult();
+    }
 
-// 	if (!endedCorrectly) {
-// 		ctx.errorUnexpectedToken(")");
-// 		return ParserResult();
-// 	}
+    res.getNode()->getField(Node::FieldTag::DeclFunction_Body)->setNode(body.getNode());
+  }
 
-// 	Token tokenSep = ctx.getToken();
-// 	if (!tokenSep.isGood()) {
-// 		ctx.errorUnexpectedToken("=, ;, or {");
-// 		return ParserResult();
-// 	} else if (tokenSep.getID() == Token::Semicolon) {
-// 		ctx.eatToken();
-// 		return res;
-// 	} else if (tokenSep.getID() == Token::Assign) {
-// 		ctx.eatToken();
-// 		ParserResult init = ctx.expectParse(parseStmtExpr,
-// "expression"); 		if (!init.isGood()) { 			return
-// ParserResult();
-// 		}
+  return res;
+}
 
-// 		res.getAST()->as<DeclFunction>()->setBody(init.getAST()->cloneAs<Stmt>());
-// 	} else if (tokenSep.getID() == Token::LBrace) {
-// 		ParserResult body = ctx.expectParse(parseStmtBlock, "body");
-// 		if (!body.isGood()) {
-// 			return ParserResult();
-// 		}
+ParserResult Parser::parseDeclClass(ParserContext &ctx) {
+  Token tokenKWClass = ctx.getToken();
+  if (tokenKWClass.getID() == Token::KWClass) {
+    ctx.eatToken();
+  } else {
+    return ParserResult();
+  }
 
-// 		tokenSep = ctx.expectToken(Token::Semicolon, ";");
-// 		if (!tokenSep.isGood()) {
-// 			return ParserResult();
-// 		}
+  Token tokenSymbol = ctx.getToken();
+  if (tokenSymbol.getID() == Token::Symbol) {
+    ctx.eatToken();
+  } else {
+    ctx.errorUnexpectedToken("symbol");
+    return ParserResult();
+  }
+  
+  ParserResult res = ParserResult(Node::createDeclClass(Field::createString8(tokenSymbol.getRange().getText().c_str())));
 
-// 		res.getAST()->as<DeclFunction>()->setBody(body.getAST()->cloneAs<Stmt>());
-// 	} else {
-// 		ctx.errorUnexpectedToken("=, ;, or {");
-// 		return ParserResult();
-// 	}
+  Token tokenLT = ctx.getToken();
+  if (tokenLT.getID() == Token::LT) {
+    ParserResult templateArgs =
+        parseTemplateList(ctx, parseDeclVariableNoSemicolon, "template arg");
+    if (templateArgs.isGood()) {
+      res.getNode()->getField(Node::FieldTag::DeclClass_TemplateDeclArgs)->setNode(templateArgs.getNode());
+    } else {
+      return ParserResult();
+    }
+  }
 
-// 	return res;
-// }
+  Token tokenKWInherits = ctx.getToken();
+  if (tokenKWInherits.getID() == Token::KWInherits) {
+    ctx.eatToken();
 
-// ParserResult Parser::parseDeclClass(ParserContext &ctx) {
-// 	Token tokenClass = ctx.tryToken(Token::KWClass);
-// 	if (!tokenClass.isGood()) {
-// 		return ParserResult();
-// 	}
+    Node *front = nullptr;
+    Node *back = nullptr;
 
-// 	Token tokenSymbol = ctx.tryToken(Token::Symbol);
-// 	if (!tokenSymbol.isGood()) {
-// 		return ParserResult();
-// 	}
+    bool endedCorrectly = false;
+    while (ctx.areMoreTokens()) {
+      Token tokenSep = ctx.getToken();
+      if (!tokenSep.isGood()) {
+        ctx.errorUnexpectedToken("type, {, or ;");
+        return ParserResult();
+      } else if (tokenSep.getID() == Token::LBrace) {
+        ctx.eatToken();
+        endedCorrectly = true;
+        break;
+      } else if (tokenSep.getID() == Token::Semicolon) {
+        ctx.eatToken();
+        endedCorrectly = true;
+        break;
+      } else {
+        ParserResult type = ctx.parse(parseType);
+        if (!type.isGood()) {
+          ctx.errorUnexpectedToken("type");
+          return ParserResult();
+        }
 
-// 	ParserResult res = ParserResult(new DeclClass(tokenSymbol.getRange(),
-// tokenSymbol.getRange().getText()));
+        if (front == nullptr) {
+          front = back = type.getNode();
+        } else {
+          back->setNext(type.getNode());
+          back = type.getNode();
+        }
 
-// 	Token tokenLBracket = ctx.tryToken(Token::LT);
-// 	if (tokenLBracket.isGood()) {
-// 		bool endedCorrectly = false;
-// 		while (ctx.areMoreTokens()) {
-// 			ParserResult arg = ctx.expectParse(parseDeclVariable,
-// "template arg"); 			if (arg.isGood()) {
-// 				res.getAST()->as<DeclClass>()->getTemplateDeclArgs().push_back(arg.getAST()->cloneAs<DeclVariable>());
-// 			}
-// 			Token tokenSep = ctx.getToken();
-// 			if (tokenSep.getID() == Token::Comma) {
-// 				ctx.eatToken();
-// 			} else if (tokenSep.getID() == Token::GT) {
-// 				ctx.eatToken();
-// 				endedCorrectly = true;
-// 				break;
-// 			} else if (tokenSep.getID() == Token::GE) {
-// 				ctx.eatToken();
-// 				ctx.injectToken(Token(Token::Assign));
-// 				endedCorrectly = true;
-// 				break;
-// 			} else if (tokenSep.getID() == Token::BitShR) {
-// 				ctx.eatToken();
-// 				ctx.injectToken(Token(Token::GT));
-// 				endedCorrectly = true;
-// 				break;
-// 			} else if (tokenSep.getID() == Token::BitShRAssign) {
-// 				ctx.eatToken();
-// 				ctx.injectToken(Token(Token::GE));
-// 				endedCorrectly = true;
-// 				break;
-// 			} else {
-// 				ctx.errorUnexpectedToken(", or >");
-// 				ctx.eatToken();
-// 			}
-// 		}
+        tokenSep = ctx.getToken();
+        if (tokenSep.getID() == Token::Comma) {
+          ctx.eatToken();
+          continue;
+        } else if (tokenSep.getID() == Token::LBrace) {
+          endedCorrectly = true;
+          break;
+        } else if (tokenSep.getID() == Token::Semicolon) {
+          endedCorrectly = true;
+          break;
+        } else {
+          ctx.errorUnexpectedToken("class body");
+          return ParserResult();
+        }
+      }
+    }
 
-// 		if (!endedCorrectly) {
-// 			ctx.errorUnexpectedToken("closing >");
-// 			return ParserResult();
-// 		}
-// 	}
+    res.getNode()->getField(Node::FieldTag::DeclClass_Inherits)->setNode(front);
 
-// 	Token tokenSep = ctx.getToken();
-// 	if (!tokenSep.isGood()) {
-// 		ctx.errorUnexpectedToken("inherits or {");
-// 		return ParserResult();
-// 	} else if (tokenSep.getID() == Token::KWInherits) {
-// 		ctx.eatToken();
+    if (!endedCorrectly) {
+      ctx.errorUnexpectedToken("}");
+      return ParserResult();
+    }
+  }
 
-// 		bool endedCorrectly = false;
-// 		while (ctx.areMoreTokens()) {
-// 			Token tokenSep = ctx.getToken();
-// 			if (!tokenSep.isGood()) {
-// 				ctx.errorUnexpectedToken("type or {");
-// 				return ParserResult();
-// 			} else if (tokenSep.getID() == Token::LBrace) {
-// 				ctx.eatToken();
-// 				endedCorrectly = true;
-// 				break;
-// 			} else {
-// 				ParserResult arg = ctx.expectParse(parseType,
-// "type"); 				if (!arg.isGood()) {
-// 					return ParserResult();
-// 				}
-// 				res.getAST()->as<DeclClass>()->getInherits().push_back(arg.getAST()->cloneAs<Type>());
-// 			}
-// 		}
+  Token tokenSep = ctx.getToken();
+  if (!tokenSep.isGood()) {
+    ctx.errorUnexpectedToken("{ or ;");
+    return ParserResult();
+  } else if (tokenSep.getID() == Token::Semicolon) {
+    ctx.eatToken();
+    return res;
+  } else if (tokenSep.getID() == Token::LBrace) {
+    ctx.eatToken();
+    
+    Node *front = nullptr;
+    Node *back = nullptr;
 
-// 		if (!endedCorrectly) {
-// 			ctx.errorUnexpectedToken("{");
-// 			return ParserResult();
-// 		}
-// 	} else if (tokenSep.getID() == Token::LBrace) {
-// 		ctx.eatToken();
-// 	} else {
-// 		ctx.errorUnexpectedToken("implements or {");
-// 		return ParserResult();
-// 	}
+    bool endedCorrectly = false;
+    while (ctx.areMoreTokens()) {
+      Token tokenSep = ctx.getToken();
+      if (!tokenSep.isGood()) {
+        ctx.errorUnexpectedToken("declaration or }");
+        return ParserResult();
+      } else if (tokenSep.getID() == Token::RBrace) {
+        ctx.eatToken();
+        endedCorrectly = true;
+        break;
+      } else {
+        ParserResult decl = ctx.parse(parseDecl);
+        if (!decl.isGood()) {
+          ctx.errorUnexpectedToken("declaration");
+          return ParserResult();
+        }
+        if (front == nullptr) {
+          front = back = decl.getNode();
+        } else {
+          back->setNext(decl.getNode());
+          back = decl.getNode();
+        }
+      }
+    }
 
-// 	bool endedCorrectly = false;
-// 	while (ctx.areMoreTokens()) {
-// 		Token tokenSep = ctx.getToken();
-// 		if (!tokenSep.isGood()) {
-// 			ctx.errorUnexpectedToken("declaration or }");
-// 			return ParserResult();
-// 		} else if (tokenSep.getID() == Token::RBrace) {
-// 			ctx.eatToken();
-// 			endedCorrectly = true;
-// 			break;
-// 		} else {
-// 			ParserResult decl = ctx.expectParse(parseDecl,
-// "declaration"); 			if (!decl.isGood()) {
-// 				return ParserResult();
-// 			}
-// 			res.getAST()->as<DeclClass>()->getMembers().push_back(decl.getAST()->cloneAs<Decl>());
-// 		}
-// 	}
+    res.getNode()->getField(Node::FieldTag::DeclClass_Members)->setNode(front);
 
-// 	if (!endedCorrectly) {
-// 		ctx.errorUnexpectedToken("}");
-// 		return ParserResult();
-// 	}
+    if (!endedCorrectly) {
+      ctx.errorUnexpectedToken("}");
+      return ParserResult();
+    }
+  } else {
+    ctx.errorUnexpectedToken("{ or ;");
+    return ParserResult();
+  }
 
-// 	return res;
-// }
+  return res;
+}
 
-// ParserResult Parser::parseDeclNamespace(ParserContext &ctx) {
-// 	Token tokenClass = ctx.tryToken(Token::KWNamespace);
-// 	if (!tokenClass.isGood()) {
-// 		return ParserResult();
-// 	}
+ParserResult Parser::parseDeclNamespace(ParserContext &ctx) {
+  Token tokenKWNamespace = ctx.getToken();
+  if (tokenKWNamespace.getID() == Token::KWNamespace) {
+    ctx.eatToken();
+  } else {
+    return ParserResult();
+  }
 
-// 	Token tokenSymbol = ctx.tryToken(Token::Symbol);
-// 	if (!tokenSymbol.isGood()) {
-// 		return ParserResult();
-// 	}
+  Token tokenSymbol = ctx.getToken();
+  if (tokenSymbol.getID() == Token::Symbol) {
+    ctx.eatToken();
+  } else {
+    ctx.errorUnexpectedToken("symbol");
+    return ParserResult();
+  }
+  
+  ParserResult res = ParserResult(Node::createDeclNamespace(Field::createString8(tokenSymbol.getRange().getText().c_str())));
 
-// 	ParserResult res = ParserResult(new
-// DeclNamespace(tokenSymbol.getRange(), tokenSymbol.getRange().getText()));
+  Token tokenSep = ctx.getToken();
+  if (!tokenSep.isGood()) {
+    ctx.errorUnexpectedToken("{");
+    return ParserResult();
+  } else if (tokenSep.getID() == Token::LBrace) {
+    ctx.eatToken();
+    
+    Node *front = nullptr;
+    Node *back = nullptr;
 
-// 	Token tokenSep = ctx.expectToken(Token::LBrace, "{");
-// 	if (!tokenSep.isGood()) {
-// 		return ParserResult();
-// 	}
+    bool endedCorrectly = false;
+    while (ctx.areMoreTokens()) {
+      Token tokenSep = ctx.getToken();
+      if (!tokenSep.isGood()) {
+        ctx.errorUnexpectedToken("declaration or }");
+        return ParserResult();
+      } else if (tokenSep.getID() == Token::RBrace) {
+        ctx.eatToken();
+        endedCorrectly = true;
+        break;
+      } else {
+        ParserResult decl = ctx.parse(parseDecl);
+        if (!decl.isGood()) {
+          ctx.errorUnexpectedToken("declaration");
+          return ParserResult();
+        }
+        if (front == nullptr) {
+          front = back = decl.getNode();
+        } else {
+          back->setNext(decl.getNode());
+          back = decl.getNode();
+        }
+      }
+    }
 
-// 	bool endedCorrectly = false;
-// 	while (ctx.areMoreTokens()) {
-// 		Token tokenSep = ctx.getToken();
-// 		if (!tokenSep.isGood()) {
-// 			ctx.errorUnexpectedToken("declaration or }");
-// 			return ParserResult();
-// 		} else if (tokenSep.getID() == Token::RBrace) {
-// 			ctx.eatToken();
-// 			endedCorrectly = true;
-// 			break;
-// 		} else {
-// 			ParserResult decl = ctx.expectParse(parseDecl,
-// "declaration"); 			if (!decl.isGood()) {
-// 				return ParserResult();
-// 			}
-// 			res.getAST()->as<DeclNamespace>()->getMembers().push_back(decl.getAST()->cloneAs<Decl>());
-// 		}
-// 	}
+    res.getNode()->getField(Node::FieldTag::DeclNamespace_Members)->setNode(front);
 
-// 	if (!endedCorrectly) {
-// 		ctx.errorUnexpectedToken("}");
-// 		return ParserResult();
-// 	}
+    if (!endedCorrectly) {
+      ctx.errorUnexpectedToken("}");
+      return ParserResult();
+    }
+  } else {
+    ctx.errorUnexpectedToken("{");
+    return ParserResult();
+  }
 
-// 	return res;
-// }
+  return res;
+}
 
-// ParserResult Parser::parseDecl(ParserContext &ctx) {
-// 	return ctx.tryParseAny({
-// 		parseDeclClass,
-// 		parseDeclNamespace,
-// 		parseDeclFunction,
-// 		parseDeclVariable
-// 	});
-// }
+ParserResult Parser::parseDecl(ParserContext &ctx) {
+	return ctx.parseAny({
+		parseDeclClass,
+		parseDeclNamespace,
+		parseDeclFunction,
+		parseDeclVariable
+	});
+}
 
-// ParserResult Parser::parseImport(ParserContext &ctx) {
-// 	Token tokenImport = ctx.tryToken(Token::KWImport);
-// 	if (!tokenImport.isGood()) {
-// 		return ParserResult();
-// 	}
+ParserResult Parser::parseImport(ParserContext &ctx) {
+	Token tokenKWImport = ctx.getToken();
+  if (tokenKWImport.getID() == Token::KWImport) {
+    ctx.eatToken();
+  } else {
+    return ParserResult();
+  }
 
-// 	Token tokenLParen = ctx.tryToken(Token::LParen);
-// 	if (!tokenLParen.isGood()) {
-// 		return ParserResult();
-// 	}
+  Token tokenLParen = ctx.getToken();
+  if (tokenLParen.getID() == Token::LParen) {
+    ctx.eatToken();
+  } else {
+    ctx.errorUnexpectedToken("(");
+    return ParserResult();
+  }
 
-// 	Token tokenPath = ctx.expectToken(Token::String, "path");
-// 	if (!tokenPath.isGood()) {
-// 		return ParserResult();
-// 	}
+	Token tokenString = ctx.getToken();
+  if (tokenString.getID() == Token::String) {
+    ctx.eatToken();
+  } else {
+    ctx.errorUnexpectedToken("path");
+    return ParserResult();
+  }
 
-// 	Token tokenRParen = ctx.tryToken(Token::RParen);
-// 	if (!tokenRParen.isGood()) {
-// 		return ParserResult();
-// 	}
+	Token tokenRParen = ctx.getToken();
+  if (tokenRParen.getID() == Token::RParen) {
+    ctx.eatToken();
+  } else {
+    ctx.errorUnexpectedToken(")");
+    return ParserResult();
+  }
 
-// 	Token tokenSemicolon = ctx.tryToken(Token::Semicolon);
-// 	if (!tokenSemicolon.isGood()) {
-// 		return ParserResult();
-// 	}
+	Token tokenSemicolon = ctx.getToken();
+  if (tokenSemicolon.getID() == Token::Semicolon) {
+    ctx.eatToken();
+  } else {
+    ctx.errorUnexpectedToken(";");
+    return ParserResult();
+  }
 
-// 	std::string path;
-// 	if (!evalLiteralString(tokenPath.getRange(), path)) {
-// 		return ParserResult();
-// 	}
+	std::string path;
+	if (!evalLiteralString8(tokenString.getRange(), path)) {
+		return ParserResult();
+	}
 
-// 	return ParserResult(new Import(tokenImport.getRange(), path));
-// }
+	return ParserResult(Node::createImport(Field::createString8(path.c_str()), tokenKWImport.getRange()));
+}
 
-// ParserResult Parser::parseTopLevel(ParserContext &ctx) {
-// 	return ctx.tryParseAny({
-// 		parseImport,
-// 		parseDecl
-// 	});
-// }
+ParserResult Parser::parseUnit(ParserContext &ctx) {
+  Node *front = nullptr;
+  Node *back = nullptr;
 
-// FIX HERE
+  while (ctx.areMoreTokens()) {
+    ParserResult tmp = ctx.parseAny({
+      parseImport,
+      parseDecl
+    });
+
+    if (!tmp.isGood()) {
+      ctx.errorUnexpectedToken("declaration");
+      return ParserResult();
+    }
+
+    if (front == nullptr) {
+      front = back = tmp.getNode();
+    } else {
+      back->setNext(tmp.getNode());
+      back = tmp.getNode();
+    }
+  }
+
+  return Node::createUnit({front});
+}
 
 Parser::Parser(const std::vector<Token> &tokens,
                MessageBuffer &msgs,
@@ -1779,22 +1881,7 @@ Parser::Parser(const std::vector<Token> &tokens,
     : ctx(tokens, msgs, offset) {
 }
 
-// Node *Parser::parse() {
-// 	Node *rtn = Node::createUnit();
-
-// 	Node *tmp = nullptr;
-// 	while (ctx.areMoreTokens()) {
-// 		ParserResult res = ctx.expectParse(parseTopLevel, "top-level
-// statement"); 		if (res.isGood()) {
-// 			if (tmp == nullptr) {
-// 				rtn->getField(Node::FieldTag::Unit_Members)->setNode(tmp);
-// 				tmp->setNext(res.getNode());
-// 			} else {
-// 				tmp = res.getNode();
-// 			}
-// 		}
-// 	}
-
-// 	return rtn;
-// }
+Node *Parser::parse() {
+	return parseUnit(ctx).getNode();
+}
 } // namespace whiskey

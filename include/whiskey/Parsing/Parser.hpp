@@ -60,6 +60,7 @@ public:
   static ParserResult parseTemplateEvalArg(ParserContext &ctx);
 
   static ParserResult parseTypeSymbol(ParserContext &ctx);
+  static ParserResult parseTypeAtomic(ParserContext &ctx);
   static ParserResult parseTypeTerm(ParserContext &ctx);
   static ParserResult parseTypeAccess(ParserContext &ctx);
   static ParserResult parseTypeAccessUnary(ParserContext &ctx);
@@ -106,6 +107,7 @@ public:
   static ParserResult parseStmtBlock(ParserContext &ctx);
   static ParserResult parseStmt(ParserContext &ctx);
 
+  static ParserResult parseDeclVariableNoSemicolon(ParserContext &ctx);
   static ParserResult parseDeclVariable(ParserContext &ctx);
   static ParserResult parseDeclFunction(ParserContext &ctx);
   static ParserResult parseDeclClass(ParserContext &ctx);
@@ -113,7 +115,7 @@ public:
   static ParserResult parseDecl(ParserContext &ctx);
 
   static ParserResult parseImport(ParserContext &ctx);
-  static ParserResult parseTopLevel(ParserContext &ctx);
+  static ParserResult parseUnit(ParserContext &ctx);
 
   Parser(const std::vector<Token> &tokens,
          MessageBuffer &msgs,

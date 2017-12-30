@@ -35,12 +35,24 @@ public:
   ~Source();
 
   bool isLoaded() const;
-  bool loadCString(const char *text, size_t length = 0, bool copy = false);
-  bool loadCWString(const wchar_t *text, size_t length = 0, bool copy = false);
+  bool loadCString(const char *text);
+  bool loadCString(const char *text, bool copy);
+  bool loadCString(const char *text, size_t length, bool copy);
+  bool loadCWString(const wchar_t *text);
+  bool loadCWString(const wchar_t *text, bool copy);
+  bool loadCWString(const wchar_t *text, size_t length, bool copy);
   bool
-  loadC16String(const char16_t *text, size_t length = 0, bool copy = false);
+  loadC16String(const char16_t *text);
   bool
-  loadC32String(const char32_t *text, size_t length = 0, bool copy = false);
+  loadC16String(const char16_t *text, bool copy);
+  bool
+  loadC16String(const char16_t *text, size_t length, bool copy);
+  bool
+  loadC32String(const char32_t *text);
+  bool
+  loadC32String(const char32_t *text, bool copy);
+  bool
+  loadC32String(const char32_t *text, size_t length, bool copy);
   bool loadString(const std::string &text, bool copy = false);
   bool loadWString(const std::wstring &text, bool copy = false);
   bool loadU16String(const std::u16string &text, bool copy = false);
