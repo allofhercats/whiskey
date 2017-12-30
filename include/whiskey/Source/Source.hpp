@@ -41,18 +41,12 @@ public:
   bool loadCWString(const wchar_t *text);
   bool loadCWString(const wchar_t *text, bool copy);
   bool loadCWString(const wchar_t *text, size_t length, bool copy);
-  bool
-  loadC16String(const char16_t *text);
-  bool
-  loadC16String(const char16_t *text, bool copy);
-  bool
-  loadC16String(const char16_t *text, size_t length, bool copy);
-  bool
-  loadC32String(const char32_t *text);
-  bool
-  loadC32String(const char32_t *text, bool copy);
-  bool
-  loadC32String(const char32_t *text, size_t length, bool copy);
+  bool loadC16String(const char16_t *text);
+  bool loadC16String(const char16_t *text, bool copy);
+  bool loadC16String(const char16_t *text, size_t length, bool copy);
+  bool loadC32String(const char32_t *text);
+  bool loadC32String(const char32_t *text, bool copy);
+  bool loadC32String(const char32_t *text, size_t length, bool copy);
   bool loadString(const std::string &text, bool copy = false);
   bool loadWString(const std::wstring &text, bool copy = false);
   bool loadU16String(const std::u16string &text, bool copy = false);

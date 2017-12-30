@@ -464,11 +464,12 @@ ParserResult Parser::parseTypeAccess(ParserContext &ctx) {
 }
 
 ParserResult Parser::parseTypeAccessUnary(ParserContext &ctx) {
-  return parseUnaryRight(
-      ctx, parseTypeAccess, "type", {{Token::Period, [](Node *arg, Range range) {
-                                      return Node::createTypeAccessUnary(arg,
-                                                                         range);
-                                    }}});
+  return parseUnaryRight(ctx,
+                         parseTypeAccess,
+                         "type",
+                         {{Token::Period, [](Node *arg, Range range) {
+                             return Node::createTypeAccessUnary(arg, range);
+                           }}});
 }
 
 ParserResult Parser::parseTypeFunction(ParserContext &ctx) {
@@ -1161,8 +1162,7 @@ ParserResult Parser::parseStmtFor(ParserContext &ctx) {
   }
 
   ParserResult res =
-      ParserResult(Node::createStmtFor({}, nullptr, {},
-      tokenFor.getRange()));
+      ParserResult(Node::createStmtFor({}, nullptr, {}, tokenFor.getRange()));
 
   Node *front = nullptr;
   Node *back = nullptr;
@@ -1310,7 +1310,7 @@ ParserResult Parser::parseStmtForEach(ParserContext &ctx) {
         ctx.errorUnexpectedToken("variable declaration");
         return ParserResult();
       }
-      
+
       if (front == nullptr) {
         front = back = decl.getNode();
       } else {
@@ -1457,45 +1457,51 @@ ParserResult Parser::parseStmt(ParserContext &ctx) {
 
 ParserResult Parser::parseDeclVariableNoSemicolon(ParserContext &ctx) {
   ParserResult type = ctx.parse(parseType);
-	if (!type.isGood()) {
+  if (!type.isGood()) {
     ctx.errorUnexpectedToken("type");
-		return ParserResult();
-	}
+    return ParserResult();
+  }
 
-	Token tokenSymbol = ctx.getToken();
+  Token tokenSymbol = ctx.getToken();
   if (tokenSymbol.getID() == Token::Symbol) {
     ctx.eatToken();
   } else {
     ctx.errorUnexpectedToken("symbol");
     return ParserResult();
   }
-	
-	ParserResult res = ParserResult(Node::createDeclVariable(type.getNode(), Field::createString8(tokenSymbol.getRange().getText().c_str())));
 
-	Token tokenLT = ctx.getToken();
+  ParserResult res = ParserResult(Node::createDeclVariable(
+      type.getNode(),
+      Field::createString8(tokenSymbol.getRange().getText().c_str())));
+
+  Token tokenLT = ctx.getToken();
   if (tokenLT.getID() == Token::LT) {
     ParserResult templateArgs =
         parseTemplateList(ctx, parseDeclVariableNoSemicolon, "template arg");
     if (templateArgs.isGood()) {
-      res.getNode()->getField(Node::FieldTag::DeclVariable_TemplateDeclArgs)->setNode(templateArgs.getNode());
+      res.getNode()
+          ->getField(Node::FieldTag::DeclVariable_TemplateDeclArgs)
+          ->setNode(templateArgs.getNode());
     } else {
       return ParserResult();
     }
   }
 
-	Token tokenSep = ctx.getToken();
-	if (tokenSep.getID() == Token::Assign) {
-		ctx.eatToken();
-		ParserResult init = ctx.parse(parseExpr);
-		if (!init.isGood()) {
+  Token tokenSep = ctx.getToken();
+  if (tokenSep.getID() == Token::Assign) {
+    ctx.eatToken();
+    ParserResult init = ctx.parse(parseExpr);
+    if (!init.isGood()) {
       ctx.errorUnexpectedToken("value");
-			return ParserResult();
-		}
+      return ParserResult();
+    }
 
-		res.getNode()->getField(Node::FieldTag::DeclVariable_Initial)->setNode(init.getNode());
-	}
+    res.getNode()
+        ->getField(Node::FieldTag::DeclVariable_Initial)
+        ->setNode(init.getNode());
+  }
 
-	return res;
+  return res;
 }
 
 ParserResult Parser::parseDeclVariable(ParserContext &ctx) {
@@ -1529,15 +1535,20 @@ ParserResult Parser::parseDeclFunction(ParserContext &ctx) {
     ctx.errorUnexpectedToken("symbol");
     return ParserResult();
   }
-  
-  ParserResult res = ParserResult(Node::createDeclFunction(type.getNode(), Field::createString8(tokenSymbol.getRange().getText().c_str()), {}));
+
+  ParserResult res = ParserResult(Node::createDeclFunction(
+      type.getNode(),
+      Field::createString8(tokenSymbol.getRange().getText().c_str()),
+      {}));
 
   Token tokenLT = ctx.getToken();
   if (tokenLT.getID() == Token::LT) {
     ParserResult templateArgs =
         parseTemplateList(ctx, parseDeclVariableNoSemicolon, "template arg");
     if (templateArgs.isGood()) {
-      res.getNode()->getField(Node::FieldTag::DeclFunction_TemplateDeclArgs)->setNode(templateArgs.getNode());
+      res.getNode()
+          ->getField(Node::FieldTag::DeclFunction_TemplateDeclArgs)
+          ->setNode(templateArgs.getNode());
     } else {
       return ParserResult();
     }
@@ -1545,12 +1556,19 @@ ParserResult Parser::parseDeclFunction(ParserContext &ctx) {
 
   Token tokenLParen = ctx.getToken();
   if (tokenLParen.getID() == Token::LParen) {
-   ParserResult args = parseBoundSeparatedList(ctx, Token::LParen, parseDeclVariableNoSemicolon, "arg", Token::Comma, Token::RParen);
-   if (!args.isGood()) {
-    return ParserResult();
-   } else {
-    res.getNode()->getField(Node::FieldTag::DeclFunction_Args)->setNode(args.getNode());
-   }
+    ParserResult args = parseBoundSeparatedList(ctx,
+                                                Token::LParen,
+                                                parseDeclVariableNoSemicolon,
+                                                "arg",
+                                                Token::Comma,
+                                                Token::RParen);
+    if (!args.isGood()) {
+      return ParserResult();
+    } else {
+      res.getNode()
+          ->getField(Node::FieldTag::DeclFunction_Args)
+          ->setNode(args.getNode());
+    }
   } else {
     return ParserResult();
   }
@@ -1570,7 +1588,9 @@ ParserResult Parser::parseDeclFunction(ParserContext &ctx) {
       return ParserResult();
     }
 
-    res.getNode()->getField(Node::FieldTag::DeclFunction_Body)->setNode(body.getNode());
+    res.getNode()
+        ->getField(Node::FieldTag::DeclFunction_Body)
+        ->setNode(body.getNode());
   } else {
     ParserResult body = ctx.parse(parseStmtBlock);
     if (!body.isGood()) {
@@ -1578,7 +1598,9 @@ ParserResult Parser::parseDeclFunction(ParserContext &ctx) {
       return ParserResult();
     }
 
-    res.getNode()->getField(Node::FieldTag::DeclFunction_Body)->setNode(body.getNode());
+    res.getNode()
+        ->getField(Node::FieldTag::DeclFunction_Body)
+        ->setNode(body.getNode());
   }
 
   return res;
@@ -1599,15 +1621,18 @@ ParserResult Parser::parseDeclClass(ParserContext &ctx) {
     ctx.errorUnexpectedToken("symbol");
     return ParserResult();
   }
-  
-  ParserResult res = ParserResult(Node::createDeclClass(Field::createString8(tokenSymbol.getRange().getText().c_str())));
+
+  ParserResult res = ParserResult(Node::createDeclClass(
+      Field::createString8(tokenSymbol.getRange().getText().c_str())));
 
   Token tokenLT = ctx.getToken();
   if (tokenLT.getID() == Token::LT) {
     ParserResult templateArgs =
         parseTemplateList(ctx, parseDeclVariableNoSemicolon, "template arg");
     if (templateArgs.isGood()) {
-      res.getNode()->getField(Node::FieldTag::DeclClass_TemplateDeclArgs)->setNode(templateArgs.getNode());
+      res.getNode()
+          ->getField(Node::FieldTag::DeclClass_TemplateDeclArgs)
+          ->setNode(templateArgs.getNode());
     } else {
       return ParserResult();
     }
@@ -1682,7 +1707,7 @@ ParserResult Parser::parseDeclClass(ParserContext &ctx) {
     return res;
   } else if (tokenSep.getID() == Token::LBrace) {
     ctx.eatToken();
-    
+
     Node *front = nullptr;
     Node *back = nullptr;
 
@@ -1740,8 +1765,9 @@ ParserResult Parser::parseDeclNamespace(ParserContext &ctx) {
     ctx.errorUnexpectedToken("symbol");
     return ParserResult();
   }
-  
-  ParserResult res = ParserResult(Node::createDeclNamespace(Field::createString8(tokenSymbol.getRange().getText().c_str())));
+
+  ParserResult res = ParserResult(Node::createDeclNamespace(
+      Field::createString8(tokenSymbol.getRange().getText().c_str())));
 
   Token tokenSep = ctx.getToken();
   if (!tokenSep.isGood()) {
@@ -1749,7 +1775,7 @@ ParserResult Parser::parseDeclNamespace(ParserContext &ctx) {
     return ParserResult();
   } else if (tokenSep.getID() == Token::LBrace) {
     ctx.eatToken();
-    
+
     Node *front = nullptr;
     Node *back = nullptr;
 
@@ -1778,7 +1804,9 @@ ParserResult Parser::parseDeclNamespace(ParserContext &ctx) {
       }
     }
 
-    res.getNode()->getField(Node::FieldTag::DeclNamespace_Members)->setNode(front);
+    res.getNode()
+        ->getField(Node::FieldTag::DeclNamespace_Members)
+        ->setNode(front);
 
     if (!endedCorrectly) {
       ctx.errorUnexpectedToken("}");
@@ -1793,16 +1821,14 @@ ParserResult Parser::parseDeclNamespace(ParserContext &ctx) {
 }
 
 ParserResult Parser::parseDecl(ParserContext &ctx) {
-	return ctx.parseAny({
-		parseDeclClass,
-		parseDeclNamespace,
-		parseDeclFunction,
-		parseDeclVariable
-	});
+  return ctx.parseAny({parseDeclClass,
+                       parseDeclNamespace,
+                       parseDeclFunction,
+                       parseDeclVariable});
 }
 
 ParserResult Parser::parseImport(ParserContext &ctx) {
-	Token tokenKWImport = ctx.getToken();
+  Token tokenKWImport = ctx.getToken();
   if (tokenKWImport.getID() == Token::KWImport) {
     ctx.eatToken();
   } else {
@@ -1817,7 +1843,7 @@ ParserResult Parser::parseImport(ParserContext &ctx) {
     return ParserResult();
   }
 
-	Token tokenString = ctx.getToken();
+  Token tokenString = ctx.getToken();
   if (tokenString.getID() == Token::String) {
     ctx.eatToken();
   } else {
@@ -1825,7 +1851,7 @@ ParserResult Parser::parseImport(ParserContext &ctx) {
     return ParserResult();
   }
 
-	Token tokenRParen = ctx.getToken();
+  Token tokenRParen = ctx.getToken();
   if (tokenRParen.getID() == Token::RParen) {
     ctx.eatToken();
   } else {
@@ -1833,7 +1859,7 @@ ParserResult Parser::parseImport(ParserContext &ctx) {
     return ParserResult();
   }
 
-	Token tokenSemicolon = ctx.getToken();
+  Token tokenSemicolon = ctx.getToken();
   if (tokenSemicolon.getID() == Token::Semicolon) {
     ctx.eatToken();
   } else {
@@ -1841,12 +1867,13 @@ ParserResult Parser::parseImport(ParserContext &ctx) {
     return ParserResult();
   }
 
-	std::string path;
-	if (!evalLiteralString8(tokenString.getRange(), path)) {
-		return ParserResult();
-	}
+  std::string path;
+  if (!evalLiteralString8(tokenString.getRange(), path)) {
+    return ParserResult();
+  }
 
-	return ParserResult(Node::createImport(Field::createString8(path.c_str()), tokenKWImport.getRange()));
+  return ParserResult(Node::createImport(Field::createString8(path.c_str()),
+                                         tokenKWImport.getRange()));
 }
 
 ParserResult Parser::parseUnit(ParserContext &ctx) {
@@ -1854,10 +1881,7 @@ ParserResult Parser::parseUnit(ParserContext &ctx) {
   Node *back = nullptr;
 
   while (ctx.areMoreTokens()) {
-    ParserResult tmp = ctx.parseAny({
-      parseImport,
-      parseDecl
-    });
+    ParserResult tmp = ctx.parseAny({parseImport, parseDecl});
 
     if (!tmp.isGood()) {
       ctx.errorUnexpectedToken("declaration");
@@ -1882,6 +1906,6 @@ Parser::Parser(const std::vector<Token> &tokens,
 }
 
 Node *Parser::parse() {
-	return parseUnit(ctx).getNode();
+  return parseUnit(ctx).getNode();
 }
 } // namespace whiskey

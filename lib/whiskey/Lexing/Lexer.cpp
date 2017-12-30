@@ -85,7 +85,7 @@ void Lexer::lex() {
           ctx.eatChar();
         }
       }
-      
+
       if (ctx.hasText("bool")) {
         ctx.emitToken(Token::KWBool);
       } else if (ctx.hasText("int8")) {

@@ -38,7 +38,7 @@ void PassManager::run(Node **node) {
   for (auto &pass : passes) {
     Node *res = pass->runPre(*node);
     if (res != nullptr && res != *node) {
-      //delete *node;
+      // delete *node;
       *node = res;
     }
   }

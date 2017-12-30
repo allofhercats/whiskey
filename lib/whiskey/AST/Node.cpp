@@ -4,8 +4,9 @@
 
 namespace whiskey {
 Node::KindInfo::KindInfo(const char *name,
-                         std::vector<Node::FieldTag> fieldTags)
-    : name(name), fieldTags(fieldTags) {
+                         std::vector<Node::FieldTag> fieldTags,
+                         Node::KindInfo::Flags flags)
+    : name(name), fieldTags(fieldTags), flags(flags) {
 }
 
 const char *Node::KindInfo::getName() const {
@@ -20,261 +21,381 @@ Node::FieldTag Node::KindInfo::getFieldTag(int index) const {
   return fieldTags[index];
 }
 
+bool Node::KindInfo::isType() const {
+  return (flags & maskCategory) == valueCategoryType;
+}
+
+bool Node::KindInfo::isExpr() const {
+  return (flags & maskCategory) == valueCategoryExpr;
+}
+
+bool Node::KindInfo::isStmt() const {
+  return (flags & maskCategory) == valueCategoryStmt;
+}
+
+bool Node::KindInfo::isDecl() const {
+  return (flags & maskCategory) == valueCategoryDecl;
+}
+
+bool Node::KindInfo::isOther() const {
+  return (flags & maskCategory) == valueCategoryOther;
+}
+
 Node::KindInfo Node::getKindInfo(Node::Kind value) {
   switch (value) {
   case Node::Kind::TypeAtomicBool:
-    return KindInfo("TypeAtomicBool", {});
+    return KindInfo("TypeAtomicBool", {}, Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeAtomicInt8:
-    return KindInfo("TypeAtomicInt8", {});
+    return KindInfo("TypeAtomicInt8", {}, Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeAtomicInt16:
-    return KindInfo("TypeAtomicInt16", {});
+    return KindInfo("TypeAtomicInt16", {}, Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeAtomicInt32:
-    return KindInfo("TypeAtomicInt32", {});
+    return KindInfo("TypeAtomicInt32", {}, Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeAtomicInt64:
-    return KindInfo("TypeAtomicInt64", {});
+    return KindInfo("TypeAtomicInt64", {}, Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeAtomicUInt8:
-    return KindInfo("TypeAtomicUInt8", {});
+    return KindInfo("TypeAtomicUInt8", {}, Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeAtomicUInt16:
-    return KindInfo("TypeAtomicUInt16", {});
+    return KindInfo("TypeAtomicUInt16", {}, Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeAtomicUInt32:
-    return KindInfo("TypeAtomicUInt32", {});
+    return KindInfo("TypeAtomicUInt32", {}, Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeAtomicUInt64:
-    return KindInfo("TypeAtomicUInt64", {});
+    return KindInfo("TypeAtomicUInt64", {}, Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeAtomicFloat32:
-    return KindInfo("TypeAtomicFloat32", {});
+    return KindInfo("TypeAtomicFloat32", {}, Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeAtomicFloat64:
-    return KindInfo("TypeAtomicFloat64", {});
+    return KindInfo("TypeAtomicFloat64", {}, Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeAtomicReal:
-    return KindInfo("TypeAtomicReal", {});
+    return KindInfo("TypeAtomicReal", {}, Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeSymbol:
     return KindInfo("TypeSymbol",
                     {Node::FieldTag::TypeSymbol_Name,
-                     Node::FieldTag::TypeSymbol_TemplateEvalArgs});
+                     Node::FieldTag::TypeSymbol_TemplateEvalArgs},
+                    Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeAccessUnary:
-    return KindInfo("TypeAccessUnary", {Node::FieldTag::TypeAccessUnary_Arg});
+    return KindInfo("TypeAccessUnary",
+                    {Node::FieldTag::TypeAccessUnary_Arg},
+                    Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeAccess:
-    return KindInfo("TypeAccess", {Node::FieldTag::TypeAccess_Args});
+    return KindInfo("TypeAccess",
+                    {Node::FieldTag::TypeAccess_Args},
+                    Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeGroup:
-    return KindInfo("TypeGroup", {Node::FieldTag::TypeGroup_Arg});
+    return KindInfo("TypeGroup",
+                    {Node::FieldTag::TypeGroup_Arg},
+                    Node::KindInfo::valueCategoryType);
   case Node::Kind::TypeFunction:
     return KindInfo("TypeFunction",
                     {Node::FieldTag::TypeFunction_Return,
-                     Node::FieldTag::TypeFunction_Args});
+                     Node::FieldTag::TypeFunction_Args},
+                    Node::KindInfo::valueCategoryType);
   case Node::Kind::ExprLiteralUInt:
     return KindInfo("ExprLiteralUInt",
                     {Node::FieldTag::ExprLiteralUInt_Type,
-                     Node::FieldTag::ExprLiteralUInt_Value});
+                     Node::FieldTag::ExprLiteralUInt_Value},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprLiteralReal:
     return KindInfo("ExprLiteralReal",
                     {Node::FieldTag::ExprLiteralReal_Type,
-                     Node::FieldTag::ExprLiteralReal_Value});
+                     Node::FieldTag::ExprLiteralReal_Value},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprSymbol:
     return KindInfo("ExprSymbol",
                     {Node::FieldTag::ExprSymbol_Name,
-                     Node::FieldTag::ExprSymbol_TemplateEvalArgs});
+                     Node::FieldTag::ExprSymbol_TemplateEvalArgs},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprAccessUnary:
-    return KindInfo("ExprAccessUnary", {Node::FieldTag::ExprAccessUnary_Arg});
+    return KindInfo("ExprAccessUnary",
+                    {Node::FieldTag::ExprAccessUnary_Arg},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprAccess:
-    return KindInfo("ExprAccess", {Node::FieldTag::ExprAccess_Args});
+    return KindInfo("ExprAccess",
+                    {Node::FieldTag::ExprAccess_Args},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprGroup:
-    return KindInfo("ExprGroup", {Node::FieldTag::ExprGroup_Arg});
+    return KindInfo("ExprGroup",
+                    {Node::FieldTag::ExprGroup_Arg},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprCall:
     return KindInfo(
         "ExprCall",
-        {Node::FieldTag::ExprCall_Callee, Node::FieldTag::ExprCall_Args});
+        {Node::FieldTag::ExprCall_Callee, Node::FieldTag::ExprCall_Args},
+        Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprAdd:
-    return KindInfo("ExprAdd", {Node::FieldTag::ExprAdd_Args});
+    return KindInfo("ExprAdd",
+                    {Node::FieldTag::ExprAdd_Args},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprIncPre:
-    return KindInfo("ExprIncPre", {Node::FieldTag::ExprIncPre_Arg});
+    return KindInfo("ExprIncPre",
+                    {Node::FieldTag::ExprIncPre_Arg},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprIncPost:
-    return KindInfo("ExprIncPost", {Node::FieldTag::ExprIncPost_Arg});
+    return KindInfo("ExprIncPost",
+                    {Node::FieldTag::ExprIncPost_Arg},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprSub:
     return KindInfo("ExprSub",
-                    {Node::FieldTag::ExprSub_LHS, Node::FieldTag::ExprSub_RHS});
+                    {Node::FieldTag::ExprSub_LHS, Node::FieldTag::ExprSub_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprNeg:
-    return KindInfo("ExprNeg", {Node::FieldTag::ExprNeg_Arg});
+    return KindInfo("ExprNeg",
+                    {Node::FieldTag::ExprNeg_Arg},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprDecPre:
-    return KindInfo("ExprDecPre", {Node::FieldTag::ExprDecPre_Arg});
+    return KindInfo("ExprDecPre",
+                    {Node::FieldTag::ExprDecPre_Arg},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprDecPost:
-    return KindInfo("ExprDecPost", {Node::FieldTag::ExprDecPost_Arg});
+    return KindInfo("ExprDecPost",
+                    {Node::FieldTag::ExprDecPost_Arg},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprMul:
-    return KindInfo("ExprMul", {Node::FieldTag::ExprMul_Args});
+    return KindInfo("ExprMul",
+                    {Node::FieldTag::ExprMul_Args},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprExp:
     return KindInfo("ExprExp",
-                    {Node::FieldTag::ExprExp_LHS, Node::FieldTag::ExprExp_RHS});
+                    {Node::FieldTag::ExprExp_LHS, Node::FieldTag::ExprExp_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprDiv:
     return KindInfo("ExprDiv",
-                    {Node::FieldTag::ExprDiv_LHS, Node::FieldTag::ExprDiv_RHS});
+                    {Node::FieldTag::ExprDiv_LHS, Node::FieldTag::ExprDiv_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprDivInt:
     return KindInfo(
         "ExprDivInt",
-        {Node::FieldTag::ExprDivInt_LHS, Node::FieldTag::ExprDivInt_RHS});
+        {Node::FieldTag::ExprDivInt_LHS, Node::FieldTag::ExprDivInt_RHS},
+        Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprDivReal:
     return KindInfo(
         "ExprDivReal",
-        {Node::FieldTag::ExprDivReal_LHS, Node::FieldTag::ExprDivReal_RHS});
+        {Node::FieldTag::ExprDivReal_LHS, Node::FieldTag::ExprDivReal_RHS},
+        Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprMod:
     return KindInfo("ExprMod",
-                    {Node::FieldTag::ExprMod_LHS, Node::FieldTag::ExprMod_RHS});
+                    {Node::FieldTag::ExprMod_LHS, Node::FieldTag::ExprMod_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBitNot:
-    return KindInfo("ExprBitNot", {Node::FieldTag::ExprBitNot_Arg});
+    return KindInfo("ExprBitNot",
+                    {Node::FieldTag::ExprBitNot_Arg},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBitAnd:
-    return KindInfo("ExprBitAnd", {Node::FieldTag::ExprBitAnd_Args});
+    return KindInfo("ExprBitAnd",
+                    {Node::FieldTag::ExprBitAnd_Args},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBitOr:
-    return KindInfo("ExprBitOr", {Node::FieldTag::ExprBitOr_Args});
+    return KindInfo("ExprBitOr",
+                    {Node::FieldTag::ExprBitOr_Args},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBitXor:
-    return KindInfo("ExprBitXor", {Node::FieldTag::ExprBitXor_Args});
+    return KindInfo("ExprBitXor",
+                    {Node::FieldTag::ExprBitXor_Args},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBitShL:
     return KindInfo(
         "ExprBitShL",
-        {Node::FieldTag::ExprBitShL_LHS, Node::FieldTag::ExprBitShL_RHS});
+        {Node::FieldTag::ExprBitShL_LHS, Node::FieldTag::ExprBitShL_RHS},
+        Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBitShR:
     return KindInfo(
         "ExprBitShR",
-        {Node::FieldTag::ExprBitShR_LHS, Node::FieldTag::ExprBitShR_RHS});
+        {Node::FieldTag::ExprBitShR_LHS, Node::FieldTag::ExprBitShR_RHS},
+        Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprLT:
     return KindInfo("ExprLT",
-                    {Node::FieldTag::ExprLT_LHS, Node::FieldTag::ExprLT_RHS});
+                    {Node::FieldTag::ExprLT_LHS, Node::FieldTag::ExprLT_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprLE:
     return KindInfo("ExprLE",
-                    {Node::FieldTag::ExprLE_LHS, Node::FieldTag::ExprLE_RHS});
+                    {Node::FieldTag::ExprLE_LHS, Node::FieldTag::ExprLE_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprGT:
     return KindInfo("ExprGT",
-                    {Node::FieldTag::ExprGT_LHS, Node::FieldTag::ExprGT_RHS});
+                    {Node::FieldTag::ExprGT_LHS, Node::FieldTag::ExprGT_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprGE:
     return KindInfo("ExprGE",
-                    {Node::FieldTag::ExprGE_LHS, Node::FieldTag::ExprGE_RHS});
+                    {Node::FieldTag::ExprGE_LHS, Node::FieldTag::ExprGE_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprNE:
     return KindInfo("ExprNE",
-                    {Node::FieldTag::ExprNE_LHS, Node::FieldTag::ExprNE_RHS});
+                    {Node::FieldTag::ExprNE_LHS, Node::FieldTag::ExprNE_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprEQ:
     return KindInfo("ExprEQ",
-                    {Node::FieldTag::ExprEQ_LHS, Node::FieldTag::ExprEQ_RHS});
+                    {Node::FieldTag::ExprEQ_LHS, Node::FieldTag::ExprEQ_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBoolNot:
-    return KindInfo("ExprBoolNot", {Node::FieldTag::ExprBoolNot_Arg});
+    return KindInfo("ExprBoolNot",
+                    {Node::FieldTag::ExprBoolNot_Arg},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBoolAnd:
-    return KindInfo("ExprBoolAnd", {Node::FieldTag::ExprBoolAnd_Args});
+    return KindInfo("ExprBoolAnd",
+                    {Node::FieldTag::ExprBoolAnd_Args},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBoolOr:
-    return KindInfo("ExprBoolOr", {Node::FieldTag::ExprBoolOr_Args});
+    return KindInfo("ExprBoolOr",
+                    {Node::FieldTag::ExprBoolOr_Args},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBoolImplies:
-    return KindInfo("ExprBoolImplies", {Node::FieldTag::ExprBoolImplies_Args});
+    return KindInfo("ExprBoolImplies",
+                    {Node::FieldTag::ExprBoolImplies_Args},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprAddAssign:
     return KindInfo(
         "ExprAddAssign",
-        {Node::FieldTag::ExprAddAssign_LHS, Node::FieldTag::ExprAddAssign_RHS});
+        {Node::FieldTag::ExprAddAssign_LHS, Node::FieldTag::ExprAddAssign_RHS},
+        Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprSubAssign:
     return KindInfo(
         "ExprSubAssign",
-        {Node::FieldTag::ExprSubAssign_LHS, Node::FieldTag::ExprSubAssign_RHS});
+        {Node::FieldTag::ExprSubAssign_LHS, Node::FieldTag::ExprSubAssign_RHS},
+        Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprMulAssign:
     return KindInfo(
         "ExprMulAssign",
-        {Node::FieldTag::ExprMulAssign_LHS, Node::FieldTag::ExprMulAssign_RHS});
+        {Node::FieldTag::ExprMulAssign_LHS, Node::FieldTag::ExprMulAssign_RHS},
+        Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprExpAssign:
     return KindInfo(
         "ExprExpAssign",
-        {Node::FieldTag::ExprExpAssign_LHS, Node::FieldTag::ExprExpAssign_RHS});
+        {Node::FieldTag::ExprExpAssign_LHS, Node::FieldTag::ExprExpAssign_RHS},
+        Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprDivAssign:
     return KindInfo(
         "ExprDivAssign",
-        {Node::FieldTag::ExprDivAssign_LHS, Node::FieldTag::ExprDivAssign_RHS});
+        {Node::FieldTag::ExprDivAssign_LHS, Node::FieldTag::ExprDivAssign_RHS},
+        Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprDivIntAssign:
     return KindInfo("ExprDivIntAssign",
                     {Node::FieldTag::ExprDivIntAssign_LHS,
-                     Node::FieldTag::ExprDivIntAssign_RHS});
+                     Node::FieldTag::ExprDivIntAssign_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprDivRealAssign:
     return KindInfo("ExprDivRealAssign",
                     {Node::FieldTag::ExprDivRealAssign_LHS,
-                     Node::FieldTag::ExprDivRealAssign_RHS});
+                     Node::FieldTag::ExprDivRealAssign_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprModAssign:
     return KindInfo(
         "ExprModAssign",
-        {Node::FieldTag::ExprModAssign_LHS, Node::FieldTag::ExprModAssign_RHS});
+        {Node::FieldTag::ExprModAssign_LHS, Node::FieldTag::ExprModAssign_RHS},
+        Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBitAndAssign:
     return KindInfo("ExprBitAndAssign",
                     {Node::FieldTag::ExprBitAndAssign_LHS,
-                     Node::FieldTag::ExprBitAndAssign_RHS});
+                     Node::FieldTag::ExprBitAndAssign_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBitOrAssign:
     return KindInfo("ExprBitOrAssign",
                     {Node::FieldTag::ExprBitOrAssign_LHS,
-                     Node::FieldTag::ExprBitOrAssign_RHS});
+                     Node::FieldTag::ExprBitOrAssign_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBitXorAssign:
     return KindInfo("ExprBitXorAssign",
                     {Node::FieldTag::ExprBitXorAssign_LHS,
-                     Node::FieldTag::ExprBitXorAssign_RHS});
+                     Node::FieldTag::ExprBitXorAssign_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBitShLAssign:
     return KindInfo("ExprBitShLAssign",
                     {Node::FieldTag::ExprBitShLAssign_LHS,
-                     Node::FieldTag::ExprBitShLAssign_RHS});
+                     Node::FieldTag::ExprBitShLAssign_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprBitShRAssign:
     return KindInfo("ExprBitShRAssign",
                     {Node::FieldTag::ExprBitShRAssign_LHS,
-                     Node::FieldTag::ExprBitShRAssign_RHS});
+                     Node::FieldTag::ExprBitShRAssign_RHS},
+                    Node::KindInfo::valueCategoryExpr);
   case Node::Kind::ExprAssign:
     return KindInfo(
         "ExprAssign",
-        {Node::FieldTag::ExprAssign_LHS, Node::FieldTag::ExprAssign_RHS});
+        {Node::FieldTag::ExprAssign_LHS, Node::FieldTag::ExprAssign_RHS},
+        Node::KindInfo::valueCategoryExpr);
   case Node::Kind::StmtEmpty:
-    return KindInfo("StmtEmpty", {});
+    return KindInfo("StmtEmpty", {}, Node::KindInfo::valueCategoryStmt);
   case Node::Kind::StmtExpr:
-    return KindInfo("StmtExpr", {Node::FieldTag::StmtExpr_Expr});
+    return KindInfo("StmtExpr",
+                    {Node::FieldTag::StmtExpr_Expr},
+                    Node::KindInfo::valueCategoryStmt);
   case Node::Kind::StmtDecl:
-    return KindInfo("StmtDecl", {Node::FieldTag::StmtDecl_Decl});
+    return KindInfo("StmtDecl",
+                    {Node::FieldTag::StmtDecl_Decl},
+                    Node::KindInfo::valueCategoryStmt);
   case Node::Kind::StmtReturn:
-    return KindInfo("StmtReturn", {Node::FieldTag::StmtReturn_Arg});
+    return KindInfo("StmtReturn",
+                    {Node::FieldTag::StmtReturn_Arg},
+                    Node::KindInfo::valueCategoryStmt);
   case Node::Kind::StmtContinue:
-    return KindInfo("StmtContinue", {Node::FieldTag::StmtContinue_Name});
+    return KindInfo("StmtContinue",
+                    {Node::FieldTag::StmtContinue_Name},
+                    Node::KindInfo::valueCategoryStmt);
   case Node::Kind::StmtBreak:
-    return KindInfo("StmtBreak", {Node::FieldTag::StmtBreak_Name});
+    return KindInfo("StmtBreak",
+                    {Node::FieldTag::StmtBreak_Name},
+                    Node::KindInfo::valueCategoryStmt);
   case Node::Kind::StmtIf:
     return KindInfo("StmtIf",
                     {Node::FieldTag::StmtIf_Condition,
                      Node::FieldTag::StmtIf_Then,
-                     Node::FieldTag::StmtIf_Else});
+                     Node::FieldTag::StmtIf_Else},
+                    Node::KindInfo::valueCategoryStmt);
   case Node::Kind::StmtWhile:
     return KindInfo(
         "StmtWhile",
-        {Node::FieldTag::StmtWhile_Condition, Node::FieldTag::StmtWhile_Body});
+        {Node::FieldTag::StmtWhile_Condition, Node::FieldTag::StmtWhile_Body},
+        Node::KindInfo::valueCategoryStmt);
   case Node::Kind::StmtFor:
     return KindInfo("StmtFor",
                     {Node::FieldTag::StmtFor_Decls,
                      Node::FieldTag::StmtFor_Condition,
                      Node::FieldTag::StmtFor_Steps,
-                     Node::FieldTag::StmtFor_Body});
+                     Node::FieldTag::StmtFor_Body},
+                    Node::KindInfo::valueCategoryStmt);
   case Node::Kind::StmtForEach:
     return KindInfo("StmtForEach",
                     {Node::FieldTag::StmtForEach_Decls,
                      Node::FieldTag::StmtForEach_Sequences,
-                     Node::FieldTag::StmtForEach_Body});
+                     Node::FieldTag::StmtForEach_Body},
+                    Node::KindInfo::valueCategoryStmt);
   case Node::Kind::StmtBlock:
-    return KindInfo("StmtBlock", {Node::FieldTag::StmtBlock_Stmts});
+    return KindInfo("StmtBlock",
+                    {Node::FieldTag::StmtBlock_Stmts},
+                    Node::KindInfo::valueCategoryStmt);
   case Node::Kind::DeclVariable:
     return KindInfo("DeclVariable",
                     {Node::FieldTag::DeclVariable_Type,
                      Node::FieldTag::DeclVariable_Name,
                      Node::FieldTag::DeclVariable_TemplateDeclArgs,
-                     Node::FieldTag::DeclVariable_Initial});
+                     Node::FieldTag::DeclVariable_Initial},
+                    Node::KindInfo::valueCategoryDecl);
   case Node::Kind::DeclFunction:
     return KindInfo("DeclFunction",
                     {Node::FieldTag::DeclFunction_Return,
                      Node::FieldTag::DeclFunction_Name,
                      Node::FieldTag::DeclFunction_TemplateDeclArgs,
                      Node::FieldTag::DeclFunction_Args,
-                     Node::FieldTag::DeclFunction_Body});
+                     Node::FieldTag::DeclFunction_Body},
+                    Node::KindInfo::valueCategoryDecl);
   case Node::Kind::DeclClass:
     return KindInfo("DeclClass",
                     {Node::FieldTag::DeclClass_Name,
                      Node::FieldTag::DeclClass_TemplateDeclArgs,
                      Node::FieldTag::DeclClass_Inherits,
-                     Node::FieldTag::DeclClass_Members});
+                     Node::FieldTag::DeclClass_Members},
+                    Node::KindInfo::valueCategoryDecl);
   case Node::Kind::DeclNamespace:
     return KindInfo("DeclNamespace",
                     {Node::FieldTag::DeclNamespace_Name,
-                     Node::FieldTag::DeclNamespace_Members});
+                     Node::FieldTag::DeclNamespace_Members},
+                    Node::KindInfo::valueCategoryDecl);
   case Node::Kind::Import:
-    return KindInfo("Import", {Node::FieldTag::Import_Path});
+    return KindInfo("Import",
+                    {Node::FieldTag::Import_Path},
+                    Node::KindInfo::valueCategoryOther);
   case Node::Kind::Unit:
-    return KindInfo("Unit", {Node::FieldTag::Unit_Members});
+    return KindInfo("Unit",
+                    {Node::FieldTag::Unit_Members},
+                    Node::KindInfo::valueCategoryOther);
   default:
     W_ASSERT_UNREACHABLE("Unsupported node kind " << (int)value << ".");
   }

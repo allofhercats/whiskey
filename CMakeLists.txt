@@ -7,7 +7,8 @@ project(whiskey)
 # Packages
 #-----------------------------------------------------------------------
 
-find_package(ICU)
+find_package(ICU COMPONENTS io REQUIRED)
+find_package(LLVM REQUIRED CONFIG)
 
 # Subdirectories
 #-----------------------------------------------------------------------
@@ -17,13 +18,19 @@ add_subdirectory(test/googletest)
 # Include/link directories
 #-----------------------------------------------------------------------
 
-include_directories(include ${ICU_INCLUDE_DIRS})
+include_directories(include ${ICU_INCLUDE_DIRS} ${LLVM_INCLUDE_DIRS})
+
+# Definitions
+#-----------------------------------------------------------------------
+
+add_definitions(${LLVM_DEFINITIONS})
 
 # Flags
 #-----------------------------------------------------------------------
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 --std=c11 -Wall")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -std=c++11 -Wall -fno-rtti")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rdynamic")
 
 # Fix for Ninja/Clang colored errors
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -34,7 +41,8 @@ endif()
 # File lists
 #-----------------------------------------------------------------------
 
-set(whiskey_libs lib_whiskey gtest m ${ICU_LIBRARIES} bfd)
+llvm_map_components_to_libnames(llvm_libs support core irreader mcjit native)
+set(whiskey_libs lib_whiskey gtest m ${ICU_LIBRARIES} bfd ${llvm_libs})
 
 file(GLOB_RECURSE lib_whiskey_files lib/whiskey/*.cpp)
 file(GLOB_RECURSE test_unit_files test/unit/*.cpp)

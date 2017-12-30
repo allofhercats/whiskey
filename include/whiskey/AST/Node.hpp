@@ -223,16 +223,33 @@ public:
   };
 
   class KindInfo {
+  public:
+    typedef uint32_t Flags;
+
+    const static Flags maskCategory = 0x7;
+    const static Flags valueCategoryType = 0x0;
+    const static Flags valueCategoryExpr = 0x1;
+    const static Flags valueCategoryStmt = 0x2;
+    const static Flags valueCategoryDecl = 0x3;
+    const static Flags valueCategoryOther = 0x4;
+
   private:
     const char *name;
     std::vector<Node::FieldTag> fieldTags;
+    Flags flags;
 
   public:
-    KindInfo(const char *name, std::vector<FieldTag> fieldTags);
+    KindInfo(const char *name, std::vector<FieldTag> fieldTags, Flags flags);
 
     const char *getName() const;
     unsigned int getNFields() const;
     FieldTag getFieldTag(int index) const;
+
+    bool isType() const;
+    bool isExpr() const;
+    bool isStmt() const;
+    bool isDecl() const;
+    bool isOther() const;
   };
 
   class FieldTagInfo {
