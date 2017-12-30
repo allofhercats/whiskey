@@ -9,6 +9,7 @@
 #include <whiskey/Messages.hpp>
 #include <whiskey/Parsing.hpp>
 #include <whiskey/Printing.hpp>
+#include <whiskey/Passes.hpp>
 #include <whiskey/Source.hpp>
 
 #endif

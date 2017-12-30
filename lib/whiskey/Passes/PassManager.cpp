@@ -3,50 +3,6 @@
 #include <whiskey/Passes/PassManager.hpp>
 
 namespace whiskey {
-void PassManager::runHelper(PassContext<AST> &ctx) {
-  for (const std::unique_ptr<Pass> &pass : passes) {
-    PassContext<AST> ctxTmp;
-    if (ctx.getReplacement()) {
-      ctxTmp = PassContext<AST>(ctx.getParent(), ctx.getReplacement());
-    } else {
-      ctxTmp = PassContext<AST>(ctx.getParent(), ctx.getOriginal());
-    }
-    pass->run(ctxTmp);
-    if (ctxTmp.getReplacement()) {
-      ctx.setReplacement(ctxTmp.getReplacement());
-    }
-  }
-
-  std::queue<ContainerRef<AST>> children;
-  if (ctx.getReplacement()) {
-    children = ctx.getReplacement()->getChildren();
-  } else {
-    children = ctx.getOriginal()->getChildren();
-  }
-
-  while (!children.empty()) {
-    PassContext<AST> ctxTmp(ctx.getParent(), children.front());
-    runHelper(ctxTmp);
-    if (ctxTmp.getReplacement()) {
-      ctx.setReplacement(ctxTmp.getReplacement());
-    }
-    children.pop();
-  }
-
-  for (const std::unique_ptr<Pass> &pass : passes) {
-    PassContext<AST> ctxTmp;
-    if (ctx.getReplacement()) {
-      ctxTmp = PassContext<AST>(ctx.getParent(), ctx.getReplacement());
-    } else {
-      ctxTmp = PassContext<AST>(ctx.getParent(), ctx.getOriginal());
-    }
-    pass->runPost(ctx);
-    if (ctxTmp.getReplacement()) {
-      ctx.setReplacement(ctxTmp.getReplacement());
-    }
-  }
-}
-
 PassManager::PassManager() {
 }
 
@@ -72,13 +28,41 @@ void PassManager::addPass(Pass *pass) {
   passes.push_back(std::unique_ptr<Pass>(pass));
 }
 
-void PassManager::run(Container<AST> &ast) {
-  PassContext<AST> ctx(nullptr, ast);
+void PassManager::run(Node **node) {
+  W_ASSERT_NONNULL(node, "Cannot run pass manager on null node reference.");
 
-  runHelper(ctx);
+  if (*node == nullptr) {
+    return;
+  }
 
-  if (ctx.getReplacement()) {
-    ast = ctx.getReplacement();
+  for (auto &pass : passes) {
+    Node *res = pass->runPre(*node);
+    if (res != nullptr && res != *node) {
+      //delete *node;
+      *node = res;
+    }
+  }
+
+  for (int i = 0; i < Node::getKindInfo((*node)->getKind()).getNFields(); i++) {
+    if ((*node)->getField(i)->getKind() == Field::Kind::Node) {
+      Node *orig = (*node)->getField(i)->getNode();
+      Node *final = orig;
+      if (final != nullptr) {
+        run(&final);
+      }
+      if (final != nullptr && final != orig) {
+        delete orig;
+        (*node)->getField(i)->setNode(final);
+      }
+    }
+  }
+
+  for (auto &pass : passes) {
+    Node *res = pass->runPost(*node);
+    if (res != nullptr && res != *node) {
+      // delete node;
+      *node = res;
+    }
   }
 }
 } // namespace whiskey

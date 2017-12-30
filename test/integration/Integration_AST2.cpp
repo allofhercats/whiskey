@@ -4,7 +4,7 @@
 
 using namespace whiskey;
 
-TEST(Integration_AST2_NodeFields, Single) {
+TEST(Integration_AST2, Single) {
 	Field *f0 = Field::createNode(nullptr);
 	Field *f1 = f0->clone();
 
