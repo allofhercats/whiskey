@@ -18,6 +18,12 @@ TEST(Unit_Core_Assert, Stream) {
   ASSERT_STREQ(ss.str().c_str(), "hello, world\n");
 }
 
+TEST(Unit_Core_Assert, Die) {
+  ASSERT_DEATH({
+    _W_ASSERT_DIE();
+  }, "");
+}
+
 TEST(Unit_Core_Assert, Unreachable) {
   setAssertStream(std::cerr);
 

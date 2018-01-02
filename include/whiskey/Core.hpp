@@ -7,5 +7,8 @@
 #include <whiskey/Core/External.inc>
 #include <whiskey/Core/PrintLiterals.hpp>
 #include <whiskey/Core/Types.hpp>
+#include <whiskey/Core/String.hpp>
+#include <whiskey/Core/StringRef.hpp>
+#include <whiskey/Core/StringContainer.hpp>
 
 #endif

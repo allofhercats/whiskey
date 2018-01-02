@@ -23,6 +23,9 @@ void printLiteralReal(std::ostream &os,
                       unsigned int precision = 5,
                       bool truncate = true);
 void printLiteralChar(std::ostream &os, char32_t value);
+void printLiteralCString8(std::ostream &os, const char *value, size_t length = 0);
+void printLiteralCString16(std::ostream &os, const char16_t *value, size_t length = 0);
+void printLiteralCString32(std::ostream &os, const char32_t *value, size_t length = 0);
 void printLiteralString(std::ostream &os, const std::string &value);
 void printLiteralString(std::ostream &os, const std::u16string &value);
 void printLiteralString(std::ostream &os, const std::u32string &value);

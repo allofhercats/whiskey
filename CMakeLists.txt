@@ -7,7 +7,6 @@ project(whiskey)
 # Packages
 #-----------------------------------------------------------------------
 
-find_package(ICU COMPONENTS io REQUIRED)
 find_package(LLVM REQUIRED CONFIG)
 
 # Subdirectories
@@ -18,7 +17,7 @@ add_subdirectory(test/googletest)
 # Include/link directories
 #-----------------------------------------------------------------------
 
-include_directories(include ${ICU_INCLUDE_DIRS} ${LLVM_INCLUDE_DIRS})
+include_directories(include ${LLVM_INCLUDE_DIRS})
 
 # Definitions
 #-----------------------------------------------------------------------
@@ -42,7 +41,7 @@ endif()
 #-----------------------------------------------------------------------
 
 llvm_map_components_to_libnames(llvm_libs support core irreader mcjit native)
-set(whiskey_libs lib_whiskey gtest m ${ICU_LIBRARIES} bfd ${llvm_libs})
+set(whiskey_libs lib_whiskey gtest m bfd ${llvm_libs})
 
 file(GLOB_RECURSE lib_whiskey_files lib/whiskey/*.cpp)
 file(GLOB_RECURSE test_unit_files test/unit/*.cpp)
