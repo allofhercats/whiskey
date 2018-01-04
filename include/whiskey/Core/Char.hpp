@@ -1,8 +1,6 @@
 #ifndef __WHISKEY_Core_Char_HPP
 #define __WHISKEY_Core_Char_HPP
 
-#include <whiskey/Core/Module.inc>
-
 #include <whiskey/Core/Assert.hpp>
 
 namespace whiskey {

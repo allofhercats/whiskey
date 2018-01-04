@@ -1,6 +1,10 @@
 #include <gtest/gtest.h>
 
-#include <whiskey/Whiskey.hpp>
+// #include <whiskey/Whiskey.hpp>
+
+#include <whiskey/Passes/PassManager.hpp>
+#include <whiskey/AST/Node.hpp>
+#include <whiskey/AST/Field.hpp>
 
 using namespace whiskey;
 

@@ -1,6 +1,9 @@
-#include "Module.inc"
+// #include "Module.inc"
 
 #include <whiskey/Source/Token.hpp>
+
+#include <whiskey/Core/Assert.hpp>
+#include <whiskey/Core/PrintLiterals.hpp>
 
 namespace whiskey {
 void Token::printTokenIDDebug(std::ostream &os, Token::ID value) {

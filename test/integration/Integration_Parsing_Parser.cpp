@@ -1,6 +1,14 @@
 #include <gtest/gtest.h>
 
-#include <whiskey/Whiskey.hpp>
+#include <whiskey/Source/Source.hpp>
+#include <whiskey/Source/Token.hpp>
+#include <whiskey/Parsing/Parser.hpp>
+#include <whiskey/Lexing/Lexer.hpp>
+#include <whiskey/Messages/MessageBuffer.hpp>
+#include <whiskey/AST/Node.hpp>
+#include <whiskey/AST/Field.hpp>
+#include <whiskey/Core/PrintLiterals.hpp>
+#include <whiskey/Printing/DebugPrinter.hpp>
 
 using namespace whiskey;
 

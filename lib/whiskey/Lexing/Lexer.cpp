@@ -1,6 +1,9 @@
-#include "Module.inc"
+// #include "Module.inc"
 
 #include <whiskey/Lexing/Lexer.hpp>
+
+#include <whiskey/Messages/MessageBuffer.hpp>
+#include <whiskey/Core/PrintLiterals.hpp>
 
 namespace whiskey {
 bool Lexer::isWhitespaceChar(char32_t value) {

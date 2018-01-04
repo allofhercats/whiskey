@@ -1,6 +1,8 @@
-#include "Module.inc"
+// #include "Module.inc"
 
 #include <whiskey/Passes/Pass.hpp>
+
+#include <whiskey/Core/Assert.hpp>
 
 namespace whiskey {
 Pass::Pass(std::string name, std::initializer_list<std::string> dependencies)

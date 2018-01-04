@@ -1,6 +1,9 @@
-#include "Module.inc"
+// #include "Module.inc"
 
 #include <whiskey/Parsing/EvalLiterals.hpp>
+
+#include <whiskey/Core/PrintLiterals.hpp>
+#include <whiskey/Source/Range.hpp>
 
 namespace whiskey {
 void appendChar16ToString8(std::string &value, char16_t chr) {
@@ -40,7 +43,7 @@ void appendChar32ToString16(std::u16string &value, char32_t chr) {
   }
 }
 
-bool evalLiteralUInt(Range range, uint64_t &value) {
+bool evalLiteralUInt(const Range &range, uint64_t &value) {
   value = 0;
 
   Location i = range.getStart();
@@ -141,7 +144,7 @@ bool evalLiteralUInt(Range range, uint64_t &value) {
   }
 }
 
-bool evalLiteralReal(Range range, long double &value) {
+bool evalLiteralReal(const Range &range, long double &value) {
   long double _int = 0.0;
   long double _dec = 0.0;
   long double _fac = 1.0;
@@ -342,7 +345,7 @@ bool evalLiteralCharHelper(Location &loc, size_t length, char32_t &value) {
 }
 } // namespace
 
-bool evalLiteralChar(Range range, char32_t &value) {
+bool evalLiteralChar(const Range &range, char32_t &value) {
   value = '\0';
 
   Location i = range.getStart();
@@ -374,7 +377,7 @@ bool evalLiteralChar(Range range, char32_t &value) {
   }
 }
 
-bool evalLiteralString8(Range range, std::string &value) {
+bool evalLiteralString8(const Range &range, std::string &value) {
   value = "";
 
   Location i = range.getStart();
@@ -414,7 +417,7 @@ bool evalLiteralString8(Range range, std::string &value) {
   return endedCorrectly;
 }
 
-bool evalLiteralString16(Range range, std::u16string &value) {
+bool evalLiteralString16(const Range &range, std::u16string &value) {
   value = u"";
 
   Location i = range.getStart();
@@ -454,7 +457,7 @@ bool evalLiteralString16(Range range, std::u16string &value) {
   return endedCorrectly;
 }
 
-bool evalLiteralString32(Range range, std::u32string &value) {
+bool evalLiteralString32(const Range &range, std::u32string &value) {
   value = U"";
 
   Location i = range.getStart();

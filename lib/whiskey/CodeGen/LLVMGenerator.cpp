@@ -1,6 +1,15 @@
-#include "Module.inc"
+// #include "Module.inc"
 
 #include <whiskey/CodeGen/LLVMGenerator.hpp>
+
+#include <whiskey/Core/Assert.hpp>
+#include <whiskey/AST/Node.hpp>
+
+#include <llvm/IR/Verifier.h>
+#include <llvm/Support/TargetSelect.h>
+#include <llvm/ExecutionEngine/JITSymbol.h>
+
+#include "LLVMJIT.hpp"
 
 namespace whiskey {
 llvm::Type *LLVMGenerator::generateType(const Node *node) {

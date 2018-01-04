@@ -1,8 +1,6 @@
 #ifndef __WHISKEY_Core_LiteralPrinterInt_HPP
 #define __WHISKEY_Core_LiteralPrinterInt_HPP
 
-#include <whiskey/Core/Module.inc>
-
 namespace whiskey {
 template<typename T>
 class LiteralPrinterInt {

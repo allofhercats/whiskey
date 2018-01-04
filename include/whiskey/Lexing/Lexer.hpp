@@ -1,8 +1,6 @@
 #ifndef __WHISKEY_Lexing_Lexer_HPP
 #define __WHISKEY_Lexing_Lexer_HPP
 
-#include <whiskey/Lexing/Module.inc>
-
 #include <whiskey/Lexing/LexerContext.hpp>
 
 namespace whiskey {

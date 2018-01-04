@@ -1,6 +1,9 @@
-#include "Module.inc"
+// #include "Module.inc"
 
 #include <whiskey/CodeGen/Generator.hpp>
+
+#include <whiskey/Core/Assert.hpp>
+#include <whiskey/AST/Node.hpp>
 
 namespace whiskey {
 void *Generator::onGenerateFunctionPointer(const Node *node) {

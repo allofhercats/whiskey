@@ -1,9 +1,12 @@
 #ifndef __WHISKEY_Passes_Pass_HPP
 #define __WHISKEY_Passes_Pass_HPP
 
-#include <whiskey/Passes/Module.inc>
+#include <string>
+#include <vector>
 
 namespace whiskey {
+class Node;
+
 class Pass {
 private:
   std::string name;

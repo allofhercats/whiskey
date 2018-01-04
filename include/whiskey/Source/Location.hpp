@@ -1,11 +1,11 @@
 #ifndef __WHISKEY_Source_Location_HPP
 #define __WHISKEY_Source_Location_HPP
 
-#include <whiskey/Source/Module.inc>
-
-#include <whiskey/Source/Source.hpp>
+#include <string>
 
 namespace whiskey {
+class Source;
+
 class Location {
 private:
   const Source *source;

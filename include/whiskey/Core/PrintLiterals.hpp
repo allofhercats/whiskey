@@ -1,7 +1,9 @@
 #ifndef __WHISKEY_Core_PrintLiterals_HPP
 #define __WHISKEY_Core_PrintLiterals_HPP
 
-#include <whiskey/Core/Module.inc>
+#include <stdint.h>
+
+#include <ostream>
 
 namespace whiskey {
 int getChar32MinWidth(char32_t value);

@@ -1,4 +1,4 @@
-#include "Module.inc"
+// #include "Module.inc"
 
 #include <whiskey/Core/Char.hpp>
 
@@ -67,7 +67,7 @@ Char32 readCharUTF32(const Char32 *src, CharOffset &pos, CharOffset length) {
 }
 
 void writeCharUTF8(Char8 *dst, Char32 value, CharOffset &pos, CharOffset length) {
-	W_ASSERT_NONNULL(src, "Cannot read character from null string.");
+	W_ASSERT_NONNULL(dst, "Cannot read character from null string.");
 	W_ASSERT_LT(pos, length, "Cannot read past end of buffer.");
 
 	if (value <= 0x7f) {
@@ -112,12 +112,12 @@ void writeCharUTF8(Char8 *dst, Char32 value, CharOffset &pos, CharOffset length)
 }
 
 void writeCharUTF16(Char16 *dst, Char32 value, CharOffset &pos, CharOffset length) {
-	W_ASSERT_NONNULL(src, "Cannot read character from null string.");
+	W_ASSERT_NONNULL(dst, "Cannot read character from null string.");
 	W_ASSERT_LT(pos, length, "Cannot read past end of buffer.");
 }
 
 void writeCharUTF32(Char32 *dst, Char32 value, CharOffset &pos, CharOffset length) {
-	W_ASSERT_NONNULL(src, "Cannot read character from null string.");
+	W_ASSERT_NONNULL(dst, "Cannot read character from null string.");
 	W_ASSERT_LT(pos, length, "Cannot read past end of buffer.");
 	
 	dst[pos++] = value;

@@ -1,8 +1,11 @@
-#include "Module.inc"
+// #include "Module.inc"
 
 #include <whiskey/AST/Field.hpp>
 
+#include <string.h>
+
 #include <whiskey/AST/Node.hpp>
+#include <whiskey/Core/PrintLiterals.hpp>
 
 namespace whiskey {
 Field::Field(Field::Kind kind) : kind(kind) {

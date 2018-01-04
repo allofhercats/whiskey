@@ -1,8 +1,6 @@
 #ifndef __WHISKEY_Printing_Printer_HPP
 #define __WHISKEY_Printing_Printer_HPP
 
-#include <whiskey/Printing/Module.inc>
-
 #include <whiskey/Printing/Precedence.hpp>
 
 namespace whiskey {

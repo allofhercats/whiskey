@@ -1,6 +1,8 @@
-#include "Module.inc"
+// #include "Module.inc"
 
 #include <whiskey/Core/StringContainer.hpp>
+
+#include <string.h>
 
 #include <whiskey/Core/Assert.hpp>
 

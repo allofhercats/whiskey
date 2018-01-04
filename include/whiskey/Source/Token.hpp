@@ -1,11 +1,9 @@
 #ifndef __WHISKEY_Source_Token_HPP
 #define __WHISKEY_Source_Token_HPP
 
-#include <whiskey/Source/Module.inc>
+#include <vector>
 
-#include <whiskey/Source/Location.hpp>
 #include <whiskey/Source/Range.hpp>
-#include <whiskey/Source/Source.hpp>
 
 namespace whiskey {
 class Token {

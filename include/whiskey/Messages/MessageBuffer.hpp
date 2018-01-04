@@ -1,7 +1,8 @@
 #ifndef __WHISKEY_Messages_MessageBuffer_HPP
 #define __WHISKEY_Messages_MessageBuffer_HPP
 
-#include <whiskey/Messages/Module.inc>
+#include <sstream>
+#include <vector>
 
 #include <whiskey/Messages/Message.hpp>
 

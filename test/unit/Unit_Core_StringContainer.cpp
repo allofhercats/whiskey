@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 
-#include <whiskey/Whiskey.hpp>
+// #include <whiskey/Whiskey.hpp>
+
+#include <whiskey/Core/StringContainer.hpp>
 
 using namespace whiskey;
 

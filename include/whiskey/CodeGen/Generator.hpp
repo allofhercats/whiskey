@@ -1,9 +1,11 @@
 #ifndef __WHISKEY_CodeGen_Generator_HPP
 #define __WHISKEY_CodeGen_Generator_HPP
 
-#include <whiskey/CodeGen/Module.inc>
+#include <string>
 
 namespace whiskey {
+class Node;
+
 class Generator {
 protected:
   virtual void *onGenerateFunctionPointer(const Node *node);

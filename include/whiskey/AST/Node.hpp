@@ -1,7 +1,9 @@
 #ifndef __WHISKEY_AST_Node_HPP
 #define __WHISKEY_AST_Node_HPP
 
-#include <whiskey/AST/Module.inc>
+#include <vector>
+
+#include <whiskey/Source/Range.hpp>
 
 #include <whiskey/AST/Field.hpp>
 

@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 
-#include <whiskey/Whiskey.hpp>
+// #include <whiskey/Whiskey.hpp>
+
+#include <whiskey/Core/Assert.hpp>
 
 using namespace whiskey;
 

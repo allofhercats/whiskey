@@ -1,9 +1,14 @@
 #ifndef __WHISKEY_Lexing_LexerContext_HPP
 #define __WHISKEY_Lexing_LexerContext_HPP
 
-#include <whiskey/Lexing/Module.inc>
+#include <vector>
+
+#include <whiskey/Source/Location.hpp>
+#include <whiskey/Source/Token.hpp>
 
 namespace whiskey {
+class MessageBuffer;
+
 class LexerContext {
 private:
   Location first;

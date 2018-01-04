@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 
-#include <whiskey/Whiskey.hpp>
+// #include <whiskey/Whiskey.hpp>
+
+#include <whiskey/Passes/Pass.hpp>
 
 using namespace whiskey;
 

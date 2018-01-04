@@ -1,7 +1,8 @@
 #ifndef __WHISKEY_AST_Field_HPP
 #define __WHISKEY_AST_Field_HPP
 
-#include <whiskey/AST/Module.inc>
+#include <whiskey/Core/Types.hpp>
+#include <whiskey/Core/Char.hpp>
 
 namespace whiskey {
 class Node;

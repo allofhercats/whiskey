@@ -1,7 +1,7 @@
 #ifndef __WHISKEY_Source_Source_HPP
 #define __WHISKEY_Source_Source_HPP
 
-#include <whiskey/Source/Module.inc>
+#include <string>
 
 #define W_DEFAULT_PATH "--"
 

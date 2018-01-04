@@ -1,10 +1,7 @@
 #ifndef __WHISKEY_Source_Range_HPP
 #define __WHISKEY_Source_Range_HPP
 
-#include <whiskey/Source/Module.inc>
-
 #include <whiskey/Source/Location.hpp>
-#include <whiskey/Source/Source.hpp>
 
 namespace whiskey {
 class Range {

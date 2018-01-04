@@ -1,6 +1,9 @@
-#include "Module.inc"
+// #include "Module.inc"
 
 #include <whiskey/Passes/PassManager.hpp>
+
+#include <whiskey/Passes/Pass.hpp>
+#include <whiskey/AST/Node.hpp>
 
 namespace whiskey {
 PassManager::PassManager() {

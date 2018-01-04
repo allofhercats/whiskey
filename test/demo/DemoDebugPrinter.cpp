@@ -1,6 +1,10 @@
 #include <iostream>
 
-#include <whiskey/Whiskey.hpp>
+// #include <whiskey/Whiskey.hpp>
+
+#include <whiskey/Printing/DebugPrinter.hpp>
+#include <whiskey/AST/Node.hpp>
+#include <whiskey/AST/Field.hpp>
 
 using namespace whiskey;
 

@@ -1,6 +1,9 @@
-#include "Module.inc"
+// #include "Module.inc"
 
 #include <whiskey/Source/Location.hpp>
+
+#include <whiskey/Core/Assert.hpp>
+#include <whiskey/Source/Source.hpp>
 
 namespace whiskey {
 size_t Location::distance(const Location &first, const Location &last) {

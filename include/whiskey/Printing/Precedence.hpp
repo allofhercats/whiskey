@@ -1,7 +1,7 @@
 #ifndef __WHISKEY_Printing_Precedence_HPP
 #define __WHISKEY_Printing_Precedence_HPP
 
-#include <whiskey/Printing/Module.inc>
+#include <whiskey/AST/Node.hpp>
 
 namespace whiskey {
 enum class Precedence {

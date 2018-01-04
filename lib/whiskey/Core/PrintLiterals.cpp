@@ -1,7 +1,10 @@
-#include "Module.inc"
+// #include "Module.inc"
+
+#include <whiskey/Core/PrintLiterals.hpp>
+
+#include <math.h>
 
 #include <whiskey/Core/Assert.hpp>
-#include <whiskey/Core/PrintLiterals.hpp>
 
 namespace whiskey {
 int getChar32MinWidth(char32_t value) {

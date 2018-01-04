@@ -1,7 +1,7 @@
 #ifndef __WHISKEY_Messages_Message_HPP
 #define __WHISKEY_Messages_Message_HPP
 
-#include <whiskey/Messages/Module.inc>
+#include <whiskey/Source/Range.hpp>
 
 namespace whiskey {
 class Message {

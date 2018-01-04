@@ -1,11 +1,16 @@
 #ifndef __WHISKEY_Parsing_ParserContext_HPP
 #define __WHISKEY_Parsing_ParserContext_HPP
 
-#include <whiskey/Parsing/Module.inc>
+#include <functional>
+#include <vector>
+#include <stack>
 
 #include <whiskey/Parsing/ParserResult.hpp>
+#include <whiskey/Source/Token.hpp>
 
 namespace whiskey {
+class MessageBuffer;
+
 class ParserContext {
 public:
   typedef std::function<ParserResult(ParserContext &)> Rule;

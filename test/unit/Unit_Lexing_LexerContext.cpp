@@ -1,6 +1,10 @@
 #include <gtest/gtest.h>
 
-#include <whiskey/Whiskey.hpp>
+// #include <whiskey/Whiskey.hpp>
+
+#include <whiskey/Lexing/LexerContext.hpp>
+#include <whiskey/Source/Source.hpp>
+#include <whiskey/Messages/MessageBuffer.hpp>
 
 using namespace whiskey;
 

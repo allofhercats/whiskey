@@ -1,7 +1,10 @@
 #ifndef __WHISKEY_Fuzzing_TokenFuzzer_HPP
 #define __WHISKEY_Fuzzing_TokenFuzzer_HPP
 
-#include <whiskey/Fuzzing/Module.inc>
+#include <sstream>
+#include <vector>
+
+#include <whiskey/Source/Token.hpp>
 
 namespace whiskey {
 class TokenFuzzer {

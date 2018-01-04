@@ -1,9 +1,7 @@
 #ifndef __WHISKEY_Core_String_HPP
 #define __WHISKEY_Core_String_HPP
 
-#include <whiskey/Core/Module.inc>
-
-#include <whiskey/Core/Types.hpp>
+#include <whiskey/Core/Char.hpp>
 #include <whiskey/Core/Assert.hpp>
 
 namespace whiskey {

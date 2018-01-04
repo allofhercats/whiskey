@@ -1,6 +1,11 @@
-#include "Module.inc"
+// #include "Module.inc"
 
 #include <whiskey/Parsing/Parser.hpp>
+
+#include <sstream>
+
+#include <whiskey/AST/Node.hpp>
+#include <whiskey/Parsing/EvalLiterals.hpp>
 
 namespace whiskey {
 ParserResult Parser::parseBoundList(ParserContext &ctx,

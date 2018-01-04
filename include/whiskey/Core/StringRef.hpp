@@ -1,8 +1,6 @@
 #ifndef __WHISKEY_Core_StringRef_HPP
 #define __WHISKEY_Core_StringRef_HPP
 
-#include <whiskey/Core/Module.inc>
-
 #include <whiskey/Core/String.hpp>
 
 namespace whiskey {

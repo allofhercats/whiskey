@@ -1,9 +1,6 @@
 #ifndef __WHISKEY_Parsing_Parser_HPP
 #define __WHISKEY_Parsing_Parser_HPP
 
-#include <whiskey/Parsing/Module.inc>
-
-#include <whiskey/Parsing/EvalLiterals.hpp>
 #include <whiskey/Parsing/ParserContext.hpp>
 #include <whiskey/Parsing/ParserResult.hpp>
 

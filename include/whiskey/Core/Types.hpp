@@ -1,9 +1,7 @@
 #ifndef __WHISKEY_Core_Types_HPP
 #define __WHISKEY_Core_Types_HPP
 
-#include <whiskey/Core/Module.inc>
-
-#include <whiskey/Core/Char.hpp>
+#include <stdint.h>
 
 namespace whiskey {
 typedef int64_t Int;

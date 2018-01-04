@@ -2,6 +2,8 @@
 
 #include <whiskey/AST/Node.hpp>
 
+#include <whiskey/AST/Field.hpp>
+
 namespace whiskey {
 Node::KindInfo::KindInfo(const char *name,
                          std::vector<Node::FieldTag> fieldTags,

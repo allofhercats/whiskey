@@ -1,8 +1,6 @@
 #ifndef __WHISKEY_Core_StringContainer_HPP
 #define __WHISKEY_Core_StringContainer_HPP
 
-#include <whiskey/Core/Module.inc>
-
 #include <whiskey/Core/String.hpp>
 #include <whiskey/Core/StringRef.hpp>
 

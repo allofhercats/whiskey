@@ -1,7 +1,7 @@
 #ifndef __WHISKEY_Core_LiteralPrinter_HPP
 #define __WHISKEY_Core_LiteralPrinter_HPP
 
-#include <whiskey/Core/Module.inc>
+#include <ostream>
 
 namespace whiskey {
 class LiteralPrinter {

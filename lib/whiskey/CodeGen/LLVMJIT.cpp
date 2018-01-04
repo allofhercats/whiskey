@@ -1,6 +1,12 @@
-#include "Module.inc"
+// #include "Module.inc"
 
-#include <whiskey/CodeGen/LLVMJIT.hpp>
+#include "LLVMJIT.hpp"
+
+#include <llvm/ExecutionEngine/ExecutionEngine.h>
+#include <llvm/Support/DynamicLibrary.h>
+#include <llvm/ExecutionEngine/SectionMemoryManager.h>
+#include <llvm/ExecutionEngine/Orc/LambdaResolver.h>
+#include <llvm/IR/Mangler.h>
 
 namespace whiskey {
 LLVMJIT::LLVMJIT()

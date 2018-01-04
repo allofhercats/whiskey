@@ -1,11 +1,14 @@
 #ifndef __WHISKEY_Passes_PassManager_HPP
 #define __WHISKEY_Passes_PassManager_HPP
 
-#include <whiskey/Passes/Module.inc>
-
 #include <whiskey/Passes/Pass.hpp>
 
+#include <vector>
+#include <memory>
+
 namespace whiskey {
+class Node;
+
 class PassManager {
 private:
   std::vector<std::unique_ptr<Pass>> passes;

@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
 
-#include <whiskey/Whiskey.hpp>
+// #include <whiskey/Whiskey.hpp>
+
+#include <whiskey/Source/Range.hpp>
+#include <whiskey/Source/Source.hpp>
 
 using namespace whiskey;
 

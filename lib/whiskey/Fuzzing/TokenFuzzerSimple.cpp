@@ -1,6 +1,8 @@
-#include "Module.inc"
+// #include "Module.inc"
 
 #include <whiskey/Fuzzing/TokenFuzzerSimple.hpp>
+
+#include <whiskey/Core/Assert.hpp>
 
 #define SYMBOL_LENGTH_MIN 1
 #define SYMBOL_LENGTH_MAX 1000

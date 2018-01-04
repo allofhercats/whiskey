@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <whiskey/Whiskey.hpp>
+#include <whiskey/CodeGen/LLVMGenerator.hpp>
 
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);

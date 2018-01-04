@@ -1,6 +1,10 @@
-#include "Module.inc"
+// #include "Module.inc"
 
 #include <whiskey/Source/Source.hpp>
+
+#include <string.h>
+
+#include <whiskey/Core/Assert.hpp>
 
 namespace whiskey {
 int Source::getEncodingWidth(Source::Encoding encoding) {

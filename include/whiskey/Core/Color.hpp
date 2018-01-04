@@ -1,7 +1,7 @@
 #ifndef __WHISKEY_Core_Color_HPP
 #define __WHISKEY_Core_Color_HPP
 
-#include <whiskey/Core/Module.inc>
+#include <ostream>
 
 namespace whiskey {
 class Color {

@@ -1,9 +1,9 @@
 #ifndef __WHISKEY_Parsing_ParserResult_HPP
 #define __WHISKEY_Parsing_ParserResult_HPP
 
-#include <whiskey/Parsing/Module.inc>
-
 namespace whiskey {
+class Node;
+
 class ParserResult {
 private:
   Node *node;

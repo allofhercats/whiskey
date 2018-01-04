@@ -1,6 +1,13 @@
 #include <gtest/gtest.h>
 
-#include <whiskey/Whiskey.hpp>
+// #include <whiskey/Whiskey.hpp>
+
+#include <vector>
+
+#include <whiskey/Source/Source.hpp>
+#include <whiskey/Source/Token.hpp>
+#include <whiskey/Lexing/Lexer.hpp>
+#include <whiskey/Messages/MessageBuffer.hpp>
 
 using namespace whiskey;
 

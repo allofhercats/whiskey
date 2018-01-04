@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
 
-#include <whiskey/Whiskey.hpp>
+// #include <whiskey/Whiskey.hpp>
+
+#include <whiskey/Core/PrintLiterals.hpp>
+#include <whiskey/Parsing/EvalLiterals.hpp>
 
 using namespace whiskey;
 

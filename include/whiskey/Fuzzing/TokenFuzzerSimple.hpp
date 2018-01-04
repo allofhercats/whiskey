@@ -1,8 +1,6 @@
 #ifndef __WHISKEY_Fuzzing_TokenFuzzerSimple_HPP
 #define __WHISKEY_Fuzzing_TokenFuzzerSimple_HPP
 
-#include <whiskey/Fuzzing/Module.inc>
-
 #include <whiskey/Fuzzing/TokenFuzzer.hpp>
 
 namespace whiskey {

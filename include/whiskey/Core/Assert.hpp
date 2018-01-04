@@ -3,7 +3,6 @@
 
 #include <whiskey/Core/Backtrace.hpp>
 #include <whiskey/Core/Color.hpp>
-#include <whiskey/Core/Module.inc>
 
 #define _W_ASSERT_STREAM (::whiskey::getAssertStream())
 #define _W_ASSERT_BOOL bool
