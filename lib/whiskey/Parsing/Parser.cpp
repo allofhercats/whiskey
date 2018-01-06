@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Parsing/Parser.hpp>
 
 #include <sstream>

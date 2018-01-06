@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Source/Range.hpp>
 
 namespace whiskey {

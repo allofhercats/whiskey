@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Passes/Pass.hpp>
 
 #include <whiskey/Core/Assert.hpp>

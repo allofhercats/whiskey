@@ -1,35 +1,12 @@
-// #include "Module.inc"
-
 #include <whiskey/Core/PrintLiterals.hpp>
 
 #include <math.h>
 
 #include <whiskey/Core/Assert.hpp>
+#include <whiskey/Core/Char.hpp>
+#include <whiskey/Core/Types.hpp>
 
 namespace whiskey {
-int getChar32MinWidth(char32_t value) {
-  if ((value & 0xff) == value) {
-    return 1;
-  } else if ((value & 0xffff) == value) {
-    return 2;
-  } else {
-    return 4;
-  }
-}
-
-unsigned int getNDigits(uint64_t value, unsigned int base) {
-  if (value == 0) {
-    return 1;
-  } else {
-    unsigned int n = 0;
-    while (value != 0) {
-      value /= base;
-      n++;
-    }
-    return n;
-  }
-}
-
 void printLiteralBool(std::ostream &os, bool value) {
   if (value) {
     os << "true";

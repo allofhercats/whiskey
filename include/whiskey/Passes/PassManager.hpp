@@ -1,10 +1,10 @@
 #ifndef __WHISKEY_Passes_PassManager_HPP
 #define __WHISKEY_Passes_PassManager_HPP
 
-#include <whiskey/Passes/Pass.hpp>
-
 #include <vector>
 #include <memory>
+
+#include <whiskey/Passes/Pass.hpp>
 
 namespace whiskey {
 class Node;

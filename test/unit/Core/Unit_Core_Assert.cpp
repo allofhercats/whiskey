@@ -22,7 +22,7 @@ TEST(Unit_Core_Assert, Stream) {
 
 TEST(Unit_Core_Assert, Die) {
   ASSERT_DEATH({
-    _W_ASSERT_DIE();
+    dieOnAssertFail();
   }, "");
 }
 

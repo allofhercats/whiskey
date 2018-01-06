@@ -6,9 +6,6 @@
 #include <ostream>
 
 namespace whiskey {
-int getChar32MinWidth(char32_t value);
-unsigned int getNDigits(uint64_t value, unsigned int base = 10);
-
 void printLiteralBool(std::ostream &os, bool value);
 void printLiteralInt(std::ostream &os,
                      int64_t value,

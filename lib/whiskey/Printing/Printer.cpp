@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Printing/Printer.hpp>
 
 namespace whiskey {

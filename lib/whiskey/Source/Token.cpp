@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Source/Token.hpp>
 
 #include <whiskey/Core/Assert.hpp>

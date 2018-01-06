@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Core/Assert.hpp>
 #include <whiskey/Core/Backtrace.hpp>
 
@@ -13,6 +11,8 @@
 #include <execinfo.h>
 #include <link.h>
 #include <unistd.h>
+
+#include <whiskey/Core/Color.hpp>
 
 namespace whiskey {
 namespace {

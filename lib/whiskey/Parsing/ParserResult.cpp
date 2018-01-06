@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Parsing/ParserResult.hpp>
 
 namespace whiskey {

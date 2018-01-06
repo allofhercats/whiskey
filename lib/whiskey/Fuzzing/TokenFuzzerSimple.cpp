@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Fuzzing/TokenFuzzerSimple.hpp>
 
 #include <whiskey/Core/Assert.hpp>

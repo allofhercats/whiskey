@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Messages/MessageBuffer.hpp>
 
 namespace whiskey {

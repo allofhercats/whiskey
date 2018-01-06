@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/AST/Field.hpp>
 
 #include <string.h>

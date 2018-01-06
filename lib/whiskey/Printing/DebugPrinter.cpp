@@ -1,6 +1,6 @@
-// #include "Module.inc"
-
 #include <whiskey/Printing/DebugPrinter.hpp>
+
+#include <whiskey/Core/Color.hpp>
 
 namespace whiskey {
 void DebugPrinter::onPrint(std::ostream &os,

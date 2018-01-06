@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Source/Source.hpp>
 
 #include <string.h>

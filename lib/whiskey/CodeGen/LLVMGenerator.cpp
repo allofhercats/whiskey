@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/CodeGen/LLVMGenerator.hpp>
 
 #include <whiskey/Core/Assert.hpp>

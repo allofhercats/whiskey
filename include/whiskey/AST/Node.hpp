@@ -4,7 +4,6 @@
 #include <vector>
 
 #include <whiskey/Source/Range.hpp>
-
 #include <whiskey/AST/Field.hpp>
 
 namespace whiskey {

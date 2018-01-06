@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Printing/Precedence.hpp>
 
 namespace whiskey {

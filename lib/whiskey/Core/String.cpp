@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Core/String.hpp>
 
 namespace whiskey {

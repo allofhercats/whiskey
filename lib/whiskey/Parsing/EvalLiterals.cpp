@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Parsing/EvalLiterals.hpp>
 
 #include <whiskey/Core/PrintLiterals.hpp>

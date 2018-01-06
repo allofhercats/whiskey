@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Messages/Message.hpp>
 
 #include <whiskey/Core/Color.hpp>

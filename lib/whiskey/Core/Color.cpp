@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Core/Color.hpp>
 
 namespace whiskey {

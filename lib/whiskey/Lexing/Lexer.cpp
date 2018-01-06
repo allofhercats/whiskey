@@ -1,5 +1,3 @@
-// #include "Module.inc"
-
 #include <whiskey/Lexing/Lexer.hpp>
 
 #include <whiskey/Messages/MessageBuffer.hpp>

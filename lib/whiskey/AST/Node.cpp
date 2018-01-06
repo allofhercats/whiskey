@@ -1,5 +1,3 @@
-#include "Module.inc"
-
 #include <whiskey/AST/Node.hpp>
 
 #include <whiskey/AST/Field.hpp>
