@@ -2,9 +2,9 @@
 
 // #include <whiskey/Whiskey.hpp>
 
-#include <whiskey/Passes/PassManager.hpp>
-#include <whiskey/AST/Node.hpp>
 #include <whiskey/AST/Field.hpp>
+#include <whiskey/AST/Node.hpp>
+#include <whiskey/Passes/PassManager.hpp>
 
 using namespace whiskey;
 

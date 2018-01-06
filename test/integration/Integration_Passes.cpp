@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
+#include <whiskey/AST/Field.hpp>
+#include <whiskey/AST/Node.hpp>
 #include <whiskey/Passes/Pass.hpp>
 #include <whiskey/Passes/PassManager.hpp>
-#include <whiskey/AST/Node.hpp>
-#include <whiskey/AST/Field.hpp>
 
 using namespace whiskey;
 

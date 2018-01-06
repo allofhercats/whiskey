@@ -1,7 +1,7 @@
 #include <whiskey/Messages/Message.hpp>
 
-#include <whiskey/Core/Color.hpp>
 #include <whiskey/Core/Assert.hpp>
+#include <whiskey/Core/Color.hpp>
 
 namespace whiskey {
 Message::Severity Message::getSeverity(Message::ID id) {

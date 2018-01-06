@@ -2,8 +2,8 @@
 
 // #include <whiskey/Whiskey.hpp>
 
-#include <whiskey/Parsing/ParserResult.hpp>
 #include <whiskey/AST/Node.hpp>
+#include <whiskey/Parsing/ParserResult.hpp>
 
 using namespace whiskey;
 

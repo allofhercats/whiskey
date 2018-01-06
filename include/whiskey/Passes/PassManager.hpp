@@ -1,8 +1,8 @@
 #ifndef __WHISKEY_Passes_PassManager_HPP
 #define __WHISKEY_Passes_PassManager_HPP
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include <whiskey/Passes/Pass.hpp>
 

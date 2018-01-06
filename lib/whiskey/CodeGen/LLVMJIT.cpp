@@ -1,10 +1,10 @@
 #include "LLVMJIT.hpp"
 
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
-#include <llvm/Support/DynamicLibrary.h>
-#include <llvm/ExecutionEngine/SectionMemoryManager.h>
 #include <llvm/ExecutionEngine/Orc/LambdaResolver.h>
+#include <llvm/ExecutionEngine/SectionMemoryManager.h>
 #include <llvm/IR/Mangler.h>
+#include <llvm/Support/DynamicLibrary.h>
 
 namespace whiskey {
 LLVMJIT::LLVMJIT()

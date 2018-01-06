@@ -23,39 +23,51 @@ void setAssertStream(std::ostream &os) {
 }
 
 void printAssertMessage(const char *file, int line, const char *desc) {
-	*assertStream << Color::reset << file << ":" << line << ": " << Color::magentaLight << "assertion failed: " << Color::white << desc << Color::reset << "\n";
+  *assertStream << Color::reset << file << ":" << line << ": "
+                << Color::magentaLight << "assertion failed: " << Color::white
+                << desc << Color::reset << "\n";
 }
 
 void printAssertReasonPre() {
-	*assertStream << Color::greyLight << " reason: " << Color::reset;
+  *assertStream << Color::greyLight << " reason: " << Color::reset;
 }
 
 void printAssertReasonPost() {
-	*assertStream << "\n";
+  *assertStream << "\n";
 }
 
 [[noreturn]] void dieOnAssertFail() {
-	printBacktrace(*assertStream);
-	abort();
+  printBacktrace(*assertStream);
+  abort();
 }
 
-void printAssertValueBool(const char *label, AssertBool value, const char *text) {
-	*assertStream << Color::greyLight << "  " << label << ": " << Color::reset << text << "\n";
-	*assertStream << "    which is: " << (value ? "true" : "false") << "\n";
+void printAssertValueBool(const char *label,
+                          AssertBool value,
+                          const char *text) {
+  *assertStream << Color::greyLight << "  " << label << ": " << Color::reset
+                << text << "\n";
+  *assertStream << "    which is: " << (value ? "true" : "false") << "\n";
 }
 
-void printAssertValuePointer(const char *label, AssertPointer value, const char *text) {
-	*assertStream << Color::greyLight << "  " << label << ": " << Color::reset << text << "\n";
-	*assertStream << "    which is: " << value << "\n";
+void printAssertValuePointer(const char *label,
+                             AssertPointer value,
+                             const char *text) {
+  *assertStream << Color::greyLight << "  " << label << ": " << Color::reset
+                << text << "\n";
+  *assertStream << "    which is: " << value << "\n";
 }
 
 void printAssertValueInt(const char *label, AssertInt value, const char *text) {
-	*assertStream << Color::greyLight << "  " << label << ": " << Color::reset << text << "\n";
-	*assertStream << "    which is: " << value << "\n";
+  *assertStream << Color::greyLight << "  " << label << ": " << Color::reset
+                << text << "\n";
+  *assertStream << "    which is: " << value << "\n";
 }
 
-void printAssertValueUInt(const char *label, AssertUInt value, const char *text) {
-	*assertStream << Color::greyLight << "  " << label << ": " << Color::reset << text << "\n";
-	*assertStream << "    which is: " << value << "\n";
+void printAssertValueUInt(const char *label,
+                          AssertUInt value,
+                          const char *text) {
+  *assertStream << Color::greyLight << "  " << label << ": " << Color::reset
+                << text << "\n";
+  *assertStream << "    which is: " << value << "\n";
 }
 } // namespace whiskey

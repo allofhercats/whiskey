@@ -1,12 +1,12 @@
 #include <gtest/gtest.h>
 
 #include <whiskey/Core/Assert.hpp>
-#include <whiskey/Source/Source.hpp>
-#include <whiskey/Source/Location.hpp>
-#include <whiskey/Source/Token.hpp>
-#include <whiskey/Messages/MessageBuffer.hpp>
-#include <whiskey/Lexing/Lexer.hpp>
 #include <whiskey/Fuzzing/TokenFuzzerSimple.hpp>
+#include <whiskey/Lexing/Lexer.hpp>
+#include <whiskey/Messages/MessageBuffer.hpp>
+#include <whiskey/Source/Location.hpp>
+#include <whiskey/Source/Source.hpp>
+#include <whiskey/Source/Token.hpp>
 
 using namespace whiskey;
 

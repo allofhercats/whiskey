@@ -7,40 +7,40 @@
 namespace whiskey {
 class StringContainer : public String {
 private:
-	Length capacity;
+  Length capacity;
 
 public:
-	static Length getLowerBoundPow2(Length value, Length min = 32);
+  static Length getLowerBoundPow2(Length value, Length min = 32);
 
-	StringContainer();
-	StringContainer(const char *value, Length length = 0);
-	StringContainer(const char16_t *value, Length length = 0);
-	StringContainer(const char32_t *value, Length length = 0);
-	StringContainer(const wchar_t *value, Length length = 0);
-	StringContainer(const std::string &value);
-	StringContainer(const std::u16string &value);
-	StringContainer(const std::u32string &value);
-	StringContainer(const std::wstring &value);
-	StringContainer(const StringRef &value);
-	StringContainer(const StringContainer &other);
-	StringContainer(StringContainer &&other);
-	~StringContainer();
+  StringContainer();
+  StringContainer(const char *value, Length length = 0);
+  StringContainer(const char16_t *value, Length length = 0);
+  StringContainer(const char32_t *value, Length length = 0);
+  StringContainer(const wchar_t *value, Length length = 0);
+  StringContainer(const std::string &value);
+  StringContainer(const std::u16string &value);
+  StringContainer(const std::u32string &value);
+  StringContainer(const std::wstring &value);
+  StringContainer(const StringRef &value);
+  StringContainer(const StringContainer &other);
+  StringContainer(StringContainer &&other);
+  ~StringContainer();
 
-	StringContainer &operator=(const StringContainer &other);
-	StringContainer &operator=(StringContainer &&other);
+  StringContainer &operator=(const StringContainer &other);
+  StringContainer &operator=(StringContainer &&other);
 
-	Char8 *getData8();
-	Char16 *getData16();
-	Char32 *getData32();
+  Char8 *getData8();
+  Char16 *getData16();
+  Char32 *getData32();
 
-	Length getCapacity() const;
-	void setCapacity(Length value);
+  Length getCapacity() const;
+  void setCapacity(Length value);
 
-	void setLength(Length value);
+  void setLength(Length value);
 
-	void append(Char32 value);
-	void append(const String &value);
+  void append(Char32 value);
+  void append(const String &value);
 };
-}
+} // namespace whiskey
 
 #endif

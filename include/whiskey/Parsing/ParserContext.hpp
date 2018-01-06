@@ -2,8 +2,8 @@
 #define __WHISKEY_Parsing_ParserContext_HPP
 
 #include <functional>
-#include <vector>
 #include <stack>
+#include <vector>
 
 #include <whiskey/Parsing/ParserResult.hpp>
 #include <whiskey/Source/Token.hpp>

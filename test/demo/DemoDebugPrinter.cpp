@@ -2,9 +2,9 @@
 
 // #include <whiskey/Whiskey.hpp>
 
-#include <whiskey/Printing/DebugPrinter.hpp>
-#include <whiskey/AST/Node.hpp>
 #include <whiskey/AST/Field.hpp>
+#include <whiskey/AST/Node.hpp>
+#include <whiskey/Printing/DebugPrinter.hpp>
 
 using namespace whiskey;
 

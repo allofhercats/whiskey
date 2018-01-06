@@ -1,10 +1,10 @@
 #ifndef __WHISKEY_LIB_CodeGen_LLVMJIT_HPP
 #define __WHISKEY_LIB_CodeGen_LLVMJIT_HPP
 
-#include <llvm/Target/TargetMachine.h>
 #include <llvm/ExecutionEngine/Orc/CompileUtils.h>
 #include <llvm/ExecutionEngine/Orc/IRCompileLayer.h>
 #include <llvm/ExecutionEngine/Orc/RTDyldObjectLinkingLayer.h>
+#include <llvm/Target/TargetMachine.h>
 
 namespace whiskey {
 class LLVMJIT {
@@ -12,10 +12,14 @@ private:
   llvm::TargetMachine *tm;
   const llvm::DataLayout dl;
   llvm::orc::RTDyldObjectLinkingLayer ol;
-  llvm::orc::IRCompileLayer<llvm::orc::RTDyldObjectLinkingLayer, llvm::orc::SimpleCompiler> cl;
+  llvm::orc::IRCompileLayer<llvm::orc::RTDyldObjectLinkingLayer,
+                            llvm::orc::SimpleCompiler>
+      cl;
 
 public:
-  using ModuleHandle = llvm::orc::IRCompileLayer<llvm::orc::RTDyldObjectLinkingLayer, llvm::orc::SimpleCompiler>::ModuleHandleT;
+  using ModuleHandle =
+      llvm::orc::IRCompileLayer<llvm::orc::RTDyldObjectLinkingLayer,
+                                llvm::orc::SimpleCompiler>::ModuleHandleT;
 
   LLVMJIT();
   LLVMJIT(const LLVMJIT &) = delete;

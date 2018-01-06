@@ -1,8 +1,8 @@
 #ifndef __WHISKEY_Core_Backtrace_HPP
 #define __WHISKEY_Core_Backtrace_HPP
 
-#include <string>
 #include <ostream>
+#include <string>
 
 namespace whiskey {
 std::string getCurrentBinaryName(int maxLength = 1024);

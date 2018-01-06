@@ -1,7 +1,7 @@
 #include <whiskey/Lexing/Lexer.hpp>
 
-#include <whiskey/Messages/MessageBuffer.hpp>
 #include <whiskey/Core/PrintLiterals.hpp>
+#include <whiskey/Messages/MessageBuffer.hpp>
 
 namespace whiskey {
 bool Lexer::isWhitespaceChar(char32_t value) {

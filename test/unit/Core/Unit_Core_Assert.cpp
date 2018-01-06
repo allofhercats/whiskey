@@ -21,9 +21,7 @@ TEST(Unit_Core_Assert, Stream) {
 }
 
 TEST(Unit_Core_Assert, Die) {
-  ASSERT_DEATH({
-    dieOnAssertFail();
-  }, "");
+  ASSERT_DEATH({ dieOnAssertFail(); }, "");
 }
 
 TEST(Unit_Core_Assert, Unreachable) {

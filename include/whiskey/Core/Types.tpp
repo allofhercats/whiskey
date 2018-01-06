@@ -1,6 +1,7 @@
 namespace whiskey {
-template<typename T> DigitCount getNDigits(T value, DigitBase base) {
-	if (value == 0) {
+template <typename T>
+DigitCount getNDigits(T value, DigitBase base) {
+  if (value == 0) {
     return 1;
   } else {
     unsigned int n = 0;
@@ -11,4 +12,4 @@ template<typename T> DigitCount getNDigits(T value, DigitBase base) {
     return n;
   }
 }
-}
+} // namespace whiskey

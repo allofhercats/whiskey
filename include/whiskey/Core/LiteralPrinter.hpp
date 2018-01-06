@@ -6,14 +6,14 @@
 namespace whiskey {
 class LiteralPrinter {
 protected:
-	virtual void onPrint(std::ostream &os) const = 0;
+  virtual void onPrint(std::ostream &os) const = 0;
 
 public:
-	LiteralPrinter();
-	virtual ~LiteralPrinter();
+  LiteralPrinter();
+  virtual ~LiteralPrinter();
 
-	void print(std::ostream &os) const;
+  void print(std::ostream &os) const;
 };
-}
+} // namespace whiskey
 
 #endif

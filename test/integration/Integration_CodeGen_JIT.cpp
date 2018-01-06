@@ -2,8 +2,8 @@
 
 // #include <whiskey/Whiskey.hpp>
 
-#include <whiskey/AST/Node.hpp>
 #include <whiskey/AST/Field.hpp>
+#include <whiskey/AST/Node.hpp>
 #include <whiskey/CodeGen/Generator.hpp>
 #include <whiskey/CodeGen/LLVMGenerator.hpp>
 

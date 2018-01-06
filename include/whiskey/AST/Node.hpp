@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include <whiskey/Source/Range.hpp>
 #include <whiskey/AST/Field.hpp>
+#include <whiskey/Source/Range.hpp>
 
 namespace whiskey {
 class Node {

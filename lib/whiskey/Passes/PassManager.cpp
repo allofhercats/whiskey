@@ -1,7 +1,7 @@
 #include <whiskey/Passes/PassManager.hpp>
 
-#include <whiskey/Passes/Pass.hpp>
 #include <whiskey/AST/Node.hpp>
+#include <whiskey/Passes/Pass.hpp>
 
 namespace whiskey {
 PassManager::PassManager() {

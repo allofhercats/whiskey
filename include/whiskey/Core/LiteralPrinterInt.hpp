@@ -2,40 +2,43 @@
 #define __WHISKEY_Core_LiteralPrinterInt_HPP
 
 namespace whiskey {
-template<typename T>
+template <typename T>
 class LiteralPrinterInt {
 private:
-	T value;
-	unsigned int base;
-	bool usePrefix;
-	unsigned int width;
+  T value;
+  unsigned int base;
+  bool usePrefix;
+  unsigned int width;
 
 protected:
-	virtual void onPrint(std::ostream &os) const;
+  virtual void onPrint(std::ostream &os) const;
 
 public:
-	static bool isValidBase(unsigned int base);
-	static void printBasePrefix(unsigned int base, std::ostream &os);
-	static unsigned int getNDigits(T value, unsigned int base);
+  static bool isValidBase(unsigned int base);
+  static void printBasePrefix(unsigned int base, std::ostream &os);
+  static unsigned int getNDigits(T value, unsigned int base);
 
-	LiteralPrinterInt(T value, unsigned int base = 10, bool usePrefix = true, unsigned int width = 0);
-	virtual ~LiteralPrinterInt();
+  LiteralPrinterInt(T value,
+                    unsigned int base = 10,
+                    bool usePrefix = true,
+                    unsigned int width = 0);
+  virtual ~LiteralPrinterInt();
 
-	T getValue() const;
-	void setValue(T value);
+  T getValue() const;
+  void setValue(T value);
 
-	unsigned int getBase() const;
-	void setBase(unsigned int value);
+  unsigned int getBase() const;
+  void setBase(unsigned int value);
 
-	bool getUsePrefix() const;
-	void setUsePrefix(bool value);
+  bool getUsePrefix() const;
+  void setUsePrefix(bool value);
 
-	unsigned int getWidth() const;
-	void setWidth(unsigned int value);
+  unsigned int getWidth() const;
+  void setWidth(unsigned int value);
 
-	void print(std::ostream &os) const;
+  void print(std::ostream &os) const;
 };
-}
+} // namespace whiskey
 
 #include <whiskey/Core/LiteralPrinterInt.tpp>
 

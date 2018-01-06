@@ -4,10 +4,10 @@
 
 #include <vector>
 
-#include <whiskey/Source/Source.hpp>
-#include <whiskey/Source/Token.hpp>
 #include <whiskey/Lexing/Lexer.hpp>
 #include <whiskey/Messages/MessageBuffer.hpp>
+#include <whiskey/Source/Source.hpp>
+#include <whiskey/Source/Token.hpp>
 
 using namespace whiskey;
 
