@@ -1,6 +1,7 @@
 #ifndef __WHISKEY_Source_Range_HPP
 #define __WHISKEY_Source_Range_HPP
 
+#include <whiskey/Core/StringRef.hpp>
 #include <whiskey/Source/Location.hpp>
 
 namespace whiskey {
@@ -21,7 +22,7 @@ public:
   size_t getLength() const;
   void setLength(size_t value);
 
-  std::string getText() const;
+  StringRef getText() const;
 };
 } // namespace whiskey
 

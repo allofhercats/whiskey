@@ -69,13 +69,13 @@ TEST(FuzzLiteralsReflexiveString, All) {
     LiteralPrinterString(buffer).print(ss);
 
     Source src;
-    src.loadString(ss.str(), true);
+    src.loadString(ss.str());
     Location loc(src);
-    Range rng(loc, src.getLength());
+    Range rng(loc, src.getText().size());
 
-    ASSERT_EQ(src.getLength(), ss.str().size());
+    ASSERT_EQ(src.getText().size(), ss.str().size());
     ASSERT_EQ(rng.getLength(), ss.str().size());
-    ASSERT_STREQ(rng.getText().c_str(), ss.str().c_str());
+    ASSERT_TRUE(rng.getText() == StringRef(ss.str()));
 
     std::string evaled;
 

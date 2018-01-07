@@ -31,17 +31,7 @@ void Range::setLength(size_t value) {
   length = value;
 }
 
-std::string Range::getText() const {
-  std::string rtn;
-  Location i = start;
-  while (i.getOffset() < start.getOffset() + length) {
-    if (!i.areMoreChars()) {
-      break;
-    } else {
-      rtn.push_back(i.getChar());
-    }
-    i.eatChar();
-  }
-  return rtn;
+StringRef Range::getText() const {
+  return StringRef(first.getSource().)
 }
 } // namespace whiskey

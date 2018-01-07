@@ -111,4 +111,26 @@ String::const_iterator String::cbegin() const {
 String::const_iterator String::cend() const {
   return const_iterator(data.asChar8 + (width * length), width);
 }
+
+StringRef String::substr(String::Index offset, String::Length length) {
+  if (length == 0) {
+    length = this->length;
+  }
+
+  if (offset + length > this->length) {
+    length = this->length - offset;
+  }
+
+  if (offset < 0 || offset >= this->length) {
+    return StringRef();
+  } else if (width == 1) {
+    return StringRef(data.asChar8+offset, length);
+  } else if (width == 2) {
+    return StringRef(data.asChar16+offset, length);
+  } else if (width == 4) {
+    return StringRef(data.asChar32+offset, length);
+  } else {
+    W_ASSERT_UNREACHABLE("Unsupported char width " << width << ".");
+  }
+}
 } // namespace whiskey

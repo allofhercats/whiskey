@@ -119,12 +119,8 @@ void Location::setColumn(unsigned int value) {
 
 bool Location::areMoreChars(size_t lookahead) const {
   if (hasSource()) {
-    if (getSource().isLoaded()) {
-      if (offset + lookahead < getSource().getLength()) {
-        return true;
-      } else {
-        return false;
-      }
+    if (offset + lookahead < getSource().getText().getLength()) {
+      return true;
     } else {
       return false;
     }
@@ -135,22 +131,7 @@ bool Location::areMoreChars(size_t lookahead) const {
 
 char32_t Location::getChar(size_t lookahead) const {
   if (areMoreChars(lookahead)) {
-    char32_t chr;
-    if (getSource().getCharWidth() == 1) {
-      const char *p = ((const char *)getSource().data) + (offset + lookahead);
-      chr = (*p) & 0xff;
-    } else if (getSource().getCharWidth() == 2) {
-      const char16_t *p =
-          ((const char16_t *)getSource().data) + (offset + lookahead);
-      chr = (*p) & 0xffff;
-    } else if (getSource().getCharWidth() == 4) {
-      const char32_t *p =
-          ((const char32_t *)getSource().data) + (offset + lookahead);
-      chr = *p;
-    } else {
-      W_ASSERT_UNREACHABLE("Unsupported character width "
-                           << getSource().getCharWidth() << ".");
-    }
+    char32_t chr = source->getText().getChar(offset + lookahead);
 
     if (chr == '\r') {
       chr = '\n';

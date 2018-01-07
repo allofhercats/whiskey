@@ -67,7 +67,7 @@ TEST(FuzzLexerRandom, All) {
     buffer[sampleSize - 1] = 0;
 
     Source src;
-    src.loadCString(buffer);
+    src.loadString(buffer);
 
     Location loc(src);
 

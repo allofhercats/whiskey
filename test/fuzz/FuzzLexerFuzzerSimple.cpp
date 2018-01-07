@@ -58,7 +58,7 @@ TEST(FuzzLexerFuzzerSimple, All) {
     fuzzer->fuzz();
 
     Source src;
-    src.loadString(fuzzer->getText(), true);
+    src.loadString(fuzzer->getText());
 
     Location loc(src);
 
