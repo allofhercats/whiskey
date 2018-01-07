@@ -3,7 +3,11 @@
 #include <string.h>
 
 #include <whiskey/AST/Node.hpp>
-#include <whiskey/Core/PrintLiterals.hpp>
+#include <whiskey/Core/LiteralPrinterBool.hpp>
+#include <whiskey/Core/LiteralPrinterUInt.hpp>
+#include <whiskey/Core/LiteralPrinterReal.hpp>
+#include <whiskey/Core/LiteralPrinterChar.hpp>
+#include <whiskey/Core/LiteralPrinterString.hpp>
 
 namespace whiskey {
 Field::Field(Field::Kind kind) : kind(kind) {
@@ -390,28 +394,33 @@ bool Field::compare(const Field *other) const {
 
 void Field::printLiteral(std::ostream &os) const {
   if (kind == Field::Kind::Int) {
-    printLiteralInt(os, dataAtomic.asInt);
+    if (dataAtomic.asInt < 0) {
+      os << "-";
+      LiteralPrinterUInt(-dataAtomic.asInt).print(os);
+    } else {
+      LiteralPrinterUInt(dataAtomic.asInt).print(os);
+    }
   } else if (kind == Field::Kind::UInt) {
-    printLiteralUInt(os, dataAtomic.asUInt);
+    LiteralPrinterUInt(dataAtomic.asUInt).print(os);
   } else if (kind == Field::Kind::Real) {
-    printLiteralReal(os, dataAtomic.asReal);
+    LiteralPrinterReal(dataAtomic.asReal).print(os);
   } else if (kind == Field::Kind::String8) {
     if (dataAtomic.asString8 == nullptr) {
       os << "null";
     } else {
-      printLiteralString(os, std::string(dataAtomic.asString8, length));
+      LiteralPrinterString(std::string(dataAtomic.asString8, length)).print(os);
     }
   } else if (kind == Field::Kind::String16) {
     if (dataAtomic.asString16 == nullptr) {
       os << "null";
     } else {
-      printLiteralString(os, std::u16string(dataAtomic.asString16, length));
+      LiteralPrinterString(std::u16string(dataAtomic.asString16, length)).print(os);
     }
   } else if (kind == Field::Kind::String32) {
     if (dataAtomic.asString32 == nullptr) {
       os << "null";
     } else {
-      printLiteralString(os, std::u32string(dataAtomic.asString32, length));
+      LiteralPrinterString(std::u32string(dataAtomic.asString32, length)).print(os);
     }
   } else {
     W_ASSERT_UNREACHABLE("Cannot print field as literal.");

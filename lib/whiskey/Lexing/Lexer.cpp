@@ -1,6 +1,6 @@
 #include <whiskey/Lexing/Lexer.hpp>
 
-#include <whiskey/Core/PrintLiterals.hpp>
+#include <whiskey/Core/LiteralPrinterChar.hpp>
 #include <whiskey/Messages/MessageBuffer.hpp>
 
 namespace whiskey {
@@ -407,7 +407,7 @@ void Lexer::lex() {
       }
     } else {
       ctx.getMsgs().describe() << "unexpected character ";
-      printLiteralChar(ctx.getMsgs().describe(), ctx.getChar());
+      LiteralPrinterChar(ctx.getChar()).print(ctx.getMsgs().describe());
       ctx.getMsgs().emit(ctx.getRange(), Message::UnexpectedChar);
       ctx.eatChar();
       ctx.skipToken();

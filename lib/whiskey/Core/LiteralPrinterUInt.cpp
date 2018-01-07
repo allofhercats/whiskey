@@ -1,9 +1,9 @@
-#include <whiskey/Core/LiteralPrinterInt.hpp>
+#include <whiskey/Core/LiteralPrinterUInt.hpp>
 
 #include <whiskey/Core/Assert.hpp>
 
 namespace whiskey {
-void LiteralPrinterInt::onPrint(std::ostream &os) const {
+void LiteralPrinterUInt::onPrint(std::ostream &os) const {
 	if (usePrefix) {
 		printBasePrefix(os, base);
 	}
@@ -34,11 +34,11 @@ void LiteralPrinterInt::onPrint(std::ostream &os) const {
   }
 }
 
-bool LiteralPrinterInt::isValidBase(unsigned int base) {
+bool LiteralPrinterUInt::isValidBase(unsigned int base) {
   return base == 2 || base == 8 || base == 10 || base == 16;
 }
 
-void LiteralPrinterInt::printBasePrefix(std::ostream &os, unsigned int base
+void LiteralPrinterUInt::printBasePrefix(std::ostream &os, unsigned int base
                                            ) {
 	if (base == 2) {
 		os << "0b";
@@ -49,42 +49,42 @@ void LiteralPrinterInt::printBasePrefix(std::ostream &os, unsigned int base
 	}
 }
 
-LiteralPrinterInt::LiteralPrinterInt(UInt value, unsigned int base, bool usePrefix, unsigned int width) : value(value), base(base), usePrefix(usePrefix), width(width) {
+LiteralPrinterUInt::LiteralPrinterUInt(UInt value, unsigned int base, bool usePrefix, unsigned int width) : value(value), base(base), usePrefix(usePrefix), width(width) {
 	W_ASSERT_TRUE(isValidBase(base), "Invalid base.");
 }
 
-LiteralPrinterInt::~LiteralPrinterInt() {}
+LiteralPrinterUInt::~LiteralPrinterUInt() {}
 
-UInt LiteralPrinterInt::getValue() const {
+UInt LiteralPrinterUInt::getValue() const {
 	return value;
 }
 
-void LiteralPrinterInt::setValue(UInt value) {
+void LiteralPrinterUInt::setValue(UInt value) {
 	this->value = value;
 }
 
-unsigned int LiteralPrinterInt::getBase() const {
+unsigned int LiteralPrinterUInt::getBase() const {
 	return base;
 }
 
-void LiteralPrinterInt::setBase(unsigned int value) {
+void LiteralPrinterUInt::setBase(unsigned int value) {
 	W_ASSERT_TRUE(isValidBase(base), "Invalid base.");
 	base = value;
 }
 
-bool LiteralPrinterInt::getUsePrefix() const {
+bool LiteralPrinterUInt::getUsePrefix() const {
 	return usePrefix;
 }
 
-void LiteralPrinterInt::setUsePrefix(bool value) {
+void LiteralPrinterUInt::setUsePrefix(bool value) {
 	usePrefix = value;
 }
 
-unsigned int LiteralPrinterInt::getWidth() const {
+unsigned int LiteralPrinterUInt::getWidth() const {
 	return width;
 }
 
-void LiteralPrinterInt::setWidth(unsigned int value) {
+void LiteralPrinterUInt::setWidth(unsigned int value) {
 	width = value;
 }
 }

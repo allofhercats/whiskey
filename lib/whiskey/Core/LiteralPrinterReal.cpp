@@ -3,15 +3,15 @@
 #include <math.h>
 
 #include <whiskey/Core/Assert.hpp>
-#include <whiskey/Core/LiteralPrinterInt.hpp>
+#include <whiskey/Core/LiteralPrinterUInt.hpp>
 
 namespace whiskey {
 void LiteralPrinterReal::onPrint(std::ostream &os) const {
 	if (value < 0) {
 		os << "-";
-		LiteralPrinterInt((UInt)(-(Int)value)).print(os);
+		LiteralPrinterUInt((UInt)(-(Int)value)).print(os);
 	} else {
-		LiteralPrinterInt((UInt)(Int)value).print(os);
+		LiteralPrinterUInt((UInt)(Int)value).print(os);
 	}
 	
   long double dec = value - floor(value);

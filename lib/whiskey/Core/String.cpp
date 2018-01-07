@@ -8,9 +8,9 @@ String::const_iterator::const_iterator(const Char8 *pointer,
 
 Char32 String::const_iterator::get() const {
   if (width == 1) {
-    return *pointer;
+    return *pointer & 0xff;
   } else if (width == 2) {
-    return *((const Char16 *)pointer);
+    return *((const Char16 *)pointer) & 0xffff;
   } else if (width == 4) {
     return *((const Char32 *)pointer);
   } else {
@@ -86,9 +86,9 @@ Char32 String::getChar(String::Index index) const {
   if (index < 0 || index >= length) {
     return 0;
   } else if (width == 1) {
-    return data.asChar8[index];
+    return data.asChar8[index] & 0xff;
   } else if (width == 2) {
-    return data.asChar16[index];
+    return data.asChar16[index] & 0xffff;
   } else if (width == 4) {
     return data.asChar32[index];
   } else {

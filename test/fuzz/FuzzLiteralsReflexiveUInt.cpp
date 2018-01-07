@@ -1,9 +1,7 @@
 #include <gtest/gtest.h>
 
-// #include <whiskey/Whiskey.hpp>
-
 #include <whiskey/Core/Assert.hpp>
-#include <whiskey/Core/PrintLiterals.hpp>
+#include <whiskey/Core/LiteralPrinterUInt.hpp>
 #include <whiskey/Parsing/EvalLiterals.hpp>
 #include <whiskey/Source/Location.hpp>
 #include <whiskey/Source/Range.hpp>
@@ -54,16 +52,16 @@ TEST(FuzzLiteralsReflexiveUInt, All) {
 
     std::stringstream ss[nFormats];
 
-    printLiteralUInt(ss[0], orig, 2, true, 0);
-    printLiteralUInt(ss[1], orig, 2, true, 32);
-    printLiteralUInt(ss[2], orig, 2, true, 64);
-    printLiteralUInt(ss[3], orig, 8, true, 0);
-    printLiteralUInt(ss[4], orig, 8, true, 32);
-    printLiteralUInt(ss[5], orig, 8, true, 64);
-    printLiteralUInt(ss[6], orig, 10, true, 0);
-    printLiteralUInt(ss[7], orig, 16, true, 0);
-    printLiteralUInt(ss[8], orig, 16, true, 32);
-    printLiteralUInt(ss[9], orig, 16, true, 64);
+    LiteralPrinterUInt(orig, 2, true, 0).print(ss[0]);
+    LiteralPrinterUInt(orig, 2, true, 32).print(ss[1]);
+    LiteralPrinterUInt(orig, 2, true, 64).print(ss[2]);
+    LiteralPrinterUInt(orig, 8, true, 0).print(ss[3]);
+    LiteralPrinterUInt(orig, 8, true, 32).print(ss[4]);
+    LiteralPrinterUInt(orig, 8, true, 64).print(ss[5]);
+    LiteralPrinterUInt(orig, 10, true, 0).print(ss[6]);
+    LiteralPrinterUInt(orig, 16, true, 0).print(ss[7]);
+    LiteralPrinterUInt(orig, 16, true, 32).print(ss[8]);
+    LiteralPrinterUInt(orig, 16, true, 64).print(ss[9]);
 
     for (int j = 0; j < nFormats; j++) {
       Source src;

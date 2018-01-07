@@ -1,7 +1,7 @@
 #include <whiskey/Source/Token.hpp>
 
 #include <whiskey/Core/Assert.hpp>
-#include <whiskey/Core/PrintLiterals.hpp>
+#include <whiskey/Core/LiteralPrinterString.hpp>
 
 namespace whiskey {
 void Token::printTokenIDDebug(std::ostream &os, Token::ID value) {
@@ -555,6 +555,6 @@ void Token::printDebug(std::ostream &os) const {
 
   os << " ";
 
-  printLiteralString(os, range.getText());
+  LiteralPrinterString(range.getText()).print(os);
 }
 } // namespace whiskey

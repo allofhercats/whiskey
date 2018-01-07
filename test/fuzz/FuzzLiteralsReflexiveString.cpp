@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 // #include <whiskey/Whiskey.hpp>
-#include <whiskey/Core/PrintLiterals.hpp>
+#include <whiskey/Core/LiteralPrinterString.hpp>
 #include <whiskey/Parsing/EvalLiterals.hpp>
 #include <whiskey/Source/Location.hpp>
 #include <whiskey/Source/Range.hpp>
@@ -66,7 +66,7 @@ TEST(FuzzLiteralsReflexiveString, All) {
 
     std::stringstream ss;
 
-    printLiteralString(ss, buffer);
+    LiteralPrinterString(buffer).print(ss);
 
     Source src;
     src.loadString(ss.str(), true);

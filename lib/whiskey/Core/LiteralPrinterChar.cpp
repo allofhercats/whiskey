@@ -3,18 +3,22 @@
 #include <math.h>
 
 #include <whiskey/Core/Assert.hpp>
-#include <whiskey/Core/LiteralPrinterInt.hpp>
+#include <whiskey/Core/LiteralPrinterUInt.hpp>
 
 namespace whiskey {
 void LiteralPrinterChar::onPrint(std::ostream &os) const {
-	if (value == quote) {
+  if (useQuotes) {
+    os << quote;
+  }
+	
+  if (value == quote) {
     os << "\\" << quote;
   } else if (getChar32MinWidth(value) == 4) {
     os << "\\U";
-    LiteralPrinterInt(value, 16, false, 8).print(os);
+    LiteralPrinterUInt(value, 16, false, 8).print(os);
   } else if (getChar32MinWidth(value) == 2) {
     os << "\\u";
-    LiteralPrinterInt(value, 16, false, 4).print(os);
+    LiteralPrinterUInt(value, 16, false, 4).print(os);
   } else if (value == '\a') {
     os << "\\a";
   } else if (value == '\b') {
@@ -39,7 +43,11 @@ void LiteralPrinterChar::onPrint(std::ostream &os) const {
     os << (char)value;
   } else {
     os << "\\x";
-    LiteralPrinterInt(value, 16, false, 2).print(os);
+    LiteralPrinterUInt(value, 16, false, 2).print(os);
+  }
+
+  if (useQuotes) {
+    os << quote;
   }
 }
 

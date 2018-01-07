@@ -1,11 +1,11 @@
-#ifndef __WHISKEY_Core_LiteralPrinterInt_HPP
-#define __WHISKEY_Core_LiteralPrinterInt_HPP
+#ifndef __WHISKEY_Core_LiteralPrinterUInt_HPP
+#define __WHISKEY_Core_LiteralPrinterUInt_HPP
 
 #include <whiskey/Core/Types.hpp>
 #include <whiskey/Core/LiteralPrinter.hpp>
 
 namespace whiskey {
-class LiteralPrinterInt : public LiteralPrinter {
+class LiteralPrinterUInt : public LiteralPrinter {
 private:
   UInt value;
   unsigned int base;
@@ -19,11 +19,11 @@ public:
   static bool isValidBase(unsigned int base);
   static void printBasePrefix(std::ostream &os, unsigned int base);
 
-  LiteralPrinterInt(UInt value,
+  LiteralPrinterUInt(UInt value,
                     unsigned int base = 10,
                     bool usePrefix = true,
                     unsigned int width = 0);
-  virtual ~LiteralPrinterInt();
+  virtual ~LiteralPrinterUInt();
 
   UInt getValue() const;
   void setValue(UInt value);

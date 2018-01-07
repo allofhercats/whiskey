@@ -3,7 +3,7 @@
 // #include <whiskey/Whiskey.hpp>
 
 #include <whiskey/Core/Assert.hpp>
-#include <whiskey/Core/PrintLiterals.hpp>
+#include <whiskey/Core/LiteralPrinterChar.hpp>
 #include <whiskey/Parsing/EvalLiterals.hpp>
 #include <whiskey/Source/Location.hpp>
 #include <whiskey/Source/Range.hpp>
@@ -49,7 +49,7 @@ TEST(FuzzLiteralsReflexiveChar, All) {
 
     std::stringstream ss;
 
-    printLiteralChar(ss, orig);
+    LiteralPrinterChar(orig).print(ss);
 
     Source src;
     src.loadString(ss.str(), true);
