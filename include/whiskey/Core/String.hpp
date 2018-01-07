@@ -9,17 +9,16 @@ class String {
   friend class StringContainer;
 
 public:
-  typedef uint32_t Width;
   typedef uint32_t Length;
   typedef int32_t Index;
 
   struct const_iterator {
   private:
     const Char8 *pointer;
-    Width width;
+    CharWidth width;
 
   public:
-    const_iterator(const Char8 *pointer, Width width);
+    const_iterator(const Char8 *pointer, CharWidth width);
 
     Char32 get() const;
     Char32 operator*() const;
@@ -32,7 +31,7 @@ public:
   };
 
 protected:
-  Width width;
+  CharWidth width;
   union {
     Char8 *asChar8;
     Char16 *asChar16;
@@ -41,22 +40,11 @@ protected:
   Length length;
 
 public:
-  static bool isValidWidth(Width value);
-
-  template <typename T>
-  static Length getLength(const T *value);
-
-  template <typename T>
-  static Char32 readCharFromString(const T *src, Length &pos, Length length);
-
-  template <typename T>
-  static void writeCharToString(Char32 chr, T *dst, Length &pos, Length length);
-
   String();
 
   bool isGood() const;
 
-  Width getWidth() const;
+  CharWidth getWidth() const;
   const Char8 *getData8() const;
   const Char16 *getData16() const;
   const Char32 *getData32() const;
@@ -70,7 +58,5 @@ public:
   const_iterator cend() const;
 };
 } // namespace whiskey
-
-#include <whiskey/Core/String.tpp>
 
 #endif

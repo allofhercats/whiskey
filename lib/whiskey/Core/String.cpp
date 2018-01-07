@@ -2,7 +2,7 @@
 
 namespace whiskey {
 String::const_iterator::const_iterator(const Char8 *pointer,
-                                       String::Width width)
+                                       CharWidth width)
     : pointer(pointer), width(width) {
 }
 
@@ -42,10 +42,6 @@ operator!=(const String::const_iterator &other) const {
   return !this->operator==(other);
 }
 
-bool String::isValidWidth(String::Width value) {
-  return value == 1 || value == 2 || value == 4;
-}
-
 String::String() : width(1), length(0) {
   data.asChar8 = nullptr;
 }
@@ -54,7 +50,7 @@ bool String::isGood() const {
   return data.asChar8 != nullptr;
 }
 
-String::Width String::getWidth() const {
+CharWidth String::getWidth() const {
   return width;
 }
 

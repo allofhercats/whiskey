@@ -17,6 +17,10 @@ bool isValidUTF32Char(Char32 value) {
   return value < 0xd800 || value > 0xdfff;
 }
 
+bool isValidCharWidth(CharWidth value) {
+  return value == 1 || value == 2 || value == 4;
+}
+
 Char32 readCharUTF8(const Char8 *src, CharOffset &pos, CharOffset length) {
   W_ASSERT_NONNULL(src, "Cannot read character from null string.");
   W_ASSERT_GE(pos, 0, "Cannot read before start of buffer.");
@@ -226,5 +230,14 @@ void writeCharUTF32(Char32 *dst,
   }
 
   dst[pos++] = value;
+}
+
+void printChar(std::ostream &os, Char32 value) {
+  Char8 buf[4];
+  CharOffset length = 0;
+  writeCharUTF8(buf, value, length, 4);
+  for (CharOffset i = 0; i < length; i++) {
+    os.put(buf[i]);
+  }
 }
 } // namespace whiskey

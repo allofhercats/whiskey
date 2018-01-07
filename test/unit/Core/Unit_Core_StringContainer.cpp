@@ -103,3 +103,73 @@ TEST(Unit_Core_StringContainer, Append_ToHelloWorld8_A100000) {
     ASSERT_EQ(s0.getData8()[i + 14], 'A');
   }
 }
+
+TEST(Unit_Core_StringContainer, Append_ToHelloWorld16_Null) {
+  StringContainer s0 = u"hello, world.\n";
+
+  ASSERT_EQ(s0.getLength(), 14);
+
+  s0.append(0);
+
+  ASSERT_EQ(s0.getLength(), 15);
+}
+
+TEST(Unit_Core_StringContainer, Append_ToHelloWorld16_A) {
+  StringContainer s0 = u"hello, world.\n";
+
+  ASSERT_EQ(s0.getLength(), 14);
+
+  s0.append('A');
+
+  ASSERT_EQ(s0.getLength(), 15);
+}
+
+TEST(Unit_Core_StringContainer, Append_ToHelloWorld16_A100000) {
+  StringContainer s0 = u"hello, world.\n";
+
+  ASSERT_EQ(s0.getLength(), 14);
+
+  for (int i = 0; i < 100000; i++) {
+    s0.append('A');
+  }
+
+  ASSERT_EQ(s0.getLength(), 100014);
+  for (int i = 0; i < 100000; i++) {
+    ASSERT_EQ(s0.getData16()[i + 14], 'A');
+  }
+}
+
+TEST(Unit_Core_StringContainer, Append_ToHelloWorld32_Null) {
+  StringContainer s0 = U"hello, world.\n";
+
+  ASSERT_EQ(s0.getLength(), 14);
+
+  s0.append(0);
+
+  ASSERT_EQ(s0.getLength(), 15);
+}
+
+TEST(Unit_Core_StringContainer, Append_ToHelloWorld32_A) {
+  StringContainer s0 = U"hello, world.\n";
+
+  ASSERT_EQ(s0.getLength(), 14);
+
+  s0.append('A');
+
+  ASSERT_EQ(s0.getLength(), 15);
+}
+
+TEST(Unit_Core_StringContainer, Append_ToHelloWorld32_A100000) {
+  StringContainer s0 = U"hello, world.\n";
+
+  ASSERT_EQ(s0.getLength(), 14);
+
+  for (int i = 0; i < 100000; i++) {
+    s0.append('A');
+  }
+
+  ASSERT_EQ(s0.getLength(), 100014);
+  for (int i = 0; i < 100000; i++) {
+    ASSERT_EQ(s0.getData32()[i + 14], 'A');
+  }
+}

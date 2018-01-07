@@ -9,21 +9,21 @@ StringRef::StringRef() : String() {
 StringRef::StringRef(const char *value, StringRef::Length length) : String() {
   width = 1;
   data.asChar8 = (Char8 *)value;
-  this->length = length == 0 ? getLength(value) : length;
+  this->length = length == 0 ? getStringLength(value) : length;
 }
 
 StringRef::StringRef(const char16_t *value, StringRef::Length length)
     : String() {
   width = 2;
   data.asChar16 = (Char16 *)value;
-  this->length = length == 0 ? getLength(value) : length;
+  this->length = length == 0 ? getStringLength(value) : length;
 }
 
 StringRef::StringRef(const char32_t *value, StringRef::Length length)
     : String() {
   width = 4;
   data.asChar32 = (Char32 *)value;
-  this->length = length == 0 ? getLength(value) : length;
+  this->length = length == 0 ? getStringLength(value) : length;
 }
 
 StringRef::StringRef(const wchar_t *value, StringRef::Length length)
@@ -40,7 +40,7 @@ StringRef::StringRef(const wchar_t *value, StringRef::Length length)
   } else {
     W_ASSERT_UNREACHABLE("Unsupported char width " << sizeof(wchar_t) << ".");
   }
-  this->length = length == 0 ? getLength(value) : length;
+  this->length = length == 0 ? getStringLength(value) : length;
 }
 
 StringRef::StringRef(const std::string &value)

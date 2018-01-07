@@ -14,6 +14,9 @@ typedef int32_t CharWidth;
 
 CharWidth getChar32MinWidth(Char32 value);
 bool isValidUTF32Char(Char32 value);
+bool isValidCharWidth(CharWidth value);
+template<typename T>
+CharOffset getStringLength(const T *src);
 Char32 readCharUTF8(const Char8 *src, CharOffset &pos, CharOffset length);
 Char32 readCharUTF16(const Char16 *src,
                      CharOffset &pos,
@@ -48,6 +51,7 @@ void writeCharUTF(T *dst,
                   CharOffset &pos,
                   CharOffset length,
                   Endianness endianness = Endianness::Auto);
+void printChar(std::ostream &os, Char32 value);
 } // namespace whiskey
 
 #include <whiskey/Core/Char.tpp>

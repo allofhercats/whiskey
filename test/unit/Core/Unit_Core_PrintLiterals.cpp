@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
 
-// #include <whiskey/Whiskey.hpp>
-
 #include <whiskey/Core/PrintLiterals.hpp>
 
 using namespace whiskey;

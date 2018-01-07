@@ -1,5 +1,19 @@
 namespace whiskey {
 template <typename T>
+CharOffset getStringLength(const T *value) {
+  if (value == nullptr) {
+    return 0;
+  } else {
+    CharOffset n = 0;
+    while (*value != 0) {
+      n++;
+      value++;
+    }
+    return n;
+  }
+}
+
+template <typename T>
 Char32 readCharUTF(const T *src,
                    CharOffset &pos,
                    CharOffset length,

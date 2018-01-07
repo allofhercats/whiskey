@@ -23,7 +23,7 @@ StringContainer::StringContainer(const char *value,
                                  StringContainer::Length length)
     : String() {
   width = 1;
-  this->length = length == 0 ? getLength(value) : length;
+  this->length = length == 0 ? getStringLength(value) : length;
   capacity = getLowerBoundPow2(length + 1);
   data.asChar8 = new Char8[capacity];
   if (value != nullptr) {
@@ -36,7 +36,7 @@ StringContainer::StringContainer(const char16_t *value,
                                  StringContainer::Length length)
     : String() {
   width = 2;
-  this->length = length == 0 ? getLength(value) : length;
+  this->length = length == 0 ? getStringLength(value) : length;
   capacity = getLowerBoundPow2(length + 1);
   data.asChar16 = new Char16[capacity];
   if (value != nullptr) {
@@ -49,7 +49,7 @@ StringContainer::StringContainer(const char32_t *value,
                                  StringContainer::Length length)
     : String() {
   width = 4;
-  this->length = length == 0 ? getLength(value) : length;
+  this->length = length == 0 ? getStringLength(value) : length;
   capacity = getLowerBoundPow2(length + 1);
   data.asChar32 = new Char32[capacity];
   if (value != nullptr) {
@@ -61,7 +61,7 @@ StringContainer::StringContainer(const char32_t *value,
 StringContainer::StringContainer(const wchar_t *value,
                                  StringContainer::Length length)
     : String() {
-  this->length = length == 0 ? getLength(value) : length;
+  this->length = length == 0 ? getStringLength(value) : length;
   capacity = getLowerBoundPow2(length + 1);
   if (sizeof(wchar_t) == 1) {
     width = 1;
@@ -202,7 +202,7 @@ void StringContainer::setCapacity(String::Length value) {
   value = getLowerBoundPow2(value);
 
   if (value != capacity) {
-    Char8 *tmp = new Char8[value];
+    Char8 *tmp = new Char8[value * width];
     if (data.asChar8 != nullptr) {
       memcpy(tmp, data.asChar8, width * length);
     }
@@ -227,11 +227,17 @@ void StringContainer::append(Char32 value) {
   }
 
   if (width == 1) {
-    writeCharToString(value, data.asChar8, length, capacity);
+    CharOffset tmp = length;
+    writeCharUTF8(data.asChar8, value, tmp, capacity);
+    length = tmp;
   } else if (width == 2) {
-    writeCharToString(value, data.asChar16, length, capacity);
+    CharOffset tmp = length;
+    writeCharUTF16(data.asChar16, value, tmp, capacity);
+    length = tmp;
   } else if (width == 4) {
-    writeCharToString(value, data.asChar32, length, capacity);
+    CharOffset tmp = length;
+    writeCharUTF32(data.asChar32, value, tmp, capacity);
+    length = tmp;
   } else {
     W_ASSERT_UNREACHABLE("Unsupported char width " << width << ".");
   }
@@ -252,15 +258,15 @@ void StringContainer::append(const String &value) {
            value.length * value.width);
     length += value.length;
   } else {
-    Length pos = 0;
+    CharOffset pos = 0;
     while (pos < value.length) {
       Char32 chr;
       if (value.width == 1) {
-        chr = readCharFromString(value.data.asChar8, pos, value.length);
+        chr = readCharUTF8(value.data.asChar8, pos, value.length);
       } else if (value.width == 2) {
-        chr = readCharFromString(value.data.asChar16, pos, value.length);
+        chr = readCharUTF16(value.data.asChar16, pos, value.length);
       } else if (value.width == 4) {
-        chr = readCharFromString(value.data.asChar32, pos, value.length);
+        chr = readCharUTF32(value.data.asChar32, pos, value.length);
       } else {
         W_ASSERT_UNREACHABLE("Unsupported char width " << value.width << ".");
       }
