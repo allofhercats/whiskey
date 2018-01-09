@@ -42,6 +42,47 @@ operator!=(const String::const_iterator &other) const {
   return !this->operator==(other);
 }
 
+String::const_reverse_iterator::const_iterator(const Char8 *pointer,
+                                       CharWidth width)
+    : pointer(pointer), width(width) {
+}
+
+Char32 String::const_reverse_iterator::get() const {
+  if (width == 1) {
+    return *pointer & 0xff;
+  } else if (width == 2) {
+    return *((const Char16 *)pointer) & 0xffff;
+  } else if (width == 4) {
+    return *((const Char32 *)pointer);
+  } else {
+    W_ASSERT_UNREACHABLE("Unsupported character width " << width << ".");
+  }
+}
+
+Char32 String::const_reverse_iterator::operator*() const {
+  return get();
+}
+
+String::const_reverse_iterator &String::const_reverse_iterator::operator++() {
+  pointer -= width;
+  return *this;
+}
+
+String::const_reverse_iterator String::const_reverse_iterator::operator++(int) {
+  this->operator++();
+  return *this;
+}
+
+bool String::const_reverse_iterator::
+operator==(const String::const_reverse_iterator &other) const {
+  return pointer == other.pointer;
+}
+
+bool String::const_reverse_iterator::
+operator!=(const String::const_reverse_iterator &other) const {
+  return !this->operator==(other);
+}
+
 String::String() : width(1), length(0) {
   data.asChar8 = nullptr;
 }

@@ -18,7 +18,7 @@ public:
   StringRef(const std::u32string &value);
   StringRef(const std::wstring &value);
 
-  void setLength(Length value);
+  void resize(size_t value);
 };
 } // namespace whiskey
 

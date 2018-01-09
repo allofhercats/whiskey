@@ -60,6 +60,8 @@ protected:
   Length length;
 
 public:
+  static const size_t npos;
+
   String();
 
   bool isGood() const;
@@ -82,19 +84,28 @@ public:
   void clear();
   bool empty() const;
 
-  Char32 operator[](Index index) const;
-  Char32 at(Index index) const;
+  Char32 operator[](size_t index) const;
+  Char32 at(size_t index) const;
   Char32 back() const;
   Char32 front() const;
 
-  ssize_t find(Char32 value) const;
-  ssize_t find(StringRef value) const;
-  ssize_t rfind(Char32 value) const;
-  ssize_t rfind(StringRef value) const;
+  size_t find(Char32 value) const;
+  size_t find(StringRef value) const;
+  size_t rfind(Char32 value) const;
+  size_t rfind(StringRef value) const;
+  size_t find_first_of(Char32 value) const;
+  size_t find_first_of(StringRef value) const;
+  size_t find_last_of(Char32 value) const;
+  size_t find_last_of(StringRef value) const;
+  size_t find_first_not_of(Char32 value) const;
+  size_t find_first_not_of(StringRef value) const;
+  size_t find_last_not_of(Char32 value) const;
+  size_t find_last_not_of(StringRef value) const;
+  StringRef substr(size_t offset, size_t length = npos);
 
-  StringRef substr(Index offset, Length length = 0);
-
-  bool compare();
+  int compare(const String &other) const;
+  int compare(size_t offset, size_t length, const String &other) const;
+  int compare(size_t offset, size_t length, const String &other, size_t otherOffset, size_t otherLength) const;
 
   bool operator<(const String &other) const;
   bool operator<=(const String &other) const;

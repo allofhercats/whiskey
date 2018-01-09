@@ -29,17 +29,28 @@ public:
   StringContainer &operator=(const StringContainer &other);
   StringContainer &operator=(StringContainer &&other);
 
+  operator StringRef() const;
+
   Char8 *getData8();
   Char16 *getData16();
   Char32 *getData32();
 
-  Length getCapacity() const;
-  void setCapacity(Length value);
+  Length capacity() const;
+  void reserve(Length value);
+  void shrink_to_fit();
 
-  void setLength(Length value);
+  void resize(size_t value);
+  void resize(size_t value, Char32 chr);
 
-  void append(Char32 value);
+  void append(size_t n, Char32 value);
   void append(const String &value);
+  void push_back(Char32 value);
+  void insert(size_t pos, const String &value);
+  void insert(size_t pos, const String &value, size_t valueOffset, size_t valueLength);
+  void insert(size_t pos, size_t n, Char32 value);
+  void erase(size_t pos, size_t len = npos);
+  void replace(size_t pos, size_t len, const String &value);
+  void pop_back();
 };
 } // namespace whiskey
 
