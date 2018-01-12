@@ -17,10 +17,10 @@ TEST(Unit_Core_StringRef, Empty) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 0);
-  ASSERT_EQ(r.getChar(0), 0);
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 0);
+  ASSERT_EQ(r.size(), 0);
+  ASSERT_EQ(r.at(0), 0);
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -31,7 +31,7 @@ TEST(Unit_Core_StringRef, Empty) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(5); }, "");
+  ASSERT_DEATH({ r.resize(5); }, "");
 }
 
 TEST(Unit_Core_StringRef, Empty_CString8) {
@@ -47,10 +47,10 @@ TEST(Unit_Core_StringRef, Empty_CString8) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 0);
-  ASSERT_EQ(r.getChar(0), 0);
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 0);
+  ASSERT_EQ(r.size(), 0);
+  ASSERT_EQ(r.at(0), 0);
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -61,7 +61,7 @@ TEST(Unit_Core_StringRef, Empty_CString8) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(5); }, "");
+  ASSERT_DEATH({ r.resize(5); }, "");
 }
 
 TEST(Unit_Core_StringRef, Empty_CString16) {
@@ -75,10 +75,10 @@ TEST(Unit_Core_StringRef, Empty_CString16) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 0);
-  ASSERT_EQ(r.getChar(0), 0);
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 0);
+  ASSERT_EQ(r.size(), 0);
+  ASSERT_EQ(r.at(0), 0);
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -89,7 +89,7 @@ TEST(Unit_Core_StringRef, Empty_CString16) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(5); }, "");
+  ASSERT_DEATH({ r.resize(5); }, "");
 }
 
 TEST(Unit_Core_StringRef, Empty_CString32) {
@@ -103,10 +103,10 @@ TEST(Unit_Core_StringRef, Empty_CString32) {
 
   ASSERT_DEATH({ r.getData16(); }, "");
 
-  ASSERT_EQ(r.getLength(), 0);
-  ASSERT_EQ(r.getChar(0), 0);
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 0);
+  ASSERT_EQ(r.size(), 0);
+  ASSERT_EQ(r.at(0), 0);
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -117,7 +117,7 @@ TEST(Unit_Core_StringRef, Empty_CString32) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(5); }, "");
+  ASSERT_DEATH({ r.resize(5); }, "");
 }
 
 TEST(Unit_Core_StringRef, Empty_CWString) {
@@ -126,10 +126,10 @@ TEST(Unit_Core_StringRef, Empty_CWString) {
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), sizeof(wchar_t));
 
-  ASSERT_EQ(r.getLength(), 0);
-  ASSERT_EQ(r.getChar(0), 0);
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 0);
+  ASSERT_EQ(r.size(), 0);
+  ASSERT_EQ(r.at(0), 0);
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -140,7 +140,7 @@ TEST(Unit_Core_StringRef, Empty_CWString) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(5); }, "");
+  ASSERT_DEATH({ r.resize(5); }, "");
 }
 
 TEST(Unit_Core_StringRef, Empty_String8) {
@@ -157,10 +157,10 @@ TEST(Unit_Core_StringRef, Empty_String8) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 0);
-  ASSERT_EQ(r.getChar(0), 0);
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 0);
+  ASSERT_EQ(r.size(), 0);
+  ASSERT_EQ(r.at(0), 0);
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -171,7 +171,7 @@ TEST(Unit_Core_StringRef, Empty_String8) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(5); }, "");
+  ASSERT_DEATH({ r.resize(5); }, "");
 }
 
 TEST(Unit_Core_StringRef, Empty_String16) {
@@ -186,10 +186,10 @@ TEST(Unit_Core_StringRef, Empty_String16) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 0);
-  ASSERT_EQ(r.getChar(0), 0);
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 0);
+  ASSERT_EQ(r.size(), 0);
+  ASSERT_EQ(r.at(0), 0);
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -200,7 +200,7 @@ TEST(Unit_Core_StringRef, Empty_String16) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(5); }, "");
+  ASSERT_DEATH({ r.resize(5); }, "");
 }
 
 TEST(Unit_Core_StringRef, Empty_String32) {
@@ -215,10 +215,10 @@ TEST(Unit_Core_StringRef, Empty_String32) {
 
   ASSERT_DEATH({ r.getData16(); }, "");
 
-  ASSERT_EQ(r.getLength(), 0);
-  ASSERT_EQ(r.getChar(0), 0);
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 0);
+  ASSERT_EQ(r.size(), 0);
+  ASSERT_EQ(r.at(0), 0);
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -229,7 +229,7 @@ TEST(Unit_Core_StringRef, Empty_String32) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(5); }, "");
+  ASSERT_DEATH({ r.resize(5); }, "");
 }
 
 TEST(Unit_Core_StringRef, Empty_WString) {
@@ -239,10 +239,10 @@ TEST(Unit_Core_StringRef, Empty_WString) {
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), sizeof(wchar_t));
 
-  ASSERT_EQ(r.getLength(), 0);
-  ASSERT_EQ(r.getChar(0), 0);
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 0);
+  ASSERT_EQ(r.size(), 0);
+  ASSERT_EQ(r.at(0), 0);
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -253,11 +253,11 @@ TEST(Unit_Core_StringRef, Empty_WString) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(5); }, "");
+  ASSERT_DEATH({ r.resize(5); }, "");
 }
 
-TEST(Unit_Core_StringRef, HelloWorld_CString8_Length0) {
-  StringRef r("hello, world.\n", 0);
+TEST(Unit_Core_StringRef, HelloWorld_CString8_LengthNPos) {
+  StringRef r("hello, world.\n", String::npos);
 
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), 1);
@@ -269,12 +269,12 @@ TEST(Unit_Core_StringRef, HelloWorld_CString8_Length0) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 14);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(13), '\n');
-  ASSERT_EQ(r.getChar(14), 0);
+  ASSERT_EQ(r.size(), 14);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(13), '\n');
+  ASSERT_EQ(r.at(14), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -306,9 +306,9 @@ TEST(Unit_Core_StringRef, HelloWorld_CString8_Length0) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(20); }, "");
+  ASSERT_DEATH({ r.resize(20); }, "");
 
-  r.setLength(5);
+  r.resize(5);
 
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), 1);
@@ -320,12 +320,12 @@ TEST(Unit_Core_StringRef, HelloWorld_CString8_Length0) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 5);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(4), 'o');
-  ASSERT_EQ(r.getChar(5), 0);
+  ASSERT_EQ(r.size(), 5);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(4), 'o');
+  ASSERT_EQ(r.at(5), 0);
 
   b = r.begin();
   e = r.end();
@@ -348,9 +348,9 @@ TEST(Unit_Core_StringRef, HelloWorld_CString8_Length0) {
     ASSERT_NE(i, 0);
   }
 
-  r.setLength(5);
+  r.resize(5);
 
-  ASSERT_DEATH({ r.setLength(6); }, "");
+  ASSERT_DEATH({ r.resize(6); }, "");
 }
 
 TEST(Unit_Core_StringRef, HelloWorld_CString8_Length5) {
@@ -366,12 +366,12 @@ TEST(Unit_Core_StringRef, HelloWorld_CString8_Length5) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 5);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(4), 'o');
-  ASSERT_EQ(r.getChar(5), 0);
+  ASSERT_EQ(r.size(), 5);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(4), 'o');
+  ASSERT_EQ(r.at(5), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -394,11 +394,11 @@ TEST(Unit_Core_StringRef, HelloWorld_CString8_Length5) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(20); }, "");
+  ASSERT_DEATH({ r.resize(20); }, "");
 }
 
-TEST(Unit_Core_StringRef, HelloWorld_CString16_Length0) {
-  StringRef r(u"hello, world.\n", 0);
+TEST(Unit_Core_StringRef, HelloWorld_CString16_LengthNPos) {
+  StringRef r(u"hello, world.\n", String::npos);
 
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), 2);
@@ -408,12 +408,12 @@ TEST(Unit_Core_StringRef, HelloWorld_CString16_Length0) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 14);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(13), '\n');
-  ASSERT_EQ(r.getChar(14), 0);
+  ASSERT_EQ(r.size(), 14);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(13), '\n');
+  ASSERT_EQ(r.at(14), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -445,9 +445,9 @@ TEST(Unit_Core_StringRef, HelloWorld_CString16_Length0) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(20); }, "");
+  ASSERT_DEATH({ r.resize(20); }, "");
 
-  r.setLength(5);
+  r.resize(5);
 
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), 2);
@@ -457,12 +457,12 @@ TEST(Unit_Core_StringRef, HelloWorld_CString16_Length0) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 5);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(4), 'o');
-  ASSERT_EQ(r.getChar(5), 0);
+  ASSERT_EQ(r.size(), 5);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(4), 'o');
+  ASSERT_EQ(r.at(5), 0);
 
   b = r.begin();
   e = r.end();
@@ -485,9 +485,9 @@ TEST(Unit_Core_StringRef, HelloWorld_CString16_Length0) {
     ASSERT_NE(i, 0);
   }
 
-  r.setLength(5);
+  r.resize(5);
 
-  ASSERT_DEATH({ r.setLength(6); }, "");
+  ASSERT_DEATH({ r.resize(6); }, "");
 }
 
 TEST(Unit_Core_StringRef, HelloWorld_CString16_Length5) {
@@ -501,12 +501,12 @@ TEST(Unit_Core_StringRef, HelloWorld_CString16_Length5) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 5);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(4), 'o');
-  ASSERT_EQ(r.getChar(5), 0);
+  ASSERT_EQ(r.size(), 5);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(4), 'o');
+  ASSERT_EQ(r.at(5), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -529,11 +529,11 @@ TEST(Unit_Core_StringRef, HelloWorld_CString16_Length5) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(20); }, "");
+  ASSERT_DEATH({ r.resize(20); }, "");
 }
 
-TEST(Unit_Core_StringRef, HelloWorld_CString32_Length0) {
-  StringRef r(U"hello, world.\n", 0);
+TEST(Unit_Core_StringRef, HelloWorld_CString32_LengthNPos) {
+  StringRef r(U"hello, world.\n", String::npos);
 
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), 4);
@@ -543,12 +543,12 @@ TEST(Unit_Core_StringRef, HelloWorld_CString32_Length0) {
 
   ASSERT_DEATH({ r.getData16(); }, "");
 
-  ASSERT_EQ(r.getLength(), 14);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(13), '\n');
-  ASSERT_EQ(r.getChar(14), 0);
+  ASSERT_EQ(r.size(), 14);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(13), '\n');
+  ASSERT_EQ(r.at(14), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -580,9 +580,9 @@ TEST(Unit_Core_StringRef, HelloWorld_CString32_Length0) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(20); }, "");
+  ASSERT_DEATH({ r.resize(20); }, "");
 
-  r.setLength(5);
+  r.resize(5);
 
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), 4);
@@ -592,12 +592,12 @@ TEST(Unit_Core_StringRef, HelloWorld_CString32_Length0) {
 
   ASSERT_DEATH({ r.getData16(); }, "");
 
-  ASSERT_EQ(r.getLength(), 5);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(4), 'o');
-  ASSERT_EQ(r.getChar(5), 0);
+  ASSERT_EQ(r.size(), 5);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(4), 'o');
+  ASSERT_EQ(r.at(5), 0);
 
   b = r.begin();
   e = r.end();
@@ -620,9 +620,9 @@ TEST(Unit_Core_StringRef, HelloWorld_CString32_Length0) {
     ASSERT_NE(i, 0);
   }
 
-  r.setLength(5);
+  r.resize(5);
 
-  ASSERT_DEATH({ r.setLength(6); }, "");
+  ASSERT_DEATH({ r.resize(6); }, "");
 }
 
 TEST(Unit_Core_StringRef, HelloWorld_CString32_Length5) {
@@ -636,12 +636,12 @@ TEST(Unit_Core_StringRef, HelloWorld_CString32_Length5) {
 
   ASSERT_DEATH({ r.getData16(); }, "");
 
-  ASSERT_EQ(r.getLength(), 5);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(4), 'o');
-  ASSERT_EQ(r.getChar(5), 0);
+  ASSERT_EQ(r.size(), 5);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(4), 'o');
+  ASSERT_EQ(r.at(5), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -664,21 +664,21 @@ TEST(Unit_Core_StringRef, HelloWorld_CString32_Length5) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(20); }, "");
+  ASSERT_DEATH({ r.resize(20); }, "");
 }
 
-TEST(Unit_Core_StringRef, HelloWorld_CWString_Length0) {
-  StringRef r(L"hello, world.\n", 0);
+TEST(Unit_Core_StringRef, HelloWorld_CWString_LengthNPos) {
+  StringRef r(L"hello, world.\n", String::npos);
 
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), sizeof(wchar_t));
 
-  ASSERT_EQ(r.getLength(), 14);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(13), '\n');
-  ASSERT_EQ(r.getChar(14), 0);
+  ASSERT_EQ(r.size(), 14);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(13), '\n');
+  ASSERT_EQ(r.at(14), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -710,19 +710,19 @@ TEST(Unit_Core_StringRef, HelloWorld_CWString_Length0) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(20); }, "");
+  ASSERT_DEATH({ r.resize(20); }, "");
 
-  r.setLength(5);
+  r.resize(5);
 
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), sizeof(wchar_t));
 
-  ASSERT_EQ(r.getLength(), 5);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(4), 'o');
-  ASSERT_EQ(r.getChar(5), 0);
+  ASSERT_EQ(r.size(), 5);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(4), 'o');
+  ASSERT_EQ(r.at(5), 0);
 
   b = r.begin();
   e = r.end();
@@ -745,9 +745,9 @@ TEST(Unit_Core_StringRef, HelloWorld_CWString_Length0) {
     ASSERT_NE(i, 0);
   }
 
-  r.setLength(5);
+  r.resize(5);
 
-  ASSERT_DEATH({ r.setLength(6); }, "");
+  ASSERT_DEATH({ r.resize(6); }, "");
 }
 
 TEST(Unit_Core_StringRef, HelloWorld_CWString_Length5) {
@@ -756,12 +756,12 @@ TEST(Unit_Core_StringRef, HelloWorld_CWString_Length5) {
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), sizeof(wchar_t));
 
-  ASSERT_EQ(r.getLength(), 5);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(4), 'o');
-  ASSERT_EQ(r.getChar(5), 0);
+  ASSERT_EQ(r.size(), 5);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(4), 'o');
+  ASSERT_EQ(r.at(5), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -784,7 +784,7 @@ TEST(Unit_Core_StringRef, HelloWorld_CWString_Length5) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(20); }, "");
+  ASSERT_DEATH({ r.resize(20); }, "");
 }
 
 TEST(Unit_Core_StringRef, HelloWorld_String8) {
@@ -801,12 +801,12 @@ TEST(Unit_Core_StringRef, HelloWorld_String8) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 14);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(13), '\n');
-  ASSERT_EQ(r.getChar(14), 0);
+  ASSERT_EQ(r.size(), 14);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(13), '\n');
+  ASSERT_EQ(r.at(14), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -838,9 +838,9 @@ TEST(Unit_Core_StringRef, HelloWorld_String8) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(20); }, "");
+  ASSERT_DEATH({ r.resize(20); }, "");
 
-  r.setLength(5);
+  r.resize(5);
 
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), 1);
@@ -852,12 +852,12 @@ TEST(Unit_Core_StringRef, HelloWorld_String8) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 5);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(4), 'o');
-  ASSERT_EQ(r.getChar(5), 0);
+  ASSERT_EQ(r.size(), 5);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(4), 'o');
+  ASSERT_EQ(r.at(5), 0);
 
   b = r.begin();
   e = r.end();
@@ -880,9 +880,9 @@ TEST(Unit_Core_StringRef, HelloWorld_String8) {
     ASSERT_NE(i, 0);
   }
 
-  r.setLength(5);
+  r.resize(5);
 
-  ASSERT_DEATH({ r.setLength(6); }, "");
+  ASSERT_DEATH({ r.resize(6); }, "");
 }
 
 TEST(Unit_Core_StringRef, HelloWorld_String16) {
@@ -897,12 +897,12 @@ TEST(Unit_Core_StringRef, HelloWorld_String16) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 14);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(13), '\n');
-  ASSERT_EQ(r.getChar(14), 0);
+  ASSERT_EQ(r.size(), 14);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(13), '\n');
+  ASSERT_EQ(r.at(14), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -934,9 +934,9 @@ TEST(Unit_Core_StringRef, HelloWorld_String16) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(20); }, "");
+  ASSERT_DEATH({ r.resize(20); }, "");
 
-  r.setLength(5);
+  r.resize(5);
 
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), 2);
@@ -946,12 +946,12 @@ TEST(Unit_Core_StringRef, HelloWorld_String16) {
 
   ASSERT_DEATH({ r.getData32(); }, "");
 
-  ASSERT_EQ(r.getLength(), 5);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(4), 'o');
-  ASSERT_EQ(r.getChar(5), 0);
+  ASSERT_EQ(r.size(), 5);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(4), 'o');
+  ASSERT_EQ(r.at(5), 0);
 
   b = r.begin();
   e = r.end();
@@ -974,9 +974,9 @@ TEST(Unit_Core_StringRef, HelloWorld_String16) {
     ASSERT_NE(i, 0);
   }
 
-  r.setLength(5);
+  r.resize(5);
 
-  ASSERT_DEATH({ r.setLength(6); }, "");
+  ASSERT_DEATH({ r.resize(6); }, "");
 }
 
 TEST(Unit_Core_StringRef, HelloWorld_String32) {
@@ -991,12 +991,12 @@ TEST(Unit_Core_StringRef, HelloWorld_String32) {
 
   ASSERT_DEATH({ r.getData16(); }, "");
 
-  ASSERT_EQ(r.getLength(), 14);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(13), '\n');
-  ASSERT_EQ(r.getChar(14), 0);
+  ASSERT_EQ(r.size(), 14);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(13), '\n');
+  ASSERT_EQ(r.at(14), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -1028,9 +1028,9 @@ TEST(Unit_Core_StringRef, HelloWorld_String32) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(20); }, "");
+  ASSERT_DEATH({ r.resize(20); }, "");
 
-  r.setLength(5);
+  r.resize(5);
 
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), 4);
@@ -1040,12 +1040,12 @@ TEST(Unit_Core_StringRef, HelloWorld_String32) {
 
   ASSERT_DEATH({ r.getData16(); }, "");
 
-  ASSERT_EQ(r.getLength(), 5);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(4), 'o');
-  ASSERT_EQ(r.getChar(5), 0);
+  ASSERT_EQ(r.size(), 5);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(4), 'o');
+  ASSERT_EQ(r.at(5), 0);
 
   b = r.begin();
   e = r.end();
@@ -1068,9 +1068,9 @@ TEST(Unit_Core_StringRef, HelloWorld_String32) {
     ASSERT_NE(i, 0);
   }
 
-  r.setLength(5);
+  r.resize(5);
 
-  ASSERT_DEATH({ r.setLength(6); }, "");
+  ASSERT_DEATH({ r.resize(6); }, "");
 }
 
 TEST(Unit_Core_StringRef, HelloWorld_WString) {
@@ -1080,12 +1080,12 @@ TEST(Unit_Core_StringRef, HelloWorld_WString) {
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), sizeof(wchar_t));
 
-  ASSERT_EQ(r.getLength(), 14);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(13), '\n');
-  ASSERT_EQ(r.getChar(14), 0);
+  ASSERT_EQ(r.size(), 14);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(13), '\n');
+  ASSERT_EQ(r.at(14), 0);
 
   String::const_iterator b = r.begin();
   String::const_iterator e = r.end();
@@ -1117,19 +1117,19 @@ TEST(Unit_Core_StringRef, HelloWorld_WString) {
     ASSERT_NE(i, 0);
   }
 
-  ASSERT_DEATH({ r.setLength(20); }, "");
+  ASSERT_DEATH({ r.resize(20); }, "");
 
-  r.setLength(5);
+  r.resize(5);
 
   ASSERT_TRUE(r.isGood());
   ASSERT_EQ(r.getWidth(), sizeof(wchar_t));
 
-  ASSERT_EQ(r.getLength(), 5);
-  ASSERT_EQ(r.getChar(0), 'h');
-  ASSERT_EQ(r.getChar(-1), 0);
-  ASSERT_EQ(r.getChar(1), 'e');
-  ASSERT_EQ(r.getChar(4), 'o');
-  ASSERT_EQ(r.getChar(5), 0);
+  ASSERT_EQ(r.size(), 5);
+  ASSERT_EQ(r.at(0), 'h');
+  ASSERT_EQ(r.at(-1), 0);
+  ASSERT_EQ(r.at(1), 'e');
+  ASSERT_EQ(r.at(4), 'o');
+  ASSERT_EQ(r.at(5), 0);
 
   b = r.begin();
   e = r.end();
@@ -1152,7 +1152,18 @@ TEST(Unit_Core_StringRef, HelloWorld_WString) {
     ASSERT_NE(i, 0);
   }
 
-  r.setLength(5);
+  r.resize(5);
 
-  ASSERT_DEATH({ r.setLength(6); }, "");
+  ASSERT_DEATH({ r.resize(6); }, "");
+}
+
+TEST(Unit_Core_StringRef, HelloWorld_Substr_Empty) {
+  StringRef sr0 = "hello, world\n";
+  ASSERT_EQ(sr0.size(), 13);
+  ASSERT_TRUE(sr0 == "hello, world\n");
+
+  StringRef sr1 = sr0.substr(0, 0);
+
+  ASSERT_EQ(sr1.size(), 0);
+  ASSERT_TRUE(sr1 == "");
 }

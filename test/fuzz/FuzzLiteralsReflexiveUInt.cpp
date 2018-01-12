@@ -67,11 +67,11 @@ TEST(FuzzLiteralsReflexiveUInt, All) {
       Source src;
       src.loadString(ss[j].str());
       Location loc(src);
-      Range rng(loc, src.getText().getLength());
+      Range rng(loc, src.getText().size());
 
-      ASSERT_EQ(src.getText().getLength(), ss[j].str().size());
+      ASSERT_EQ(src.getText().size(), ss[j].str().size());
       ASSERT_EQ(rng.getLength(), ss[j].str().size());
-      ASSERT_STREQ(rng.getText().c_str(), ss[j].str().c_str());
+      ASSERT_TRUE(rng.getText() == ss[j].str().c_str());
 
       uint64_t evaled;
 

@@ -54,11 +54,11 @@ TEST(FuzzLiteralsReflexiveChar, All) {
     Source src;
     src.loadString(ss.str());
     Location loc(src);
-    Range rng(loc, src.getText().getLength());
+    Range rng(loc, src.getText().size());
 
-    ASSERT_EQ(src.getText().getLength(), ss.str().size());
+    ASSERT_EQ(src.getText().size(), ss.str().size());
     ASSERT_EQ(rng.getLength(), ss.str().size());
-    ASSERT_STREQ(rng.getText().c_str(), ss.str().c_str());
+    ASSERT_TRUE(rng.getText() == ss.str().c_str());
 
     char32_t evaled;
 

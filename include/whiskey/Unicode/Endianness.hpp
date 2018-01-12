@@ -18,6 +18,6 @@ template <typename T>
 T swapByteOrder(T value);
 } // namespace whiskey
 
-#include <whiskey/Core/Endianness.tpp>
+#include <whiskey/Unicode/Endianness.tpp>
 
 #endif

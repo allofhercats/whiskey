@@ -1,5 +1,7 @@
 #include <whiskey/Source/Range.hpp>
 
+#include <whiskey/Source/Source.hpp>
+
 namespace whiskey {
 Range::Range() : length(0) {
 }
@@ -32,6 +34,6 @@ void Range::setLength(size_t value) {
 }
 
 StringRef Range::getText() const {
-  return StringRef(first.getSource().)
+  return start.getSource().getText().substr(start.getOffset(), length);
 }
 } // namespace whiskey

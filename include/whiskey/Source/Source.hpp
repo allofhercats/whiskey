@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include <whiskey/Core/Endianness.hpp>
-#include <whiskey/Core/StringContainer.hpp>
+#include <whiskey/Unicode/Endianness.hpp>
+#include <whiskey/Unicode/String.hpp>
 
 namespace whiskey {
 class Source {
@@ -18,7 +18,7 @@ public:
 
 private:
   std::string path;
-  StringContainer text;
+  String *text;
 
 public:
   static const std::string defaultPath;
@@ -27,13 +27,13 @@ public:
   Source(const Source &) = delete;
   Source &operator=(const Source &) = delete;
 
-  bool loadString(StringContainer value);
+  bool loadString(const String &value);
   bool loadFile(Encoding encoding = Auto);
 
   const std::string &getPath() const;
   void setPath(std::string value);
 
-  const StringContainer &getText() const;
+  const String &getText() const;
 };
 } // namespace whiskey
 

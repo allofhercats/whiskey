@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
 
-// #include <whiskey/Whiskey.hpp>
-
 #include <whiskey/Source/Range.hpp>
 #include <whiskey/Source/Source.hpp>
 
@@ -10,12 +8,14 @@ using namespace whiskey;
 TEST(Unit_Source_Range, Empty) {
   Source src;
   src.loadString("abcdefghijklmnopqrstuvwxyz");
+  ASSERT_EQ(src.getText().size(), 26);
 
   Location loc(src);
 
   Range rng(loc);
 
-  ASSERT_STREQ(rng.getText().c_str(), "");
+  ASSERT_EQ(rng.getText().size(), 0);
+  ASSERT_TRUE(rng.getText() == "");
 }
 
 TEST(Unit_Source_Range, Length5) {
@@ -28,7 +28,7 @@ TEST(Unit_Source_Range, Length5) {
 
   Range rng(loc, 5);
 
-  ASSERT_STREQ(rng.getText().c_str(), "abcde");
+  ASSERT_TRUE(rng.getText() == "abcde");
 
   delete src;
 }
@@ -43,7 +43,7 @@ TEST(Unit_Source_Range, Length26) {
 
   Range rng(loc, 26);
 
-  ASSERT_STREQ(rng.getText().c_str(), "abcdefghijklmnopqrstuvwxyz");
+  ASSERT_TRUE(rng.getText() == "abcdefghijklmnopqrstuvwxyz");
 }
 
 TEST(Unit_Source_Range, Length100) {
@@ -56,5 +56,5 @@ TEST(Unit_Source_Range, Length100) {
 
   Range rng(loc, 100);
 
-  ASSERT_STREQ(rng.getText().c_str(), "abcdefghijklmnopqrstuvwxyz");
+  ASSERT_TRUE(rng.getText() == "abcdefghijklmnopqrstuvwxyz");
 }

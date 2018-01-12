@@ -5,16 +5,15 @@
 #include <whiskey/Core/Char.hpp>
 
 namespace whiskey {
-class StringRef;
+/*class StringRef;
 
 class String {
   friend class StringContainer;
 
 public:
-  typedef uint32_t Length;
-  typedef int32_t Index;
-
   struct const_iterator {
+    friend ssize_t operator-(const String::const_iterator &a, const String::const_iterator &b);
+
   private:
     const Char8 *pointer;
     CharWidth width;
@@ -24,15 +23,27 @@ public:
 
     Char32 get() const;
     Char32 operator*() const;
+    Char32 operator[](size_t n) const;
 
     const_iterator &operator++();
     const_iterator operator++(int);
+    const_iterator &operator--();
+    const_iterator operator--(int);
 
-    bool operator==(const const_iterator &other) const;
+    bool operator<(const const_iterator &other) const;
+    bool operator<=(const const_iterator &other) const;
+    bool operator>(const const_iterator &other) const;
+    bool operator>=(const const_iterator &other) const;
     bool operator!=(const const_iterator &other) const;
+    bool operator==(const const_iterator &other) const;
+
+    const_iterator &operator+=(ssize_t n);
+    const_iterator &operator-=(ssize_t n);
   };
 
   struct const_reverse_iterator {
+    friend ssize_t operator-(const String::const_reverse_iterator &a, const String::const_reverse_iterator &b);
+    
   private:
     const Char8 *pointer;
     CharWidth width;
@@ -42,12 +53,22 @@ public:
 
     Char32 get() const;
     Char32 operator*() const;
+    Char32 operator[](size_t n) const;
 
     const_reverse_iterator &operator++();
     const_reverse_iterator operator++(int);
+    const_reverse_iterator &operator--();
+    const_reverse_iterator operator--(int);
 
-    bool operator==(const const_reverse_iterator &other) const;
+    bool operator<(const const_reverse_iterator &other) const;
+    bool operator<=(const const_reverse_iterator &other) const;
+    bool operator>(const const_reverse_iterator &other) const;
+    bool operator>=(const const_reverse_iterator &other) const;
     bool operator!=(const const_reverse_iterator &other) const;
+    bool operator==(const const_reverse_iterator &other) const;
+
+    const_reverse_iterator &operator+=(ssize_t n);
+    const_reverse_iterator &operator-=(ssize_t n);
   };
 
 protected:
@@ -57,7 +78,7 @@ protected:
     Char16 *asChar16;
     Char32 *asChar32;
   } data;
-  Length length;
+  size_t _length;
 
 public:
   static const size_t npos;
@@ -81,6 +102,7 @@ public:
   const_reverse_iterator crend() const;
 
   size_t size() const;
+  size_t length() const;
   void clear();
   bool empty() const;
 
@@ -101,7 +123,8 @@ public:
   size_t find_first_not_of(StringRef value) const;
   size_t find_last_not_of(Char32 value) const;
   size_t find_last_not_of(StringRef value) const;
-  StringRef substr(size_t offset, size_t length = npos);
+
+  StringRef substr(size_t offset, size_t length = npos) const;
 
   int compare(const String &other) const;
   int compare(size_t offset, size_t length, const String &other) const;
@@ -113,7 +136,42 @@ public:
   bool operator>=(const String &other) const;
   bool operator!=(const String &other) const;
   bool operator==(const String &other) const;
+
+  bool operator<(const char *other) const;
+  bool operator<=(const char *other) const;
+  bool operator>(const char *other) const;
+  bool operator>=(const char *other) const;
+  bool operator!=(const char *other) const;
+  bool operator==(const char *other) const;
+
+  bool operator<(const char16_t *other) const;
+  bool operator<=(const char16_t *other) const;
+  bool operator>(const char16_t *other) const;
+  bool operator>=(const char16_t *other) const;
+  bool operator!=(const char16_t *other) const;
+  bool operator==(const char16_t *other) const;
+
+  bool operator<(const char32_t *other) const;
+  bool operator<=(const char32_t *other) const;
+  bool operator>(const char32_t *other) const;
+  bool operator>=(const char32_t *other) const;
+  bool operator!=(const char32_t *other) const;
+  bool operator==(const char32_t *other) const;
 };
+
+String::const_iterator operator+(const String::const_iterator &i, ssize_t n);
+String::const_iterator operator+(ssize_t n, const String::const_iterator &i);
+String::const_iterator operator-(const String::const_iterator &i, ssize_t n);
+ssize_t operator-(const String::const_iterator &a, const String::const_iterator &b);
+void swap(String::const_iterator &a, String::const_iterator &b);
+
+String::const_reverse_iterator operator+(const String::const_reverse_iterator &i, ssize_t n);
+String::const_reverse_iterator operator+(ssize_t n, const String::const_reverse_iterator &i);
+String::const_reverse_iterator operator-(const String::const_reverse_iterator &i, ssize_t n);
+ssize_t operator-(const String::const_reverse_iterator &a, const String::const_reverse_iterator &b);
+void swap(String::const_reverse_iterator &a, String::const_reverse_iterator &b);
+
+void swap(String &a, String &b);*/
 } // namespace whiskey
 
 #endif

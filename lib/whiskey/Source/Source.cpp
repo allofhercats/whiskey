@@ -114,10 +114,10 @@ bool Source::loadFile(Source::Encoding encoding) {
 
   if (width == 1) {
     text = "";
-    text.setCapacity(l);
+    text.reserve(l);
     ssize_t r = fread(text.getData8(), 1, l, f);
     W_ASSERT_EQ(r, l, "Could not read all characters from file.");
-    text.setLength(l);
+    text.resize(l);
   } else if (width == 2) {
     // char16_t *buf = new char16_t[l / 2 + 1];
     // ssize_t r = fread(buf, 1, 2 * l, f);
@@ -137,10 +137,10 @@ bool Source::loadFile(Source::Encoding encoding) {
     // data = (void *)buf;
     // length = l;
     text = u"";
-    text.setCapacity(l/2);
+    text.reserve(l/2);
     ssize_t r = fread(text.getData16(), 1, l, f);
     W_ASSERT_EQ(r, l, "Could not read all characters from file.");
-    text.setLength(l/2);
+    text.resize(l/2);
   } else if (width == 4) {
     // char32_t *buf = new char32_t[l / 4 + 1];
     // ssize_t r = fread(buf, 1, 4 * l, f);
@@ -160,10 +160,10 @@ bool Source::loadFile(Source::Encoding encoding) {
     // data = (void *)buf;
     // length = l;
     text = U"";
-    text.setCapacity(l/4);
+    text.reserve(l/4);
     ssize_t r = fread(text.getData32(), 1, l, f);
     W_ASSERT_EQ(r, l, "Could not read all characters from file.");
-    text.setLength(l/4);
+    text.resize(l/4);
   } else {
     W_ASSERT_UNREACHABLE("Unsupported width " << width << ".");
   }

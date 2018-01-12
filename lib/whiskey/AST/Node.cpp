@@ -1096,7 +1096,7 @@ Node *Node::createStmtReturn(Node *arg, Range range) {
 }
 
 Node *Node::createStmtContinue(Range range) {
-  return createStmtContinue(Field::createString8(), range);
+  return createStmtContinue(Field::createString(""), range);
 }
 
 Node *Node::createStmtContinue(Field *name, Range range) {
@@ -1104,7 +1104,7 @@ Node *Node::createStmtContinue(Field *name, Range range) {
 }
 
 Node *Node::createStmtBreak(Range range) {
-  return createStmtBreak(Field::createString8(), range);
+  return createStmtBreak(Field::createString(""), range);
 }
 
 Node *Node::createStmtBreak(Field *name, Range range) {

@@ -2,7 +2,7 @@
 #define __WHISKEY_Core_Char_HPP
 
 #include <whiskey/Core/Assert.hpp>
-#include <whiskey/Core/Endianness.hpp>
+#include <whiskey/Unicode/Endianness.hpp>
 
 namespace whiskey {
 typedef char Char8;
@@ -54,6 +54,6 @@ void writeCharUTF(T *dst,
 void printChar(std::ostream &os, Char32 value);
 } // namespace whiskey
 
-#include <whiskey/Core/Char.tpp>
+#include <whiskey/Unicode/Char.tpp>
 
 #endif

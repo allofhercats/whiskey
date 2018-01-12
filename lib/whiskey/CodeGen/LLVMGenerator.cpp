@@ -127,13 +127,13 @@ void LLVMGenerator::generateDecl(const Node *node) {
         false);
 
     W_ASSERT_EQ(node->getField(Node::FieldTag::DeclFunction_Name)->getKind(),
-                Field::Kind::String8,
+                Field::Kind::String,
                 "Cannot output name with chars wider than 1 byte.");
 
     llvm::Function *f = llvm::Function::Create(
         ft,
         llvm::Function::ExternalLinkage,
-        node->getField(Node::FieldTag::DeclFunction_Name)->getString8(),
+        "ASDF", //node->getField(Node::FieldTag::DeclFunction_Name)->getString(),
         module);
 
     llvm::BasicBlock *bb = llvm::BasicBlock::Create(ctx, "entry", f);
@@ -157,11 +157,11 @@ void *LLVMGenerator::onGenerateFunctionPointer(const Node *node) {
   generateDecl(node);
 
   W_ASSERT_EQ(node->getField(Node::FieldTag::DeclFunction_Name)->getKind(),
-              Field::Kind::String8,
+              Field::Kind::String,
               "Cannot output name with chars wider than 1 byte.");
 
   llvm::Function *f = module->getFunction(
-      node->getField(Node::FieldTag::DeclFunction_Name)->getString8());
+      "ASDF");//node->getField(Node::FieldTag::DeclFunction_Name)->getString());
   if (f == nullptr) {
     W_ASSERT_UNREACHABLE(
         "Method generateDecl did not output function with given name.");
@@ -169,7 +169,7 @@ void *LLVMGenerator::onGenerateFunctionPointer(const Node *node) {
 
   jit->addModule(module);
   llvm::JITSymbol symbol = jit->findSymbol(
-      node->getField(Node::FieldTag::DeclFunction_Name)->getString8());
+      "ASDF");//node->getField(Node::FieldTag::DeclFunction_Name)->getString());
   W_ASSERT_TRUE(symbol, "Cannot find function symbol in JIT process.");
 
   return (void *)llvm::cantFail(symbol.getAddress());

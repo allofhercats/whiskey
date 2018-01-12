@@ -119,7 +119,7 @@ void Location::setColumn(unsigned int value) {
 
 bool Location::areMoreChars(size_t lookahead) const {
   if (hasSource()) {
-    if (offset + lookahead < getSource().getText().getLength()) {
+    if (offset + lookahead < getSource().getText().size()) {
       return true;
     } else {
       return false;
@@ -131,7 +131,7 @@ bool Location::areMoreChars(size_t lookahead) const {
 
 char32_t Location::getChar(size_t lookahead) const {
   if (areMoreChars(lookahead)) {
-    char32_t chr = source->getText().getChar(offset + lookahead);
+    char32_t chr = source->getText().at(offset + lookahead);
 
     if (chr == '\r') {
       chr = '\n';
