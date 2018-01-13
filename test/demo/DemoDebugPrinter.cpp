@@ -48,20 +48,20 @@ int main() {
   std::cout << "\n\n";
 
   dp.print(std::cout,
-           Node::createTypeSymbol(Field::createString("x"),
+           Node::createTypeSymbol(Field::createString(new StringContainer("x")),
                                   {Node::createTypeAtomicInt32()}));
   std::cout << "\n\n";
 
   dp.print(std::cout,
            Node::createTypeSymbol(
-               Field::createString("x"),
+               Field::createString(new StringContainer("x")),
                {Node::createTypeAtomicInt32(),
-                Node::createExprSymbol(Field::createString("x"))}));
+                Node::createExprSymbol(Field::createString(new StringContainer("x")))}));
   std::cout << "\n\n";
 
   dp.print(std::cout,
            Node::createTypeAccessUnary(
-               Node::createTypeSymbol(Field::createString("x"))));
+               Node::createTypeSymbol(Field::createString(new StringContainer("x")))));
   std::cout << "\n\n";
 
   dp.print(std::cout,
@@ -80,32 +80,32 @@ int main() {
 
   dp.print(std::cout,
            Node::createExprSymbol(
-               Field::createString("x"),
+               Field::createString(new StringContainer("x")),
                {Node::createTypeAtomicInt32(),
-                Node::createExprSymbol(Field::createString("x"))}));
+                Node::createExprSymbol(Field::createString(new StringContainer("x")))}));
   std::cout << "\n\n";
 
   dp.print(std::cout,
            Node::createExprCall(
-               Node::createExprSymbol(Field::createString("f")),
-               {Node::createExprSymbol(Field::createString("x")),
-                Node::createExprSymbol(Field::createString("y"))}));
+               Node::createExprSymbol(Field::createString(new StringContainer("f"))),
+               {Node::createExprSymbol(Field::createString(new StringContainer("x"))),
+                Node::createExprSymbol(Field::createString(new StringContainer("y")))}));
   std::cout << "\n\n";
 
   dp.print(std::cout,
            Node::createExprBoolNot(
-               Node::createExprSymbol(Field::createString("x"))));
+               Node::createExprSymbol(Field::createString(new StringContainer("x")))));
   std::cout << "\n\n";
 
   dp.print(std::cout,
            Node::createExprBoolAnd(
-               {Node::createExprSymbol(Field::createString("x")),
-                Node::createExprSymbol(Field::createString("y"))}));
+               {Node::createExprSymbol(Field::createString(new StringContainer("x"))),
+                Node::createExprSymbol(Field::createString(new StringContainer("y")))}));
   std::cout << "\n\n";
 
   dp.print(
       std::cout,
-      Node::createExprGroup(Node::createExprSymbol(Field::createString("x"))));
+      Node::createExprGroup(Node::createExprSymbol(Field::createString(new StringContainer("x")))));
   std::cout << "\n\n";
 
   dp.print(std::cout, Node::createStmtEmpty());
@@ -113,33 +113,33 @@ int main() {
 
   dp.print(
       std::cout,
-      Node::createStmtExpr(Node::createExprSymbol(Field::createString("x"))));
+      Node::createStmtExpr(Node::createExprSymbol(Field::createString(new StringContainer("x")))));
   std::cout << "\n\n";
 
   dp.print(std::cout,
            Node::createStmtReturn(
-               Node::createExprSymbol(Field::createString("x"))));
+               Node::createExprSymbol(Field::createString(new StringContainer("x")))));
   std::cout << "\n\n";
 
   dp.print(std::cout,
-           Node::createStmtIf(Node::createExprSymbol(Field::createString("x")),
+           Node::createStmtIf(Node::createExprSymbol(Field::createString(new StringContainer("x"))),
                               Node::createStmtEmpty()));
   std::cout << "\n\n";
 
   dp.print(std::cout,
-           Node::createStmtIf(Node::createExprSymbol(Field::createString("x")),
+           Node::createStmtIf(Node::createExprSymbol(Field::createString(new StringContainer("x"))),
                               Node::createStmtEmpty(),
                               Node::createStmtEmpty()));
   std::cout << "\n\n";
 
   dp.print(
       std::cout,
-      Node::createStmtWhile(Node::createExprSymbol(Field::createString("x"))));
+      Node::createStmtWhile(Node::createExprSymbol(Field::createString(new StringContainer("x")))));
   std::cout << "\n\n";
 
   dp.print(
       std::cout,
-      Node::createStmtWhile(Node::createExprSymbol(Field::createString("x")),
+      Node::createStmtWhile(Node::createExprSymbol(Field::createString(new StringContainer("x"))),
                             Node::createStmtEmpty()));
   std::cout << "\n\n";
 
@@ -149,27 +149,27 @@ int main() {
   dp.print(std::cout,
            Node::createStmtFor(
                {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                         Field::createString("x")),
+                                         Field::createString(new StringContainer("x"))),
                 Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                         Field::createString("y"))},
-               Node::createExprSymbol(Field::createString("x")),
-               {Node::createExprSymbol(Field::createString("x")),
-                Node::createExprSymbol(Field::createString("y"))},
+                                         Field::createString(new StringContainer("y")))},
+               Node::createExprSymbol(Field::createString(new StringContainer("x"))),
+               {Node::createExprSymbol(Field::createString(new StringContainer("x"))),
+                Node::createExprSymbol(Field::createString(new StringContainer("y")))},
                Node::createStmtEmpty()));
   std::cout << "\n\n";
 
   dp.print(std::cout,
            Node::createStmtForEach(
                {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                         Field::createString("x"))},
-               {Node::createExprSymbol(Field::createString("y"))}));
+                                         Field::createString(new StringContainer("x")))},
+               {Node::createExprSymbol(Field::createString(new StringContainer("y")))}));
   std::cout << "\n\n";
 
   dp.print(std::cout,
            Node::createStmtForEach(
                {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                         Field::createString("x"))},
-               {Node::createExprSymbol(Field::createString("y"))},
+                                         Field::createString(new StringContainer("x")))},
+               {Node::createExprSymbol(Field::createString(new StringContainer("y")))},
                Node::createStmtEmpty()));
   std::cout << "\n\n";
 
@@ -183,78 +183,78 @@ int main() {
 
   dp.print(std::cout,
            Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                    Field::createString("x")));
+                                    Field::createString(new StringContainer("x"))));
   std::cout << "\n\n";
 
   Node *dv0 = Node::createDeclVariable(
       Node::createTypeAtomicInt32(),
-      Field::createString("x"),
+      Field::createString(new StringContainer("x")),
       {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                Field::createString("z")),
+                                Field::createString(new StringContainer("z"))),
        Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                Field::createString("w"))},
-      Node::createExprSymbol(Field::createString("y")));
+                                Field::createString(new StringContainer("w")))},
+      Node::createExprSymbol(Field::createString(new StringContainer("y"))));
   dp.print(std::cout, dv0);
   std::cout << "\n\n";
 
   dp.print(std::cout,
            Node::createDeclFunction(
-               Node::createTypeAtomicInt32(), Field::createString("f"), {}));
+               Node::createTypeAtomicInt32(), Field::createString(new StringContainer("f")), {}));
   std::cout << "\n\n";
 
   Node *df0 = Node::createDeclFunction(
       Node::createTypeAtomicInt32(),
-      Field::createString("f"),
+      Field::createString(new StringContainer("f")),
       {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                Field::createString("z")),
+                                Field::createString(new StringContainer("z"))),
        Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                Field::createString("w"))},
+                                Field::createString(new StringContainer("w")))},
       {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                Field::createString("x")),
+                                Field::createString(new StringContainer("x"))),
        Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                Field::createString("y"))},
+                                Field::createString(new StringContainer("y")))},
       Node::createStmtEmpty());
   dp.print(std::cout, df0);
   std::cout << "\n\n";
 
-  dp.print(std::cout, Node::createDeclClass(Field::createString("a")));
+  dp.print(std::cout, Node::createDeclClass(Field::createString(new StringContainer("a"))));
   std::cout << "\n\n";
 
   Node *dc0 = Node::createDeclClass(
-      Field::createString("a"),
+      Field::createString(new StringContainer("a")),
       {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                Field::createString("z")),
+                                Field::createString(new StringContainer("z"))),
        Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                Field::createString("w"))},
+                                Field::createString(new StringContainer("w")))},
       {Node::createTypeAtomicInt32(), Node::createTypeAtomicInt64()},
       {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                Field::createString("x")),
+                                Field::createString(new StringContainer("x"))),
        Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                Field::createString("y"))});
+                                Field::createString(new StringContainer("y")))});
   dp.print(std::cout, dc0);
   std::cout << "\n\n";
 
-  dp.print(std::cout, Node::createDeclNamespace(Field::createString("a")));
+  dp.print(std::cout, Node::createDeclNamespace(Field::createString(new StringContainer("a"))));
   std::cout << "\n\n";
 
   Node *dn0 = Node::createDeclNamespace(
-      Field::createString("a"),
+      Field::createString(new StringContainer("a")),
       {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                Field::createString("x")),
+                                Field::createString(new StringContainer("x"))),
        Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                Field::createString("y"))});
+                                Field::createString(new StringContainer("y")))});
   dp.print(std::cout, dn0);
   std::cout << "\n\n";
 
-  dp.print(std::cout, Node::createImport(Field::createString("M")));
+  dp.print(std::cout, Node::createImport(Field::createString(new StringContainer("M"))));
   std::cout << "\n\n";
 
   dp.print(
       std::cout,
       Node::createUnit({Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                                 Field::createString("x")),
+                                                 Field::createString(new StringContainer("x"))),
                         Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                                 Field::createString("y"))}));
+                                                 Field::createString(new StringContainer("y")))}));
   std::cout << "\n\n";
 
   return 0;

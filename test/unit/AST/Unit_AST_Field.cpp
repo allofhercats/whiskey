@@ -113,13 +113,13 @@ TEST(Unit_AST_Field, String) {
   ASSERT_EQ(f0->getKind(), Field::Kind::String);
   ASSERT_EQ(f1->getKind(), Field::Kind::String);
 
-  ASSERT_TRUE(f0->getString() == "hello, world\n");
-  ASSERT_TRUE(f1->getString() == "hello, world\n");
+  ASSERT_TRUE(f0->getString().compare("hello, world\n"));
+  ASSERT_TRUE(f1->getString().compare("hello, world\n"));
 
   f0->setString(StringContainer("hello, world\n", 5));
 
-  ASSERT_TRUE(f0->getString() == "hello");
-  ASSERT_TRUE(f1->getString() == "hello, world\n");
+  ASSERT_TRUE(f0->getString().compare("hello"));
+  ASSERT_TRUE(f1->getString().compare("hello, world\n"));
 
   ASSERT_DEATH({ f0->getInt(); }, "");
 
@@ -141,7 +141,7 @@ TEST(Unit_AST_Field, String) {
   
   delete f0;
 
-  ASSERT_TRUE(f1->getString() == "hello");
+  ASSERT_TRUE(f1->getString().compare("hello"));
 
   delete f1;
 }

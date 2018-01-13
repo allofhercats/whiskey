@@ -7,7 +7,7 @@ LiteralPrinter::LiteralPrinter() {
 LiteralPrinter::~LiteralPrinter() {
 }
 
-void LiteralPrinter::print(std::ostream &os) const {
+void LiteralPrinter::print(CharOutStream &os) const {
   onPrint(os);
 }
 } // namespace whiskey

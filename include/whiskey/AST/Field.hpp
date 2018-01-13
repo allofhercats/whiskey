@@ -2,7 +2,7 @@
 #define __WHISKEY_AST_Field_HPP
 
 #include <whiskey/Unicode/Char.hpp>
-#include <whiskey/Code/Types.hpp>
+#include <whiskey/Core/Types.hpp>
 #include <whiskey/Unicode/StringRef.hpp>
 #include <whiskey/Unicode/StringContainer.hpp>
 
@@ -21,7 +21,7 @@ private:
     Real asReal;
     Node *asNode;
   } dataAtomic;
-  String *asString;
+  StringContainer *asString;
 
   Field(Kind kind);
 
@@ -32,7 +32,8 @@ public:
   static Field *createInt(Int value);
   static Field *createUInt(UInt value);
   static Field *createReal(Real value);
-  static Field *createString(const String &value);
+  static Field *createString(StringContainer *value);
+  static Field *createString(StringRef value);
   static Field *createNode(Node *value);
   static Field *createNode(std::initializer_list<Node *> value);
 
@@ -51,7 +52,8 @@ public:
 
   StringContainer &getString();
   const StringContainer &getString() const;
-  void setString(StringContainer value);
+  void setString(StringContainer *value);
+  void setString(StringRef value);
 
   Node *getNode();
   const Node *getNode() const;

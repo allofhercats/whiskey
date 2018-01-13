@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <whiskey/Core/Endianness.hpp>
+#include <whiskey/Unicode/Endianness.hpp>
 
 using namespace whiskey;
 

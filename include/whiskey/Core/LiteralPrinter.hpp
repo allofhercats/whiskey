@@ -1,18 +1,18 @@
 #ifndef __WHISKEY_Core_LiteralPrinter_HPP
 #define __WHISKEY_Core_LiteralPrinter_HPP
 
-#include <ostream>
+#include <whiskey/Unicode/CharOutStream.hpp>
 
 namespace whiskey {
 class LiteralPrinter {
 protected:
-  virtual void onPrint(std::ostream &os) const = 0;
+  virtual void onPrint(CharOutStream &os) const = 0;
 
 public:
   LiteralPrinter();
   virtual ~LiteralPrinter();
 
-  void print(std::ostream &os) const;
+  void print(CharOutStream &os) const;
 };
 } // namespace whiskey
 

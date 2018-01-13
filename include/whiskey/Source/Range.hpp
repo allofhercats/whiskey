@@ -1,7 +1,7 @@
 #ifndef __WHISKEY_Source_Range_HPP
 #define __WHISKEY_Source_Range_HPP
 
-#include <whiskey/Core/StringRef.hpp>
+#include <whiskey/Unicode/StringRef.hpp>
 #include <whiskey/Source/Location.hpp>
 
 namespace whiskey {

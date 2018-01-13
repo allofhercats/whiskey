@@ -34,6 +34,6 @@ void Range::setLength(size_t value) {
 }
 
 StringRef Range::getText() const {
-  return start.getSource().getText().substr(start.getOffset(), length);
+  return start.getSource().getText().subString(start.getOffset(), length);
 }
 } // namespace whiskey

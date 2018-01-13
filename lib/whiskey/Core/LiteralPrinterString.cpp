@@ -4,19 +4,20 @@
 
 #include <whiskey/Core/Assert.hpp>
 #include <whiskey/Core/LiteralPrinterChar.hpp>
+#include <whiskey/Unicode/StringRef.hpp>
 
 namespace whiskey {
-void LiteralPrinterString::onPrint(std::ostream &os) const {
+void LiteralPrinterString::onPrint(CharOutStream &os) const {
   if (useQuotes) {
-    os << quote;
+    os.write(quote);
   }
 	
-  for (Char32 i : value) {
-    LiteralPrinterChar(i, '\"', false).print(os);
+  for (size_t i = 0; i < value.getLength(); i++) {
+    LiteralPrinterChar(value.getCharAt(i), '\"', false).print(os);
   }
 
   if (useQuotes) {
-    os << quote;
+    os.write(quote);
   }
 }
 

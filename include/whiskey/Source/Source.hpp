@@ -4,17 +4,12 @@
 #include <string>
 
 #include <whiskey/Unicode/Endianness.hpp>
-#include <whiskey/Unicode/String.hpp>
+#include <whiskey/Unicode/StringRef.hpp>
+#include <whiskey/Unicode/StringContainer.hpp>
 
 namespace whiskey {
 class Source {
   friend class Location;
-
-public:
-  enum Encoding { Auto, UTF8, UTF16LE, UTF16BE, UTF32LE, UTF32BE };
-
-  static int getEncodingWidth(Encoding encoding);
-  static Endianness getEncodingEndianness(Encoding encoding);
 
 private:
   std::string path;
@@ -27,8 +22,9 @@ public:
   Source(const Source &) = delete;
   Source &operator=(const Source &) = delete;
 
-  bool loadString(const String &value);
-  bool loadFile(Encoding encoding = Auto);
+  bool loadString(StringContainer *value);
+  bool loadString(StringRef value);
+  bool loadFile(Encoding encoding = Encoding::Auto);
 
   const std::string &getPath() const;
   void setPath(std::string value);

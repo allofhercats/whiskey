@@ -2,6 +2,7 @@
 
 #include <whiskey/Core/Assert.hpp>
 #include <whiskey/Core/LiteralPrinterString.hpp>
+#include <whiskey/Unicode/CharOutStream.hpp>
 
 namespace whiskey {
 void Token::printTokenIDDebug(std::ostream &os, Token::ID value) {
@@ -555,6 +556,7 @@ void Token::printDebug(std::ostream &os) const {
 
   os << " ";
 
-  LiteralPrinterString(range.getText()).print(os);
+  OStreamCharOutStream ocs(os);
+  LiteralPrinterString(range.getText()).print(ocs);
 }
 } // namespace whiskey

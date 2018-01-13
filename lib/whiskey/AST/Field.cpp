@@ -33,10 +33,14 @@ Field *Field::createReal(Real value) {
   return rtn;
 }
 
-Field *Field::createString(StringContainer value) {
+Field *Field::createString(StringContainer *value) {
   Field *rtn = new Field(Kind::String);
   rtn->asString = value;
   return rtn;
+}
+
+Field *Field::createString(StringRef value) {
+  return createString(new StringContainer(value));
 }
 
 Field *Field::createNode(Node *value) {
@@ -132,22 +136,26 @@ StringContainer &Field::getString() {
   W_ASSERT_EQ(kind,
               Kind::String,
               "Can only access string field as string.");
-  return asString;
+  return *asString;
 }
 
 const StringContainer &Field::getString() const {
   W_ASSERT_EQ(kind,
               Kind::String,
               "Can only access string field as string.");
-  return asString;
+  return *asString;
 }
 
-void Field::setString(StringContainer value) {
+void Field::setString(StringContainer *value) {
   W_ASSERT_EQ(kind,
               Kind::String,
               "Can only access string field as string.");
-
+  W_ASSERT_NONNULL(value, "Can not assign null string to field.");
   asString = value;
+}
+
+void Field::setString(StringRef value) {
+  setString(new StringContainer(value));
 }
 
 Node *Field::getNode() {
@@ -183,7 +191,7 @@ bool Field::compare(const Field *other) const {
       return false;
     }
   } else if (kind == Kind::String) {
-    if (asString != other->asString) {
+    if (!asString->compare(*other->asString)) {
       return false;
     }
   } else if (kind == Kind::Node) {
@@ -216,7 +224,7 @@ void Field::printLiteral(std::ostream &os) const {
   } else if (kind == Field::Kind::Real) {
     LiteralPrinterReal(dataAtomic.asReal).print(os);
   } else if (kind == Field::Kind::String) {
-    LiteralPrinterString(asString).print(os);
+    LiteralPrinterString(*asString).print(os);
   } else {
     W_ASSERT_UNREACHABLE("Cannot print field as literal.");
   }

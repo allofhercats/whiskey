@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <whiskey/Core/Char.hpp>
+#include <whiskey/Unicode/Char.hpp>
 
 using namespace whiskey;
 

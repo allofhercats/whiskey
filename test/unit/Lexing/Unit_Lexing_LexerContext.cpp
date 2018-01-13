@@ -125,13 +125,13 @@ TEST(Unit_Lexing_LexerContext, Simple) {
   ASSERT_EQ(toks[0].getID(), Token::Symbol);
   ASSERT_EQ(toks[0].getRange().getLength(), 3);
   ASSERT_EQ(toks[0].getRange().getStart().getOffset(), 0);
-  ASSERT_TRUE(toks[0].getRange().getText() == "abc");
+  ASSERT_TRUE(toks[0].getRange().getText().compare("abc"));
 
   ASSERT_TRUE(toks[1].isGood());
   ASSERT_EQ(toks[1].getID(), Token::Int);
   ASSERT_EQ(toks[1].getRange().getLength(), 3);
   ASSERT_EQ(toks[1].getRange().getStart().getOffset(), 6);
-  ASSERT_TRUE(toks[1].getRange().getText() == "ghi");
+  ASSERT_TRUE(toks[1].getRange().getText().compare("ghi"));
 
   delete msgs;
   delete src;

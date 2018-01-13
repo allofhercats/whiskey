@@ -3,11 +3,20 @@
 #include <whiskey/Core/Assert.hpp>
 
 namespace whiskey {
-void LiteralPrinterBool::onPrint(std::ostream &os) const {
+void LiteralPrinterBool::onPrint(CharOutStream &os) const {
 	if (value) {
-		os << "true";
+		//os << "true";
+		os.write('t');
+		os.write('r');
+		os.write('u');
+		os.write('e');
 	} else {
-		os << "false";
+		// os << "false";
+		os.write('f');
+		os.write('a');
+		os.write('l');
+		os.write('s');
+		os.write('e');
 	}
 }
 

@@ -1,7 +1,12 @@
 #ifndef __WHISKEY_Unicode_CharOutStream_HPP
 #define __WHISKEY_Unicode_CharOutStream_HPP
 
+#include <whiskey/Unicode/Encoding.hpp>
+#include <whiskey/Unicode/Char.hpp>
+
 namespace whiskey {
+class ByteOutStream;
+
 class CharOutStream {
 private:
 	ByteOutStream *byteStream;

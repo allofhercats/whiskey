@@ -10,7 +10,7 @@ private:
   bool value;
 
 protected:
-  virtual void onPrint(std::ostream &os) const;
+  virtual void onPrint(CharOutStream &os) const;
 
 public:
   LiteralPrinterBool(bool value);

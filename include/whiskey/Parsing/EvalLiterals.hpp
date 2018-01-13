@@ -1,7 +1,7 @@
 #ifndef __WHISKEY_Parsing_EvalLiterals_HPP
 #define __WHISKEY_Parsing_EvalLiterals_HPP
 
-#include <whiskey/Core/Char.hpp>
+#include <whiskey/Unicode/Char.hpp>
 #include <whiskey/Core/Types.hpp>
 
 namespace whiskey {

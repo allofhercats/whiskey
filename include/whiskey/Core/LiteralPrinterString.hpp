@@ -1,7 +1,7 @@
 #ifndef __WHISKEY_Core_LiteralPrinterString_HPP
 #define __WHISKEY_Core_LiteralPrinterString_HPP
 
-#include <whiskey/Core/StringRef.hpp>
+#include <whiskey/Unicode/StringRef.hpp>
 #include <whiskey/Core/LiteralPrinter.hpp>
 
 namespace whiskey {
@@ -12,7 +12,7 @@ private:
   bool useQuotes;
 
 protected:
-  virtual void onPrint(std::ostream &os) const;
+  virtual void onPrint(CharOutStream &os) const;
 
 public:
   LiteralPrinterString(StringRef value,

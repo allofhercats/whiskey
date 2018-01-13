@@ -1,7 +1,7 @@
 #ifndef __WHISKEY_Core_LiteralPrinterChar_HPP
 #define __WHISKEY_Core_LiteralPrinterChar_HPP
 
-#include <whiskey/Core/Char.hpp>
+#include <whiskey/Unicode/Char.hpp>
 #include <whiskey/Core/LiteralPrinter.hpp>
 
 namespace whiskey {
@@ -12,7 +12,7 @@ private:
   bool useQuotes;
 
 protected:
-  virtual void onPrint(std::ostream &os) const;
+  virtual void onPrint(CharOutStream &os) const;
 
 public:
   LiteralPrinterChar(Char32 value,

@@ -5,47 +5,6 @@
 #include <whiskey/Core/Assert.hpp>
 
 namespace whiskey {
-int Source::getEncodingWidth(Source::Encoding encoding) {
-  switch (encoding) {
-  case Auto:
-    W_ASSERT_UNREACHABLE("Cannot get width of encoding Auto.");
-    break;
-  case UTF8:
-    return 1;
-  case UTF16LE:
-    return 2;
-  case UTF16BE:
-    return 2;
-  case UTF32LE:
-    return 4;
-  case UTF32BE:
-    return 4;
-  default:
-    W_ASSERT_UNREACHABLE("Unsupported encoding " << (int)encoding << ".");
-  }
-}
-
-Endianness Source::getEncodingEndianness(Source::Encoding encoding) {
-  switch (encoding) {
-  case Auto:
-    W_ASSERT_UNREACHABLE("Cannot get endianness of encoding Auto.");
-    break;
-  case UTF8:
-    W_ASSERT_UNREACHABLE("Cannot get endianness of encoding UTF8.");
-    break;
-  case UTF16LE:
-    return Endianness::Little;
-  case UTF16BE:
-    return Endianness::Big;
-  case UTF32LE:
-    return Endianness::Little;
-  case UTF32BE:
-    return Endianness::Big;
-  default:
-    W_ASSERT_UNREACHABLE("Unsupported encoding " << (int)encoding << ".");
-  }
-}
-
 const std::string Source::defaultPath = "--";
 
 Source::Source(std::string path)
@@ -53,12 +12,17 @@ Source::Source(std::string path)
   W_ASSERT_GT(path.size(), 0, "Cannot have empty path.");
 }
 
-bool Source::loadString(StringContainer value) {
+bool Source::loadString(StringContainer *value) {
   text = value;
   return true;
 }
 
-bool Source::loadFile(Source::Encoding encoding) {
+bool Source::loadString(StringRef value) {
+  text = new StringContainer(value);
+  return true;
+}
+
+bool Source::loadFile(Encoding encoding) {
   FILE *f = fopen(path.c_str(), "r");
   if (f == NULL) {
     return false;
@@ -79,42 +43,42 @@ bool Source::loadFile(Source::Encoding encoding) {
                                           << " of a " << l << " byte file.");
 
   if (bom[0] == '\xef' && (bom[1] == '\xbb' && bom[2] == '\xbf')) {
-    W_ASSERT_TRUE(encoding == Auto || encoding == UTF8,
+    W_ASSERT_TRUE(encoding == Encoding::Auto || encoding == Encoding::UTF8,
                   "Detected encoding conflicts with specified.");
-    encoding = UTF8;
+    encoding = Encoding::UTF8;
   } else if (bom[0] == '\xff' &&
              (bom[1] == '\xfe' && (bom[2] == '\x00' && bom[3] == '\x00'))) {
-    W_ASSERT_TRUE(encoding == Auto || encoding == UTF32LE,
+    W_ASSERT_TRUE(encoding == Encoding::Auto || encoding == Encoding::UTF32LE,
                   "Detected encoding conflicts with specified.");
-    encoding = UTF32LE;
+    encoding = Encoding::UTF32LE;
   } else if (bom[0] == '\x00' &&
              (bom[1] == '\x00' && (bom[2] == '\xfe' && bom[3] == '\xff'))) {
-    W_ASSERT_TRUE(encoding == Auto || encoding == UTF32BE,
+    W_ASSERT_TRUE(encoding == Encoding::Auto || encoding == Encoding::UTF32BE,
                   "Detected encoding conflicts with specified.");
-    encoding = UTF32BE;
+    encoding = Encoding::UTF32BE;
   } else if (bom[0] == '\xff' && bom[1] == '\xfe') {
-    W_ASSERT_TRUE(encoding == Auto || encoding == UTF16LE,
+    W_ASSERT_TRUE(encoding == Encoding::Auto || encoding == Encoding::UTF16LE,
                   "Detected encoding conflicts with specified.");
-    encoding = UTF16LE;
+    encoding = Encoding::UTF16LE;
   } else if (bom[0] == '\xfe' && bom[1] == '\xff') {
-    W_ASSERT_TRUE(encoding == Auto || encoding == UTF16BE,
+    W_ASSERT_TRUE(encoding == Encoding::Auto || encoding == Encoding::UTF16BE,
                   "Detected encoding conflicts with specified.");
-    encoding = UTF16BE;
+    encoding = Encoding::UTF16BE;
   } else {
-    W_ASSERT_TRUE(encoding == Auto || encoding == UTF8,
+    W_ASSERT_TRUE(encoding == Encoding::Auto || encoding == Encoding::UTF8,
                   "Detected encoding conflicts with specified.");
-    encoding = UTF8;
+    encoding = Encoding::UTF8;
   }
 
   int width = getEncodingWidth(encoding);
 
   fseek(f, SEEK_SET, 0);
 
-  text = StringContainer();
+  text = new StringContainer(encoding);
 
-  if (width == 1) {
-    text = "";
-    text.reserve(l);
+  /*if (width == 1) {
+    text->setLength(0);
+    static_cast<StringContainer *>(text)->setCapacity(l);
     ssize_t r = fread(text.getData8(), 1, l, f);
     W_ASSERT_EQ(r, l, "Could not read all characters from file.");
     text.resize(l);
@@ -168,7 +132,7 @@ bool Source::loadFile(Source::Encoding encoding) {
     W_ASSERT_UNREACHABLE("Unsupported width " << width << ".");
   }
 
-  fclose(f);
+  fclose(f);*/
   return true;
 }
 
@@ -181,7 +145,7 @@ void Source::setPath(std::string value) {
   path = value;
 }
 
-const StringContainer &Source::getText() const {
-  return text;
-}
+// const StringContainer &Source::getText() const {
+//   return *text;
+// }
 } // namespace whiskey

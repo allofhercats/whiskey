@@ -407,7 +407,7 @@ void Lexer::lex() {
       }
     } else {
       ctx.getMsgs().describe() << "unexpected character ";
-      LiteralPrinterChar(ctx.getChar()).print(ctx.getMsgs().describe());
+      // LiteralPrinterChar(ctx.getChar()).print(ctx.getMsgs().describe());
       ctx.getMsgs().emit(ctx.getRange(), Message::UnexpectedChar);
       ctx.eatChar();
       ctx.skipToken();

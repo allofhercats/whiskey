@@ -10,6 +10,8 @@ enum class Encoding {
 	UTF32LE,
 	UTF32BE
 };
+
+int getEncodingWidth(Encoding value);
 }
 
 #endif

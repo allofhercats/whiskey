@@ -6,48 +6,62 @@
 #include <whiskey/Core/LiteralPrinterUInt.hpp>
 
 namespace whiskey {
-void LiteralPrinterChar::onPrint(std::ostream &os) const {
+void LiteralPrinterChar::onPrint(CharOutStream &os) const {
   if (useQuotes) {
-    os << quote;
+    os.write(quote);
   }
 	
   if (value == quote) {
-    os << "\\" << quote;
+    os.write('\\');
+    os.write(quote);
   } else if (getChar32MinWidth(value) == 4) {
-    os << "\\U";
+    os.write('\\');
+    os.write('U');
     LiteralPrinterUInt(value, 16, false, 8).print(os);
   } else if (getChar32MinWidth(value) == 2) {
-    os << "\\u";
+    os.write('\\');
+    os.write('u');
     LiteralPrinterUInt(value, 16, false, 4).print(os);
   } else if (value == '\a') {
-    os << "\\a";
+    os.write('\\');
+    os.write('a');
   } else if (value == '\b') {
-    os << "\\b";
+    os.write('\\');
+    os.write('b');
   } else if (value == '\033') {
-    os << "\\e";
+    os.write('\\');
+    os.write('e');
   } else if (value == '\f') {
-    os << "\\f";
+    os.write('\\');
+    os.write('f');
   } else if (value == '\n') {
-    os << "\\n";
+    os.write('\\');
+    os.write('n');
   } else if (value == '\r') {
-    os << "\\r";
+    os.write('\\');
+    os.write('r');
   } else if (value == '\t') {
-    os << "\\t";
+    os.write('\\');
+    os.write('t');
   } else if (value == '\v') {
-    os << "\\v";
+    os.write('\\');
+    os.write('v');
   } else if (value == '\0') {
-    os << "\\0";
+    os.write('\\');
+    os.write('0');
   } else if (value == '\\') {
-    os << "\\\\";
+    os.write('\\');
+    os.write('\\');
   } else if (isprint(value)) {
-    os << (char)value;
+    os.write(value);
   } else {
-    os << "\\x";
+    os.write('\\');
+    os.write('x');
     LiteralPrinterUInt(value, 16, false, 2).print(os);
   }
 
   if (useQuotes) {
-    os << quote;
+    os.write(quote);
   }
 }
 
