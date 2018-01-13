@@ -21,6 +21,8 @@ public:
 	Char32 getChar() const;
 	Char32 eatChar();
 
+	StringContainer *read();
+
 	size_t getOffset() const;
 };
 }

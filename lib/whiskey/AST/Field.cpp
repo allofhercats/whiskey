@@ -3,6 +3,8 @@
 #include <string.h>
 
 #include <whiskey/AST/Node.hpp>
+#include <whiskey/Unicode/OStreamByteOutStream.hpp>
+#include <whiskey/Unicode/CharOutStream.hpp>
 #include <whiskey/Core/LiteralPrinterBool.hpp>
 #include <whiskey/Core/LiteralPrinterUInt.hpp>
 #include <whiskey/Core/LiteralPrinterReal.hpp>
@@ -15,13 +17,13 @@ Field::Field(Field::Kind kind) : kind(kind) {
 
 Field::~Field() {}
 
-Field *Field::createInt(Int value) {
+Field *Field::createInt(Int64 value) {
   Field *rtn = new Field(Kind::Int);
   rtn->dataAtomic.asInt = value;
   return rtn;
 }
 
-Field *Field::createUInt(UInt value) {
+Field *Field::createUInt(UInt64 value) {
   Field *rtn = new Field(Kind::UInt);
   rtn->dataAtomic.asUInt = value;
   return rtn;
@@ -100,23 +102,23 @@ Field::Kind Field::getKind() const {
   return kind;
 }
 
-Int Field::getInt() const {
+Int64 Field::getInt() const {
   W_ASSERT_EQ(kind, Kind::Int, "Can only access int field as int.");
   return dataAtomic.asInt;
 }
 
-void Field::setInt(Int value) {
+void Field::setInt(Int64 value) {
   W_ASSERT_EQ(kind, Kind::Int, "Can only access int field as int.");
   dataAtomic.asInt = value;
 }
 
-UInt Field::getUInt() const {
+UInt64 Field::getUInt() const {
   W_ASSERT_EQ(
       kind, Kind::UInt, "Can only access unsigned int field as unsigned int.");
   return dataAtomic.asInt;
 }
 
-void Field::setUInt(UInt value) {
+void Field::setUInt(UInt64 value) {
   W_ASSERT_EQ(
       kind, Kind::UInt, "Can only access unsigned int field as unsigned int.");
   dataAtomic.asUInt = value;
@@ -212,19 +214,22 @@ bool Field::compare(const Field *other) const {
 }
 
 void Field::printLiteral(std::ostream &os) const {
+  OStreamByteOutStream obos(os);
+  CharOutStream cos(obos, Encoding::ASCII);
+
   if (kind == Field::Kind::Int) {
     if (dataAtomic.asInt < 0) {
       os << "-";
-      LiteralPrinterUInt(-dataAtomic.asInt).print(os);
+      LiteralPrinterUInt(-dataAtomic.asInt).print(cos);
     } else {
-      LiteralPrinterUInt(dataAtomic.asInt).print(os);
+      LiteralPrinterUInt(dataAtomic.asInt).print(cos);
     }
   } else if (kind == Field::Kind::UInt) {
-    LiteralPrinterUInt(dataAtomic.asUInt).print(os);
+    LiteralPrinterUInt(dataAtomic.asUInt).print(cos);
   } else if (kind == Field::Kind::Real) {
-    LiteralPrinterReal(dataAtomic.asReal).print(os);
+    LiteralPrinterReal(dataAtomic.asReal).print(cos);
   } else if (kind == Field::Kind::String) {
-    LiteralPrinterString(*asString).print(os);
+    LiteralPrinterString(*asString).print(cos);
   } else {
     W_ASSERT_UNREACHABLE("Cannot print field as literal.");
   }

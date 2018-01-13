@@ -15,48 +15,35 @@ void LiteralPrinterChar::onPrint(CharOutStream &os) const {
     os.write('\\');
     os.write(quote);
   } else if (getChar32MinWidth(value) == 4) {
-    os.write('\\');
-    os.write('U');
+    os.write("\\U");
     LiteralPrinterUInt(value, 16, false, 8).print(os);
   } else if (getChar32MinWidth(value) == 2) {
-    os.write('\\');
-    os.write('u');
+    os.write("\\u");
     LiteralPrinterUInt(value, 16, false, 4).print(os);
   } else if (value == '\a') {
-    os.write('\\');
-    os.write('a');
+    os.write("\\a");
   } else if (value == '\b') {
-    os.write('\\');
-    os.write('b');
+    os.write("\\b");
   } else if (value == '\033') {
-    os.write('\\');
-    os.write('e');
+    os.write("\\e");
   } else if (value == '\f') {
-    os.write('\\');
-    os.write('f');
+    os.write("\\f");
   } else if (value == '\n') {
-    os.write('\\');
-    os.write('n');
+    os.write("\\n");
   } else if (value == '\r') {
-    os.write('\\');
-    os.write('r');
+    os.write("\\r");
   } else if (value == '\t') {
-    os.write('\\');
-    os.write('t');
+    os.write("\\t");
   } else if (value == '\v') {
-    os.write('\\');
-    os.write('v');
+    os.write("\\v");
   } else if (value == '\0') {
-    os.write('\\');
-    os.write('0');
+    os.write("\\0");
   } else if (value == '\\') {
-    os.write('\\');
-    os.write('\\');
+    os.write("\\\\");
   } else if (isprint(value)) {
     os.write(value);
   } else {
-    os.write('\\');
-    os.write('x');
+    os.write("\\x");
     LiteralPrinterUInt(value, 16, false, 2).print(os);
   }
 

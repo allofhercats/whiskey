@@ -52,6 +52,7 @@ file(GLOB_RECURSE lib_whiskey_parsing_files lib/whiskey/Parsing/*.cpp)
 file(GLOB_RECURSE lib_whiskey_passes_files lib/whiskey/Passes/*.cpp)
 file(GLOB_RECURSE lib_whiskey_printing_files lib/whiskey/Printing/*.cpp)
 file(GLOB_RECURSE lib_whiskey_source_files lib/whiskey/Source/*.cpp)
+file(GLOB_RECURSE lib_whiskey_unicode_files lib/whiskey/Unicode/*.cpp)
 file(GLOB_RECURSE test_unit_ast_files test/unit/AST/*.cpp)
 file(GLOB_RECURSE test_unit_core_files test/unit/Core/*.cpp)
 file(GLOB_RECURSE test_unit_lexing_files test/unit/Lexing/*.cpp)
@@ -102,32 +103,36 @@ add_library(lib_whiskey_source ${lib_whiskey_source_files})
 set_target_properties(lib_whiskey_source PROPERTIES OUTPUT_NAME WhiskeySource)
 target_link_libraries(lib_whiskey_source lib_whiskey_core lib_whiskey_messages bfd)
 
+add_library(lib_whiskey_unicode ${lib_whiskey_unicode_files})
+set_target_properties(lib_whiskey_unicode PROPERTIES OUTPUT_NAME WhiskeyUnicode)
+# target_link_libraries(lib_whiskey_unicode )
+
 # Unit tests
 #-----------------------------------------------------------------------
 
-add_executable(test_unit_ast ${test_unit_ast_files})
-set_target_properties(test_unit_ast PROPERTIES OUTPUT_NAME whiskey-test-unit-ast)
-target_link_libraries(test_unit_ast lib_whiskey_ast gtest)
+# add_executable(test_unit_ast ${test_unit_ast_files})
+# set_target_properties(test_unit_ast PROPERTIES OUTPUT_NAME whiskey-test-unit-ast)
+# target_link_libraries(test_unit_ast lib_whiskey_ast gtest)
 
-add_executable(test_unit_core ${test_unit_core_files})
-set_target_properties(test_unit_core PROPERTIES OUTPUT_NAME whiskey-test-unit-core)
-target_link_libraries(test_unit_core lib_whiskey_core gtest)
+# add_executable(test_unit_core ${test_unit_core_files})
+# set_target_properties(test_unit_core PROPERTIES OUTPUT_NAME whiskey-test-unit-core)
+# target_link_libraries(test_unit_core lib_whiskey_core gtest)
 
-add_executable(test_unit_lexing ${test_unit_lexing_files})
-set_target_properties(test_unit_lexing PROPERTIES OUTPUT_NAME whiskey-test-unit-lexing)
-target_link_libraries(test_unit_lexing lib_whiskey_lexing gtest)
+# add_executable(test_unit_lexing ${test_unit_lexing_files})
+# set_target_properties(test_unit_lexing PROPERTIES OUTPUT_NAME whiskey-test-unit-lexing)
+# target_link_libraries(test_unit_lexing lib_whiskey_lexing gtest)
 
-add_executable(test_unit_parsing ${test_unit_parsing_files})
-set_target_properties(test_unit_parsing PROPERTIES OUTPUT_NAME whiskey-test-unit-parsing)
-target_link_libraries(test_unit_parsing lib_whiskey_ast lib_whiskey_parsing gtest)
+# add_executable(test_unit_parsing ${test_unit_parsing_files})
+# set_target_properties(test_unit_parsing PROPERTIES OUTPUT_NAME whiskey-test-unit-parsing)
+# target_link_libraries(test_unit_parsing lib_whiskey_ast lib_whiskey_parsing gtest)
 
-add_executable(test_unit_passes ${test_unit_passes_files})
-set_target_properties(test_unit_passes PROPERTIES OUTPUT_NAME whiskey-test-unit-passes)
-target_link_libraries(test_unit_passes lib_whiskey_passes gtest)
+# add_executable(test_unit_passes ${test_unit_passes_files})
+# set_target_properties(test_unit_passes PROPERTIES OUTPUT_NAME whiskey-test-unit-passes)
+# target_link_libraries(test_unit_passes lib_whiskey_passes gtest)
 
-add_executable(test_unit_source ${test_unit_source_files})
-set_target_properties(test_unit_source PROPERTIES OUTPUT_NAME whiskey-test-unit-source)
-target_link_libraries(test_unit_source lib_whiskey_source gtest)
+# add_executable(test_unit_source ${test_unit_source_files})
+# set_target_properties(test_unit_source PROPERTIES OUTPUT_NAME whiskey-test-unit-source)
+# target_link_libraries(test_unit_source lib_whiskey_source gtest)
 
 # Integration tests
 #-----------------------------------------------------------------------
@@ -146,36 +151,36 @@ target_link_libraries(test_unit_source lib_whiskey_source gtest)
 # Fuzz tests
 #-----------------------------------------------------------------------
 
-add_executable(test_fuzz_lexer_random test/fuzz/FuzzLexerRandom.cpp)
-set_target_properties(test_fuzz_lexer_random PROPERTIES OUTPUT_NAME whiskey-test-fuzz-lexer-random)
-target_link_libraries(test_fuzz_lexer_random lib_whiskey_core lib_whiskey_source lib_whiskey_messages lib_whiskey_lexing gtest)
+# add_executable(test_fuzz_lexer_random test/fuzz/FuzzLexerRandom.cpp)
+# set_target_properties(test_fuzz_lexer_random PROPERTIES OUTPUT_NAME whiskey-test-fuzz-lexer-random)
+# target_link_libraries(test_fuzz_lexer_random lib_whiskey_core lib_whiskey_source lib_whiskey_messages lib_whiskey_lexing gtest)
 
-add_executable(test_fuzz_lexer_fuzzer_simple test/fuzz/FuzzLexerFuzzerSimple.cpp)
-set_target_properties(test_fuzz_lexer_fuzzer_simple PROPERTIES OUTPUT_NAME whiskey-test-fuzz-lexer-fuzzer-simple)
-target_link_libraries(test_fuzz_lexer_fuzzer_simple lib_whiskey_core lib_whiskey_source lib_whiskey_messages lib_whiskey_lexing lib_whiskey_fuzzing gtest)
+# add_executable(test_fuzz_lexer_fuzzer_simple test/fuzz/FuzzLexerFuzzerSimple.cpp)
+# set_target_properties(test_fuzz_lexer_fuzzer_simple PROPERTIES OUTPUT_NAME whiskey-test-fuzz-lexer-fuzzer-simple)
+# target_link_libraries(test_fuzz_lexer_fuzzer_simple lib_whiskey_core lib_whiskey_source lib_whiskey_messages lib_whiskey_lexing lib_whiskey_fuzzing gtest)
 
-add_executable(test_fuzz_literals_reflexive_uint test/fuzz/FuzzLiteralsReflexiveUInt.cpp)
-set_target_properties(test_fuzz_literals_reflexive_uint PROPERTIES OUTPUT_NAME whiskey-test-fuzz-literals-reflexive-uint)
-target_link_libraries(test_fuzz_literals_reflexive_uint lib_whiskey_core lib_whiskey_source lib_whiskey_parsing bfd gtest)
+# add_executable(test_fuzz_literals_reflexive_uint test/fuzz/FuzzLiteralsReflexiveUInt.cpp)
+# set_target_properties(test_fuzz_literals_reflexive_uint PROPERTIES OUTPUT_NAME whiskey-test-fuzz-literals-reflexive-uint)
+# target_link_libraries(test_fuzz_literals_reflexive_uint lib_whiskey_core lib_whiskey_source lib_whiskey_parsing bfd gtest)
 
-add_executable(test_fuzz_literals_reflexive_real test/fuzz/FuzzLiteralsReflexiveReal.cpp)
-set_target_properties(test_fuzz_literals_reflexive_real PROPERTIES OUTPUT_NAME whiskey-test-fuzz-literals-reflexive-real)
-target_link_libraries(test_fuzz_literals_reflexive_real lib_whiskey_core lib_whiskey_source lib_whiskey_parsing bfd gtest)
+# add_executable(test_fuzz_literals_reflexive_real test/fuzz/FuzzLiteralsReflexiveReal.cpp)
+# set_target_properties(test_fuzz_literals_reflexive_real PROPERTIES OUTPUT_NAME whiskey-test-fuzz-literals-reflexive-real)
+# target_link_libraries(test_fuzz_literals_reflexive_real lib_whiskey_core lib_whiskey_source lib_whiskey_parsing bfd gtest)
 
-add_executable(test_fuzz_literals_reflexive_char test/fuzz/FuzzLiteralsReflexiveChar.cpp)
-set_target_properties(test_fuzz_literals_reflexive_char PROPERTIES OUTPUT_NAME whiskey-test-fuzz-literals-reflexive-char)
-target_link_libraries(test_fuzz_literals_reflexive_char lib_whiskey_core lib_whiskey_source lib_whiskey_parsing bfd gtest)
+# add_executable(test_fuzz_literals_reflexive_char test/fuzz/FuzzLiteralsReflexiveChar.cpp)
+# set_target_properties(test_fuzz_literals_reflexive_char PROPERTIES OUTPUT_NAME whiskey-test-fuzz-literals-reflexive-char)
+# target_link_libraries(test_fuzz_literals_reflexive_char lib_whiskey_core lib_whiskey_source lib_whiskey_parsing bfd gtest)
 
-add_executable(test_fuzz_literals_reflexive_string test/fuzz/FuzzLiteralsReflexiveString.cpp)
-set_target_properties(test_fuzz_literals_reflexive_string PROPERTIES OUTPUT_NAME whiskey-test-fuzz-literals-reflexive-string)
-target_link_libraries(test_fuzz_literals_reflexive_string lib_whiskey_core lib_whiskey_source lib_whiskey_parsing bfd gtest)
+# add_executable(test_fuzz_literals_reflexive_string test/fuzz/FuzzLiteralsReflexiveString.cpp)
+# set_target_properties(test_fuzz_literals_reflexive_string PROPERTIES OUTPUT_NAME whiskey-test-fuzz-literals-reflexive-string)
+# target_link_libraries(test_fuzz_literals_reflexive_string lib_whiskey_core lib_whiskey_source lib_whiskey_parsing bfd gtest)
 
 # Demos
 #-----------------------------------------------------------------------
 
-add_executable(demo_debug_printer test/demo/DemoDebugPrinter.cpp)
-set_target_properties(demo_debug_printer PROPERTIES OUTPUT_NAME whiskey-demo-debug-printer)
-target_link_libraries(demo_debug_printer lib_whiskey_core lib_whiskey_ast lib_whiskey_printing)
+# add_executable(demo_debug_printer test/demo/DemoDebugPrinter.cpp)
+# set_target_properties(demo_debug_printer PROPERTIES OUTPUT_NAME whiskey-demo-debug-printer)
+# target_link_libraries(demo_debug_printer lib_whiskey_core lib_whiskey_ast lib_whiskey_printing)
 
 # CMake Tests
 #-----------------------------------------------------------------------

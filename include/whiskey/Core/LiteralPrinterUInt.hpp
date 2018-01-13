@@ -7,35 +7,35 @@
 namespace whiskey {
 class LiteralPrinterUInt : public LiteralPrinter {
 private:
-  UInt value;
-  unsigned int base;
+  UInt64 value;
+  int base;
   bool usePrefix;
-  unsigned int width;
+  int width;
 
 protected:
   virtual void onPrint(CharOutStream &os) const;
 
 public:
-  static bool isValidBase(unsigned int base);
-  static void printBasePrefix(CharOutStream &os, unsigned int base);
+  static bool isValidBase(int base);
+  static void printBasePrefix(CharOutStream &os, int base);
 
-  LiteralPrinterUInt(UInt value,
-                    unsigned int base = 10,
+  LiteralPrinterUInt(UInt64 value,
+                    int base = 10,
                     bool usePrefix = true,
-                    unsigned int width = 0);
+                    int width = 0);
   virtual ~LiteralPrinterUInt();
 
-  UInt getValue() const;
-  void setValue(UInt value);
+  UInt64 getValue() const;
+  void setValue(UInt64 value);
 
-  unsigned int getBase() const;
-  void setBase(unsigned int value);
+  int getBase() const;
+  void setBase(int value);
 
   bool getUsePrefix() const;
   void setUsePrefix(bool value);
 
-  unsigned int getWidth() const;
-  void setWidth(unsigned int value);
+  int getWidth() const;
+  void setWidth(int value);
 };
 } // namespace whiskey
 

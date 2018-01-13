@@ -16,8 +16,8 @@ public:
 private:
   Kind kind;
   union {
-    Int asInt;
-    UInt asUInt;
+    Int64 asInt;
+    UInt64 asUInt;
     Real asReal;
     Node *asNode;
   } dataAtomic;
@@ -29,8 +29,8 @@ public:
   Field(const Field &) = delete;
   ~Field();
 
-  static Field *createInt(Int value);
-  static Field *createUInt(UInt value);
+  static Field *createInt(Int64 value);
+  static Field *createUInt(UInt64 value);
   static Field *createReal(Real value);
   static Field *createString(StringContainer *value);
   static Field *createString(StringRef value);
@@ -41,11 +41,11 @@ public:
 
   Kind getKind() const;
 
-  Int getInt() const;
-  void setInt(Int value);
+  Int64 getInt() const;
+  void setInt(Int64 value);
 
-  UInt getUInt() const;
-  void setUInt(UInt value);
+  UInt64 getUInt() const;
+  void setUInt(UInt64 value);
 
   Real getReal() const;
   void setReal(Real value);

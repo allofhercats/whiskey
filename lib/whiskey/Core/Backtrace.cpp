@@ -24,6 +24,9 @@ struct PHeaderData {
 };
 
 int onIteratePHeader(struct dl_phdr_info *info, size_t size, void *data) {
+  W_ASSERT_NONNULL(info, "Cannot iterate null header.");
+  W_ASSERT_NONNULL(data, "Header data cannot be null.");
+
   PHeaderData *casted = (PHeaderData *)data;
 
   const ElfW(Phdr) *phdr = info->dlpi_phdr;

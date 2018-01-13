@@ -3,6 +3,7 @@
 
 #include <whiskey/Unicode/Encoding.hpp>
 #include <whiskey/Unicode/Char.hpp>
+#include <whiskey/Unicode/StringRef.hpp>
 
 namespace whiskey {
 class ByteOutStream;
@@ -23,6 +24,7 @@ public:
 	void setEncoding(Encoding value);
 
 	void write(Char32 value);
+	void write(StringRef value);
 };
 }
 

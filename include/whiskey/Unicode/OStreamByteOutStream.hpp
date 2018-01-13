@@ -1,25 +1,23 @@
 #ifndef __WHISKEY_Unicode_OStreamByteOutStream_HPP
 #define __WHISKEY_Unicode_OStreamByteOutStream_HPP
 
+#include <whiskey/Unicode/ByteOutStream.hpp>
+
 namespace whiskey {
 class OStreamByteOutStream : public ByteOutStream {
 private:
-	std::ostream &os;
+	std::ostream *os;
 	size_t offset;
 
 protected:
-	void onWrite(UInt32 value);
+	void onWrite(Char32 value);
 
 public:
-	FileByteOutStream(std::string path);
-	~FileByteOutStream();
+	OStreamByteOutStream(std::ostream &os);
+	~OStreamByteOutStream();
 
-	const std::string &getPath() const;
-	void setPath(std::string value);
-
-	bool isOpen() const;
-	bool open();
-	void close();
+	std::ostream &getOStream();
+	void setOStream(std::ostream &value);
 };
 }
 

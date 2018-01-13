@@ -9,9 +9,9 @@ namespace whiskey {
 void LiteralPrinterReal::onPrint(CharOutStream &os) const {
 	if (value < 0) {
 		os.write('-');
-		LiteralPrinterUInt((UInt)(-(Int)value)).print(os);
+		LiteralPrinterUInt((UInt64)(-(Int64)value)).print(os);
 	} else {
-		LiteralPrinterUInt((UInt)(Int)value).print(os);
+		LiteralPrinterUInt((UInt64)(Int64)value).print(os);
 	}
 	
   long double dec = value - floor(value);

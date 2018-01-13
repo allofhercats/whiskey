@@ -8,7 +8,6 @@ class StringRef : public String {
 public:
 	StringRef();
 	StringRef(Encoding encoding);
-	StringRef(Encoding encoding, Char32 value, size_t length);
 	StringRef(const Char8 *value);
 	StringRef(const Char8 *value, size_t length);
 	StringRef(const Char16 *value);

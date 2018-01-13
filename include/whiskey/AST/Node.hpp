@@ -315,7 +315,7 @@ public:
                                   std::initializer_list<Node *> args,
                                   Range range = Range());
   static Node *
-  createExprLiteralUInt(Node *type, UInt value, Range range = Range());
+  createExprLiteralUInt(Node *type, UInt64 value, Range range = Range());
   static Node *
   createExprLiteralReal(Node *type, Real value, Range range = Range());
   static Node *createExprSymbol(Field *name, Range range = Range());

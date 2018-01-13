@@ -29,6 +29,7 @@ public:
   const std::string &getPath() const;
   void setPath(std::string value);
 
+  bool isLoaded() const;
   const String &getText() const;
 };
 } // namespace whiskey

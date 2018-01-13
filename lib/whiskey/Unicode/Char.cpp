@@ -1,9 +1,9 @@
-#include <whiskey/Core/Char.hpp>
+#include <whiskey/Unicode/Char.hpp>
 
 #include <iostream>
 
 namespace whiskey {
-CharWidth getChar32MinWidth(Char32 value) {
+int getChar32MinWidth(Char32 value) {
   if ((value & 0xff) == value) {
     return 1;
   } else if ((value & 0xffff) == value) {
@@ -17,11 +17,11 @@ bool isValidUTF32Char(Char32 value) {
   return value < 0xd800 || value > 0xdfff;
 }
 
-bool isValidCharWidth(CharWidth value) {
+bool isValidCharWidth(int value) {
   return value == 1 || value == 2 || value == 4;
 }
 
-Char32 readCharUTF8(const Char8 *src, CharOffset &pos, CharOffset length) {
+Char32 readCharUTF8(const Char8 *src, size_t &pos, size_t length) {
   W_ASSERT_NONNULL(src, "Cannot read character from null string.");
   W_ASSERT_GE(pos, 0, "Cannot read before start of buffer.");
   W_ASSERT_LT(pos, length, "Cannot read past end of buffer.");
@@ -85,8 +85,8 @@ Char32 readCharUTF8(const Char8 *src, CharOffset &pos, CharOffset length) {
 }
 
 Char32 readCharUTF16(const Char16 *src,
-                     CharOffset &pos,
-                     CharOffset length,
+                     size_t &pos,
+                     size_t length,
                      Endianness endianness) {
   W_ASSERT_NONNULL(src, "Cannot read character from null string.");
   W_ASSERT_LT(pos, length, "Cannot read past end of buffer.");
@@ -113,8 +113,8 @@ Char32 readCharUTF16(const Char16 *src,
 }
 
 Char32 readCharUTF32(const Char32 *src,
-                     CharOffset &pos,
-                     CharOffset length,
+                     size_t &pos,
+                     size_t length,
                      Endianness endianness) {
   W_ASSERT_NONNULL(src, "Cannot read character from null string.");
   W_ASSERT_LT(pos, length, "Cannot read past end of buffer.");
@@ -130,8 +130,8 @@ Char32 readCharUTF32(const Char32 *src,
 
 void writeCharUTF8(Char8 *dst,
                    Char32 value,
-                   CharOffset &pos,
-                   CharOffset length) {
+                   size_t &pos,
+                   size_t length) {
   W_ASSERT_NONNULL(dst, "Cannot write character from null string.");
   W_ASSERT_LT(pos, length, "Cannot write past end of buffer.");
   W_ASSERT_GE(pos, 0, "Cannot write before start of buffer.");
@@ -181,8 +181,8 @@ void writeCharUTF8(Char8 *dst,
 
 void writeCharUTF16(Char16 *dst,
                     Char32 value,
-                    CharOffset &pos,
-                    CharOffset length,
+                    size_t &pos,
+                    size_t length,
                     Endianness endianness) {
   W_ASSERT_NONNULL(dst, "Cannot write character from null string.");
   W_ASSERT_LT(pos, length, "Cannot write past end of buffer.");
@@ -217,8 +217,8 @@ void writeCharUTF16(Char16 *dst,
 
 void writeCharUTF32(Char32 *dst,
                     Char32 value,
-                    CharOffset &pos,
-                    CharOffset length,
+                    size_t &pos,
+                    size_t length,
                     Endianness endianness) {
   W_ASSERT_NONNULL(dst, "Cannot write character from null string.");
   W_ASSERT_LT(pos, length, "Cannot write past end of buffer.");
@@ -230,14 +230,5 @@ void writeCharUTF32(Char32 *dst,
   }
 
   dst[pos++] = value;
-}
-
-void printChar(std::ostream &os, Char32 value) {
-  Char8 buf[4];
-  CharOffset length = 0;
-  writeCharUTF8(buf, value, length, 4);
-  for (CharOffset i = 0; i < length; i++) {
-    os.put(buf[i]);
-  }
 }
 } // namespace whiskey

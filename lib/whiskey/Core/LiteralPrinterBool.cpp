@@ -5,18 +5,9 @@
 namespace whiskey {
 void LiteralPrinterBool::onPrint(CharOutStream &os) const {
 	if (value) {
-		//os << "true";
-		os.write('t');
-		os.write('r');
-		os.write('u');
-		os.write('e');
+		os.write("true");
 	} else {
-		// os << "false";
-		os.write('f');
-		os.write('a');
-		os.write('l');
-		os.write('s');
-		os.write('e');
+		os.write("false");
 	}
 }
 

@@ -533,7 +533,7 @@ ParserResult Parser::parseExprLiteralUInt(ParserContext &ctx) {
     return ParserResult();
   }
 
-  UInt tmp;
+  UInt64 tmp;
   if (!evalLiteralUInt(tokenInt.getRange(), tmp)) {
     return ParserResult();
   }

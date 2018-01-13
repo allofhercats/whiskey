@@ -1,10 +1,10 @@
 namespace whiskey {
 template <typename T>
-CharOffset getStringLength(const T *value) {
+size_t getStringLength(const T *value) {
   if (value == nullptr) {
     return 0;
   } else {
-    CharOffset n = 0;
+    size_t n = 0;
     while (*value != 0) {
       n++;
       value++;
@@ -15,8 +15,8 @@ CharOffset getStringLength(const T *value) {
 
 template <typename T>
 Char32 readCharUTF(const T *src,
-                   CharOffset &pos,
-                   CharOffset length,
+                   size_t &pos,
+                   size_t length,
                    Endianness endianness) {
   if (sizeof(T) == 1) {
     return readCharUTF8((const Char8 *)src, pos, length);
@@ -32,8 +32,8 @@ Char32 readCharUTF(const T *src,
 template <typename T>
 void writeCharUTF(T *dst,
                   Char32 value,
-                  CharOffset &pos,
-                  CharOffset length,
+                  size_t &pos,
+                  size_t length,
                   Endianness endianness) {
   if (sizeof(T) == 1) {
     return writeCharUTF8((Char8 *)dst, value, pos, length);

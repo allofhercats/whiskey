@@ -4,6 +4,7 @@
 namespace whiskey {
 enum class Encoding {
 	Auto,
+	ASCII,
 	UTF8,
 	UTF16LE,
 	UTF16BE,

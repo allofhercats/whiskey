@@ -805,7 +805,7 @@ Node *Node::createTypeFunction(Node *ret,
                   range);
 }
 
-Node *Node::createExprLiteralUInt(Node *type, UInt value, Range range) {
+Node *Node::createExprLiteralUInt(Node *type, UInt64 value, Range range) {
   return new Node(Node::Kind::ExprLiteralUInt,
                   {Field::createNode(type), Field::createUInt(value)},
                   range);

@@ -4,6 +4,9 @@
 
 #include <whiskey/Core/Assert.hpp>
 
+#include <whiskey/Unicode/FileByteInStream.hpp>
+#include <whiskey/Unicode/CharInStream.hpp>
+
 namespace whiskey {
 const std::string Source::defaultPath = "--";
 
@@ -23,116 +26,21 @@ bool Source::loadString(StringRef value) {
 }
 
 bool Source::loadFile(Encoding encoding) {
-  FILE *f = fopen(path.c_str(), "r");
-  if (f == NULL) {
+  FileByteInStream fbis(path);
+  if (!fbis.open()) {
     return false;
   }
 
-  fseek(f, SEEK_END, 0);
-  size_t l = ftell(f);
-  fseek(f, SEEK_SET, 0);
-
-  char bom[4];
-  memset(bom, 0, sizeof(bom));
-  int bomCount = fread(bom, 1, 4, f);
-
-  W_ASSERT_LE(bomCount,
-              l,
-              "Could not read more than " << bomCount << " byte"
-                                          << (bomCount == 1 ? "" : "s")
-                                          << " of a " << l << " byte file.");
-
-  if (bom[0] == '\xef' && (bom[1] == '\xbb' && bom[2] == '\xbf')) {
-    W_ASSERT_TRUE(encoding == Encoding::Auto || encoding == Encoding::UTF8,
-                  "Detected encoding conflicts with specified.");
-    encoding = Encoding::UTF8;
-  } else if (bom[0] == '\xff' &&
-             (bom[1] == '\xfe' && (bom[2] == '\x00' && bom[3] == '\x00'))) {
-    W_ASSERT_TRUE(encoding == Encoding::Auto || encoding == Encoding::UTF32LE,
-                  "Detected encoding conflicts with specified.");
-    encoding = Encoding::UTF32LE;
-  } else if (bom[0] == '\x00' &&
-             (bom[1] == '\x00' && (bom[2] == '\xfe' && bom[3] == '\xff'))) {
-    W_ASSERT_TRUE(encoding == Encoding::Auto || encoding == Encoding::UTF32BE,
-                  "Detected encoding conflicts with specified.");
-    encoding = Encoding::UTF32BE;
-  } else if (bom[0] == '\xff' && bom[1] == '\xfe') {
-    W_ASSERT_TRUE(encoding == Encoding::Auto || encoding == Encoding::UTF16LE,
-                  "Detected encoding conflicts with specified.");
-    encoding = Encoding::UTF16LE;
-  } else if (bom[0] == '\xfe' && bom[1] == '\xff') {
-    W_ASSERT_TRUE(encoding == Encoding::Auto || encoding == Encoding::UTF16BE,
-                  "Detected encoding conflicts with specified.");
-    encoding = Encoding::UTF16BE;
-  } else {
-    W_ASSERT_TRUE(encoding == Encoding::Auto || encoding == Encoding::UTF8,
-                  "Detected encoding conflicts with specified.");
-    encoding = Encoding::UTF8;
+  if (encoding == Encoding::Auto) {
+    encoding = fbis.getEncoding();
+  } else if (encoding != fbis.getEncoding()) {
+    return false;
   }
 
-  int width = getEncodingWidth(encoding);
+  CharInStream cis(fbis, encoding);
+  text = cis.read();
 
-  fseek(f, SEEK_SET, 0);
-
-  text = new StringContainer(encoding);
-
-  /*if (width == 1) {
-    text->setLength(0);
-    static_cast<StringContainer *>(text)->setCapacity(l);
-    ssize_t r = fread(text.getData8(), 1, l, f);
-    W_ASSERT_EQ(r, l, "Could not read all characters from file.");
-    text.resize(l);
-  } else if (width == 2) {
-    // char16_t *buf = new char16_t[l / 2 + 1];
-    // ssize_t r = fread(buf, 1, 2 * l, f);
-    // W_ASSERT_EQ(r, l, "Could not read all characters from file.");
-    // buf[l / 2] = 0;
-
-    // if (isEncodingBE(encoding) != isHostBE()) {
-    //   char16_t *p = buf;
-    //   size_t i = 0;
-    //   while (i < l / 2) {
-    //     *p = swapBytes16(*p);
-    //     p++;
-    //     i++;
-    //   }
-    // }
-
-    // data = (void *)buf;
-    // length = l;
-    text = u"";
-    text.reserve(l/2);
-    ssize_t r = fread(text.getData16(), 1, l, f);
-    W_ASSERT_EQ(r, l, "Could not read all characters from file.");
-    text.resize(l/2);
-  } else if (width == 4) {
-    // char32_t *buf = new char32_t[l / 4 + 1];
-    // ssize_t r = fread(buf, 1, 4 * l, f);
-    // W_ASSERT_EQ(r, l, "Could not read all characters from file.");
-    // buf[l / 4] = 0;
-
-    // if (isEncodingBE(encoding) != isHostBE()) {
-    //   char32_t *p = buf;
-    //   size_t i = 0;
-    //   while (i < l / 4) {
-    //     *p = swapBytes32(*p);
-    //     p++;
-    //     i++;
-    //   }
-    // }
-
-    // data = (void *)buf;
-    // length = l;
-    text = U"";
-    text.reserve(l/4);
-    ssize_t r = fread(text.getData32(), 1, l, f);
-    W_ASSERT_EQ(r, l, "Could not read all characters from file.");
-    text.resize(l/4);
-  } else {
-    W_ASSERT_UNREACHABLE("Unsupported width " << width << ".");
-  }
-
-  fclose(f);*/
+  fbis.close();
   return true;
 }
 
@@ -145,7 +53,12 @@ void Source::setPath(std::string value) {
   path = value;
 }
 
-// const StringContainer &Source::getText() const {
-//   return *text;
-// }
+bool Source::isLoaded() const {
+  return text != nullptr;
+}
+
+const String &Source::getText() const {
+  W_ASSERT_NONNULL(text, "Cannot get unloaded text.");
+  return *text;
+}
 } // namespace whiskey

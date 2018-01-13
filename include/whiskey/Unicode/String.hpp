@@ -20,7 +20,6 @@ private:
 public:
 	String();
 	String(Encoding encoding);
-	String(Encoding encoding, Char32 value, size_t length);
 	String(const Char8 *value);
 	String(const Char8 *value, size_t length);
 	String(const Char16 *value);

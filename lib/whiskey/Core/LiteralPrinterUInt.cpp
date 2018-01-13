@@ -8,21 +8,21 @@ void LiteralPrinterUInt::onPrint(CharOutStream &os) const {
 		printBasePrefix(os, base);
 	}
 
-	DigitCount nDigits = getNDigits(value, base);
+	int nDigits = getNDigits(value, base);
 
 	if (width > nDigits) {
-	  for (unsigned int i = 0; i < width - nDigits; i++) {
+	  for (int i = 0; i < width - nDigits; i++) {
 	  	os.write('0');
 	  }
 	}
 
   int exp = (int)nDigits - 1;
   while (exp >= 0) {
-    UInt fac = 1;
+    UInt64 fac = 1;
     for (int i = 0; i < exp; i++) {
       fac *= base;
     }
-    UInt digit = (value / fac) % base;
+    UInt64 digit = (value / fac) % base;
     if (digit <= 9) {
       os.write('0' + digit);
     } else if (10 <= digit && digit <= 15) {
@@ -34,11 +34,11 @@ void LiteralPrinterUInt::onPrint(CharOutStream &os) const {
   }
 }
 
-bool LiteralPrinterUInt::isValidBase(unsigned int base) {
+bool LiteralPrinterUInt::isValidBase(int base) {
   return base == 2 || base == 8 || base == 10 || base == 16;
 }
 
-void LiteralPrinterUInt::printBasePrefix(CharOutStream &os, unsigned int base
+void LiteralPrinterUInt::printBasePrefix(CharOutStream &os, int base
                                            ) {
 	if (base == 2) {
 		os.write('0');
@@ -51,25 +51,25 @@ void LiteralPrinterUInt::printBasePrefix(CharOutStream &os, unsigned int base
 	}
 }
 
-LiteralPrinterUInt::LiteralPrinterUInt(UInt value, unsigned int base, bool usePrefix, unsigned int width) : value(value), base(base), usePrefix(usePrefix), width(width) {
+LiteralPrinterUInt::LiteralPrinterUInt(UInt64 value, int base, bool usePrefix, int width) : value(value), base(base), usePrefix(usePrefix), width(width) {
 	W_ASSERT_TRUE(isValidBase(base), "Invalid base.");
 }
 
 LiteralPrinterUInt::~LiteralPrinterUInt() {}
 
-UInt LiteralPrinterUInt::getValue() const {
+UInt64 LiteralPrinterUInt::getValue() const {
 	return value;
 }
 
-void LiteralPrinterUInt::setValue(UInt value) {
+void LiteralPrinterUInt::setValue(UInt64 value) {
 	this->value = value;
 }
 
-unsigned int LiteralPrinterUInt::getBase() const {
+int LiteralPrinterUInt::getBase() const {
 	return base;
 }
 
-void LiteralPrinterUInt::setBase(unsigned int value) {
+void LiteralPrinterUInt::setBase(int value) {
 	W_ASSERT_TRUE(isValidBase(base), "Invalid base.");
 	base = value;
 }
@@ -82,11 +82,11 @@ void LiteralPrinterUInt::setUsePrefix(bool value) {
 	usePrefix = value;
 }
 
-unsigned int LiteralPrinterUInt::getWidth() const {
+int LiteralPrinterUInt::getWidth() const {
 	return width;
 }
 
-void LiteralPrinterUInt::setWidth(unsigned int value) {
+void LiteralPrinterUInt::setWidth(int value) {
 	width = value;
 }
 }
