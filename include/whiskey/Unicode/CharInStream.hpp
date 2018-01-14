@@ -1,27 +1,30 @@
 #ifndef __WHISKEY_Unicode_CharInStream_HPP
 #define __WHISKEY_Unicode_CharInStream_HPP
 
+#include <whiskey/Unicode/Char.hpp>
+
 namespace whiskey {
+class StringContainer;
+
 class CharInStream {
 private:
-	ByteInStream *byteStream;
-	Encoding encoding;
+	size_t offset;
+
+protected:
+	virtual bool onMore() const = 0;
+	virtual Char32 onGetChar() const = 0;
+	virtual void onSkipChar() = 0;
 
 public:
-	CharInStream(ByteInStream &byteStream, Encoding encoding);
+	CharInStream();
 	CharInStream(const CharInStream &) = delete;
 	virtual ~CharInStream();
-
-	const ByteInStream &getByteStream() const;
-
-	Encoding getEncoding() const;
-	void setEncoding(Encoding value);
 
 	bool more() const;
 	Char32 getChar() const;
 	Char32 eatChar();
 
-	StringContainer *read();
+	StringContainer read();
 
 	size_t getOffset() const;
 };

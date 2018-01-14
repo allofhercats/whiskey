@@ -21,6 +21,28 @@ bool isValidCharWidth(int value) {
   return value == 1 || value == 2 || value == 4;
 }
 
+int getNAdditionalCharsUTF8(Char8 value) {
+  if ((value & 0x80) == 0) {
+    return 0;
+  } else if ((value & 0xe0) == 0xc0) {
+    return 1;
+  } else if ((value & 0xf0) == 0xe0) {
+    return 2;
+  } else if ((value & 0xf8) == 0xf0) {
+    return 3;
+  } else {
+    W_ASSERT_UNREACHABLE("Invalid UTF-8 character.");
+  }
+}
+
+int getNAdditionalCharsUTF16(Char16 value) {
+  if ((value & 0xfc00) != 0xd800) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
 Char32 readCharUTF8(const Char8 *src, size_t &pos, size_t length) {
   W_ASSERT_NONNULL(src, "Cannot read character from null string.");
   W_ASSERT_GE(pos, 0, "Cannot read before start of buffer.");

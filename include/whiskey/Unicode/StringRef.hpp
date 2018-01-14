@@ -20,13 +20,6 @@ public:
 	StringRef(const std::u16string &value, size_t length);
 	StringRef(const std::u32string &value);
 	StringRef(const std::u32string &value, size_t length);
-
-	Char8 getChar8At(size_t index) const;
-	Char16 getChar16At(size_t index) const;
-	Char32 getChar32At(size_t index) const;
-	
-	Char32 getCharAt(size_t index) const;
-	Char32 eatCharAt(size_t &index) const;
 };
 }
 

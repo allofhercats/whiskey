@@ -21,4 +21,23 @@ int getEncodingWidth(Encoding value) {
 			return 4;
 	}
 }
+
+Endianness getEncodingEndianness(Encoding value) {
+	switch (value) {
+		case Encoding::Auto:
+			W_ASSERT_UNREACHABLE("Cannot get endianness of encoding Auto.");
+		case Encoding::ASCII:
+			W_ASSERT_UNREACHABLE("Cannot get endianness of encoding ASCII.");
+		case Encoding::UTF8:
+			W_ASSERT_UNREACHABLE("Cannot get endianness of encoding UTF8.");
+		case Encoding::UTF16LE:
+			return Endianness::Little;
+		case Encoding::UTF16BE:
+			return Endianness::Big;
+		case Encoding::UTF32LE:
+			return Endianness::Little;
+		case Encoding::UTF32BE:
+			return Endianness::Big;
+	}
+}
 }

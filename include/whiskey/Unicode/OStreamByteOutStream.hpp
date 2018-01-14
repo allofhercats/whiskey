@@ -7,14 +7,12 @@ namespace whiskey {
 class OStreamByteOutStream : public ByteOutStream {
 private:
 	std::ostream *os;
-	size_t offset;
 
 protected:
-	void onWrite(Char32 value);
+	void onWriteChar8(Char8 value);
 
 public:
 	OStreamByteOutStream(std::ostream &os);
-	~OStreamByteOutStream();
 
 	std::ostream &getOStream();
 	void setOStream(std::ostream &value);

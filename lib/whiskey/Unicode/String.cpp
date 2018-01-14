@@ -1,6 +1,7 @@
 #include <whiskey/Unicode/String.hpp>
 
 #include <whiskey/Unicode/StringRef.hpp>
+#include <whiskey/Unicode/StringContainer.hpp>
 
 namespace whiskey {
 String::String() : encoding(Encoding::Auto), length(0) {
@@ -271,5 +272,13 @@ bool String::compare(const String &value, size_t length) const {
 	}
 
 	return true;
+}
+
+StringContainer String::convertToEncoding(Encoding encoding) const {
+	StringContainer rtn(encoding);
+	for (size_t i = 0; i < length;) {
+		rtn.append(eatCharAt(i));
+	}
+	return rtn;
 }
 }

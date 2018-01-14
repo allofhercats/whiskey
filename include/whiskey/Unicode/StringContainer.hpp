@@ -1,6 +1,8 @@
 #ifndef __WHISKEY_Unicode_StringContainer_HPP
 #define __WHISKEY_Unicode_StringContainer_HPP
 
+#include <string.h>
+
 #include <whiskey/Unicode/String.hpp>
 #include <whiskey/Unicode/StringRef.hpp>
 
@@ -9,10 +11,17 @@ class StringContainer : public String {
 private:
 	size_t capacity;
 
+	static size_t getNextPowOf2(size_t from);
+
+	template<typename T>
+	void assign(const T *data);
+
+	template<typename T>
+	void assign(const T *data, size_t length);
+
 public:
 	StringContainer();
 	StringContainer(Encoding encoding);
-	StringContainer(Encoding encoding, Char32 value, size_t length);
 	StringContainer(const Char8 *value);
 	StringContainer(const Char8 *value, size_t length);
 	StringContainer(const Char16 *value);
@@ -54,5 +63,7 @@ public:
 	void insert(size_t offset, const String &value);
 };
 }
+
+#include <whiskey/Unicode/StringContainer.tpp>
 
 #endif

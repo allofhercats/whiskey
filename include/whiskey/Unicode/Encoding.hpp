@@ -1,6 +1,8 @@
 #ifndef __WHISKEY_Unicode_Encoding_HPP
 #define __WHISKEY_Unicode_Encoding_HPP
 
+#include <whiskey/Unicode/Endianness.hpp>
+
 namespace whiskey {
 enum class Encoding {
 	Auto,
@@ -13,6 +15,7 @@ enum class Encoding {
 };
 
 int getEncodingWidth(Encoding value);
+Endianness getEncodingEndianness(Encoding value);
 }
 
 #endif

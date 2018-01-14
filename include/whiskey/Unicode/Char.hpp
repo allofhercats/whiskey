@@ -14,6 +14,8 @@ bool isValidUTF32Char(Char32 value);
 bool isValidCharWidth(int value);
 template<typename T>
 size_t getStringLength(const T *src);
+int getNAdditionalCharsUTF8(Char8 value);
+int getNAdditionalCharsUTF16(Char16 value);
 Char32 readCharUTF8(const Char8 *src, size_t &pos, size_t length);
 Char32 readCharUTF16(const Char16 *src,
                      size_t &pos,

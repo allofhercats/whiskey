@@ -6,8 +6,11 @@
 
 namespace whiskey {
 class StringRef;
+class StringContainer;
 
 class String {
+	friend class StringContainer;
+
 private:
 	Encoding encoding;
 	union {
@@ -59,6 +62,8 @@ public:
 
 	bool compare(const String &value) const;
 	bool compare(const String &value, size_t length) const;
+
+	StringContainer convertToEncoding(Encoding encoding) const;
 };
 }
 

@@ -1,6 +1,7 @@
 #ifndef __WHISKEY_Unicode_FileByteInStream_HPP
 #define __WHISKEY_Unicode_FileByteInStream_HPP
 
+#include <whiskey/Unicode/Encoding.hpp>
 #include <whiskey/Unicode/ByteInStream.hpp>
 
 namespace whiskey {
@@ -8,13 +9,15 @@ class FileByteInStream : public ByteInStream {
 private:
 	std::string path;
 	FILE *file;
-	size_t offset;
 	size_t length;
 	Encoding encoding;
+	Char8 last;
+	bool lastGood;
 
 protected:
-	Char32 onRead() const;
-	void onSkip();
+	bool onMore() const;
+	Char8 onReadChar8() const;
+	void onSkipChar8();
 
 public:
 	FileByteInStream(std::string path);
