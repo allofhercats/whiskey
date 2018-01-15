@@ -15,9 +15,9 @@ private:
 	bool lastGood;
 
 protected:
-	bool onMore() const;
-	Char8 onReadChar8() const;
-	void onSkipChar8();
+	bool onIsMore() const;
+	Char8 onReadChar() const;
+	void onSkipChar();
 
 public:
 	FileByteInStream(std::string path);

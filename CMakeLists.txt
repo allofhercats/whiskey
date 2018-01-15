@@ -59,6 +59,7 @@ file(GLOB_RECURSE test_unit_lexing_files test/unit/Lexing/*.cpp)
 file(GLOB_RECURSE test_unit_parsing_files test/unit/Parsing/*.cpp)
 file(GLOB_RECURSE test_unit_passes_files test/unit/Passes/*.cpp)
 file(GLOB_RECURSE test_unit_source_files test/unit/Source/*.cpp)
+file(GLOB_RECURSE test_unit_unicode_files test/unit/Unicode/*.cpp)
 file(GLOB_RECURSE test_integration_files test/integration/*.cpp)
 file(GLOB_RECURSE test_feature_files test/feature/*.cpp)
 
@@ -105,7 +106,7 @@ target_link_libraries(lib_whiskey_source lib_whiskey_core lib_whiskey_messages b
 
 add_library(lib_whiskey_unicode ${lib_whiskey_unicode_files})
 set_target_properties(lib_whiskey_unicode PROPERTIES OUTPUT_NAME WhiskeyUnicode)
-# target_link_libraries(lib_whiskey_unicode )
+target_link_libraries(lib_whiskey_unicode lib_whiskey_core bfd)
 
 # Unit tests
 #-----------------------------------------------------------------------
@@ -133,6 +134,10 @@ set_target_properties(lib_whiskey_unicode PROPERTIES OUTPUT_NAME WhiskeyUnicode)
 # add_executable(test_unit_source ${test_unit_source_files})
 # set_target_properties(test_unit_source PROPERTIES OUTPUT_NAME whiskey-test-unit-source)
 # target_link_libraries(test_unit_source lib_whiskey_source gtest)
+
+add_executable(test_unit_unicode ${test_unit_unicode_files})
+set_target_properties(test_unit_unicode PROPERTIES OUTPUT_NAME whiskey-test-unit-unicode)
+target_link_libraries(test_unit_unicode lib_whiskey_unicode gtest)
 
 # Integration tests
 #-----------------------------------------------------------------------
@@ -193,5 +198,6 @@ add_test(NAME ctest_unit_lexing COMMAND ./whiskey-test-unit-lexing)
 add_test(NAME ctest_unit_parsing COMMAND ./whiskey-test-unit-parsing)
 add_test(NAME ctest_unit_passes COMMAND ./whiskey-test-unit-passes)
 add_test(NAME ctest_unit_source COMMAND ./whiskey-test-unit-source)
+add_test(NAME ctest_unit_unicode COMMAND ./whiskey-test-unit-unicode)
 add_test(NAME ctest_integration COMMAND ./whiskey-test-integration)
 add_test(NAME ctest_feature COMMAND ./whiskey-test-feature)

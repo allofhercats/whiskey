@@ -35,6 +35,7 @@ public:
 	String(const std::u16string &value, size_t length);
 	String(const std::u32string &value);
 	String(const std::u32string &value, size_t length);
+	virtual ~String() = 0;
 	
 	Encoding getEncoding() const;
 

@@ -9,7 +9,7 @@ private:
 	std::ostream *os;
 
 protected:
-	void onWriteChar8(Char8 value);
+	void onWriteChar(Char8 value);
 
 public:
 	OStreamByteOutStream(std::ostream &os);

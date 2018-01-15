@@ -9,9 +9,9 @@ private:
 	std::istream *is;
 
 protected:
-	bool onMore() const;
-	Char8 onReadChar8() const;
-	void onSkipChar8();
+	bool onIsMore() const;
+	Char8 onReadChar() const;
+	void onSkipChar();
 
 public:
 	IStreamByteInStream(std::istream &is);

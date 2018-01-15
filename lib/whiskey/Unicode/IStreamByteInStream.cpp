@@ -3,15 +3,15 @@
 #include <istream>
 
 namespace whiskey {
-bool IStreamByteInStream::onMore() const {
+bool IStreamByteInStream::onIsMore() const {
 	return is->good();
 }
 
-Char8 IStreamByteInStream::onReadChar8() const {
+Char8 IStreamByteInStream::onReadChar() const {
 	return is->peek();
 }
 
-void IStreamByteInStream::onSkipChar8() {
+void IStreamByteInStream::onSkipChar() {
 	is->get();
 }
 

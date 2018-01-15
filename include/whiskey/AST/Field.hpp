@@ -21,7 +21,7 @@ private:
     Real asReal;
     Node *asNode;
   } dataAtomic;
-  StringContainer *asString;
+  StringContainer asString;
 
   Field(Kind kind);
 
@@ -32,8 +32,7 @@ public:
   static Field *createInt(Int64 value);
   static Field *createUInt(UInt64 value);
   static Field *createReal(Real value);
-  static Field *createString(StringContainer *value);
-  static Field *createString(StringRef value);
+  static Field *createString(StringContainer value);
   static Field *createNode(Node *value);
   static Field *createNode(std::initializer_list<Node *> value);
 
@@ -52,8 +51,7 @@ public:
 
   StringContainer &getString();
   const StringContainer &getString() const;
-  void setString(StringContainer *value);
-  void setString(StringRef value);
+  void setString(StringContainer value);
 
   Node *getNode();
   const Node *getNode() const;

@@ -1,7 +1,7 @@
 #include <whiskey/Unicode/OStreamByteOutStream.hpp>
 
 namespace whiskey {
-void OStreamByteOutStream::onWriteChar8(Char8 value) {
+void OStreamByteOutStream::onWriteChar(Char8 value) {
 	os->put(value);
 }
 

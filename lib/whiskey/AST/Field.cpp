@@ -4,7 +4,7 @@
 
 #include <whiskey/AST/Node.hpp>
 #include <whiskey/Unicode/OStreamByteOutStream.hpp>
-#include <whiskey/Unicode/CharOutStream.hpp>
+#include <whiskey/Unicode/ByteCharOutStream.hpp>
 #include <whiskey/Core/LiteralPrinterBool.hpp>
 #include <whiskey/Core/LiteralPrinterUInt.hpp>
 #include <whiskey/Core/LiteralPrinterReal.hpp>
@@ -35,14 +35,10 @@ Field *Field::createReal(Real value) {
   return rtn;
 }
 
-Field *Field::createString(StringContainer *value) {
+Field *Field::createString(StringContainer value) {
   Field *rtn = new Field(Kind::String);
   rtn->asString = value;
   return rtn;
-}
-
-Field *Field::createString(StringRef value) {
-  return createString(new StringContainer(value));
 }
 
 Field *Field::createNode(Node *value) {
@@ -138,26 +134,21 @@ StringContainer &Field::getString() {
   W_ASSERT_EQ(kind,
               Kind::String,
               "Can only access string field as string.");
-  return *asString;
+  return asString;
 }
 
 const StringContainer &Field::getString() const {
   W_ASSERT_EQ(kind,
               Kind::String,
               "Can only access string field as string.");
-  return *asString;
+  return asString;
 }
 
-void Field::setString(StringContainer *value) {
+void Field::setString(StringContainer value) {
   W_ASSERT_EQ(kind,
               Kind::String,
               "Can only access string field as string.");
-  W_ASSERT_NONNULL(value, "Can not assign null string to field.");
   asString = value;
-}
-
-void Field::setString(StringRef value) {
-  setString(new StringContainer(value));
 }
 
 Node *Field::getNode() {
@@ -193,7 +184,7 @@ bool Field::compare(const Field *other) const {
       return false;
     }
   } else if (kind == Kind::String) {
-    if (!asString->compare(*other->asString)) {
+    if (!asString.compare(other->asString)) {
       return false;
     }
   } else if (kind == Kind::Node) {
@@ -215,7 +206,7 @@ bool Field::compare(const Field *other) const {
 
 void Field::printLiteral(std::ostream &os) const {
   OStreamByteOutStream obos(os);
-  CharOutStream cos(obos, Encoding::ASCII);
+  ByteCharOutStream cos(obos, Encoding::ASCII);
 
   if (kind == Field::Kind::Int) {
     if (dataAtomic.asInt < 0) {
@@ -229,7 +220,7 @@ void Field::printLiteral(std::ostream &os) const {
   } else if (kind == Field::Kind::Real) {
     LiteralPrinterReal(dataAtomic.asReal).print(cos);
   } else if (kind == Field::Kind::String) {
-    LiteralPrinterString(*asString).print(cos);
+    LiteralPrinterString(asString).print(cos);
   } else {
     W_ASSERT_UNREACHABLE("Cannot print field as literal.");
   }

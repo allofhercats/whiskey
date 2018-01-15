@@ -3,16 +3,16 @@
 #include <whiskey/Unicode/StringContainer.hpp>
 
 namespace whiskey {
-CharInStream::CharInStream() : offset(0) {}
+CharInStream::CharInStream() {}
 
 CharInStream::~CharInStream() {}
 
-bool CharInStream::more() const {
-	return onMore();
+bool CharInStream::isMore() const {
+	return onIsMore();
 }
 
 Char32 CharInStream::getChar() const {
-	if (more()) {
+	if (isMore()) {
 		return onGetChar();
 	} else {
 		return 0;
@@ -22,19 +22,14 @@ Char32 CharInStream::getChar() const {
 Char32 CharInStream::eatChar() {
 	Char32 rtn = getChar();
 	onSkipChar();
-	offset++;
 	return rtn;
 }
 
 StringContainer CharInStream::read() {
 	StringContainer rtn;
-	while (more()) {
+	while (isMore()) {
 		rtn.append(eatChar());
 	}
 	return rtn;
-}
-
-size_t CharInStream::getOffset() const {
-	return offset;
 }
 }

@@ -2,7 +2,7 @@
 
 #include <whiskey/Core/Assert.hpp>
 #include <whiskey/Core/LiteralPrinterString.hpp>
-#include <whiskey/Unicode/CharOutStream.hpp>
+#include <whiskey/Unicode/ByteCharOutStream.hpp>
 #include <whiskey/Unicode/OStreamByteOutStream.hpp>
 
 namespace whiskey {
@@ -558,7 +558,7 @@ void Token::printDebug(std::ostream &os) const {
   os << " ";
 
   OStreamByteOutStream obos(os);
-  CharOutStream cos(obos, Encoding::ASCII);
+  ByteCharOutStream cos(obos, Encoding::ASCII);
   LiteralPrinterString(range.getText()).print(cos);
 }
 } // namespace whiskey

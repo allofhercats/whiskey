@@ -4,23 +4,27 @@
 #include <whiskey/Unicode/StringContainer.hpp>
 
 namespace whiskey {
-String::String() : encoding(Encoding::Auto), length(0) {
+String::String() : encoding(Encoding::UTF8), length(0) {
 	data.asChar8 = nullptr;
 }
 
 String::String(Encoding encoding) : encoding(encoding), length(0) {
+	W_ASSERT_NE(encoding, Encoding::Auto, "Cannot create string with encoding Auto.");
+
 	data.asChar8 = nullptr;
 }
 
 String::String(const Char8 *value) : String(value, getStringLength(value)) {}
 
 String::String(const Char8 *value, size_t length) : encoding(Encoding::UTF8), length(length) {
+	W_ASSERT_NONNULL(value, "Cannot create string from null.");
 	data.asChar8 = (Char8 *)value;
 }
 
 String::String(const Char16 *value) : String(value, getStringLength(value)) {}
 
 String::String(const Char16 *value, size_t length) : length(length) {
+	W_ASSERT_NONNULL(value, "Cannot create string from null.");
 	if (getSystemEndianness() == Endianness::Little) {
 		encoding = Encoding::UTF16LE;
 	} else {
@@ -32,6 +36,7 @@ String::String(const Char16 *value, size_t length) : length(length) {
 String::String(const Char32 *value) : String(value, getStringLength(value)) {}
 
 String::String(const Char32 *value, size_t length) : length(length) {
+	W_ASSERT_NONNULL(value, "Cannot create string from null.");
 	if (getSystemEndianness() == Endianness::Little) {
 		encoding = Encoding::UTF32LE;
 	} else {
@@ -40,23 +45,25 @@ String::String(const Char32 *value, size_t length) : length(length) {
 	data.asChar32 = (Char32 *)value;
 }
 
-String::String(const std::string &value) : String(value.c_str()) {}
+String::String(const std::string &value) : String(value.c_str(), value.size()) {}
 
 String::String(const std::string &value, size_t length) : String(value.c_str(), length) {
 	W_ASSERT_ULE(length, value.size(), "Cannot access past end of string.");
 }
 
-String::String(const std::u16string &value) : String(value.c_str()) {}
+String::String(const std::u16string &value) : String(value.c_str(), value.size()) {}
 
 String::String(const std::u16string &value, size_t length) : String(value.c_str(), length) {
 	W_ASSERT_ULE(length, value.size(), "Cannot access past end of string.");
 }
 
-String::String(const std::u32string &value) : String(value.c_str()) {}
+String::String(const std::u32string &value) : String(value.c_str(), value.size()) {}
 
 String::String(const std::u32string &value, size_t length) : String(value.c_str(), length) {
 	W_ASSERT_ULE(length, value.size(), "Cannot access past end of string.");
 }
+
+String::~String() {}
 
 Encoding String::getEncoding() const {
 	return encoding;
@@ -68,24 +75,34 @@ size_t String::getLength() const {
 
 void String::setLength(size_t value) {
 	W_ASSERT_ULE(value, length, "Cannot access past end of string.");
+	length = value;
 }
 
 Char8 String::getChar8At(size_t index) const {
 	W_ASSERT_EQ(getEncodingWidth(encoding), 1, "Cannot access " << getEncodingWidth(encoding) << "-byte width string as 1-byte width.");
-	W_ASSERT_ULT(index, length, "Cannot access past end of string.");
-	return data.asChar8[index];
+	if (index >= length) {
+		return 0;
+	} else {
+		return data.asChar8[index];
+	}
 }
 
 Char16 String::getChar16At(size_t index) const {
 	W_ASSERT_EQ(getEncodingWidth(encoding), 2, "Cannot access " << getEncodingWidth(encoding) << "-byte width string as 2-byte width.");
-	W_ASSERT_ULT(index, length, "Cannot access past end of string.");
-	return data.asChar16[index];
+	if (index >= length) {
+		return 0;
+	} else {
+		return data.asChar16[index];
+	}
 }
 
 Char32 String::getChar32At(size_t index) const {
 	W_ASSERT_EQ(getEncodingWidth(encoding), 4, "Cannot access " << getEncodingWidth(encoding) << "-byte width string as 4-byte width.");
-	W_ASSERT_ULT(index, length, "Cannot access past end of string.");
-	return data.asChar32[index];
+	if (index >= length) {
+		return 0;
+	} else {
+		return data.asChar32[index];
+	}
 }
 
 Char32 String::getCharAt(size_t index) const {
@@ -93,6 +110,10 @@ Char32 String::getCharAt(size_t index) const {
 }
 
 Char32 String::eatCharAt(size_t &index) const {
+	if (data.asChar8 == nullptr || length == 0) {
+		return 0;
+	}
+
 	switch (getEncodingWidth(encoding)) {
 		case 1:
 			return readCharUTF8(data.asChar8, index, length);
@@ -275,6 +296,8 @@ bool String::compare(const String &value, size_t length) const {
 }
 
 StringContainer String::convertToEncoding(Encoding encoding) const {
+	W_ASSERT_NE(encoding, Encoding::Auto, "Cannot convert to encoding Auto.");
+
 	StringContainer rtn(encoding);
 	for (size_t i = 0; i < length;) {
 		rtn.append(eatCharAt(i));

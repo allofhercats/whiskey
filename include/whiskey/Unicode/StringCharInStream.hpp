@@ -11,7 +11,7 @@ private:
 	size_t offset;
 	
 protected:
-	bool onMore() const;
+	bool onIsMore() const;
 	Char32 onGetChar() const;
 	void onSkipChar();
 

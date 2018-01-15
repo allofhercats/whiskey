@@ -15,7 +15,7 @@ private:
 	bool lastGood;
 
 protected:
-	bool onMore() const;
+	bool onIsMore() const;
 	Char32 onGetChar() const;
 	void onSkipChar();
 

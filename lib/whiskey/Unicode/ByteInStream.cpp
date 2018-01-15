@@ -1,30 +1,25 @@
 #include <whiskey/Unicode/ByteInStream.hpp>
 
 namespace whiskey {
-ByteInStream::ByteInStream() : offset(0) {}
+ByteInStream::ByteInStream() {}
 
 ByteInStream::~ByteInStream() {}
 
-bool ByteInStream::more() const {
-	return onMore();
+bool ByteInStream::isMore() const {
+	return onIsMore();
 }
 
-Char8 ByteInStream::getChar8() const {
-	if (more()) {
-		return onReadChar8();
+Char8 ByteInStream::getChar() const {
+	if (isMore()) {
+		return onReadChar();
 	} else {
 		return 0;
 	}
 }
 
-Char8 ByteInStream::eatChar8() {
-	Char8 rtn = getChar8();
-	onSkipChar8();
-	offset++;
+Char8 ByteInStream::eatChar() {
+	Char8 rtn = getChar();
+	onSkipChar();
 	return rtn;
-}
-
-size_t ByteInStream::getOffset() const {
-	return offset;
 }
 }

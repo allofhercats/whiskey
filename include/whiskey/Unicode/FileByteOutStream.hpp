@@ -12,7 +12,7 @@ private:
 	FILE *file;
 
 protected:
-	void onWriteChar8(Char8 value);
+	void onWriteChar(Char8 value);
 
 public:
 	FileByteOutStream(std::string path, Encoding encoding = Encoding::Auto);

@@ -6,22 +6,14 @@
 #include <whiskey/Unicode/StringRef.hpp>
 
 namespace whiskey {
-class ByteOutStream;
-
 class CharOutStream {
 private:
-	ByteOutStream *byteStream;
-	Encoding encoding;
+	virtual void onWriteChar(Char32 value) = 0;
 
 public:
-	CharOutStream(ByteOutStream &byteStream, Encoding encoding);
+	CharOutStream();
 	CharOutStream(const CharOutStream &) = delete;
 	virtual ~CharOutStream();
-
-	const ByteOutStream &getByteStream() const;
-
-	Encoding getEncoding() const;
-	void setEncoding(Encoding value);
 
 	void write(Char32 value);
 	void write(StringRef value);

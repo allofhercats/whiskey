@@ -5,7 +5,7 @@ ByteOutStream::ByteOutStream() {}
 
 ByteOutStream::~ByteOutStream() {}
 
-void ByteOutStream::writeChar8(Char8 value) {
-	onWriteChar8(value);
+void ByteOutStream::writeChar(Char8 value) {
+	onWriteChar(value);
 }
 }

@@ -11,6 +11,7 @@
 #include <execinfo.h>
 #include <link.h>
 #include <unistd.h>
+#include <string.h>
 
 #include <whiskey/Core/Color.hpp>
 
@@ -24,9 +25,6 @@ struct PHeaderData {
 };
 
 int onIteratePHeader(struct dl_phdr_info *info, size_t size, void *data) {
-  W_ASSERT_NONNULL(info, "Cannot iterate null header.");
-  W_ASSERT_NONNULL(data, "Header data cannot be null.");
-
   PHeaderData *casted = (PHeaderData *)data;
 
   const ElfW(Phdr) *phdr = info->dlpi_phdr;
@@ -175,9 +173,17 @@ void printBacktrace(std::ostream &os, int maxDepth) {
         int status;
         char *realname = abi::__cxa_demangle(data.funcname, 0, 0, &status);
         if (realname != nullptr && realname[0] != 0) {
+          if (strcmp(realname, "main") == 0) {
+            os << "\n";
+            break;
+          }
           os << Color::cyan << realname << "\n" << Color::reset;
           free(realname);
         } else {
+          if (strcmp(data.funcname, "main") == 0) {
+            os << "\n";
+            break;
+          }
           os << Color::cyan << data.funcname << "\n" << Color::reset;
         }
       }

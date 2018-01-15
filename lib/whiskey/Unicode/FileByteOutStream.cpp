@@ -1,7 +1,7 @@
 #include <whiskey/Unicode/FileByteOutStream.hpp>
 
 namespace whiskey {
-void FileByteOutStream::onWriteChar8(Char8 value) {
+void FileByteOutStream::onWriteChar(Char8 value) {
 	W_ASSERT_NONNULL(file, "Cannot write to null file handle.");
 	fputc(value, file);
 }

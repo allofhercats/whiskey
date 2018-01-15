@@ -21,8 +21,9 @@ public:
   Source(std::string path = defaultPath);
   Source(const Source &) = delete;
   Source &operator=(const Source &) = delete;
+  ~Source();
 
-  bool loadString(StringContainer *value);
+  bool loadString(StringContainer value);
   bool loadString(StringRef value);
   bool loadFile(Encoding encoding = Encoding::Auto);
 

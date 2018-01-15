@@ -5,27 +5,35 @@
 #include <whiskey/Core/Assert.hpp>
 
 #include <whiskey/Unicode/FileByteInStream.hpp>
-#include <whiskey/Unicode/CharInStream.hpp>
+#include <whiskey/Unicode/ByteCharInStream.hpp>
 
 namespace whiskey {
 const std::string Source::defaultPath = "--";
 
 Source::Source(std::string path)
-    : path(path) {
+    : path(path), text(nullptr) {
   W_ASSERT_GT(path.size(), 0, "Cannot have empty path.");
 }
 
-bool Source::loadString(StringContainer *value) {
-  text = value;
-  return true;
+Source::~Source() {
+  delete text;
 }
 
-bool Source::loadString(StringRef value) {
+bool Source::loadString(StringContainer value) {
+  delete text;
   text = new StringContainer(value);
   return true;
 }
 
+bool Source::loadString(StringRef value) {
+  delete text;
+  text = new StringRef(value);
+  return true;
+}
+
 bool Source::loadFile(Encoding encoding) {
+  delete text;
+
   FileByteInStream fbis(path);
   if (!fbis.open()) {
     return false;
@@ -37,8 +45,8 @@ bool Source::loadFile(Encoding encoding) {
     return false;
   }
 
-  CharInStream cis(fbis, encoding);
-  text = cis.read();
+  ByteCharInStream cis(fbis, encoding);
+  text = new StringContainer(cis.read());
 
   fbis.close();
   return true;

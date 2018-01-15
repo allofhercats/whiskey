@@ -3,12 +3,12 @@
 #include <string.h>
 
 namespace whiskey {
-bool FileByteInStream::onMore() const {
+bool FileByteInStream::onIsMore() const {
 	W_ASSERT_TRUE(isOpen(), "Cannot check if more characters in unopened file stream.");
 	return !feof(file);
 }
 
-Char8 FileByteInStream::onReadChar8() const {
+Char8 FileByteInStream::onReadChar() const {
 	W_ASSERT_TRUE(isOpen(), "Cannot read characters in unopened file stream.");
 
 	if (lastGood) {
@@ -22,7 +22,7 @@ Char8 FileByteInStream::onReadChar8() const {
 	}
 }
 
-void FileByteInStream::onSkipChar8() {
+void FileByteInStream::onSkipChar() {
 	W_ASSERT_TRUE(isOpen(), "Cannot skip characters in unopened file stream.");
 
 	lastGood = false;
