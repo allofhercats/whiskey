@@ -558,7 +558,7 @@ void Token::printDebug(std::ostream &os) const {
   os << " ";
 
   OStreamByteOutStream obos(os);
-  ByteCharOutStream cos(obos, Encoding::ASCII);
+  ByteCharOutStream cos(obos, Encoding::UTF8);
   LiteralPrinterString(range.getText()).print(cos);
 }
 } // namespace whiskey

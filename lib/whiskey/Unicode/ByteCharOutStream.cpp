@@ -2,8 +2,12 @@
 
 #include <whiskey/Unicode/ByteOutStream.hpp>
 
+#include <iostream>
+
 namespace whiskey {
 void ByteCharOutStream::onWriteChar(Char32 value) {
+	std::cout << "WRITE " << std::hex << (int)value << "\n";
+
 	if (encoding == Encoding::UTF8) {
 		Char8 buf[4];
 		size_t length = 0;

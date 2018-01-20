@@ -52,14 +52,14 @@ public:
 	StringRef subString(size_t offset) const;
 	StringRef subString(size_t offset, size_t length) const;
 
-	size_t findFirst(Char32 value) const;
-	size_t findFirst(Char32 value, size_t after) const;
-	size_t findFirst(const String &value) const;
-	size_t findFirst(const String &value, size_t after) const;
-	size_t findLast(Char32 value) const;
-	size_t findLast(Char32 value, size_t after) const;
-	size_t findLast(const String &value) const;
-	size_t findLast(const String &value, size_t after) const;
+	// size_t findFirst(Char32 value) const;
+	// size_t findFirst(Char32 value, size_t after) const;
+	// size_t findFirst(const String &value) const;
+	// size_t findFirst(const String &value, size_t after) const;
+	// size_t findLast(Char32 value) const;
+	// size_t findLast(Char32 value, size_t after) const;
+	// size_t findLast(const String &value) const;
+	// size_t findLast(const String &value, size_t after) const;
 
 	bool compare(const String &value) const;
 	bool compare(const String &value, size_t length) const;

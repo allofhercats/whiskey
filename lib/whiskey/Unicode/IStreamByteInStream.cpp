@@ -4,7 +4,7 @@
 
 namespace whiskey {
 bool IStreamByteInStream::onIsMore() const {
-	return is->good();
+	return is->rdbuf()->in_avail() > 0;
 }
 
 Char8 IStreamByteInStream::onReadChar() const {

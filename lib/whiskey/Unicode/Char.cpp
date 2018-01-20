@@ -211,9 +211,9 @@ void writeCharUTF16(Char16 *dst,
   W_ASSERT_GE(pos, 0, "Cannot write before start of buffer.");
   W_ASSERT_GE(length, 0, "Cannot write buffer with negative length.");
 
-  if (endianness != Endianness::Auto && getSystemEndianness() != endianness) {
-    value = swapByteOrder(value);
-  }
+  // if (endianness != Endianness::Auto && getSystemEndianness() != endianness) {
+  //   value = swapByteOrder(value);
+  // }
 
   if (value <= 0xdf77) {
     dst[pos] = value & 0xffff;
@@ -247,9 +247,9 @@ void writeCharUTF32(Char32 *dst,
   W_ASSERT_GE(pos, 0, "Cannot write before start of buffer.");
   W_ASSERT_GE(length, 0, "Cannot write buffer with negative length.");
 
-  if (endianness != Endianness::Auto && getSystemEndianness() != endianness) {
-    value = swapByteOrder(value);
-  }
+  // if (endianness != Endianness::Auto && getSystemEndianness() != endianness) {
+  //   value = swapByteOrder(value);
+  // }
 
   dst[pos++] = value;
 }

@@ -2,10 +2,12 @@
 
 #include <string.h>
 
+#include <iostream>
+
 namespace whiskey {
 bool FileByteInStream::onIsMore() const {
 	W_ASSERT_TRUE(isOpen(), "Cannot check if more characters in unopened file stream.");
-	return !feof(file);
+	return (!feof(file)) && offset < length;
 }
 
 Char8 FileByteInStream::onReadChar() const {
@@ -25,10 +27,11 @@ Char8 FileByteInStream::onReadChar() const {
 void FileByteInStream::onSkipChar() {
 	W_ASSERT_TRUE(isOpen(), "Cannot skip characters in unopened file stream.");
 
+	offset++;
 	lastGood = false;
 }
 
-FileByteInStream::FileByteInStream(std::string path) : path(path), file(nullptr), length(0), encoding(Encoding::Auto), last(0), lastGood(false) {
+FileByteInStream::FileByteInStream(std::string path) : path(path), file(nullptr), offset(0), length(0), encoding(Encoding::Auto), last(0), lastGood(false) {
 	W_ASSERT_UGT(path.size(), 0, "Cannot create file stream with empty path.");
 }
 
@@ -52,7 +55,7 @@ bool FileByteInStream::isOpen() const {
 bool FileByteInStream::open() {
 	W_ASSERT_FALSE(isOpen(), "File stream is already open.");
 
-	file = fopen(path.c_str(), "w");
+	file = fopen(path.c_str(), "r");
 	if (file == nullptr) {
 		return false;
 	}
@@ -66,22 +69,27 @@ bool FileByteInStream::open() {
 
 	if (length >= 3 && memcmp(bom, "\xef\xbb\xbf", 3) == 0) {
 		fseek(file, 3, SEEK_SET);
+		length -= 3;
 		encoding = Encoding::UTF8;
 	} else if (length >= 4 && memcmp(bom, "\xff\xfe\x00\x00", 4) == 0) {
 		fseek(file, 4, SEEK_SET);
+		length -= 4;
 		encoding = Encoding::UTF32LE;
 	} else if (length >= 4 && memcmp(bom, "\x00\x00\xfe\xff", 4) == 0) {
 		fseek(file, 4, SEEK_SET);
+		length -= 4;
 		encoding = Encoding::UTF32BE;
 	} else if (length >= 2 && memcmp(bom, "\xfe\xff", 2) == 0) {
 		fseek(file, 2, SEEK_SET);
+		length -= 2;
 		encoding = Encoding::UTF16LE;
 	} else if (length >= 2 && memcmp(bom, "\xff\xfe", 2) == 0) {
 		fseek(file, 2, SEEK_SET);
+		length -= 2;
 		encoding = Encoding::UTF16BE;
 	} else {
 		fseek(file, 0, SEEK_SET);
-		encoding = Encoding::UTF8;
+		encoding = Encoding::Auto;
 	}
 
 	last = 0;
@@ -98,10 +106,14 @@ void FileByteInStream::close() {
 }
 
 size_t FileByteInStream::getLength() const {
+	W_ASSERT_TRUE(isOpen(), "Cannot get length of unopened file stream.");
+
 	return length;
 }
 
 Encoding FileByteInStream::getEncoding() const {
+	W_ASSERT_TRUE(isOpen(), "Cannot get encoding of unopened file stream.");
+
 	return encoding;
 }
 }

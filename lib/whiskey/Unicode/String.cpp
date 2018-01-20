@@ -110,7 +110,7 @@ Char32 String::getCharAt(size_t index) const {
 }
 
 Char32 String::eatCharAt(size_t &index) const {
-	if (data.asChar8 == nullptr || length == 0) {
+	if (data.asChar8 == nullptr || index >= length) {
 		return 0;
 	}
 
@@ -135,8 +135,10 @@ StringRef String::subString(size_t offset) const {
 }
 
 StringRef String::subString(size_t offset, size_t length) const {
-	if (offset+length >= this->length) {
+	if (offset >= this->length) {
 		return StringRef();
+	} else if (offset+length >= this->length) {
+		length = this->length - offset;
 	}
 
 	switch (getEncodingWidth(encoding)) {
@@ -151,121 +153,121 @@ StringRef String::subString(size_t offset, size_t length) const {
 	}
 }
 
-size_t String::findFirst(Char32 value) const {
-	for (size_t i = 0; i < length;) {
-		size_t tmp = i;
-		if (eatCharAt(tmp) == value) {
-			return i;
-		} else {
-			i = tmp;
-		}
-	}
+// size_t String::findFirst(Char32 value) const {
+// 	for (size_t i = 0; i < length;) {
+// 		size_t tmp = i;
+// 		if (eatCharAt(tmp) == value) {
+// 			return i;
+// 		} else {
+// 			i = tmp;
+// 		}
+// 	}
 
-	return -1;
-}
+// 	return -1;
+// }
 
-size_t String::findFirst(Char32 value, size_t after) const {
-	for (size_t i = after; i < length;) {
-		size_t tmp = i;
-		if (eatCharAt(tmp) == value) {
-			return i;
-		} else {
-			i = tmp;
-		}
-	}
+// size_t String::findFirst(Char32 value, size_t after) const {
+// 	for (size_t i = after; i < length;) {
+// 		size_t tmp = i;
+// 		if (eatCharAt(tmp) == value) {
+// 			return i;
+// 		} else {
+// 			i = tmp;
+// 		}
+// 	}
 
-	return -1;
-}
+// 	return -1;
+// }
 
-size_t String::findFirst(const String &value) const {
-	if (length < value.getLength()) {
-		return -1;
-	}
+// size_t String::findFirst(const String &value) const {
+// 	if (length < value.getLength()) {
+// 		return -1;
+// 	}
 
-	for (size_t i = 0; i < length;) {
-		if (subString(i, value.getLength()).compare(value)) {
-			return i;
-		} else {
-			eatCharAt(i);
-		}
-	}
+// 	for (size_t i = 0; i < length;) {
+// 		if (subString(i, value.getLength()).compare(value)) {
+// 			return i;
+// 		} else {
+// 			eatCharAt(i);
+// 		}
+// 	}
 
-	return -1;
-}
+// 	return -1;
+// }
 
-size_t String::findFirst(const String &value, size_t after) const {
-	if (after >= length) {
-		return -1;
-	}
+// size_t String::findFirst(const String &value, size_t after) const {
+// 	if (after >= length) {
+// 		return -1;
+// 	}
 
-	if (length - after < value.getLength()) {
-		return -1;
-	}
+// 	if (length - after < value.getLength()) {
+// 		return -1;
+// 	}
 
-	for (size_t i = 0; i < length;) {
-		if (subString(i, value.getLength()).compare(value)) {
-			return i;
-		} else {
-			eatCharAt(i);
-		}
-	}
+// 	for (size_t i = 0; i < length;) {
+// 		if (subString(i, value.getLength()).compare(value)) {
+// 			return i;
+// 		} else {
+// 			eatCharAt(i);
+// 		}
+// 	}
 
-	return -1;
-}
+// 	return -1;
+// }
 
-size_t String::findLast(Char32 value) const {
-	for (ssize_t i = length - 1; i >= 0; i--) {
-		size_t tmp = i;
-		if (eatCharAt(tmp) == value) {
-			return i;
-		}
-	}
+// size_t String::findLast(Char32 value) const {
+// 	for (ssize_t i = length - 1; i >= 0; i--) {
+// 		size_t tmp = i;
+// 		if (eatCharAt(tmp) == value) {
+// 			return i;
+// 		}
+// 	}
 
-	return -1;
-}
+// 	return -1;
+// }
 
-size_t String::findLast(Char32 value, size_t after) const {
-	for (ssize_t i = length - 1; i >= (ssize_t)after; i--) {
-		size_t tmp = i;
-		if (eatCharAt(tmp) == value) {
-			return i;
-		}
-	}
+// size_t String::findLast(Char32 value, size_t after) const {
+// 	for (ssize_t i = length - 1; i >= (ssize_t)after; i--) {
+// 		size_t tmp = i;
+// 		if (eatCharAt(tmp) == value) {
+// 			return i;
+// 		}
+// 	}
 
-	return -1;
-}
+// 	return -1;
+// }
 
-size_t String::findLast(const String &value) const {
-	if (length < value.getLength()) {
-		return -1;
-	}
+// size_t String::findLast(const String &value) const {
+// 	if (length < value.getLength()) {
+// 		return -1;
+// 	}
 
-	for (ssize_t i = length - 1; i >= 0; i--) {
-		if (subString(i, value.getLength()).compare(value)) {
-			return i;
-		}
-	}
+// 	for (ssize_t i = length - 1; i >= 0; i--) {
+// 		if (subString(i, value.getLength()).compare(value)) {
+// 			return i;
+// 		}
+// 	}
 
-	return -1;
-}
+// 	return -1;
+// }
 
-size_t String::findLast(const String &value, size_t after) const {
-	if (after >= length) {
-		return -1;
-	}
+// size_t String::findLast(const String &value, size_t after) const {
+// 	if (after >= length) {
+// 		return -1;
+// 	}
 
-	if (length - after < value.getLength()) {
-		return -1;
-	}
+// 	if (length - after < value.getLength()) {
+// 		return -1;
+// 	}
 
-	for (ssize_t i = length - 1; i >= 0; i--) {
-		if (subString(i, value.getLength()).compare(value)) {
-			return i;
-		}
-	}
+// 	for (ssize_t i = length - 1; i >= 0; i--) {
+// 		if (subString(i, value.getLength()).compare(value)) {
+// 			return i;
+// 		}
+// 	}
 
-	return -1;
-}
+// 	return -1;
+// }
 
 bool String::compare(const String &value) const {
 	if (length != value.length) {

@@ -206,7 +206,7 @@ bool Field::compare(const Field *other) const {
 
 void Field::printLiteral(std::ostream &os) const {
   OStreamByteOutStream obos(os);
-  ByteCharOutStream cos(obos, Encoding::ASCII);
+  ByteCharOutStream cos(obos, Encoding::UTF8);
 
   if (kind == Field::Kind::Int) {
     if (dataAtomic.asInt < 0) {

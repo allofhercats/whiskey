@@ -122,7 +122,7 @@ void printBacktrace(std::ostream &os, int maxDepth) {
   void **symbols = new void *[maxDepth + 1];
   int depth = backtrace(symbols, maxDepth + 1);
 
-  for (int i = 1; i < depth; i++) {
+  for (int i = W_BACKTRACE_SKIP_FIRST; i < depth; i++) {
     bfd_vma addr;
     std::string binaryName = getBinaryNameAndOffsetOfSymbol(symbols[i], addr);
 
@@ -160,7 +160,7 @@ void printBacktrace(std::ostream &os, int maxDepth) {
     data.symbols = symbols;
     bfd_map_over_sections(abfd, onMapOverSections, (void *)&data);
 
-    os << Color::greyLight << "[" << i << "] " << Color::reset;
+    os << Color::greyLight << "[" << (i-W_BACKTRACE_SKIP_FIRST) << "] " << Color::reset;
     if (data.found) {
       if (data.filename != nullptr && data.filename[0] != 0) {
         os << data.filename << ":";

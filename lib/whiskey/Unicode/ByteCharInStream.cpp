@@ -4,7 +4,7 @@
 
 namespace whiskey {
 bool ByteCharInStream::onIsMore() const {
-	return byteStream->isMore();
+	return byteStream->isMore() || lastGood;
 }
 
 Char32 ByteCharInStream::onGetChar() const {
@@ -23,37 +23,39 @@ Char32 ByteCharInStream::onGetChar() const {
 		} else if (encoding == Encoding::UTF16LE || encoding == Encoding::UTF16BE) {
 			Char8 buf[4];
 			if (getSystemEndianness() != getEncodingEndianness(encoding)) {
-				buf[1] = byteStream->eatChar();
 				buf[0] = byteStream->eatChar();
+				buf[1] = byteStream->eatChar();
 			} else {
-				buf[0] = byteStream->eatChar();
 				buf[1] = byteStream->eatChar();
+				buf[0] = byteStream->eatChar();
 			}
-			
+
 			size_t n = getNAdditionalCharsUTF16(((Char16 *)buf)[0])+1;
+
 			for (size_t i = 1; i < n; i++) {
 				if (getSystemEndianness() != getEncodingEndianness(encoding)) {
-					buf[3] = byteStream->eatChar();
 					buf[2] = byteStream->eatChar();
+					buf[3] = byteStream->eatChar();
 				} else {
-					buf[2] = byteStream->eatChar();
 					buf[3] = byteStream->eatChar();
+					buf[2] = byteStream->eatChar();
 				}
 			}
+
 			size_t tmp = 0;
-			const_cast<ByteCharInStream *>(this)->last = readCharUTF16((Char16 *)buf, tmp, n);
+			const_cast<ByteCharInStream *>(this)->last = readCharUTF16((Char16 *)buf, tmp, n, getEncodingEndianness(encoding));
 		} else if (encoding == Encoding::UTF32LE || encoding == Encoding::UTF32BE) {
 			Char8 buf[4];
 			if (getSystemEndianness() != getEncodingEndianness(encoding)) {
-				buf[3] = byteStream->eatChar();
-				buf[2] = byteStream->eatChar();
-				buf[1] = byteStream->eatChar();
 				buf[0] = byteStream->eatChar();
+				buf[1] = byteStream->eatChar();
+				buf[2] = byteStream->eatChar();
+				buf[3] = byteStream->eatChar();
 			} else {
-				buf[0] = byteStream->eatChar();
-				buf[1] = byteStream->eatChar();
-				buf[2] = byteStream->eatChar();
 				buf[3] = byteStream->eatChar();
+				buf[2] = byteStream->eatChar();
+				buf[1] = byteStream->eatChar();
+				buf[0] = byteStream->eatChar();
 			}
 			const_cast<ByteCharInStream *>(this)->last = *((Char32 *)buf);
 		} else {

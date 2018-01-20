@@ -9,6 +9,7 @@ class FileByteInStream : public ByteInStream {
 private:
 	std::string path;
 	FILE *file;
+	size_t offset;
 	size_t length;
 	Encoding encoding;
 	Char8 last;

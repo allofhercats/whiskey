@@ -54,10 +54,16 @@ bool FileByteOutStream::open() {
 			fputs("\xff\xfe", file);
 			break;
 		case Encoding::UTF32LE:
-			fputs("\xff\xfe\x00\x00", file);
+			fputc('\xff', file);
+			fputc('\xfe', file);
+			fputc('\x00', file);
+			fputc('\x00', file);
 			break;
 		case Encoding::UTF32BE:
-			fputs("\x00\x00\xfe\xff", file);
+			fputc('\x00', file);
+			fputc('\x00', file);
+			fputc('\xfe', file);
+			fputc('\xff', file);
 			break;
 		default:
 			break;
