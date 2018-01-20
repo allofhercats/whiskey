@@ -4,43 +4,6 @@
 #include <whiskey/Source/Range.hpp>
 
 namespace whiskey {
-void appendChar16ToString8(std::string &value, char16_t chr) {
-  appendChar32ToString8(value, chr);
-}
-
-void appendChar32ToString8(std::string &value, char32_t chr) {
-  int width = getChar32MinWidth(chr);
-  if (width == 1) {
-    value.push_back((char)chr);
-  } else if (width == 2) {
-    char16_t tmp = (char16_t)chr;
-    const char *ptr = (const char *)&tmp;
-    value.push_back(ptr[0]);
-    value.push_back(ptr[1]);
-  } else if (width == 4) {
-    const char *ptr = (const char *)&chr;
-    value.push_back(ptr[0]);
-    value.push_back(ptr[1]);
-    value.push_back(ptr[2]);
-    value.push_back(ptr[3]);
-  } else {
-    W_ASSERT_UNREACHABLE("Unsupported min character width " << width << ".");
-  }
-}
-
-void appendChar32ToString16(std::u16string &value, char32_t chr) {
-  int width = getChar32MinWidth(chr);
-  if (width == 1 || width == 2) {
-    value.push_back((char16_t)chr);
-  } else if (width == 4) {
-    const char16_t *ptr = (const char16_t *)&chr;
-    value.push_back(ptr[0]);
-    value.push_back(ptr[1]);
-  } else {
-    W_ASSERT_UNREACHABLE("Unsupported min character width " << width << ".");
-  }
-}
-
 bool evalLiteralUInt(const Range &range, uint64_t &value) {
   value = 0;
 
@@ -196,7 +159,7 @@ bool evalLiteralReal(const Range &range, long double &value) {
 }
 
 namespace {
-bool evalLiteralCharHelper(Location &loc, size_t length, char32_t &value) {
+bool evalLiteralCharHelper(Location &loc, size_t length, char &value) {
   value = 0;
 
   size_t n = 0;
@@ -240,48 +203,6 @@ bool evalLiteralCharHelper(Location &loc, size_t length, char32_t &value) {
     } else if (loc.getChar() == 't') {
       loc.eatChar();
       value = '\t';
-      return true;
-    } else if (loc.getChar() == 'u') {
-      for (int i = 0; i < 4; i++) {
-        value *= 16;
-        loc.eatChar();
-        n++;
-
-        if (n >= length) {
-          return false;
-        } else if (loc.getChar() >= '0' && loc.getChar() <= '9') {
-          value += loc.getChar() - '0';
-        } else if (loc.getChar() >= 'a' && loc.getChar() <= 'f') {
-          value += 10 + loc.getChar() - 'a';
-        } else if (loc.getChar() >= 'A' && loc.getChar() <= 'F') {
-          value += 10 + loc.getChar() - 'A';
-        } else {
-          return false;
-        }
-      }
-
-      loc.eatChar();
-      return true;
-    } else if (loc.getChar() == 'U') {
-      for (int i = 0; i < 8; i++) {
-        value *= 16;
-        loc.eatChar();
-        n++;
-
-        if (n >= length) {
-          return false;
-        } else if (loc.getChar() >= '0' && loc.getChar() <= '9') {
-          value += loc.getChar() - '0';
-        } else if (loc.getChar() >= 'a' && loc.getChar() <= 'f') {
-          value += 10 + loc.getChar() - 'a';
-        } else if (loc.getChar() >= 'A' && loc.getChar() <= 'F') {
-          value += 10 + loc.getChar() - 'A';
-        } else {
-          return false;
-        }
-      }
-
-      loc.eatChar();
       return true;
     } else if (loc.getChar() == 'v') {
       loc.eatChar();
@@ -343,7 +264,7 @@ bool evalLiteralCharHelper(Location &loc, size_t length, char32_t &value) {
 }
 } // namespace
 
-bool evalLiteralChar(const Range &range, char32_t &value) {
+bool evalLiteralChar(const Range &range, char &value) {
   value = '\0';
 
   Location i = range.getStart();
@@ -375,7 +296,7 @@ bool evalLiteralChar(const Range &range, char32_t &value) {
   }
 }
 
-bool evalLiteralString8(const Range &range, std::string &value) {
+bool evalLiteralString(const Range &range, std::string &value) {
   value = "";
 
   Location i = range.getStart();
@@ -399,7 +320,7 @@ bool evalLiteralString8(const Range &range, std::string &value) {
       endedCorrectly = true;
       break;
     } else {
-      char32_t tmp;
+      char tmp;
       if (!evalLiteralCharHelper(
               i,
               range.getLength() -
@@ -408,87 +329,6 @@ bool evalLiteralString8(const Range &range, std::string &value) {
         return false;
       }
 
-      appendChar32ToString8(value, tmp);
-    }
-  }
-
-  return endedCorrectly;
-}
-
-bool evalLiteralString16(const Range &range, std::u16string &value) {
-  value = u"";
-
-  Location i = range.getStart();
-  size_t n = 0;
-
-  if (n >= range.getLength()) {
-    return false;
-  }
-
-  if (i.getChar() != '\"') {
-    return false;
-  }
-
-  i.eatChar();
-  n++;
-
-  bool endedCorrectly = false;
-
-  while (i.getOffset() - range.getStart().getOffset() < range.getLength()) {
-    if (i.getChar() == '\"') {
-      endedCorrectly = true;
-      break;
-    } else {
-      char32_t tmp;
-      if (!evalLiteralCharHelper(
-              i,
-              range.getLength() -
-                  (i.getOffset() - range.getStart().getOffset()),
-              tmp)) {
-        return false;
-      }
-
-      appendChar32ToString16(value, tmp);
-    }
-  }
-
-  return endedCorrectly;
-}
-
-bool evalLiteralString32(const Range &range, std::u32string &value) {
-  value = U"";
-
-  Location i = range.getStart();
-  size_t n = 0;
-
-  if (n >= range.getLength()) {
-    return false;
-  }
-
-  if (i.getChar() != '\"') {
-    return false;
-  }
-
-  i.eatChar();
-  n++;
-
-  bool endedCorrectly = false;
-
-  while (i.getOffset() - range.getStart().getOffset() < range.getLength()) {
-    if (i.getChar() == '\"') {
-      endedCorrectly = true;
-      break;
-    } else {
-      char32_t tmp;
-      if (!evalLiteralCharHelper(
-              i,
-              range.getLength() -
-                  (i.getOffset() - range.getStart().getOffset()),
-              tmp)) {
-        return false;
-      }
-
-      // appendChar32ToString8(value, tmp);
       value.push_back(tmp);
     }
   }

@@ -1871,7 +1871,7 @@ ParserResult Parser::parseImport(ParserContext &ctx) {
   }
 
   std::string path;
-  if (!evalLiteralString8(tokenString.getRange(), path)) {
+  if (!evalLiteralString(tokenString.getRange(), path)) {
     return ParserResult();
   }
 

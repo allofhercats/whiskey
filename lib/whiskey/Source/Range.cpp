@@ -33,7 +33,7 @@ void Range::setLength(size_t value) {
   length = value;
 }
 
-StringRef Range::getText() const {
-  return start.getSource().getText().subString(start.getOffset(), length);
+std::string Range::getText() const {
+  return start.getSource().getText().substr(start.getOffset(), length);
 }
 } // namespace whiskey

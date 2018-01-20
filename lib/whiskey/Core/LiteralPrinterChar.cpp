@@ -6,61 +6,55 @@
 #include <whiskey/Core/LiteralPrinterUInt.hpp>
 
 namespace whiskey {
-void LiteralPrinterChar::onPrint(CharOutStream &os) const {
+void LiteralPrinterChar::onPrint(std::ostream &os) const {
   if (useQuotes) {
-    os.write(quote);
+    os << quote;
   }
 	
   if (value == quote) {
-    os.write('\\');
-    os.write(quote);
-  } else if (getChar32MinWidth(value) == 4) {
-    os.write("\\U");
-    LiteralPrinterUInt(value, 16, false, 8).print(os);
-  } else if (getChar32MinWidth(value) == 2) {
-    os.write("\\u");
-    LiteralPrinterUInt(value, 16, false, 4).print(os);
+    os << '\\';
+    os << quote;
   } else if (value == '\a') {
-    os.write("\\a");
+    os << "\\a";
   } else if (value == '\b') {
-    os.write("\\b");
+    os << "\\b";
   } else if (value == '\033') {
-    os.write("\\e");
+    os << "\\e";
   } else if (value == '\f') {
-    os.write("\\f");
+    os << "\\f";
   } else if (value == '\n') {
-    os.write("\\n");
+    os << "\\n";
   } else if (value == '\r') {
-    os.write("\\r");
+    os << "\\r";
   } else if (value == '\t') {
-    os.write("\\t");
+    os << "\\t";
   } else if (value == '\v') {
-    os.write("\\v");
+    os << "\\v";
   } else if (value == '\0') {
-    os.write("\\0");
+    os << "\\0";
   } else if (value == '\\') {
-    os.write("\\\\");
+    os << "\\\\";
   } else if (isprint(value)) {
-    os.write(value);
+    os << value;
   } else {
-    os.write("\\x");
-    LiteralPrinterUInt(value, 16, false, 2).print(os);
+    os << "\\x";
+    LiteralPrinterUInt(value & 0xff, 16, false, 2).print(os);
   }
 
   if (useQuotes) {
-    os.write(quote);
+    os << quote;
   }
 }
 
-LiteralPrinterChar::LiteralPrinterChar(Char32 value, char quote, bool useQuotes) : value(value), quote(quote), useQuotes(useQuotes) {}
+LiteralPrinterChar::LiteralPrinterChar(char value, char quote, bool useQuotes) : value(value), quote(quote), useQuotes(useQuotes) {}
 
 LiteralPrinterChar::~LiteralPrinterChar() {}
 
-Char32 LiteralPrinterChar::getValue() const {
+char LiteralPrinterChar::getValue() const {
 	return value;
 }
 
-void LiteralPrinterChar::setValue(Char32 value) {
+void LiteralPrinterChar::setValue(char value) {
 	this->value = value;
 }
 

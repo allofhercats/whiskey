@@ -30,8 +30,8 @@ TEST(Integration_Passes, Echo) {
 
   Node *orig = Node::createDeclVariable(
       Node::createTypeAtomicInt32(),
-      Field::createString8("x"),
-      Node::createExprSymbol(Field::createString8("y")));
+      Field::createString("x"),
+      Node::createExprSymbol(Field::createString("y")));
 
   Node *final = orig;
 
@@ -66,8 +66,8 @@ TEST(Integration_Passes, Clone) {
 
   Node *orig = Node::createDeclVariable(
       Node::createTypeAtomicInt32(),
-      Field::createString8("x"),
-      Node::createExprSymbol(Field::createString8("y")));
+      Field::createString("x"),
+      Node::createExprSymbol(Field::createString("y")));
 
   Node *final = orig;
 

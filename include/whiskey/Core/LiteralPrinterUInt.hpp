@@ -13,11 +13,11 @@ private:
   int width;
 
 protected:
-  virtual void onPrint(CharOutStream &os) const;
+  virtual void onPrint(std::ostream &os) const;
 
 public:
   static bool isValidBase(int base);
-  static void printBasePrefix(CharOutStream &os, int base);
+  static void printBasePrefix(std::ostream &os, int base);
 
   LiteralPrinterUInt(UInt64 value,
                     int base = 10,

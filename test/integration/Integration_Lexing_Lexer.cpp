@@ -13,7 +13,7 @@ using namespace whiskey;
 
 TEST(Integration_Lexing_Lexer, Empty) {
   Source src;
-  src.loadString("", true);
+  src.loadString("");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -27,7 +27,7 @@ TEST(Integration_Lexing_Lexer, Empty) {
 
 TEST(Integration_Lexing_Lexer, Whitespace) {
   Source src;
-  src.loadString(" \n\r\t", true);
+  src.loadString(" \n\r\t");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -41,7 +41,7 @@ TEST(Integration_Lexing_Lexer, Whitespace) {
 
 TEST(Integration_Lexing_Lexer, UnexpectedChar) {
   Source src;
-  src.loadString("`", true);
+  src.loadString("`");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -55,7 +55,7 @@ TEST(Integration_Lexing_Lexer, UnexpectedChar) {
 
 TEST(Integration_Lexing_Lexer, CommentLineEmpty) {
   Source src;
-  src.loadString("#", true);
+  src.loadString("#");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -69,7 +69,7 @@ TEST(Integration_Lexing_Lexer, CommentLineEmpty) {
 
 TEST(Integration_Lexing_Lexer, CommentLine) {
   Source src;
-  src.loadString("#asdf", true);
+  src.loadString("#asdf");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -83,7 +83,7 @@ TEST(Integration_Lexing_Lexer, CommentLine) {
 
 TEST(Integration_Lexing_Lexer, CommentLineMultiple) {
   Source src;
-  src.loadString("#asdf\n#asdf\n#asdf", true);
+  src.loadString("#asdf\n#asdf\n#asdf");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -97,7 +97,7 @@ TEST(Integration_Lexing_Lexer, CommentLineMultiple) {
 
 TEST(Integration_Lexing_Lexer, CommentLineNested) {
   Source src;
-  src.loadString("####", true);
+  src.loadString("####");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -111,7 +111,7 @@ TEST(Integration_Lexing_Lexer, CommentLineNested) {
 
 TEST(Integration_Lexing_Lexer, CommentBlockEmpty) {
   Source src;
-  src.loadString("#{}#", true);
+  src.loadString("#{}#");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -125,7 +125,7 @@ TEST(Integration_Lexing_Lexer, CommentBlockEmpty) {
 
 TEST(Integration_Lexing_Lexer, CommentBlock) {
   Source src;
-  src.loadString("#{asdf}#", true);
+  src.loadString("#{asdf}#");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -139,7 +139,7 @@ TEST(Integration_Lexing_Lexer, CommentBlock) {
 
 TEST(Integration_Lexing_Lexer, CommentBlockNested_0) {
   Source src;
-  src.loadString("#{#{asdf}#}#", true);
+  src.loadString("#{#{asdf}#}#");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -153,7 +153,7 @@ TEST(Integration_Lexing_Lexer, CommentBlockNested_0) {
 
 TEST(Integration_Lexing_Lexer, CommentBlockNested_1) {
   Source src;
-  src.loadString("#{#{#{}##{}#}##{#{}##{}#}##{#{#{}##{}#}#}#}#", true);
+  src.loadString("#{#{#{}##{}#}##{#{}##{}#}##{#{#{}##{}#}#}#}#");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -167,7 +167,7 @@ TEST(Integration_Lexing_Lexer, CommentBlockNested_1) {
 
 TEST(Integration_Lexing_Lexer, CommentBlockNested_2) {
   Source src;
-  src.loadString("#{#}#", true);
+  src.loadString("#{#}#");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -181,7 +181,7 @@ TEST(Integration_Lexing_Lexer, CommentBlockNested_2) {
 
 TEST(Integration_Lexing_Lexer, CommentBlockMismatched_0) {
   Source src;
-  src.loadString("#{asdf}", true);
+  src.loadString("#{asdf}");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -195,7 +195,7 @@ TEST(Integration_Lexing_Lexer, CommentBlockMismatched_0) {
 
 TEST(Integration_Lexing_Lexer, CommentBlockMismatched_1) {
   Source src;
-  src.loadString("#{asdf", true);
+  src.loadString("#{asdf");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -209,7 +209,7 @@ TEST(Integration_Lexing_Lexer, CommentBlockMismatched_1) {
 
 TEST(Integration_Lexing_Lexer, CommentBlockMismatched_2) {
   Source src;
-  src.loadString("#{#{asdf}#", true);
+  src.loadString("#{#{asdf}#");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -223,7 +223,7 @@ TEST(Integration_Lexing_Lexer, CommentBlockMismatched_2) {
 
 TEST(Integration_Lexing_Lexer, Symbol_1) {
   Source src;
-  src.loadString("x", true);
+  src.loadString("x");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -240,7 +240,7 @@ TEST(Integration_Lexing_Lexer, Symbol_1) {
 
 TEST(Integration_Lexing_Lexer, Symbol_2) {
   Source src;
-  src.loadString("asdf", true);
+  src.loadString("asdf");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -257,7 +257,7 @@ TEST(Integration_Lexing_Lexer, Symbol_2) {
 
 TEST(Integration_Lexing_Lexer, Symbol_3) {
   Source src;
-  src.loadString("x12309871", true);
+  src.loadString("x12309871");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -274,7 +274,7 @@ TEST(Integration_Lexing_Lexer, Symbol_3) {
 
 TEST(Integration_Lexing_Lexer, Symbol_4) {
   Source src;
-  src.loadString("_12309871", true);
+  src.loadString("_12309871");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -291,7 +291,7 @@ TEST(Integration_Lexing_Lexer, Symbol_4) {
 
 TEST(Integration_Lexing_Lexer, Symbol_5) {
   Source src;
-  src.loadString("x''''''", true);
+  src.loadString("x''''''");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -308,7 +308,7 @@ TEST(Integration_Lexing_Lexer, Symbol_5) {
 
 TEST(Integration_Lexing_Lexer, Symbol_6) {
   Source src;
-  src.loadString("asdf''''''", true);
+  src.loadString("asdf''''''");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -325,7 +325,7 @@ TEST(Integration_Lexing_Lexer, Symbol_6) {
 
 TEST(Integration_Lexing_Lexer, Symbol_7) {
   Source src;
-  src.loadString("x12309871''''''", true);
+  src.loadString("x12309871''''''");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -342,7 +342,7 @@ TEST(Integration_Lexing_Lexer, Symbol_7) {
 
 TEST(Integration_Lexing_Lexer, Symbol_8) {
   Source src;
-  src.loadString("_12309871''''''", true);
+  src.loadString("_12309871''''''");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -359,7 +359,7 @@ TEST(Integration_Lexing_Lexer, Symbol_8) {
 
 TEST(Integration_Lexing_Lexer, KWNot) {
   Source src;
-  src.loadString("not", true);
+  src.loadString("not");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -376,7 +376,7 @@ TEST(Integration_Lexing_Lexer, KWNot) {
 
 TEST(Integration_Lexing_Lexer, Int_0) {
   Source src;
-  src.loadString("0", true);
+  src.loadString("0");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -393,7 +393,7 @@ TEST(Integration_Lexing_Lexer, Int_0) {
 
 TEST(Integration_Lexing_Lexer, Int_1) {
   Source src;
-  src.loadString("5018238971", true);
+  src.loadString("5018238971");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -410,7 +410,7 @@ TEST(Integration_Lexing_Lexer, Int_1) {
 
 TEST(Integration_Lexing_Lexer, Int_2) {
   Source src;
-  src.loadString("5asdfkjsdf", true);
+  src.loadString("5asdfkjsdf");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -427,7 +427,7 @@ TEST(Integration_Lexing_Lexer, Int_2) {
 
 TEST(Integration_Lexing_Lexer, Real_0) {
   Source src;
-  src.loadString("0.0", true);
+  src.loadString("0.0");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -444,7 +444,7 @@ TEST(Integration_Lexing_Lexer, Real_0) {
 
 TEST(Integration_Lexing_Lexer, Real_1) {
   Source src;
-  src.loadString("5018238971.0", true);
+  src.loadString("5018238971.0");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -461,7 +461,7 @@ TEST(Integration_Lexing_Lexer, Real_1) {
 
 TEST(Integration_Lexing_Lexer, Real_2) {
   Source src;
-  src.loadString("5asdfkjsdf.0", true);
+  src.loadString("5asdfkjsdf.0");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -478,7 +478,7 @@ TEST(Integration_Lexing_Lexer, Real_2) {
 
 TEST(Integration_Lexing_Lexer, Real_3) {
   Source src;
-  src.loadString("5asdfkjsdf.0faljkhasdkfjhsadkfh", true);
+  src.loadString("5asdfkjsdf.0faljkhasdkfjhsadkfh");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -496,7 +496,7 @@ TEST(Integration_Lexing_Lexer, Real_3) {
 
 TEST(Integration_Lexing_Lexer, Real_4) {
   Source src;
-  src.loadString(".0", true);
+  src.loadString(".0");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -513,7 +513,7 @@ TEST(Integration_Lexing_Lexer, Real_4) {
 
 TEST(Integration_Lexing_Lexer, Real_5) {
   Source src;
-  src.loadString(".0faljkhasdkfjhsadkfh", true);
+  src.loadString(".0faljkhasdkfjhsadkfh");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -530,7 +530,7 @@ TEST(Integration_Lexing_Lexer, Real_5) {
 
 TEST(Integration_Lexing_Lexer, Char_0) {
   Source src;
-  src.loadString("'a'", true);
+  src.loadString("'a'");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -547,7 +547,7 @@ TEST(Integration_Lexing_Lexer, Char_0) {
 
 TEST(Integration_Lexing_Lexer, Char_1) {
   Source src;
-  src.loadString("''", true);
+  src.loadString("''");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -564,7 +564,7 @@ TEST(Integration_Lexing_Lexer, Char_1) {
 
 TEST(Integration_Lexing_Lexer, Char_2) {
   Source src;
-  src.loadString("'\\\\'", true);
+  src.loadString("'\\\\'");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -581,7 +581,7 @@ TEST(Integration_Lexing_Lexer, Char_2) {
 
 TEST(Integration_Lexing_Lexer, Char_3) {
   Source src;
-  src.loadString("'\\''", true);
+  src.loadString("'\\''");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -598,7 +598,7 @@ TEST(Integration_Lexing_Lexer, Char_3) {
 
 TEST(Integration_Lexing_Lexer, Char_4) {
   Source src;
-  src.loadString("'a", true);
+  src.loadString("'a");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -612,7 +612,7 @@ TEST(Integration_Lexing_Lexer, Char_4) {
 
 TEST(Integration_Lexing_Lexer, Char_5) {
   Source src;
-  src.loadString("'\\'", true);
+  src.loadString("'\\'");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -626,7 +626,7 @@ TEST(Integration_Lexing_Lexer, Char_5) {
 
 TEST(Integration_Lexing_Lexer, Char_6) {
   Source src;
-  src.loadString("'\"'", true);
+  src.loadString("'\"'");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -643,7 +643,7 @@ TEST(Integration_Lexing_Lexer, Char_6) {
 
 TEST(Integration_Lexing_Lexer, String_0) {
   Source src;
-  src.loadString("\"a\"", true);
+  src.loadString("\"a\"");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -660,7 +660,7 @@ TEST(Integration_Lexing_Lexer, String_0) {
 
 TEST(Integration_Lexing_Lexer, String_1) {
   Source src;
-  src.loadString("\"\"", true);
+  src.loadString("\"\"");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -677,7 +677,7 @@ TEST(Integration_Lexing_Lexer, String_1) {
 
 TEST(Integration_Lexing_Lexer, String_2) {
   Source src;
-  src.loadString("\"\\\\\"", true);
+  src.loadString("\"\\\\\"");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -696,7 +696,7 @@ TEST(Integration_Lexing_Lexer, String_2) {
 
 TEST(Integration_Lexing_Lexer, String_3) {
   Source src;
-  src.loadString("\"\\\"\"", true);
+  src.loadString("\"\\\"\"");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -713,7 +713,7 @@ TEST(Integration_Lexing_Lexer, String_3) {
 
 TEST(Integration_Lexing_Lexer, String_4) {
   Source src;
-  src.loadString("\"a", true);
+  src.loadString("\"a");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -727,7 +727,7 @@ TEST(Integration_Lexing_Lexer, String_4) {
 
 TEST(Integration_Lexing_Lexer, String_5) {
   Source src;
-  src.loadString("\"\\\"", true);
+  src.loadString("\"\\\"");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -741,7 +741,7 @@ TEST(Integration_Lexing_Lexer, String_5) {
 
 TEST(Integration_Lexing_Lexer, String_6) {
   Source src;
-  src.loadString("\"'\"", true);
+  src.loadString("\"'\"");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -758,7 +758,7 @@ TEST(Integration_Lexing_Lexer, String_6) {
 
 TEST(Integration_Lexing_Lexer, LParen) {
   Source src;
-  src.loadString("(", true);
+  src.loadString("(");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -775,7 +775,7 @@ TEST(Integration_Lexing_Lexer, LParen) {
 
 TEST(Integration_Lexing_Lexer, RParen) {
   Source src;
-  src.loadString(")", true);
+  src.loadString(")");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -792,7 +792,7 @@ TEST(Integration_Lexing_Lexer, RParen) {
 
 TEST(Integration_Lexing_Lexer, LBracket) {
   Source src;
-  src.loadString("[", true);
+  src.loadString("[");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -809,7 +809,7 @@ TEST(Integration_Lexing_Lexer, LBracket) {
 
 TEST(Integration_Lexing_Lexer, RBracket) {
   Source src;
-  src.loadString("]", true);
+  src.loadString("]");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -826,7 +826,7 @@ TEST(Integration_Lexing_Lexer, RBracket) {
 
 TEST(Integration_Lexing_Lexer, LBrace) {
   Source src;
-  src.loadString("{", true);
+  src.loadString("{");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -843,7 +843,7 @@ TEST(Integration_Lexing_Lexer, LBrace) {
 
 TEST(Integration_Lexing_Lexer, RBrace) {
   Source src;
-  src.loadString("}", true);
+  src.loadString("}");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -860,7 +860,7 @@ TEST(Integration_Lexing_Lexer, RBrace) {
 
 TEST(Integration_Lexing_Lexer, Comma) {
   Source src;
-  src.loadString(",", true);
+  src.loadString(",");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -877,7 +877,7 @@ TEST(Integration_Lexing_Lexer, Comma) {
 
 TEST(Integration_Lexing_Lexer, Semicolon) {
   Source src;
-  src.loadString(";", true);
+  src.loadString(";");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -894,7 +894,7 @@ TEST(Integration_Lexing_Lexer, Semicolon) {
 
 TEST(Integration_Lexing_Lexer, Period) {
   Source src;
-  src.loadString(".", true);
+  src.loadString(".");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -911,7 +911,7 @@ TEST(Integration_Lexing_Lexer, Period) {
 
 TEST(Integration_Lexing_Lexer, Add) {
   Source src;
-  src.loadString("+", true);
+  src.loadString("+");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -928,7 +928,7 @@ TEST(Integration_Lexing_Lexer, Add) {
 
 TEST(Integration_Lexing_Lexer, Inc) {
   Source src;
-  src.loadString("++", true);
+  src.loadString("++");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -945,7 +945,7 @@ TEST(Integration_Lexing_Lexer, Inc) {
 
 TEST(Integration_Lexing_Lexer, AddAssign) {
   Source src;
-  src.loadString("+=", true);
+  src.loadString("+=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -962,7 +962,7 @@ TEST(Integration_Lexing_Lexer, AddAssign) {
 
 TEST(Integration_Lexing_Lexer, Sub) {
   Source src;
-  src.loadString("-", true);
+  src.loadString("-");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -979,7 +979,7 @@ TEST(Integration_Lexing_Lexer, Sub) {
 
 TEST(Integration_Lexing_Lexer, Dec) {
   Source src;
-  src.loadString("--", true);
+  src.loadString("--");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -996,7 +996,7 @@ TEST(Integration_Lexing_Lexer, Dec) {
 
 TEST(Integration_Lexing_Lexer, SubAssign) {
   Source src;
-  src.loadString("-=", true);
+  src.loadString("-=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1013,7 +1013,7 @@ TEST(Integration_Lexing_Lexer, SubAssign) {
 
 TEST(Integration_Lexing_Lexer, Mul) {
   Source src;
-  src.loadString("*", true);
+  src.loadString("*");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1030,7 +1030,7 @@ TEST(Integration_Lexing_Lexer, Mul) {
 
 TEST(Integration_Lexing_Lexer, Exp) {
   Source src;
-  src.loadString("**", true);
+  src.loadString("**");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1047,7 +1047,7 @@ TEST(Integration_Lexing_Lexer, Exp) {
 
 TEST(Integration_Lexing_Lexer, ExpAssign) {
   Source src;
-  src.loadString("**=", true);
+  src.loadString("**=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1064,7 +1064,7 @@ TEST(Integration_Lexing_Lexer, ExpAssign) {
 
 TEST(Integration_Lexing_Lexer, MulAssign) {
   Source src;
-  src.loadString("*=", true);
+  src.loadString("*=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1081,7 +1081,7 @@ TEST(Integration_Lexing_Lexer, MulAssign) {
 
 TEST(Integration_Lexing_Lexer, Div) {
   Source src;
-  src.loadString("/", true);
+  src.loadString("/");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1098,7 +1098,7 @@ TEST(Integration_Lexing_Lexer, Div) {
 
 TEST(Integration_Lexing_Lexer, DivInt) {
   Source src;
-  src.loadString("//", true);
+  src.loadString("//");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1115,7 +1115,7 @@ TEST(Integration_Lexing_Lexer, DivInt) {
 
 TEST(Integration_Lexing_Lexer, DivIntAssign) {
   Source src;
-  src.loadString("//=", true);
+  src.loadString("//=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1132,7 +1132,7 @@ TEST(Integration_Lexing_Lexer, DivIntAssign) {
 
 TEST(Integration_Lexing_Lexer, DivReal) {
   Source src;
-  src.loadString("/.", true);
+  src.loadString("/.");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1149,7 +1149,7 @@ TEST(Integration_Lexing_Lexer, DivReal) {
 
 TEST(Integration_Lexing_Lexer, DivRealAssign) {
   Source src;
-  src.loadString("/.=", true);
+  src.loadString("/.=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1166,7 +1166,7 @@ TEST(Integration_Lexing_Lexer, DivRealAssign) {
 
 TEST(Integration_Lexing_Lexer, DivAssign) {
   Source src;
-  src.loadString("/=", true);
+  src.loadString("/=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1183,7 +1183,7 @@ TEST(Integration_Lexing_Lexer, DivAssign) {
 
 TEST(Integration_Lexing_Lexer, Mod) {
   Source src;
-  src.loadString("%", true);
+  src.loadString("%");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1200,7 +1200,7 @@ TEST(Integration_Lexing_Lexer, Mod) {
 
 TEST(Integration_Lexing_Lexer, ModAssign) {
   Source src;
-  src.loadString("%=", true);
+  src.loadString("%=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1217,7 +1217,7 @@ TEST(Integration_Lexing_Lexer, ModAssign) {
 
 TEST(Integration_Lexing_Lexer, BitNot) {
   Source src;
-  src.loadString("~", true);
+  src.loadString("~");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1234,7 +1234,7 @@ TEST(Integration_Lexing_Lexer, BitNot) {
 
 TEST(Integration_Lexing_Lexer, BitAnd) {
   Source src;
-  src.loadString("&", true);
+  src.loadString("&");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1251,7 +1251,7 @@ TEST(Integration_Lexing_Lexer, BitAnd) {
 
 TEST(Integration_Lexing_Lexer, BitAndAssign) {
   Source src;
-  src.loadString("&=", true);
+  src.loadString("&=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1268,7 +1268,7 @@ TEST(Integration_Lexing_Lexer, BitAndAssign) {
 
 TEST(Integration_Lexing_Lexer, BitOr) {
   Source src;
-  src.loadString("|", true);
+  src.loadString("|");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1285,7 +1285,7 @@ TEST(Integration_Lexing_Lexer, BitOr) {
 
 TEST(Integration_Lexing_Lexer, BitOrAssign) {
   Source src;
-  src.loadString("|=", true);
+  src.loadString("|=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1302,7 +1302,7 @@ TEST(Integration_Lexing_Lexer, BitOrAssign) {
 
 TEST(Integration_Lexing_Lexer, BitXor) {
   Source src;
-  src.loadString("^", true);
+  src.loadString("^");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1319,7 +1319,7 @@ TEST(Integration_Lexing_Lexer, BitXor) {
 
 TEST(Integration_Lexing_Lexer, BitXorAssign) {
   Source src;
-  src.loadString("^=", true);
+  src.loadString("^=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1336,7 +1336,7 @@ TEST(Integration_Lexing_Lexer, BitXorAssign) {
 
 TEST(Integration_Lexing_Lexer, LT) {
   Source src;
-  src.loadString("<", true);
+  src.loadString("<");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1353,7 +1353,7 @@ TEST(Integration_Lexing_Lexer, LT) {
 
 TEST(Integration_Lexing_Lexer, BitShL) {
   Source src;
-  src.loadString("<<", true);
+  src.loadString("<<");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1370,7 +1370,7 @@ TEST(Integration_Lexing_Lexer, BitShL) {
 
 TEST(Integration_Lexing_Lexer, LE) {
   Source src;
-  src.loadString("<=", true);
+  src.loadString("<=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1387,7 +1387,7 @@ TEST(Integration_Lexing_Lexer, LE) {
 
 TEST(Integration_Lexing_Lexer, LArrow) {
   Source src;
-  src.loadString("<-", true);
+  src.loadString("<-");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1404,7 +1404,7 @@ TEST(Integration_Lexing_Lexer, LArrow) {
 
 TEST(Integration_Lexing_Lexer, BitShLAssign) {
   Source src;
-  src.loadString("<<=", true);
+  src.loadString("<<=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1421,7 +1421,7 @@ TEST(Integration_Lexing_Lexer, BitShLAssign) {
 
 TEST(Integration_Lexing_Lexer, GT) {
   Source src;
-  src.loadString(">", true);
+  src.loadString(">");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1438,7 +1438,7 @@ TEST(Integration_Lexing_Lexer, GT) {
 
 TEST(Integration_Lexing_Lexer, BitShR) {
   Source src;
-  src.loadString(">>", true);
+  src.loadString(">>");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1455,7 +1455,7 @@ TEST(Integration_Lexing_Lexer, BitShR) {
 
 TEST(Integration_Lexing_Lexer, GE) {
   Source src;
-  src.loadString(">=", true);
+  src.loadString(">=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1472,7 +1472,7 @@ TEST(Integration_Lexing_Lexer, GE) {
 
 TEST(Integration_Lexing_Lexer, BitShRAssign) {
   Source src;
-  src.loadString(">>=", true);
+  src.loadString(">>=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1489,7 +1489,7 @@ TEST(Integration_Lexing_Lexer, BitShRAssign) {
 
 TEST(Integration_Lexing_Lexer, ExclamationPointAlone) {
   Source src;
-  src.loadString("!", true);
+  src.loadString("!");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1503,7 +1503,7 @@ TEST(Integration_Lexing_Lexer, ExclamationPointAlone) {
 
 TEST(Integration_Lexing_Lexer, NE) {
   Source src;
-  src.loadString("!=", true);
+  src.loadString("!=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1520,7 +1520,7 @@ TEST(Integration_Lexing_Lexer, NE) {
 
 TEST(Integration_Lexing_Lexer, Assign) {
   Source src;
-  src.loadString("=", true);
+  src.loadString("=");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1537,7 +1537,7 @@ TEST(Integration_Lexing_Lexer, Assign) {
 
 TEST(Integration_Lexing_Lexer, EQ) {
   Source src;
-  src.loadString("==", true);
+  src.loadString("==");
 
   std::vector<Token> toks;
   MessageBuffer msgs;
@@ -1554,7 +1554,7 @@ TEST(Integration_Lexing_Lexer, EQ) {
 
 TEST(Integration_Lexing_Lexer, BoolImplies) {
   Source src;
-  src.loadString("=>", true);
+  src.loadString("=>");
 
   std::vector<Token> toks;
   MessageBuffer msgs;

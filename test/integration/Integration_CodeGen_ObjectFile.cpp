@@ -10,7 +10,7 @@ using namespace whiskey;
 TEST(Integration_CodeGen_ObjectFile, Simple) {
   Node *node = Node::createDeclFunction(
       Node::createTypeAtomicInt32(),
-      Field::createString8("f"),
+      Field::createString("f"),
       {},
       Node::createStmtBlock({Node::createStmtReturn(
           Node::createExprLiteralUInt(Node::createTypeAtomicInt32(), 0))}));

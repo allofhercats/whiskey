@@ -30,16 +30,6 @@ TEST(Unit_Source_SourceAndLocation, Empty) {
 
   ASSERT_FALSE(loc.hasOffset());
 
-  loc.setOffset();
-  ASSERT_FALSE(loc.hasOffset());
-
-  loc.setOffset(5);
-  ASSERT_TRUE(loc.hasOffset());
-  ASSERT_EQ(loc.getOffset(), 5);
-
-  loc.setOffset();
-  ASSERT_FALSE(loc.hasOffset());
-
   ASSERT_FALSE(loc.hasLine());
 
   loc.setLine();
@@ -84,93 +74,17 @@ TEST(Unit_Source_SourceAndLocation, Empty) {
 TEST(Unit_Source_SourceAndLocation, Unloaded_Empty) {
   Source src;
 
-  ASSERT_STREQ(src.getPath().c_str(), "--");
+  ASSERT_STREQ(src.getPath().c_str(), "");
 
-  Location loc(src);
-
-  ASSERT_TRUE(loc.hasSource());
-  ASSERT_STREQ(loc.getSource().getPath().c_str(), "--");
-
-  ASSERT_FALSE(loc.hasPathOverride());
-  ASSERT_STREQ(loc.getPathOverride().c_str(), "");
-  ASSERT_TRUE(loc.hasPath());
-  ASSERT_STREQ(loc.getPath().c_str(), "--");
-
-  loc.setPathOverride("asdf");
-  ASSERT_TRUE(loc.hasPathOverride());
-  ASSERT_STREQ(loc.getPathOverride().c_str(), "asdf");
-  ASSERT_TRUE(loc.hasPath());
-  ASSERT_STREQ(loc.getPath().c_str(), "asdf");
-
-  loc.setPathOverride();
-  ASSERT_FALSE(loc.hasPathOverride());
-  ASSERT_STREQ(loc.getPathOverride().c_str(), "");
-  ASSERT_TRUE(loc.hasPath());
-  ASSERT_STREQ(loc.getPath().c_str(), "--");
-
-  ASSERT_TRUE(loc.hasOffset());
-  ASSERT_EQ(loc.getOffset(), 0);
-
-  loc.setOffset();
-  ASSERT_FALSE(loc.hasOffset());
-
-  loc.setOffset(5);
-  ASSERT_TRUE(loc.hasOffset());
-  ASSERT_EQ(loc.getOffset(), 5);
-
-  loc.setOffset(0);
-  ASSERT_TRUE(loc.hasOffset());
-  ASSERT_EQ(loc.getOffset(), 0);
-
-  ASSERT_TRUE(loc.hasLine());
-  ASSERT_EQ(loc.getLine(), 1);
-
-  loc.setLine();
-  ASSERT_FALSE(loc.hasLine());
-
-  loc.setLine(5);
-  ASSERT_TRUE(loc.hasLine());
-  ASSERT_EQ(loc.getLine(), 5);
-
-  loc.setLine(1);
-  ASSERT_TRUE(loc.hasLine());
-  ASSERT_EQ(loc.getLine(), 1);
-
-  ASSERT_TRUE(loc.hasColumn());
-  ASSERT_EQ(loc.getColumn(), 1);
-
-  loc.setColumn();
-  ASSERT_FALSE(loc.hasColumn());
-
-  loc.setColumn(5);
-  ASSERT_TRUE(loc.hasColumn());
-  ASSERT_EQ(loc.getColumn(), 5);
-
-  loc.setColumn(1);
-  ASSERT_TRUE(loc.hasColumn());
-  ASSERT_EQ(loc.getColumn(), 1);
-
-  ASSERT_FALSE(loc.areMoreChars());
-  ASSERT_FALSE(loc.areMoreChars(1));
-  ASSERT_FALSE(loc.areMoreChars(1000));
-
-  ASSERT_EQ(loc.getChar(), 0);
-  ASSERT_EQ(loc.getChar(1), 0);
-  ASSERT_EQ(loc.getChar(1000), 0);
-
-  ASSERT_EQ(loc.eatChar(), 0);
-  ASSERT_EQ(loc.eatChar(), 0);
-  ASSERT_EQ(loc.eatChar(), 0);
-  ASSERT_EQ(loc.eatChar(), 0);
-  ASSERT_EQ(loc.eatChar(), 0);
-  ASSERT_EQ(loc.eatChar(), 0);
-  ASSERT_EQ(loc.eatChar(), 0);
+  ASSERT_DEATH({
+    Location loc(src);
+  }, "");
 }
 
 TEST(Unit_Source_SourceAndLocation, Loaded_Empty) {
   Source src;
 
-  ASSERT_STREQ(src.getPath().c_str(), "--");
+  ASSERT_STREQ(src.getPath().c_str(), "");
 
   src.loadString("");
 
@@ -198,17 +112,6 @@ TEST(Unit_Source_SourceAndLocation, Loaded_Empty) {
   ASSERT_TRUE(loc.hasPath());
   ASSERT_STREQ(loc.getPath().c_str(), "--");
 
-  ASSERT_TRUE(loc.hasOffset());
-  ASSERT_EQ(loc.getOffset(), 0);
-
-  loc.setOffset();
-  ASSERT_FALSE(loc.hasOffset());
-
-  loc.setOffset(5);
-  ASSERT_TRUE(loc.hasOffset());
-  ASSERT_EQ(loc.getOffset(), 5);
-
-  loc.setOffset(0);
   ASSERT_TRUE(loc.hasOffset());
   ASSERT_EQ(loc.getOffset(), 0);
 

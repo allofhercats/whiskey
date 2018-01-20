@@ -24,16 +24,8 @@ TEST(Unit_Core_LiteralPrinterChar, Simple) {
   ASSERT_STREQ("'\\e'", ss.str().c_str());
 
   ss.str("");
-  LiteralPrinterChar(U'\x80').print(ss);
+  LiteralPrinterChar('\x80').print(ss);
   ASSERT_STREQ("'\\x80'", ss.str().c_str());
-
-  ss.str("");
-  LiteralPrinterChar(U'\uffff').print(ss);
-  ASSERT_STREQ("'\\uffff'", ss.str().c_str());
-
-  ss.str("");
-  LiteralPrinterChar(0xffffffff).print(ss);
-  ASSERT_STREQ("'\\Uffffffff'", ss.str().c_str());
 
   ss.str("");
   LiteralPrinterChar('\'').print(ss);

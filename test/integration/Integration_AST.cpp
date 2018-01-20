@@ -26,20 +26,9 @@ TEST(Integration_AST, Single) {
 
   ASSERT_DEATH({ f0->setReal(0.0); }, "");
 
-  ASSERT_DEATH({ f0->getString8(); }, "");
+  ASSERT_DEATH({ f0->getString(); }, "");
 
-  ASSERT_DEATH({ f0->setString8(""); }, "");
-
-  ASSERT_DEATH({ f0->getString16(); }, "");
-
-  ASSERT_DEATH({ f0->setString16(u""); }, "");
-
-  ASSERT_DEATH({ f0->getString32(); }, "");
-
-  ASSERT_DEATH({ f0->setString32(U""); }, "");
-
-  ASSERT_EQ(f0->getLength(), 0);
-  ASSERT_EQ(f1->getLength(), 0);
+  ASSERT_DEATH({ f0->setString(""); }, "");
 
   ASSERT_EQ(f0->getNode(), nullptr);
   ASSERT_EQ(f1->getNode(), nullptr);

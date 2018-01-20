@@ -2,7 +2,7 @@
 
 #include <whiskey/AST/Field.hpp>
 #include <whiskey/AST/Node.hpp>
-#include <whiskey/Core/PrintLiterals.hpp>
+#include <whiskey/Core/LiteralPrinterString.hpp>
 #include <whiskey/Lexing/Lexer.hpp>
 #include <whiskey/Messages/MessageBuffer.hpp>
 #include <whiskey/Parsing/Parser.hpp>
@@ -28,9 +28,9 @@ void testHelper(ParserContext::Rule rule,
   }
 
   Source src;
-  src.loadCString(text, 0, true);
+  src.loadString(text);
 
-  ASSERT_EQ(src.getLength(), strlen(text));
+  ASSERT_EQ(src.getText().size(), strlen(text));
 
   Location loc(src);
 
@@ -48,7 +48,7 @@ void testHelper(ParserContext::Rule rule,
   while (tokenIter != tokens.end() && tokenIDIter != tokenIDs.end()) {
     if (tokenIter->getID() != *tokenIDIter) {
       std::cout << "Tokens do not match: ";
-      printLiteralString(std::cout, text);
+      LiteralPrinterString(text).print(std::cout);
       std::cout << "\n";
       std::cout << "  Expected[" << index << "] ";
       Token::printTokenIDDebug(std::cout, *tokenIDIter);
@@ -70,7 +70,7 @@ void testHelper(ParserContext::Rule rule,
     index = 0;
 
     std::cout << "Tokens do not match: ";
-    printLiteralString(std::cout, text);
+    LiteralPrinterString(text).print(std::cout);
     std::cout << "\n\n";
 
     std::cout << "Expected (" << tokenIDs.size() << "):\n";
@@ -154,7 +154,7 @@ TEST(Integration_Parsing_Parser, ParseTypeSymbol_0) {
   testHelper(Parser::parseTypeSymbol,
              "x",
              {Token::Symbol},
-             Node::createTypeSymbol(Field::createString8("x")),
+             Node::createTypeSymbol(Field::createString("x")),
              true);
 }
 
@@ -167,7 +167,7 @@ TEST(Integration_Parsing_Parser, ParseTypeAccessUnary_0) {
              ".x",
              {Token::Period, Token::Symbol},
              Node::createTypeAccessUnary(
-                 Node::createTypeSymbol(Field::createString8("x"))),
+                 Node::createTypeSymbol(Field::createString("x"))),
              true);
 }
 
@@ -176,7 +176,7 @@ TEST(Integration_Parsing_Parser, ParseTypeAccessUnary_1) {
              "..x",
              {Token::Period, Token::Period, Token::Symbol},
              Node::createTypeAccessUnary(Node::createTypeAccessUnary(
-                 Node::createTypeSymbol(Field::createString8("x")))),
+                 Node::createTypeSymbol(Field::createString("x")))),
              true);
 }
 
@@ -184,7 +184,7 @@ TEST(Integration_Parsing_Parser, ParseTypeAccessUnary_2) {
   testHelper(Parser::parseTypeAccessUnary,
              "x",
              {Token::Symbol},
-             Node::createTypeSymbol(Field::createString8("x")),
+             Node::createTypeSymbol(Field::createString("x")),
              true);
 }
 
@@ -198,8 +198,8 @@ TEST(Integration_Parsing_Parser, ParseTypeAccessBinary_0) {
              "x.y",
              {Token::Symbol, Token::Period, Token::Symbol},
              Node::createTypeAccess(
-                 {Node::createTypeSymbol(Field::createString8("x")),
-                  Node::createTypeSymbol(Field::createString8("y"))}),
+                 {Node::createTypeSymbol(Field::createString("x")),
+                  Node::createTypeSymbol(Field::createString("y"))}),
              true);
 }
 
@@ -212,10 +212,10 @@ TEST(Integration_Parsing_Parser, ParseTypeAccessBinary_1) {
               Token::Period,
               Token::Symbol},
              Node::createTypeAccess(
-                 {Node::createTypeSymbol(Field::createString8("x")),
+                 {Node::createTypeSymbol(Field::createString("x")),
                   Node::createTypeAccess(
-                      {Node::createTypeSymbol(Field::createString8("y")),
-                       Node::createTypeSymbol(Field::createString8("z"))})}),
+                      {Node::createTypeSymbol(Field::createString("y")),
+                       Node::createTypeSymbol(Field::createString("z"))})}),
              true);
 }
 
@@ -224,8 +224,8 @@ TEST(Integration_Parsing_Parser, ParseTypeAccessBinary_2) {
              ".x.y",
              {Token::Period, Token::Symbol, Token::Period, Token::Symbol},
              Node::createTypeAccessUnary(Node::createTypeAccess(
-                 {Node::createTypeSymbol(Field::createString8("x")),
-                  Node::createTypeSymbol(Field::createString8("y"))})),
+                 {Node::createTypeSymbol(Field::createString("x")),
+                  Node::createTypeSymbol(Field::createString("y"))})),
              true);
 }
 
@@ -239,10 +239,10 @@ TEST(Integration_Parsing_Parser, ParseTypeAccessBinary_3) {
               Token::Period,
               Token::Symbol},
              Node::createTypeAccessUnary(Node::createTypeAccess(
-                 {Node::createTypeSymbol(Field::createString8("x")),
+                 {Node::createTypeSymbol(Field::createString("x")),
                   Node::createTypeAccess(
-                      {Node::createTypeSymbol(Field::createString8("y")),
-                       Node::createTypeSymbol(Field::createString8("z"))})})),
+                      {Node::createTypeSymbol(Field::createString("y")),
+                       Node::createTypeSymbol(Field::createString("z"))})})),
              true);
 }
 
@@ -263,7 +263,7 @@ TEST(Integration_Parsing_Parser, ParseTypeFunction_0) {
              "x <- ()",
              {Token::Symbol, Token::LArrow, Token::LParen, Token::RParen},
              Node::createTypeFunction(
-                 Node::createTypeSymbol(Field::createString8("x")), {}),
+                 Node::createTypeSymbol(Field::createString("x")), {}),
              true);
 }
 
@@ -276,8 +276,8 @@ TEST(Integration_Parsing_Parser, ParseTypeFunction_1) {
               Token::Symbol,
               Token::RParen},
              Node::createTypeFunction(
-                 Node::createTypeSymbol(Field::createString8("x")),
-                 {Node::createTypeSymbol(Field::createString8("y"))}),
+                 Node::createTypeSymbol(Field::createString("x")),
+                 {Node::createTypeSymbol(Field::createString("y"))}),
              true);
 }
 
@@ -292,9 +292,9 @@ TEST(Integration_Parsing_Parser, ParseTypeFunction_2) {
               Token::Symbol,
               Token::RParen},
              Node::createTypeFunction(
-                 Node::createTypeSymbol(Field::createString8("x")),
-                 {Node::createTypeSymbol(Field::createString8("y")),
-                  Node::createTypeSymbol(Field::createString8("z"))}),
+                 Node::createTypeSymbol(Field::createString("x")),
+                 {Node::createTypeSymbol(Field::createString("y")),
+                  Node::createTypeSymbol(Field::createString("z"))}),
              true);
 }
 
@@ -315,12 +315,12 @@ TEST(Integration_Parsing_Parser, ParseTypeFunction_3) {
               Token::RParen,
               Token::RParen},
              Node::createTypeFunction(
-                 Node::createTypeSymbol(Field::createString8("x")),
-                 {Node::createTypeSymbol(Field::createString8("y")),
+                 Node::createTypeSymbol(Field::createString("x")),
+                 {Node::createTypeSymbol(Field::createString("y")),
                   Node::createTypeFunction(
-                      Node::createTypeSymbol(Field::createString8("z")),
-                      {Node::createTypeSymbol(Field::createString8("a")),
-                       Node::createTypeSymbol(Field::createString8("b"))})}),
+                      Node::createTypeSymbol(Field::createString("z")),
+                      {Node::createTypeSymbol(Field::createString("a")),
+                       Node::createTypeSymbol(Field::createString("b"))})}),
              true);
 }
 
@@ -370,7 +370,7 @@ TEST(Integration_Parsing_Parser, ParseTypeGroup_0) {
       Parser::parseTypeGroup,
       "(x)",
       {Token::LParen, Token::Symbol, Token::RParen},
-      Node::createTypeGroup(Node::createTypeSymbol(Field::createString8("x"))),
+      Node::createTypeGroup(Node::createTypeSymbol(Field::createString("x"))),
       true);
 }
 
@@ -383,7 +383,7 @@ TEST(Integration_Parsing_Parser, ParseTypeGroup_1) {
               Token::RParen,
               Token::RParen},
              Node::createTypeGroup(Node::createTypeGroup(
-                 Node::createTypeSymbol(Field::createString8("x")))),
+                 Node::createTypeSymbol(Field::createString("x")))),
              true);
 }
 
@@ -437,7 +437,7 @@ TEST(Integration_Parsing_Parser, ParseTypeFunction_8) {
               Token::RParen},
              Node::createTypeFunction(
                  Node::createTypeGroup(Node::createTypeFunction(
-                     Node::createTypeSymbol(Field::createString8("x")), {})),
+                     Node::createTypeSymbol(Field::createString("x")), {})),
                  {}),
              true);
 }
@@ -446,7 +446,7 @@ TEST(Integration_Parsing_Parser, ParseExprSymbol_0) {
   testHelper(Parser::parseExprSymbol,
              "x",
              {Token::Symbol},
-             Node::createExprSymbol(Field::createString8("x")),
+             Node::createExprSymbol(Field::createString("x")),
              true);
 }
 
@@ -485,7 +485,7 @@ TEST(Integration_Parsing_Parser, ParseExprAccessUnary_0) {
              ".x",
              {Token::Period, Token::Symbol},
              Node::createExprAccessUnary(
-                 Node::createExprSymbol(Field::createString8("x"))),
+                 Node::createExprSymbol(Field::createString("x"))),
              true);
 }
 
@@ -494,7 +494,7 @@ TEST(Integration_Parsing_Parser, ParseExprAccessUnary_1) {
              "..x",
              {Token::Period, Token::Period, Token::Symbol},
              Node::createExprAccessUnary(Node::createExprAccessUnary(
-                 Node::createExprSymbol(Field::createString8("x")))),
+                 Node::createExprSymbol(Field::createString("x")))),
              true);
 }
 
@@ -502,7 +502,7 @@ TEST(Integration_Parsing_Parser, ParseExprAccessUnary_2) {
   testHelper(Parser::parseExprAccessUnary,
              "x",
              {Token::Symbol},
-             Node::createExprSymbol(Field::createString8("x")),
+             Node::createExprSymbol(Field::createString("x")),
              true);
 }
 
@@ -516,8 +516,8 @@ TEST(Integration_Parsing_Parser, ParseExprAccess_0) {
              "x.y",
              {Token::Symbol, Token::Period, Token::Symbol},
              Node::createExprAccess(
-                 {Node::createExprSymbol(Field::createString8("x")),
-                  Node::createExprSymbol(Field::createString8("y"))}),
+                 {Node::createExprSymbol(Field::createString("x")),
+                  Node::createExprSymbol(Field::createString("y"))}),
              true);
 }
 
@@ -530,10 +530,10 @@ TEST(Integration_Parsing_Parser, ParseExprAccess_1) {
               Token::Period,
               Token::Symbol},
              Node::createExprAccess(
-                 {Node::createExprSymbol(Field::createString8("x")),
+                 {Node::createExprSymbol(Field::createString("x")),
                   Node::createExprAccess(
-                      {Node::createExprSymbol(Field::createString8("y")),
-                       Node::createExprSymbol(Field::createString8("z"))})}),
+                      {Node::createExprSymbol(Field::createString("y")),
+                       Node::createExprSymbol(Field::createString("z"))})}),
              true);
 }
 
@@ -542,8 +542,8 @@ TEST(Integration_Parsing_Parser, ParseExprAccess_2) {
              ".x.y",
              {Token::Period, Token::Symbol, Token::Period, Token::Symbol},
              Node::createExprAccessUnary(Node::createExprAccess(
-                 {Node::createExprSymbol(Field::createString8("x")),
-                  Node::createExprSymbol(Field::createString8("y"))})),
+                 {Node::createExprSymbol(Field::createString("x")),
+                  Node::createExprSymbol(Field::createString("y"))})),
              true);
 }
 
@@ -557,10 +557,10 @@ TEST(Integration_Parsing_Parser, ParseExprAccess_3) {
               Token::Period,
               Token::Symbol},
              Node::createExprAccessUnary(Node::createExprAccess(
-                 {Node::createExprSymbol(Field::createString8("x")),
+                 {Node::createExprSymbol(Field::createString("x")),
                   Node::createExprAccess(
-                      {Node::createExprSymbol(Field::createString8("y")),
-                       Node::createExprSymbol(Field::createString8("z"))})})),
+                      {Node::createExprSymbol(Field::createString("y")),
+                       Node::createExprSymbol(Field::createString("z"))})})),
              true);
 }
 
@@ -580,7 +580,7 @@ TEST(Integration_Parsing_Parser, ParseExprAccess_6) {
   testHelper(Parser::parseExprAccess,
              "x",
              {Token::Symbol},
-             Node::createExprSymbol(Field::createString8("x")),
+             Node::createExprSymbol(Field::createString("x")),
              true);
 }
 
@@ -589,7 +589,7 @@ TEST(Integration_Parsing_Parser, ParseExprCall_0) {
              "x()",
              {Token::Symbol, Token::LParen, Token::RParen},
              Node::createExprCall(
-                 Node::createExprSymbol(Field::createString8("x")), {}),
+                 Node::createExprSymbol(Field::createString("x")), {}),
              true);
 }
 
@@ -598,8 +598,8 @@ TEST(Integration_Parsing_Parser, ParseExprCall_1) {
       Parser::parseExprCall,
       "x(y)",
       {Token::Symbol, Token::LParen, Token::Symbol, Token::RParen},
-      Node::createExprCall(Node::createExprSymbol(Field::createString8("x")),
-                           {Node::createExprSymbol(Field::createString8("y"))}),
+      Node::createExprCall(Node::createExprSymbol(Field::createString("x")),
+                           {Node::createExprSymbol(Field::createString("y"))}),
       true);
 }
 
@@ -613,9 +613,9 @@ TEST(Integration_Parsing_Parser, ParseExprCall_2) {
        Token::Comma,
        Token::Symbol,
        Token::RParen},
-      Node::createExprCall(Node::createExprSymbol(Field::createString8("x")),
-                           {Node::createExprSymbol(Field::createString8("y")),
-                            Node::createExprSymbol(Field::createString8("z"))}),
+      Node::createExprCall(Node::createExprSymbol(Field::createString("x")),
+                           {Node::createExprSymbol(Field::createString("y")),
+                            Node::createExprSymbol(Field::createString("z"))}),
       true);
 }
 
@@ -634,12 +634,12 @@ TEST(Integration_Parsing_Parser, ParseExprCall_3) {
               Token::RParen,
               Token::RParen},
              Node::createExprCall(
-                 Node::createExprSymbol(Field::createString8("x")),
-                 {Node::createExprSymbol(Field::createString8("y")),
+                 Node::createExprSymbol(Field::createString("x")),
+                 {Node::createExprSymbol(Field::createString("y")),
                   Node::createExprCall(
-                      Node::createExprSymbol(Field::createString8("z")),
-                      {Node::createExprSymbol(Field::createString8("a")),
-                       Node::createExprSymbol(Field::createString8("b"))})}),
+                      Node::createExprSymbol(Field::createString("z")),
+                      {Node::createExprSymbol(Field::createString("a")),
+                       Node::createExprSymbol(Field::createString("b"))})}),
              true);
 }
 
@@ -683,7 +683,7 @@ TEST(Integration_Parsing_Parser, ParseExprCall_8) {
   testHelper(Parser::parseExprCall,
              "x",
              {Token::Symbol},
-             Node::createExprSymbol(Field::createString8("x")),
+             Node::createExprSymbol(Field::createString("x")),
              true);
 }
 
@@ -692,7 +692,7 @@ TEST(Integration_Parsing_Parser, ParseExprUnaryRight_0) {
       Parser::parseExpr,
       "++x",
       {Token::Inc, Token::Symbol},
-      Node::createExprIncPre(Node::createExprSymbol(Field::createString8("x"))),
+      Node::createExprIncPre(Node::createExprSymbol(Field::createString("x"))),
       true);
 }
 
@@ -701,7 +701,7 @@ TEST(Integration_Parsing_Parser, ParseExprUnaryLeft_0) {
              "x++",
              {Token::Symbol, Token::Inc},
              Node::createExprIncPost(
-                 Node::createExprSymbol(Field::createString8("x"))),
+                 Node::createExprSymbol(Field::createString("x"))),
              true);
 }
 
@@ -710,8 +710,8 @@ TEST(Integration_Parsing_Parser, ParseExprBinary_0) {
       Parser::parseExpr,
       "x=y",
       {Token::Symbol, Token::Assign, Token::Symbol},
-      Node::createExprAssign(Node::createExprSymbol(Field::createString8("x")),
-                             Node::createExprSymbol(Field::createString8("y"))),
+      Node::createExprAssign(Node::createExprSymbol(Field::createString("x")),
+                             Node::createExprSymbol(Field::createString("y"))),
       true);
 }
 
@@ -719,7 +719,7 @@ TEST(Integration_Parsing_Parser, ParseExprSymbol_2) {
   testHelper(Parser::parseExpr,
              "x",
              {Token::Symbol},
-             Node::createExprSymbol(Field::createString8("x")),
+             Node::createExprSymbol(Field::createString("x")),
              true);
 }
 
@@ -728,7 +728,7 @@ TEST(Integration_Parsing_Parser, ParseExprGroup_0) {
       Parser::parseExprGroup,
       "(x)",
       {Token::LParen, Token::Symbol, Token::RParen},
-      Node::createExprGroup(Node::createExprSymbol(Field::createString8("x"))),
+      Node::createExprGroup(Node::createExprSymbol(Field::createString("x"))),
       true);
 }
 
@@ -741,7 +741,7 @@ TEST(Integration_Parsing_Parser, ParseExprGroup_1) {
               Token::RParen,
               Token::RParen},
              Node::createExprGroup(Node::createExprGroup(
-                 Node::createExprSymbol(Field::createString8("x")))),
+                 Node::createExprSymbol(Field::createString("x")))),
              true);
 }
 
@@ -802,7 +802,7 @@ TEST(Integration_Parsing_Parser, ParseStmtExpr_0) {
       Parser::parseStmtExpr,
       "x;",
       {Token::Symbol, Token::Semicolon},
-      Node::createStmtExpr(Node::createExprSymbol(Field::createString8("x"))),
+      Node::createStmtExpr(Node::createExprSymbol(Field::createString("x"))),
       true);
 }
 
@@ -815,7 +815,7 @@ TEST(Integration_Parsing_Parser, ParseDeclVariable_0) {
              "int32 x;",
              {Token::KWInt32, Token::Symbol, Token::Semicolon},
              Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                      Field::createString8("x")),
+                                      Field::createString("x")),
              true);
 }
 
@@ -824,8 +824,8 @@ TEST(Integration_Parsing_Parser, ParseDeclVariable_1) {
              "my_type x;",
              {Token::Symbol, Token::Symbol, Token::Semicolon},
              Node::createDeclVariable(
-                 Node::createTypeSymbol(Field::createString8("my_type")),
-                 Field::createString8("x")),
+                 Node::createTypeSymbol(Field::createString("my_type")),
+                 Field::createString("x")),
              true);
 }
 
@@ -839,8 +839,8 @@ TEST(Integration_Parsing_Parser, ParseDeclVariable_2) {
               Token::Semicolon},
              Node::createDeclVariable(
                  Node::createTypeAtomicInt32(),
-                 Field::createString8("x"),
-                 Node::createExprSymbol(Field::createString8("y"))),
+                 Field::createString("x"),
+                 Node::createExprSymbol(Field::createString("y"))),
              true);
 }
 
@@ -885,7 +885,7 @@ TEST(Integration_Parsing_Parser, ParseDeclFunction_0) {
               Token::RParen,
               Token::Semicolon},
              Node::createDeclFunction(
-                 Node::createTypeAtomicInt32(), Field::createString8("f"), {}),
+                 Node::createTypeAtomicInt32(), Field::createString("f"), {}),
              true);
 }
 
@@ -901,9 +901,9 @@ TEST(Integration_Parsing_Parser, ParseDeclFunction_1) {
               Token::Semicolon},
              Node::createDeclFunction(
                  Node::createTypeAtomicInt32(),
-                 Field::createString8("f"),
+                 Field::createString("f"),
                  {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("x"))}),
+                                           Field::createString("x"))}),
              true);
 }
 
@@ -922,11 +922,11 @@ TEST(Integration_Parsing_Parser, ParseDeclFunction_2) {
               Token::Semicolon},
              Node::createDeclFunction(
                  Node::createTypeAtomicInt32(),
-                 Field::createString8("f"),
+                 Field::createString("f"),
                  {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("x")),
+                                           Field::createString("x")),
                   Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("y"))}),
+                                           Field::createString("y"))}),
              true);
 }
 
@@ -942,10 +942,10 @@ TEST(Integration_Parsing_Parser, ParseDeclFunction_3) {
        Token::Symbol,
        Token::Semicolon},
       Node::createDeclFunction(Node::createTypeAtomicInt32(),
-                               Field::createString8("f"),
+                               Field::createString("f"),
                                {},
                                Node::createStmtExpr(Node::createExprSymbol(
-                                   Field::createString8("x")))),
+                                   Field::createString("x")))),
       true);
 }
 
@@ -979,7 +979,7 @@ TEST(Integration_Parsing_Parser, ParseStmtBlock_3) {
              "{x;}",
              {Token::LBrace, Token::Symbol, Token::Semicolon, Token::RBrace},
              Node::createStmtBlock({Node::createStmtExpr(
-                 Node::createExprSymbol(Field::createString8("x")))}),
+                 Node::createExprSymbol(Field::createString("x")))}),
              true);
 }
 
@@ -993,9 +993,9 @@ TEST(Integration_Parsing_Parser, ParseStmtBlock_4) {
               Token::Semicolon,
               Token::RBrace},
              Node::createStmtBlock({Node::createStmtExpr(Node::createExprSymbol(
-                                        Field::createString8("x"))),
+                                        Field::createString("x"))),
                                     Node::createStmtExpr(Node::createExprSymbol(
-                                        Field::createString8("y")))}),
+                                        Field::createString("y")))}),
              true);
 }
 
@@ -1033,7 +1033,7 @@ TEST(Integration_Parsing_Parser, ParseDeclFunction_4) {
               Token::LBrace,
               Token::RBrace},
              Node::createDeclFunction(Node::createTypeAtomicInt32(),
-                                      Field::createString8("f"),
+                                      Field::createString("f"),
                                       {},
                                       Node::createStmtBlock()),
              true);
@@ -1067,7 +1067,7 @@ TEST(Integration_Parsing_Parser, ParseDeclClass_0) {
   testHelper(Parser::parseDeclClass,
              "class a;",
              {Token::KWClass, Token::Symbol, Token::Semicolon},
-             Node::createDeclClass(Field::createString8("a")),
+             Node::createDeclClass(Field::createString("a")),
              true);
 }
 
@@ -1080,8 +1080,8 @@ TEST(Integration_Parsing_Parser, ParseDeclClass_1) {
        Token::KWInherits,
        Token::Symbol,
        Token::Semicolon},
-      Node::createDeclClass(Field::createString8("a"),
-                            {Node::createTypeSymbol(Field::createString8("b"))},
+      Node::createDeclClass(Field::createString("a"),
+                            {Node::createTypeSymbol(Field::createString("b"))},
                             {}),
       true);
 }
@@ -1097,9 +1097,9 @@ TEST(Integration_Parsing_Parser, ParseDeclClass_2) {
        Token::Comma,
        Token::Symbol,
        Token::Semicolon},
-      Node::createDeclClass(Field::createString8("a"),
-                            {Node::createTypeSymbol(Field::createString8("b")),
-                             Node::createTypeSymbol(Field::createString8("c"))},
+      Node::createDeclClass(Field::createString("a"),
+                            {Node::createTypeSymbol(Field::createString("b")),
+                             Node::createTypeSymbol(Field::createString("c"))},
                             {}),
       true);
 }
@@ -1108,7 +1108,7 @@ TEST(Integration_Parsing_Parser, ParseDeclClass_3) {
   testHelper(Parser::parseDeclClass,
              "class a {}",
              {Token::KWClass, Token::Symbol, Token::LBrace, Token::RBrace},
-             Node::createDeclClass(Field::createString8("a")),
+             Node::createDeclClass(Field::createString("a")),
              true);
 }
 
@@ -1122,8 +1122,8 @@ TEST(Integration_Parsing_Parser, ParseDeclClass_4) {
        Token::Symbol,
        Token::LBrace,
        Token::RBrace},
-      Node::createDeclClass(Field::createString8("a"),
-                            {Node::createTypeSymbol(Field::createString8("b"))},
+      Node::createDeclClass(Field::createString("a"),
+                            {Node::createTypeSymbol(Field::createString("b"))},
                             {}),
       true);
 }
@@ -1140,9 +1140,9 @@ TEST(Integration_Parsing_Parser, ParseDeclClass_5) {
        Token::Symbol,
        Token::LBrace,
        Token::RBrace},
-      Node::createDeclClass(Field::createString8("a"),
-                            {Node::createTypeSymbol(Field::createString8("b")),
-                             Node::createTypeSymbol(Field::createString8("c"))},
+      Node::createDeclClass(Field::createString("a"),
+                            {Node::createTypeSymbol(Field::createString("b")),
+                             Node::createTypeSymbol(Field::createString("c"))},
                             {}),
       true);
 }
@@ -1158,9 +1158,9 @@ TEST(Integration_Parsing_Parser, ParseDeclClass_6) {
               Token::Semicolon,
               Token::RBrace},
              Node::createDeclClass(
-                 Field::createString8("a"),
+                 Field::createString("a"),
                  {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("x"))}),
+                                           Field::createString("x"))}),
              true);
 }
 
@@ -1178,11 +1178,11 @@ TEST(Integration_Parsing_Parser, ParseDeclClass_7) {
               Token::Semicolon,
               Token::RBrace},
              Node::createDeclClass(
-                 Field::createString8("a"),
+                 Field::createString("a"),
                  {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("x")),
+                                           Field::createString("x")),
                   Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("y"))}),
+                                           Field::createString("y"))}),
              true);
 }
 
@@ -1190,7 +1190,7 @@ TEST(Integration_Parsing_Parser, ParseDeclNamespace_0) {
   testHelper(Parser::parseDeclNamespace,
              "namespace a {}",
              {Token::KWNamespace, Token::Symbol, Token::LBrace, Token::RBrace},
-             Node::createDeclNamespace(Field::createString8("a")),
+             Node::createDeclNamespace(Field::createString("a")),
              true);
 }
 
@@ -1205,9 +1205,9 @@ TEST(Integration_Parsing_Parser, ParseDeclNamespace_1) {
               Token::Semicolon,
               Token::RBrace},
              Node::createDeclNamespace(
-                 Field::createString8("a"),
+                 Field::createString("a"),
                  {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("x"))}),
+                                           Field::createString("x"))}),
              true);
 }
 
@@ -1225,11 +1225,11 @@ TEST(Integration_Parsing_Parser, ParseDeclNamespace_2) {
               Token::Semicolon,
               Token::RBrace},
              Node::createDeclNamespace(
-                 Field::createString8("a"),
+                 Field::createString("a"),
                  {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("x")),
+                                           Field::createString("x")),
                   Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("y"))}),
+                                           Field::createString("y"))}),
              true);
 }
 
@@ -1238,7 +1238,7 @@ TEST(Integration_Parsing_Parser, ParseStmtDecl_0) {
              "int32 x;",
              {Token::KWInt32, Token::Symbol, Token::Semicolon},
              Node::createStmtDecl(Node::createDeclVariable(
-                 Node::createTypeAtomicInt32(), Field::createString8("x"))),
+                 Node::createTypeAtomicInt32(), Field::createString("x"))),
              true);
 }
 
@@ -1272,7 +1272,7 @@ TEST(Integration_Parsing_Parser, ParseStmtFor_1) {
               Token::Semicolon},
              Node::createStmtFor(
                  {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("x"))},
+                                           Field::createString("x"))},
                  nullptr,
                  {},
                  Node::createStmtEmpty()),
@@ -1295,9 +1295,9 @@ TEST(Integration_Parsing_Parser, ParseStmtFor_2) {
               Token::Semicolon},
              Node::createStmtFor(
                  {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("x")),
+                                           Field::createString("x")),
                   Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("y"))},
+                                           Field::createString("y"))},
                  nullptr,
                  {},
                  Node::createStmtEmpty()),
@@ -1316,7 +1316,7 @@ TEST(Integration_Parsing_Parser, ParseStmtFor_3) {
        Token::RParen,
        Token::Semicolon},
       Node::createStmtFor({},
-                          Node::createExprSymbol(Field::createString8("x")),
+                          Node::createExprSymbol(Field::createString("x")),
                           {},
                           Node::createStmtEmpty()),
       true);
@@ -1335,7 +1335,7 @@ TEST(Integration_Parsing_Parser, ParseStmtFor_4) {
        Token::Semicolon},
       Node::createStmtFor({},
                           nullptr,
-                          {Node::createExprSymbol(Field::createString8("x"))},
+                          {Node::createExprSymbol(Field::createString("x"))},
                           Node::createStmtEmpty()),
       true);
 }
@@ -1355,8 +1355,8 @@ TEST(Integration_Parsing_Parser, ParseStmtFor_5) {
        Token::Semicolon},
       Node::createStmtFor({},
                           nullptr,
-                          {Node::createExprSymbol(Field::createString8("x")),
-                           Node::createExprSymbol(Field::createString8("y"))},
+                          {Node::createExprSymbol(Field::createString("x")),
+                           Node::createExprSymbol(Field::createString("y"))},
                           Node::createStmtEmpty()),
       true);
 }
@@ -1429,7 +1429,7 @@ TEST(Integration_Parsing_Parser, ParseStmtForEach_1) {
               Token::Semicolon},
              Node::createStmtForEach(
                  {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("x"))},
+                                           Field::createString("x"))},
                  {},
                  Node::createStmtEmpty()),
              true);
@@ -1450,9 +1450,9 @@ TEST(Integration_Parsing_Parser, ParseStmtForEach_2) {
               Token::Semicolon},
              Node::createStmtForEach(
                  {Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("x")),
+                                           Field::createString("x")),
                   Node::createDeclVariable(Node::createTypeAtomicInt32(),
-                                           Field::createString8("y"))},
+                                           Field::createString("y"))},
                  {},
                  Node::createStmtEmpty()),
              true);
@@ -1469,7 +1469,7 @@ TEST(Integration_Parsing_Parser, ParseStmtForEach_3) {
               Token::Semicolon},
              Node::createStmtForEach(
                  {},
-                 {Node::createExprSymbol(Field::createString8("x"))},
+                 {Node::createExprSymbol(Field::createString("x"))},
                  Node::createStmtEmpty()),
              true);
 }
@@ -1487,8 +1487,8 @@ TEST(Integration_Parsing_Parser, ParseStmtForEach_4) {
               Token::Semicolon},
              Node::createStmtForEach(
                  {},
-                 {Node::createExprSymbol(Field::createString8("x")),
-                  Node::createExprSymbol(Field::createString8("y"))},
+                 {Node::createExprSymbol(Field::createString("x")),
+                  Node::createExprSymbol(Field::createString("y"))},
                  Node::createStmtEmpty()),
              true);
 }
@@ -1534,7 +1534,7 @@ TEST(Integration_Parsing_Parser, ParseImport_0) {
               Token::String,
               Token::RParen,
               Token::Semicolon},
-             Node::createImport(Field::createString8("a")),
+             Node::createImport(Field::createString("a")),
              true);
 }
 

@@ -3,7 +3,7 @@
 #include <whiskey/Core/Assert.hpp>
 
 namespace whiskey {
-void LiteralPrinterUInt::onPrint(CharOutStream &os) const {
+void LiteralPrinterUInt::onPrint(std::ostream &os) const {
 	if (usePrefix) {
 		printBasePrefix(os, base);
 	}
@@ -12,7 +12,7 @@ void LiteralPrinterUInt::onPrint(CharOutStream &os) const {
 
 	if (width > nDigits) {
 	  for (int i = 0; i < width - nDigits; i++) {
-	  	os.write('0');
+	  	os << '0';
 	  }
 	}
 
@@ -24,9 +24,9 @@ void LiteralPrinterUInt::onPrint(CharOutStream &os) const {
     }
     UInt64 digit = (value / fac) % base;
     if (digit <= 9) {
-      os.write('0' + digit);
+      os << (char)('0' + digit);
     } else if (10 <= digit && digit <= 15) {
-      os.write('a' + (digit - 10));
+      os << (char)('a' + (digit - 10));
     } else {
       W_ASSERT_UNREACHABLE("Unsupported base " << base);
     }
@@ -38,16 +38,14 @@ bool LiteralPrinterUInt::isValidBase(int base) {
   return base == 2 || base == 8 || base == 10 || base == 16;
 }
 
-void LiteralPrinterUInt::printBasePrefix(CharOutStream &os, int base
+void LiteralPrinterUInt::printBasePrefix(std::ostream &os, int base
                                            ) {
 	if (base == 2) {
-		os.write('0');
-		os.write('b');
+		os << "0b";
 	} else if (base == 8) {
-		os.write('0');
+		os << "0";
 	} else if (base == 16) {
-		os.write('0');
-		os.write('x');
+		os << "0x";
 	}
 }
 

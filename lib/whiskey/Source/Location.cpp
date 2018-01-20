@@ -12,26 +12,23 @@ size_t Location::distance(const Location &first, const Location &last) {
 }
 
 Location::Location(std::string pathOverride,
-                   size_t offset,
                    unsigned int line,
                    unsigned int column)
-    : source(nullptr), pathOverride(pathOverride), offset(offset), line(line),
+    : source(nullptr), pathOverride(pathOverride), line(line),
       column(column) {
 }
 
 Location::Location(const Source &source,
-                   size_t offset,
-                   unsigned int line,
-                   unsigned int column)
-    : source(&source), offset(offset), line(line), column(column) {
+           unsigned int line,
+           unsigned int column)
+    : source(&source), iter(source.getText().cbegin()), line(line), column(column) {
 }
 
 Location::Location(const Source &source,
                    std::string pathOverride,
-                   size_t offset,
                    unsigned int line,
                    unsigned int column)
-    : source(&source), pathOverride(pathOverride), offset(offset), line(line),
+    : source(&source), pathOverride(pathOverride), iter(source.getText().cbegin()), line(line),
       column(column) {
 }
 
@@ -79,16 +76,12 @@ const std::string &Location::getPath() const {
 }
 
 bool Location::hasOffset() const {
-  return offset != (size_t)-1;
+  return hasSource();
 }
 
 size_t Location::getOffset() const {
   W_ASSERT_TRUE(hasOffset(), "Cannot access empty offset.");
-  return offset;
-}
-
-void Location::setOffset(size_t value) {
-  offset = value;
+  return std::distance(source->getText().cbegin(), iter);
 }
 
 bool Location::hasLine() const {
@@ -119,7 +112,7 @@ void Location::setColumn(unsigned int value) {
 
 bool Location::areMoreChars(size_t lookahead) const {
   if (hasSource()) {
-    if (offset + lookahead < getSource().getText().getLength()) {
+    if ((lookahead == 0 && iter != source->getText().cend()) || (lookahead != 0 && getOffset() + lookahead < getSource().getText().size())) {
       return true;
     } else {
       return false;
@@ -129,9 +122,14 @@ bool Location::areMoreChars(size_t lookahead) const {
   }
 }
 
-char32_t Location::getChar(size_t lookahead) const {
+char Location::getChar(size_t lookahead) const {
   if (areMoreChars(lookahead)) {
-    char32_t chr = source->getText().getCharAt(offset + lookahead);
+    char32_t chr;
+    if (lookahead == 0) {
+      chr = *iter;
+    } else {
+      chr = source->getText()[getOffset() + lookahead];
+    }
 
     if (chr == '\r') {
       chr = '\n';
@@ -143,14 +141,14 @@ char32_t Location::getChar(size_t lookahead) const {
   }
 }
 
-char32_t Location::eatChar() {
+char Location::eatChar() {
   char32_t chr = getChar();
-  offset++;
+  iter++;
 
   if (chr == '\r') {
     chr = getChar();
     if (chr == '\n') {
-      offset++;
+      iter++;
     } else {
       chr = '\n';
     }

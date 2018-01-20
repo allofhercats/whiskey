@@ -4,36 +4,35 @@
 
 #include <whiskey/Core/Assert.hpp>
 #include <whiskey/Core/LiteralPrinterChar.hpp>
-#include <whiskey/Unicode/StringRef.hpp>
 
 namespace whiskey {
-void LiteralPrinterString::onPrint(CharOutStream &os) const {
+void LiteralPrinterString::onPrint(std::ostream &os) const {
   if (useQuotes) {
-    os.write(quote);
+    os << quote;
   }
 	
-  for (size_t i = 0; i < value.getLength(); i++) {
-    LiteralPrinterChar(value.getCharAt(i), '\"', false).print(os);
+  for (char i : value) {
+    LiteralPrinterChar(i, '\"', false).print(os);
   }
 
   if (useQuotes) {
-    os.write(quote);
+    os << quote;
   }
 }
 
-LiteralPrinterString::LiteralPrinterString(StringRef value, char quote, bool useQuotes) : value(value), quote(quote), useQuotes(useQuotes) {}
+LiteralPrinterString::LiteralPrinterString(std::string value, char quote, bool useQuotes) : value(value), quote(quote), useQuotes(useQuotes) {}
 
 LiteralPrinterString::~LiteralPrinterString() {}
 
-StringRef &LiteralPrinterString::getValue() {
+std::string &LiteralPrinterString::getValue() {
   return value;
 }
 
-const StringRef &LiteralPrinterString::getValue() const {
+const std::string &LiteralPrinterString::getValue() const {
 	return value;
 }
 
-void LiteralPrinterString::setValue(StringRef value) {
+void LiteralPrinterString::setValue(std::string value) {
 	this->value = value;
 }
 

@@ -1,27 +1,26 @@
 #ifndef __WHISKEY_Core_LiteralPrinterChar_HPP
 #define __WHISKEY_Core_LiteralPrinterChar_HPP
 
-#include <whiskey/Unicode/Char.hpp>
 #include <whiskey/Core/LiteralPrinter.hpp>
 
 namespace whiskey {
 class LiteralPrinterChar : public LiteralPrinter {
 private:
-  Char32 value;
+  char value;
   char quote;
   bool useQuotes;
 
 protected:
-  virtual void onPrint(CharOutStream &os) const;
+  virtual void onPrint(std::ostream &os) const;
 
 public:
-  LiteralPrinterChar(Char32 value,
+  LiteralPrinterChar(char value,
                     char quote = '\'',
                     bool useQuotes = true);
   virtual ~LiteralPrinterChar();
 
-  Char32 getValue() const;
-  void setValue(Char32 value);
+  char getValue() const;
+  void setValue(char value);
 
   char getQuote() const;
   void setQuote(char value);

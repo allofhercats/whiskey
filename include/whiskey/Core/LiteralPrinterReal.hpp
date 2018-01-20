@@ -12,7 +12,7 @@ private:
   bool truncate;
 
 protected:
-  virtual void onPrint(CharOutStream &os) const;
+  virtual void onPrint(std::ostream &os) const;
 
 public:
   LiteralPrinterReal(Real value,

@@ -12,7 +12,7 @@ using namespace whiskey;
 TEST(Integration_CodeGen_JIT, ReturnZero) {
   Node *node = Node::createDeclFunction(
       Node::createTypeAtomicInt32(),
-      Field::createString8("f"),
+      Field::createString("f"),
       {},
       Node::createStmtBlock({Node::createStmtReturn(
           Node::createExprLiteralUInt(Node::createTypeAtomicInt32(), 0))}));
@@ -30,7 +30,7 @@ TEST(Integration_CodeGen_JIT, ReturnZero) {
 TEST(Integration_CodeGen_JIT, ReturnFive) {
   Node *node = Node::createDeclFunction(
       Node::createTypeAtomicInt32(),
-      Field::createString8("f"),
+      Field::createString("f"),
       {},
       Node::createStmtBlock({Node::createStmtReturn(
           Node::createExprLiteralUInt(Node::createTypeAtomicInt32(), 5))}));

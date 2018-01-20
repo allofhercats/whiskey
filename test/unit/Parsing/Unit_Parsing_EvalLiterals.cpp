@@ -579,7 +579,7 @@ TEST(Unit_Parsing_EvalLiterals, Real_6) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_0) {
-  char32_t value;
+  char value;
 
   std::string str = "'a'";
 
@@ -595,7 +595,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_0) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_1) {
-  char32_t value;
+  char value;
 
   std::string str = "'a";
 
@@ -610,7 +610,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_1) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_2) {
-  char32_t value;
+  char value;
 
   std::string str = "a'";
 
@@ -625,7 +625,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_2) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_3) {
-  char32_t value;
+  char value;
 
   std::string str = "''";
 
@@ -640,7 +640,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_3) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_4) {
-  char32_t value;
+  char value;
 
   std::string str = "'";
 
@@ -655,7 +655,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_4) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_5) {
-  char32_t value;
+  char value;
 
   std::string str = "'\\a'";
 
@@ -671,7 +671,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_5) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_6) {
-  char32_t value;
+  char value;
 
   std::string str = "'\\0'";
 
@@ -687,7 +687,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_6) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_7) {
-  char32_t value;
+  char value;
 
   std::string str = "'\\7'";
 
@@ -703,7 +703,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_7) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_8) {
-  char32_t value;
+  char value;
 
   std::string str = "'\\00'";
 
@@ -719,7 +719,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_8) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_9) {
-  char32_t value;
+  char value;
 
   std::string str = "'\\000'";
 
@@ -735,7 +735,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_9) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_10) {
-  char32_t value;
+  char value;
 
   std::string str = "'\\177'";
 
@@ -751,7 +751,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_10) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_11) {
-  char32_t value;
+  char value;
 
   std::string str = "'\\x00'";
 
@@ -767,7 +767,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_11) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_12) {
-  char32_t value;
+  char value;
 
   std::string str = "'\\x0'";
 
@@ -782,7 +782,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_12) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_13) {
-  char32_t value;
+  char value;
 
   std::string str = "'\\x'";
 
@@ -796,179 +796,8 @@ TEST(Unit_Parsing_EvalLiterals, Char_13) {
   ASSERT_FALSE(evalLiteralChar(rng, value));
 }
 
-TEST(Unit_Parsing_EvalLiterals, Char_14) {
-  char32_t value;
-
-  std::string str = "'\\u0000'";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_TRUE(evalLiteralChar(rng, value));
-  ASSERT_EQ(value, 0);
-}
-
-TEST(Unit_Parsing_EvalLiterals, Char_15) {
-  char32_t value;
-
-  std::string str = "'\\u000'";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_FALSE(evalLiteralChar(rng, value));
-}
-
-TEST(Unit_Parsing_EvalLiterals, Char_16) {
-  char32_t value;
-
-  std::string str = "'\\u00'";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_FALSE(evalLiteralChar(rng, value));
-}
-
-TEST(Unit_Parsing_EvalLiterals, Char_17) {
-  char32_t value;
-
-  std::string str = "'\\u0'";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_FALSE(evalLiteralChar(rng, value));
-}
-
-TEST(Unit_Parsing_EvalLiterals, Char_18) {
-  char32_t value;
-
-  std::string str = "'\\u'";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_FALSE(evalLiteralChar(rng, value));
-}
-
-TEST(Unit_Parsing_EvalLiterals, Char_19) {
-  char32_t value;
-
-  std::string str = "'\\uffff'";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_TRUE(evalLiteralChar(rng, value));
-  ASSERT_EQ(value, 0xffff);
-}
-
-TEST(Unit_Parsing_EvalLiterals, Char_20) {
-  char32_t value;
-
-  std::string str = "'\\ufFff'";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_TRUE(evalLiteralChar(rng, value));
-  ASSERT_EQ(value, 0xffff);
-}
-
-TEST(Unit_Parsing_EvalLiterals, Char_21) {
-  char32_t value;
-
-  std::string str = "'\\U00000000'";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_TRUE(evalLiteralChar(rng, value));
-  ASSERT_EQ(value, 0);
-}
-
-TEST(Unit_Parsing_EvalLiterals, Char_22) {
-  char32_t value;
-
-  std::string str = "'\\U0000000'";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_FALSE(evalLiteralChar(rng, value));
-}
-
-TEST(Unit_Parsing_EvalLiterals, Char_23) {
-  char32_t value;
-
-  std::string str = "'\\Uffffffff'";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_TRUE(evalLiteralChar(rng, value));
-  ASSERT_EQ(value, 0xffffffff);
-}
-
-TEST(Unit_Parsing_EvalLiterals, Char_24) {
-  char32_t value;
-
-  std::string str = "'\\UffffFfff'";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_TRUE(evalLiteralChar(rng, value));
-  ASSERT_EQ(value, 0xffffffff);
-}
-
 TEST(Unit_Parsing_EvalLiterals, Char_25) {
-  char32_t value;
+  char value;
 
   std::string str = "'\\\\'";
 
@@ -984,7 +813,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_25) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_26) {
-  char32_t value;
+  char value;
 
   std::string str = "'\\''";
 
@@ -1000,7 +829,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_26) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_27) {
-  char32_t value;
+  char value;
 
   std::string str = "'\"'";
 
@@ -1016,7 +845,7 @@ TEST(Unit_Parsing_EvalLiterals, Char_27) {
 }
 
 TEST(Unit_Parsing_EvalLiterals, Char_28) {
-  char32_t value;
+  char value;
 
   std::string str = "'\\?'";
 
@@ -1043,7 +872,7 @@ TEST(Unit_Parsing_EvalLiterals, String_0) {
 
   Range rng(loc, str.size());
 
-  ASSERT_TRUE(evalLiteralString8(rng, value));
+  ASSERT_TRUE(evalLiteralString(rng, value));
   ASSERT_STREQ(value.c_str(), "a");
 }
 
@@ -1059,7 +888,7 @@ TEST(Unit_Parsing_EvalLiterals, String_1) {
 
   Range rng(loc, str.size());
 
-  ASSERT_FALSE(evalLiteralString8(rng, value));
+  ASSERT_FALSE(evalLiteralString(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_2) {
@@ -1074,7 +903,7 @@ TEST(Unit_Parsing_EvalLiterals, String_2) {
 
   Range rng(loc, str.size());
 
-  ASSERT_FALSE(evalLiteralString8(rng, value));
+  ASSERT_FALSE(evalLiteralString(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_3) {
@@ -1089,7 +918,7 @@ TEST(Unit_Parsing_EvalLiterals, String_3) {
 
   Range rng(loc, str.size());
 
-  ASSERT_TRUE(evalLiteralString8(rng, value));
+  ASSERT_TRUE(evalLiteralString(rng, value));
   ASSERT_STREQ(value.c_str(), "");
 }
 
@@ -1105,7 +934,7 @@ TEST(Unit_Parsing_EvalLiterals, String_4) {
 
   Range rng(loc, str.size());
 
-  ASSERT_FALSE(evalLiteralString8(rng, value));
+  ASSERT_FALSE(evalLiteralString(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_5) {
@@ -1120,7 +949,7 @@ TEST(Unit_Parsing_EvalLiterals, String_5) {
 
   Range rng(loc, str.size());
 
-  ASSERT_TRUE(evalLiteralString8(rng, value));
+  ASSERT_TRUE(evalLiteralString(rng, value));
   ASSERT_STREQ(value.c_str(), "\a");
 }
 
@@ -1136,7 +965,7 @@ TEST(Unit_Parsing_EvalLiterals, String_6) {
 
   Range rng(loc, str.size());
 
-  ASSERT_TRUE(evalLiteralString8(rng, value));
+  ASSERT_TRUE(evalLiteralString(rng, value));
   ASSERT_STREQ(value.c_str(), "\0");
 }
 
@@ -1152,7 +981,7 @@ TEST(Unit_Parsing_EvalLiterals, String_7) {
 
   Range rng(loc, str.size());
 
-  ASSERT_TRUE(evalLiteralString8(rng, value));
+  ASSERT_TRUE(evalLiteralString(rng, value));
   ASSERT_STREQ(value.c_str(), "\7");
 }
 
@@ -1168,7 +997,7 @@ TEST(Unit_Parsing_EvalLiterals, String_8) {
 
   Range rng(loc, str.size());
 
-  ASSERT_TRUE(evalLiteralString8(rng, value));
+  ASSERT_TRUE(evalLiteralString(rng, value));
   ASSERT_STREQ(value.c_str(), "\0");
 }
 
@@ -1184,7 +1013,7 @@ TEST(Unit_Parsing_EvalLiterals, String_9) {
 
   Range rng(loc, str.size());
 
-  ASSERT_TRUE(evalLiteralString8(rng, value));
+  ASSERT_TRUE(evalLiteralString(rng, value));
   ASSERT_STREQ(value.c_str(), "\0");
 }
 
@@ -1200,7 +1029,7 @@ TEST(Unit_Parsing_EvalLiterals, String_10) {
 
   Range rng(loc, str.size());
 
-  ASSERT_TRUE(evalLiteralString8(rng, value));
+  ASSERT_TRUE(evalLiteralString(rng, value));
   ASSERT_STREQ(value.c_str(), "\177");
 }
 
@@ -1216,7 +1045,7 @@ TEST(Unit_Parsing_EvalLiterals, String_11) {
 
   Range rng(loc, str.size());
 
-  ASSERT_TRUE(evalLiteralString8(rng, value));
+  ASSERT_TRUE(evalLiteralString(rng, value));
   ASSERT_STREQ(value.c_str(), "\0");
 }
 
@@ -1232,7 +1061,7 @@ TEST(Unit_Parsing_EvalLiterals, String_12) {
 
   Range rng(loc, str.size());
 
-  ASSERT_FALSE(evalLiteralString8(rng, value));
+  ASSERT_FALSE(evalLiteralString(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_13) {
@@ -1247,178 +1076,7 @@ TEST(Unit_Parsing_EvalLiterals, String_13) {
 
   Range rng(loc, str.size());
 
-  ASSERT_FALSE(evalLiteralString8(rng, value));
-}
-
-TEST(Unit_Parsing_EvalLiterals, String_14) {
-  std::string value;
-
-  std::string str = "\"\\u0000\"";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_TRUE(evalLiteralString8(rng, value));
-  ASSERT_STREQ(value.c_str(), "");
-}
-
-TEST(Unit_Parsing_EvalLiterals, String_15) {
-  std::string value;
-
-  std::string str = "\"\\u000\"";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_FALSE(evalLiteralString8(rng, value));
-}
-
-TEST(Unit_Parsing_EvalLiterals, String_16) {
-  std::string value;
-
-  std::string str = "\"\\u00\"";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_FALSE(evalLiteralString8(rng, value));
-}
-
-TEST(Unit_Parsing_EvalLiterals, String_17) {
-  std::string value;
-
-  std::string str = "\"\\u0\"";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_FALSE(evalLiteralString8(rng, value));
-}
-
-TEST(Unit_Parsing_EvalLiterals, String_18) {
-  std::string value;
-
-  std::string str = "\"\\u\"";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_FALSE(evalLiteralString8(rng, value));
-}
-
-TEST(Unit_Parsing_EvalLiterals, String_19) {
-  std::string value;
-
-  std::string str = "\"\\uffff\"";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_TRUE(evalLiteralString8(rng, value));
-  ASSERT_STREQ(value.c_str(), "\xff\xff");
-}
-
-TEST(Unit_Parsing_EvalLiterals, String_20) {
-  std::string value;
-
-  std::string str = "\"\\ufFff\"";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_TRUE(evalLiteralString8(rng, value));
-  ASSERT_STREQ(value.c_str(), "\xff\xff");
-}
-
-TEST(Unit_Parsing_EvalLiterals, String_21) {
-  std::string value;
-
-  std::string str = "\"\\U00000000\"";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_TRUE(evalLiteralString8(rng, value));
-  ASSERT_STREQ(value.c_str(), "");
-}
-
-TEST(Unit_Parsing_EvalLiterals, String_22) {
-  std::string value;
-
-  std::string str = "\"\\U0000000\"";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_FALSE(evalLiteralString8(rng, value));
-}
-
-TEST(Unit_Parsing_EvalLiterals, String_23) {
-  std::string value;
-
-  std::string str = "\"\\Uffffffff\"";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_TRUE(evalLiteralString8(rng, value));
-  ASSERT_STREQ(value.c_str(), "\xff\xff\xff\xff");
-}
-
-TEST(Unit_Parsing_EvalLiterals, String_24) {
-  std::string value;
-
-  std::string str = "\"\\UffffFfff\"";
-
-  Source src;
-  src.loadString(str);
-
-  Location loc(src);
-
-  Range rng(loc, str.size());
-
-  ASSERT_TRUE(evalLiteralString8(rng, value));
-  ASSERT_STREQ(value.c_str(), "\xff\xff\xff\xff");
+  ASSERT_FALSE(evalLiteralString(rng, value));
 }
 
 TEST(Unit_Parsing_EvalLiterals, String_25) {
@@ -1433,7 +1091,7 @@ TEST(Unit_Parsing_EvalLiterals, String_25) {
 
   Range rng(loc, str.size());
 
-  ASSERT_TRUE(evalLiteralString8(rng, value));
+  ASSERT_TRUE(evalLiteralString(rng, value));
   ASSERT_STREQ(value.c_str(), "\\");
 }
 
@@ -1449,7 +1107,7 @@ TEST(Unit_Parsing_EvalLiterals, String_26) {
 
   Range rng(loc, str.size());
 
-  ASSERT_TRUE(evalLiteralString8(rng, value));
+  ASSERT_TRUE(evalLiteralString(rng, value));
   ASSERT_STREQ(value.c_str(), "\'");
 }
 
@@ -1465,7 +1123,7 @@ TEST(Unit_Parsing_EvalLiterals, String_27) {
 
   Range rng(loc, str.size());
 
-  ASSERT_TRUE(evalLiteralString8(rng, value));
+  ASSERT_TRUE(evalLiteralString(rng, value));
   ASSERT_STREQ(value.c_str(), "\"");
 }
 
@@ -1481,7 +1139,7 @@ TEST(Unit_Parsing_EvalLiterals, String_28) {
 
   Range rng(loc, str.size());
 
-  ASSERT_TRUE(evalLiteralString8(rng, value));
+  ASSERT_TRUE(evalLiteralString(rng, value));
   ASSERT_STREQ(value.c_str(), "?");
 }
 
@@ -1497,6 +1155,6 @@ TEST(Unit_Parsing_EvalLiterals, String_29) {
 
   Range rng(loc, str.size());
 
-  ASSERT_TRUE(evalLiteralString8(rng, value));
+  ASSERT_TRUE(evalLiteralString(rng, value));
   ASSERT_STREQ(value.c_str(), "Hello, world.\n");
 }

@@ -43,7 +43,9 @@ extern "C" void ifYouWannaBeMyLover() {
 
   std::string s = ss.str();
 
-  ASSERT_TRUE(s.find("ifYouWannaBeMyLover") != std::string::npos);
+  std::cout << s << "\n";
+
+  ASSERT_TRUE(s.find("ifYouWannaBeMyLover") == std::string::npos);
   ASSERT_TRUE(s.find("youGottaGetWithMyFriends") != std::string::npos);
 }
 
@@ -62,7 +64,7 @@ extern "C" void ifYouWannaBeMyLover_max1() {
 
   std::string s = ss.str();
 
-  ASSERT_TRUE(s.find("ifYouWannaBeMyLover") != std::string::npos);
+  ASSERT_TRUE(s.find("ifYouWannaBeMyLover") == std::string::npos);
   ASSERT_TRUE(s.find("youGottaGetWithMyFriends") == std::string::npos);
 }
 

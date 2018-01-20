@@ -4,52 +4,20 @@
 
 #include <whiskey/Core/Assert.hpp>
 
-#include <whiskey/Unicode/FileByteInStream.hpp>
-#include <whiskey/Unicode/ByteCharInStream.hpp>
-
 namespace whiskey {
 const std::string Source::defaultPath = "--";
 
-Source::Source(std::string path)
-    : path(path), text(nullptr) {
-  W_ASSERT_GT(path.size(), 0, "Cannot have empty path.");
+Source::Source()
+{}
+
+void Source::loadString(std::string value, std::string path) {
+  W_ASSERT_UGT(path.size(), 0, "Cannot have source with empty path.");
+  text = value;
+  this->path = path;
 }
 
-Source::~Source() {
-  delete text;
-}
-
-bool Source::loadString(StringContainer value) {
-  delete text;
-  text = new StringContainer(value);
-  return true;
-}
-
-bool Source::loadString(StringRef value) {
-  delete text;
-  text = new StringRef(value);
-  return true;
-}
-
-bool Source::loadFile(Encoding encoding) {
-  delete text;
-
-  FileByteInStream fbis(path);
-  if (!fbis.open()) {
-    return false;
-  }
-
-  if (encoding == Encoding::Auto) {
-    encoding = fbis.getEncoding();
-  } else if (encoding != fbis.getEncoding()) {
-    return false;
-  }
-
-  ByteCharInStream cis(fbis, encoding);
-  text = new StringContainer(cis.read());
-
-  fbis.close();
-  return true;
+bool Source::loadFile(std::string path) {
+  
 }
 
 const std::string &Source::getPath() const {
@@ -62,11 +30,11 @@ void Source::setPath(std::string value) {
 }
 
 bool Source::isLoaded() const {
-  return text != nullptr;
+  return !path.empty();
 }
 
-const String &Source::getText() const {
-  W_ASSERT_NONNULL(text, "Cannot get unloaded text.");
-  return *text;
+const std::string &Source::getText() const {
+  W_ASSERT_TRUE(isLoaded(), "Cannot get unloaded text.");
+  return text;
 }
 } // namespace whiskey

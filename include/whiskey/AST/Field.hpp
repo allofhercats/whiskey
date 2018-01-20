@@ -1,10 +1,7 @@
 #ifndef __WHISKEY_AST_Field_HPP
 #define __WHISKEY_AST_Field_HPP
 
-#include <whiskey/Unicode/Char.hpp>
 #include <whiskey/Core/Types.hpp>
-#include <whiskey/Unicode/StringRef.hpp>
-#include <whiskey/Unicode/StringContainer.hpp>
 
 namespace whiskey {
 class Node;
@@ -21,7 +18,7 @@ private:
     Real asReal;
     Node *asNode;
   } dataAtomic;
-  StringContainer asString;
+  std::string asString;
 
   Field(Kind kind);
 
@@ -32,7 +29,7 @@ public:
   static Field *createInt(Int64 value);
   static Field *createUInt(UInt64 value);
   static Field *createReal(Real value);
-  static Field *createString(StringContainer value);
+  static Field *createString(std::string value);
   static Field *createNode(Node *value);
   static Field *createNode(std::initializer_list<Node *> value);
 
@@ -49,9 +46,9 @@ public:
   Real getReal() const;
   void setReal(Real value);
 
-  StringContainer &getString();
-  const StringContainer &getString() const;
-  void setString(StringContainer value);
+  std::string &getString();
+  const std::string &getString() const;
+  void setString(std::string value);
 
   Node *getNode();
   const Node *getNode() const;

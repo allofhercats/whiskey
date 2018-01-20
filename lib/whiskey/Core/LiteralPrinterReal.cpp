@@ -6,9 +6,9 @@
 #include <whiskey/Core/LiteralPrinterUInt.hpp>
 
 namespace whiskey {
-void LiteralPrinterReal::onPrint(CharOutStream &os) const {
+void LiteralPrinterReal::onPrint(std::ostream &os) const {
 	if (value < 0) {
-		os.write('-');
+		os << '-';
 		LiteralPrinterUInt((UInt64)(-(Int64)value)).print(os);
 	} else {
 		LiteralPrinterUInt((UInt64)(Int64)value).print(os);
@@ -16,7 +16,7 @@ void LiteralPrinterReal::onPrint(CharOutStream &os) const {
 	
   long double dec = value - floor(value);
 
-  os.write('.');
+  os << '.';
 
   if (truncate) {
     unsigned int nDigits = 0;
@@ -33,7 +33,7 @@ void LiteralPrinterReal::onPrint(CharOutStream &os) const {
       dec *= 10.0;
       unsigned int digit = (unsigned int)dec % 10;
       if (digit <= 9) {
-        os.write('0' + digit);
+        os << (char)('0' + digit);
       } else {
         W_ASSERT_UNREACHABLE("Unexpected digit in real value " << digit);
       }
@@ -47,7 +47,7 @@ void LiteralPrinterReal::onPrint(CharOutStream &os) const {
       dec *= 10.0;
       unsigned int digit = (unsigned int)dec % 10;
       if (digit <= 9) {
-        os.write('0' + digit);
+        os << (char)('0' + digit);
       } else {
         W_ASSERT_UNREACHABLE("Unexpected digit in real value " << digit);
       }
