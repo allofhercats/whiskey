@@ -1,8 +1,8 @@
 #ifndef __WHISKEY_Core_LiteralPrinterBool_HPP
 #define __WHISKEY_Core_LiteralPrinterBool_HPP
 
-#include <whiskey/Core/Types.hpp>
 #include <whiskey/Core/LiteralPrinter.hpp>
+#include <whiskey/Core/Types.hpp>
 
 namespace whiskey {
 class LiteralPrinterBool : public LiteralPrinter {

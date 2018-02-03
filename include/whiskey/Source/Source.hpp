@@ -1,31 +1,30 @@
 #ifndef __WHISKEY_Source_Source_HPP
 #define __WHISKEY_Source_Source_HPP
 
+#include <istream>
 #include <string>
+
+#define W_SOURCE_DEFAULT_PATH "--"
 
 namespace whiskey {
 class Source {
-  friend class Location;
-
 private:
-  std::string path;
-  std::string text;
+  std::istream *is;
+  std::istream::off_type offset;
+  std::istream::off_type length;
+  std::string defaultPath;
 
 public:
-  static const std::string defaultPath;
+  Source(std::istream &is, std::string defaultPath = W_SOURCE_DEFAULT_PATH);
 
-  Source();
-  Source(const Source &) = delete;
-  Source &operator=(const Source &) = delete;
+  const std::string &getDefaultPath() const;
 
-  void loadString(std::string value, std::string path = defaultPath);
-  bool loadFile(std::string path);
+  std::istream::off_type getOffset() const;
+  void setOffset(std::istream::off_type value);
 
-  const std::string &getPath() const;
-  void setPath(std::string value);
-
-  bool isLoaded() const;
-  const std::string &getText() const;
+  bool more() const;
+  char get() const;
+  char eat();
 };
 } // namespace whiskey
 

@@ -4,22 +4,24 @@
 
 namespace whiskey {
 void LiteralPrinterBool::onPrint(std::ostream &os) const {
-	if (value) {
-		os << "true";
-	} else {
-		os << "false";
-	}
+  if (value) {
+    os << "true";
+  } else {
+    os << "false";
+  }
 }
 
-LiteralPrinterBool::LiteralPrinterBool(bool value) : value(value) {}
+LiteralPrinterBool::LiteralPrinterBool(bool value) : value(value) {
+}
 
-LiteralPrinterBool::~LiteralPrinterBool() {}
+LiteralPrinterBool::~LiteralPrinterBool() {
+}
 
 bool LiteralPrinterBool::getValue() const {
-	return value;
+  return value;
 }
 
 void LiteralPrinterBool::setValue(bool value) {
-	this->value = value;
+  this->value = value;
 }
-}
+} // namespace whiskey

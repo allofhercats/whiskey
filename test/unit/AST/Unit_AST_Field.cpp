@@ -138,7 +138,7 @@ TEST(Unit_AST_Field, String) {
   ASSERT_FALSE(f0->compare(f1));
 
   f1->setString("hello");
-  
+
   delete f0;
 
   ASSERT_STREQ(f1->getString().c_str(), "hello");

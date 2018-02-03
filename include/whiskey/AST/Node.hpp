@@ -4,7 +4,7 @@
 #include <vector>
 
 #include <whiskey/AST/Field.hpp>
-#include <whiskey/Source/Range.hpp>
+#include <whiskey/Source/Token.hpp>
 
 namespace whiskey {
 class Node {
@@ -280,210 +280,210 @@ public:
   static KindInfo getKindInfo(Kind value);
 
 private:
-  Range range;
+  Token token;
   Kind kind;
   Field **fields;
   Node *next;
 
-  Node(Kind kind, std::initializer_list<Field *> fields, Range range);
+  Node(Kind kind, std::initializer_list<Field *> fields, Token token);
 
 public:
   Node(const Node &) = delete;
   ~Node();
 
-  static Node *createTypeAtomicBool(Range range = Range());
-  static Node *createTypeAtomicInt8(Range range = Range());
-  static Node *createTypeAtomicInt16(Range range = Range());
-  static Node *createTypeAtomicInt32(Range range = Range());
-  static Node *createTypeAtomicInt64(Range range = Range());
-  static Node *createTypeAtomicUInt8(Range range = Range());
-  static Node *createTypeAtomicUInt16(Range range = Range());
-  static Node *createTypeAtomicUInt32(Range range = Range());
-  static Node *createTypeAtomicUInt64(Range range = Range());
-  static Node *createTypeAtomicFloat32(Range range = Range());
-  static Node *createTypeAtomicFloat64(Range range = Range());
-  static Node *createTypeAtomicReal(Range range = Range());
-  static Node *createTypeSymbol(Field *name, Range range = Range());
+  static Node *createTypeAtomicBool(Token token = Token());
+  static Node *createTypeAtomicInt8(Token token = Token());
+  static Node *createTypeAtomicInt16(Token token = Token());
+  static Node *createTypeAtomicInt32(Token token = Token());
+  static Node *createTypeAtomicInt64(Token token = Token());
+  static Node *createTypeAtomicUInt8(Token token = Token());
+  static Node *createTypeAtomicUInt16(Token token = Token());
+  static Node *createTypeAtomicUInt32(Token token = Token());
+  static Node *createTypeAtomicUInt64(Token token = Token());
+  static Node *createTypeAtomicFloat32(Token token = Token());
+  static Node *createTypeAtomicFloat64(Token token = Token());
+  static Node *createTypeAtomicReal(Token token = Token());
+  static Node *createTypeSymbol(Field *name, Token token = Token());
   static Node *createTypeSymbol(Field *name,
                                 std::initializer_list<Node *> templateEvalArgs,
-                                Range range = Range());
-  static Node *createTypeAccessUnary(Node *arg, Range range = Range());
+                                Token token = Token());
+  static Node *createTypeAccessUnary(Node *arg, Token token = Token());
   static Node *createTypeAccess(std::initializer_list<Node *> args,
-                                Range range = Range());
-  static Node *createTypeGroup(Node *arg, Range range = Range());
+                                Token token = Token());
+  static Node *createTypeGroup(Node *arg, Token token = Token());
   static Node *createTypeFunction(Node *ret,
                                   std::initializer_list<Node *> args,
-                                  Range range = Range());
+                                  Token token = Token());
   static Node *
-  createExprLiteralUInt(Node *type, UInt64 value, Range range = Range());
+  createExprLiteralUInt(Node *type, UInt64 value, Token token = Token());
   static Node *
-  createExprLiteralReal(Node *type, Real value, Range range = Range());
-  static Node *createExprSymbol(Field *name, Range range = Range());
+  createExprLiteralReal(Node *type, Real value, Token token = Token());
+  static Node *createExprSymbol(Field *name, Token token = Token());
   static Node *createExprSymbol(Field *name,
                                 std::initializer_list<Node *> templateEvalArgs,
-                                Range range = Range());
-  static Node *createExprAccessUnary(Node *arg, Range range = Range());
+                                Token token = Token());
+  static Node *createExprAccessUnary(Node *arg, Token token = Token());
   static Node *createExprAccess(std::initializer_list<Node *> args,
-                                Range range = Range());
-  static Node *createExprGroup(Node *arg, Range range = Range());
+                                Token token = Token());
+  static Node *createExprGroup(Node *arg, Token token = Token());
   static Node *createExprCall(Node *callee,
                               std::initializer_list<Node *> args,
-                              Range range = Range());
+                              Token token = Token());
   static Node *createExprAdd(std::initializer_list<Node *> args,
-                             Range range = Range());
-  static Node *createExprIncPre(Node *arg, Range range = Range());
-  static Node *createExprIncPost(Node *arg, Range range = Range());
-  static Node *createExprSub(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprNeg(Node *arg, Range range = Range());
-  static Node *createExprDecPre(Node *arg, Range range = Range());
-  static Node *createExprDecPost(Node *arg, Range range = Range());
+                             Token token = Token());
+  static Node *createExprIncPre(Node *arg, Token token = Token());
+  static Node *createExprIncPost(Node *arg, Token token = Token());
+  static Node *createExprSub(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprNeg(Node *arg, Token token = Token());
+  static Node *createExprDecPre(Node *arg, Token token = Token());
+  static Node *createExprDecPost(Node *arg, Token token = Token());
   static Node *createExprMul(std::initializer_list<Node *> args,
-                             Range range = Range());
-  static Node *createExprExp(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprDiv(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprDivInt(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprDivReal(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprMod(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprBitNot(Node *arg, Range range = Range());
+                             Token token = Token());
+  static Node *createExprExp(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprDiv(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprDivInt(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprDivReal(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprMod(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprBitNot(Node *arg, Token token = Token());
   static Node *createExprBitAnd(std::initializer_list<Node *> args,
-                                Range range = Range());
+                                Token token = Token());
   static Node *createExprBitOr(std::initializer_list<Node *> args,
-                               Range range = Range());
+                               Token token = Token());
   static Node *createExprBitXor(std::initializer_list<Node *> args,
-                                Range range = Range());
-  static Node *createExprBitShL(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprBitShR(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprLT(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprLE(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprGT(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprGE(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprNE(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprEQ(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprBoolNot(Node *arg, Range range = Range());
+                                Token token = Token());
+  static Node *createExprBitShL(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprBitShR(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprLT(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprLE(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprGT(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprGE(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprNE(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprEQ(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprBoolNot(Node *arg, Token token = Token());
   static Node *createExprBoolAnd(std::initializer_list<Node *> args,
-                                 Range range = Range());
+                                 Token token = Token());
   static Node *createExprBoolOr(std::initializer_list<Node *> args,
-                                Range range = Range());
+                                Token token = Token());
   static Node *createExprBoolImplies(std::initializer_list<Node *> args,
-                                     Range range = Range());
-  static Node *createExprAddAssign(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprSubAssign(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprMulAssign(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprExpAssign(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprDivAssign(Node *lhs, Node *rhs, Range range = Range());
+                                     Token token = Token());
+  static Node *createExprAddAssign(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprSubAssign(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprMulAssign(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprExpAssign(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprDivAssign(Node *lhs, Node *rhs, Token token = Token());
   static Node *
-  createExprDivIntAssign(Node *lhs, Node *rhs, Range range = Range());
+  createExprDivIntAssign(Node *lhs, Node *rhs, Token token = Token());
   static Node *
-  createExprDivRealAssign(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprModAssign(Node *lhs, Node *rhs, Range range = Range());
+  createExprDivRealAssign(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprModAssign(Node *lhs, Node *rhs, Token token = Token());
   static Node *
-  createExprBitAndAssign(Node *lhs, Node *rhs, Range range = Range());
+  createExprBitAndAssign(Node *lhs, Node *rhs, Token token = Token());
   static Node *
-  createExprBitOrAssign(Node *lhs, Node *rhs, Range range = Range());
+  createExprBitOrAssign(Node *lhs, Node *rhs, Token token = Token());
   static Node *
-  createExprBitXorAssign(Node *lhs, Node *rhs, Range range = Range());
+  createExprBitXorAssign(Node *lhs, Node *rhs, Token token = Token());
   static Node *
-  createExprBitShLAssign(Node *lhs, Node *rhs, Range range = Range());
+  createExprBitShLAssign(Node *lhs, Node *rhs, Token token = Token());
   static Node *
-  createExprBitShRAssign(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createExprAssign(Node *lhs, Node *rhs, Range range = Range());
-  static Node *createStmtEmpty(Range range = Range());
-  static Node *createStmtExpr(Node *expr, Range range = Range());
-  static Node *createStmtDecl(Node *decl, Range range = Range());
-  static Node *createStmtReturn(Node *arg, Range range = Range());
-  static Node *createStmtContinue(Range range = Range());
-  static Node *createStmtContinue(Field *name, Range range = Range());
-  static Node *createStmtBreak(Range range = Range());
-  static Node *createStmtBreak(Field *name, Range range = Range());
-  static Node *createStmtIf(Node *condition, Node *then, Range range = Range());
+  createExprBitShRAssign(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createExprAssign(Node *lhs, Node *rhs, Token token = Token());
+  static Node *createStmtEmpty(Token token = Token());
+  static Node *createStmtExpr(Node *expr, Token token = Token());
+  static Node *createStmtDecl(Node *decl, Token token = Token());
+  static Node *createStmtReturn(Node *arg, Token token = Token());
+  static Node *createStmtContinue(Token token = Token());
+  static Node *createStmtContinue(Field *name, Token token = Token());
+  static Node *createStmtBreak(Token token = Token());
+  static Node *createStmtBreak(Field *name, Token token = Token());
+  static Node *createStmtIf(Node *condition, Node *then, Token token = Token());
   static Node *
-  createStmtIf(Node *condition, Node *then, Node *_else, Range range = Range());
-  static Node *createStmtWhile(Node *condition, Range range = Range());
+  createStmtIf(Node *condition, Node *then, Node *_else, Token token = Token());
+  static Node *createStmtWhile(Node *condition, Token token = Token());
   static Node *
-  createStmtWhile(Node *condition, Node *body, Range range = Range());
+  createStmtWhile(Node *condition, Node *body, Token token = Token());
   static Node *createStmtFor(std::initializer_list<Node *> decls,
                              Node *condition,
                              std::initializer_list<Node *> steps,
-                             Range range = Range());
+                             Token token = Token());
   static Node *createStmtFor(std::initializer_list<Node *> decls,
                              Node *condition,
                              std::initializer_list<Node *> steps,
                              Node *body,
-                             Range range = Range());
+                             Token token = Token());
   static Node *createStmtForEach(std::initializer_list<Node *> decls,
                                  std::initializer_list<Node *> sequences,
-                                 Range range = Range());
+                                 Token token = Token());
   static Node *createStmtForEach(std::initializer_list<Node *> decls,
                                  std::initializer_list<Node *> sequences,
                                  Node *body,
-                                 Range range = Range());
-  static Node *createStmtBlock(Range range = Range());
+                                 Token token = Token());
+  static Node *createStmtBlock(Token token = Token());
   static Node *createStmtBlock(std::initializer_list<Node *> stmts,
-                               Range range = Range());
+                               Token token = Token());
   static Node *
-  createDeclVariable(Node *type, Field *name, Range range = Range());
+  createDeclVariable(Node *type, Field *name, Token token = Token());
   static Node *createDeclVariable(Node *type,
                                   Field *name,
                                   Node *initial,
-                                  Range range = Range());
+                                  Token token = Token());
   static Node *
   createDeclVariable(Node *type,
                      Field *name,
                      std::initializer_list<Node *> templateDeclArgs,
-                     Range range = Range());
+                     Token token = Token());
   static Node *
   createDeclVariable(Node *type,
                      Field *name,
                      std::initializer_list<Node *> templateDeclArgs,
                      Node *initial,
-                     Range range = Range());
+                     Token token = Token());
   static Node *createDeclFunction(Node *ret,
                                   Field *name,
                                   std::initializer_list<Node *> args,
-                                  Range range = Range());
+                                  Token token = Token());
   static Node *
   createDeclFunction(Node *ret,
                      Field *name,
                      std::initializer_list<Node *> templateDeclArgs,
                      std::initializer_list<Node *> args,
-                     Range range = Range());
+                     Token token = Token());
   static Node *createDeclFunction(Node *ret,
                                   Field *name,
                                   std::initializer_list<Node *> args,
                                   Node *body,
-                                  Range range = Range());
+                                  Token token = Token());
   static Node *
   createDeclFunction(Node *ret,
                      Field *name,
                      std::initializer_list<Node *> templateDeclArgs,
                      std::initializer_list<Node *> args,
                      Node *body,
-                     Range range = Range());
-  static Node *createDeclClass(Field *name, Range range = Range());
+                     Token token = Token());
+  static Node *createDeclClass(Field *name, Token token = Token());
   static Node *createDeclClass(Field *name,
                                std::initializer_list<Node *> members,
-                               Range range = Range());
+                               Token token = Token());
   static Node *createDeclClass(Field *name,
                                std::initializer_list<Node *> inherits,
                                std::initializer_list<Node *> members,
-                               Range range = Range());
+                               Token token = Token());
   static Node *createDeclClass(Field *name,
                                std::initializer_list<Node *> templateDeclArgs,
                                std::initializer_list<Node *> inherits,
                                std::initializer_list<Node *> members,
-                               Range range = Range());
-  static Node *createDeclNamespace(Field *name, Range range = Range());
+                               Token token = Token());
+  static Node *createDeclNamespace(Field *name, Token token = Token());
   static Node *createDeclNamespace(Field *name,
                                    std::initializer_list<Node *> members,
-                                   Range range = Range());
-  static Node *createImport(Field *path, Range range = Range());
+                                   Token token = Token());
+  static Node *createImport(Field *path, Token token = Token());
   static Node *createUnit();
   static Node *createUnit(std::initializer_list<Node *> members);
 
   Node *clone() const;
 
-  const Range &getRange() const;
-  void setRange(Range value);
+  const Token &getToken() const;
+  void setToken(Token value);
 
   Kind getKind() const;
 

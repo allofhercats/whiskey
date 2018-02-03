@@ -35,7 +35,7 @@ namespace whiskey {
 //     return ((const Char32 *)pointer)[n];
 //   } else {
 //     W_ASSERT_UNREACHABLE("Unsupported character width " << width << ".");
-//   } 
+//   }
 // }
 
 // String::const_iterator &String::const_iterator::operator++() {
@@ -128,25 +128,29 @@ namespace whiskey {
 //     return ((const Char32 *)pointer)[-n];
 //   } else {
 //     W_ASSERT_UNREACHABLE("Unsupported character width " << width << ".");
-//   } 
+//   }
 // }
 
-// String::const_reverse_iterator &String::const_reverse_iterator::operator++() {
+// String::const_reverse_iterator &String::const_reverse_iterator::operator++()
+// {
 //   pointer -= width;
 //   return *this;
 // }
 
-// String::const_reverse_iterator String::const_reverse_iterator::operator++(int) {
+// String::const_reverse_iterator
+// String::const_reverse_iterator::operator++(int) {
 //   this->operator++();
 //   return *this;
 // }
 
-// String::const_reverse_iterator &String::const_reverse_iterator::operator--() {
+// String::const_reverse_iterator &String::const_reverse_iterator::operator--()
+// {
 //   pointer += width;
 //   return *this;
 // }
 
-// String::const_reverse_iterator String::const_reverse_iterator::operator--(int) {
+// String::const_reverse_iterator
+// String::const_reverse_iterator::operator--(int) {
 //   this->operator--();
 //   return *this;
 // }
@@ -181,12 +185,14 @@ namespace whiskey {
 //   return pointer == other.pointer;
 // }
 
-// String::const_reverse_iterator &String::const_reverse_iterator::operator+=(ssize_t n) {
+// String::const_reverse_iterator
+// &String::const_reverse_iterator::operator+=(ssize_t n) {
 //   pointer -= width * n;
 //   return *this;
 // }
 
-// String::const_reverse_iterator &String::const_reverse_iterator::operator-=(ssize_t n) {
+// String::const_reverse_iterator
+// &String::const_reverse_iterator::operator-=(ssize_t n) {
 //   pointer += width * n;
 //   return *this;
 // }
@@ -515,11 +521,13 @@ namespace whiskey {
 //   return compare(0, size(), other, 0, other.size());
 // }
 
-// int String::compare(size_t offset, size_t length, const String &other) const {
+// int String::compare(size_t offset, size_t length, const String &other) const
+// {
 //   return compare(offset, length, other, 0, other.size());
 // }
 
-// int String::compare(size_t offset, size_t length, const String &other, size_t subpos, size_t sublen) const {
+// int String::compare(size_t offset, size_t length, const String &other, size_t
+// subpos, size_t sublen) const {
 //   size_t ia = offset, ib = subpos;
 
 //   while (ia < length && ib < sublen) {
@@ -638,25 +646,29 @@ namespace whiskey {
 //   return this->operator==(StringRef(other));
 // }
 
-// String::const_iterator operator+(const String::const_iterator &i, ssize_t n) {
+// String::const_iterator operator+(const String::const_iterator &i, ssize_t n)
+// {
 //   String::const_iterator rtn = i;
 //   rtn += n;
 //   return rtn;
 // }
 
-// String::const_iterator operator+(ssize_t n, const String::const_iterator &i) {
+// String::const_iterator operator+(ssize_t n, const String::const_iterator &i)
+// {
 //   String::const_iterator rtn = i;
 //   rtn += n;
 //   return rtn;
 // }
 
-// String::const_iterator operator-(const String::const_iterator &i, ssize_t n) {
+// String::const_iterator operator-(const String::const_iterator &i, ssize_t n)
+// {
 //   String::const_iterator rtn = i;
 //   rtn -= n;
 //   return rtn;
 // }
 
-// ssize_t operator-(const String::const_iterator &a, const String::const_iterator &b) {
+// ssize_t operator-(const String::const_iterator &a, const
+// String::const_iterator &b) {
 //   W_ASSERT_EQ(a.width, b.width, "Can only compare iterators of same width.");
 //   return (a.pointer - b.pointer) / a.width;
 // }
@@ -667,30 +679,35 @@ namespace whiskey {
 //   b = tmp;
 // }
 
-// String::const_reverse_iterator operator+(const String::const_reverse_iterator &i, ssize_t n) {
+// String::const_reverse_iterator operator+(const String::const_reverse_iterator
+// &i, ssize_t n) {
 //   String::const_reverse_iterator rtn = i;
 //   rtn += n;
 //   return rtn;
 // }
 
-// String::const_reverse_iterator operator+(ssize_t n, const String::const_reverse_iterator &i) {
+// String::const_reverse_iterator operator+(ssize_t n, const
+// String::const_reverse_iterator &i) {
 //   String::const_reverse_iterator rtn = i;
 //   rtn += n;
 //   return rtn;
 // }
 
-// String::const_reverse_iterator operator-(const String::const_reverse_iterator &i, ssize_t n) {
+// String::const_reverse_iterator operator-(const String::const_reverse_iterator
+// &i, ssize_t n) {
 //   String::const_reverse_iterator rtn = i;
 //   rtn -= n;
 //   return rtn;
 // }
 
-// ssize_t operator-(const String::const_reverse_iterator &a, const String::const_reverse_iterator &b) {
+// ssize_t operator-(const String::const_reverse_iterator &a, const
+// String::const_reverse_iterator &b) {
 //   W_ASSERT_EQ(a.width, b.width, "Can only compare iterators of same width.");
 //   return (b.pointer - a.pointer) / a.width;
 // }
 
-// void swap(String::const_reverse_iterator &a, String::const_reverse_iterator &b) {
+// void swap(String::const_reverse_iterator &a, String::const_reverse_iterator
+// &b) {
 //   String::const_reverse_iterator tmp = a;
 //   a = b;
 //   b = tmp;

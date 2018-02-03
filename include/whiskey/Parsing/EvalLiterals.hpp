@@ -4,12 +4,10 @@
 #include <whiskey/Core/Types.hpp>
 
 namespace whiskey {
-class Range;
-
-bool evalLiteralUInt(const Range &range, UInt64 &value);
-bool evalLiteralReal(const Range &range, Real &value);
-bool evalLiteralChar(const Range &range, char &value);
-bool evalLiteralString(const Range &range, std::string &value);
+bool evalLiteralUInt(const std::string &text, UInt64 &value);
+bool evalLiteralReal(const std::string &text, Real &value);
+bool evalLiteralChar(const std::string &text, char &value);
+bool evalLiteralString(const std::string &text, std::string &value);
 } // namespace whiskey
 
 #endif

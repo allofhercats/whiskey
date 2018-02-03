@@ -6,8 +6,8 @@ namespace whiskey {
 bool Color::enabled = true;
 
 Color::Color(const char *text) : text(text) {
-	W_ASSERT_NONNULL(text, "Cannot have color with null text.");
-	W_ASSERT_NE(*text, 0, "Cannot have color with empty text.");
+  W_ASSERT_NONNULL(text, "Cannot have color with null text.");
+  W_ASSERT_NE(*text, 0, "Cannot have color with empty text.");
 }
 
 const Color Color::reset("\033[39m");

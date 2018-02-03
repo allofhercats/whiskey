@@ -4,16 +4,17 @@
 
 #include <whiskey/AST/Node.hpp>
 #include <whiskey/Core/LiteralPrinterBool.hpp>
-#include <whiskey/Core/LiteralPrinterUInt.hpp>
-#include <whiskey/Core/LiteralPrinterReal.hpp>
 #include <whiskey/Core/LiteralPrinterChar.hpp>
+#include <whiskey/Core/LiteralPrinterReal.hpp>
 #include <whiskey/Core/LiteralPrinterString.hpp>
+#include <whiskey/Core/LiteralPrinterUInt.hpp>
 
 namespace whiskey {
 Field::Field(Field::Kind kind) : kind(kind) {
 }
 
-Field::~Field() {}
+Field::~Field() {
+}
 
 Field *Field::createInt(Int64 value) {
   Field *rtn = new Field(Kind::Int);
@@ -129,23 +130,17 @@ void Field::setReal(Real value) {
 }
 
 std::string &Field::getString() {
-  W_ASSERT_EQ(kind,
-              Kind::String,
-              "Can only access string field as string.");
+  W_ASSERT_EQ(kind, Kind::String, "Can only access string field as string.");
   return asString;
 }
 
 const std::string &Field::getString() const {
-  W_ASSERT_EQ(kind,
-              Kind::String,
-              "Can only access string field as string.");
+  W_ASSERT_EQ(kind, Kind::String, "Can only access string field as string.");
   return asString;
 }
 
 void Field::setString(std::string value) {
-  W_ASSERT_EQ(kind,
-              Kind::String,
-              "Can only access string field as string.");
+  W_ASSERT_EQ(kind, Kind::String, "Can only access string field as string.");
   asString = value;
 }
 

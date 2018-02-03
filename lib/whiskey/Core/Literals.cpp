@@ -1,9 +1,192 @@
-#include <whiskey/Parsing/EvalLiterals.hpp>
+#include <whiskey/Core/Literals.hpp>
 
-// #include <whiskey/Core/PrintLiterals.hpp>
-// #include <whiskey/Source/Range.hpp>
+#include <math.h>
+
+#include <whiskey/Core/Assert.hpp>
 
 namespace whiskey {
+void printLiteralBool(std::ostream &os, bool value) {
+	if (value) {
+		os << "true";
+	} else {
+		os << "false";
+	}
+}
+
+void printLiteralUInt(std::ostream &os, uint64_t value, int base, int width, bool usePrefix) {
+	if (usePrefix) {
+    switch (base) {
+    	case 2:
+    		os << "0b";
+    		break;
+    	case 8:
+    		os << "0";
+    		break;
+    	case 16:
+    		os << "0x";
+    		break;
+    }
+  }
+
+  int nDigits = getNDigits(value, base);
+
+  if (width > nDigits) {
+    for (int i = 0; i < width - nDigits; i++) {
+      os << '0';
+    }
+  }
+
+  int exp = (int)nDigits - 1;
+  while (exp >= 0) {
+    uint64_t fac = 1;
+    for (int i = 0; i < exp; i++) {
+      fac *= base;
+    }
+    uint64_t digit = (value / fac) % base;
+    if (digit <= 9) {
+      os << (char)('0' + digit);
+    } else if (10 <= digit && digit <= 15) {
+      os << (char)('a' + (digit - 10));
+    } else {
+      W_ASSERT_UNREACHABLE("Unsupported base " << base);
+    }
+    exp--;
+  }
+}
+
+void printLiteralInt(std::ostream &os, int64_t value, int base, int width, bool usePrefix) {
+	if (value < 0) {
+		if (base == 10) {
+			os << "-";
+		}
+
+		printLiteralUInt(os, -value, base, width, usePrefix);
+	} else {
+		printLiteralUInt(os, value, base, width, usePrefix);
+	}
+}
+
+void printLiteralReal(std::ostream &os, long double value, int precision, bool truncate) {
+	if (value < 0) {
+    os << '-';
+    printLiteralUInt(os, (uint64_t)(-(int64_t)value), 10, 0, false);
+  } else {
+    printLiteralUInt(os, (uint64_t)(int64_t)value, 10, 0, false);
+  }
+
+  long double dec = (value < 0 ? -value : value) - floor(value);
+
+  os << '.';
+
+  if (truncate) {
+    unsigned int nDigits = 0;
+    long double decP = dec;
+    for (unsigned int i = 0; i < precision; i++) {
+      decP *= 10.0;
+      unsigned int digit = (unsigned int)decP % 10;
+      if (digit != 0) {
+        nDigits = i;
+      }
+    }
+
+    for (unsigned int i = 0; i <= nDigits; i++) {
+      dec *= 10.0;
+      unsigned int digit = (unsigned int)dec % 10;
+      if (digit <= 9) {
+        os << (char)('0' + digit);
+      } else {
+        W_ASSERT_UNREACHABLE("Unexpected digit in real value " << digit);
+      }
+
+      if (digit != 0) {
+        nDigits = i;
+      }
+    }
+  } else {
+    for (unsigned int i = 0; i < precision; i++) {
+      dec *= 10.0;
+      unsigned int digit = (unsigned int)dec % 10;
+      if (digit <= 9) {
+        os << (char)('0' + digit);
+      } else {
+        W_ASSERT_UNREACHABLE("Unexpected digit in real value " << digit);
+      }
+    }
+  }
+}
+
+void printLiteralChar(std::ostream &os, char32_t value, char quote, bool useQuotes) {
+	if (useQuotes) {
+    os << quote;
+  }
+
+  if (value == quote) {
+    os << '\\';
+    os << quote;
+  } else if (value == '\a') {
+    os << "\\a";
+  } else if (value == '\b') {
+    os << "\\b";
+  } else if (value == '\033') {
+    os << "\\e";
+  } else if (value == '\f') {
+    os << "\\f";
+  } else if (value == '\n') {
+    os << "\\n";
+  } else if (value == '\r') {
+    os << "\\r";
+  } else if (value == '\t') {
+    os << "\\t";
+  } else if (value == '\v') {
+    os << "\\v";
+  } else if (value == '\0') {
+    os << "\\0";
+  } else if (value == '\\') {
+    os << "\\\\";
+  } else if (isprint(value)) {
+    os << (char)value;
+  } else if (getCharWidth(value) == 1) {
+    os << "\\x";
+    printLiteralUInt(os, value & 0xff, 16, 2, false);
+  } else if (getCharWidth(value) == 2) {
+    os << "\\u";
+    printLiteralUInt(os, value & 0xffff, 16, 4, false);
+  } else {
+  	os << "\\U";
+    printLiteralUInt(os, value, 16, 8, false);
+  }
+
+  if (useQuotes) {
+    os << quote;
+  }
+}
+
+void printLiteralString(std::ostream &os, const std::string &value, char quote, bool useQuotes) {
+	if (useQuotes) {
+    os << quote;
+  }
+
+  for (char i : value) {
+    printLiteralChar(os, 0xff & i, '\"', false);
+  }
+
+  if (useQuotes) {
+    os << quote;
+  }
+}
+
+bool evalLiteralBool(const std::string &text, bool &value) {
+	if (text == "true") {
+		value = true;
+		return true;
+	} else if (text == "false") {
+		value = false;
+		return true;
+	} else {
+		return false;
+	}
+}
+
 bool evalLiteralUInt(const std::string &text, uint64_t &value) {
   value = 0;
 
@@ -159,7 +342,7 @@ bool evalLiteralReal(const std::string &text, long double &value) {
 }
 
 namespace {
-bool evalLiteralCharHelper(std::string::const_iterator &i, std::string::const_iterator end, char &value) {
+bool evalLiteralCharHelper(std::string::const_iterator &i, std::string::const_iterator end, char32_t &value) {
   value = 0;
 
   size_t n = 0;
@@ -229,6 +412,48 @@ bool evalLiteralCharHelper(std::string::const_iterator &i, std::string::const_it
 
       ++i;
       return true;
+    } else if (*i == 'u') {
+      for (int j = 0; j < 4; j++) {
+        value *= 16;
+        ++i;
+        n++;
+
+        if (i == end) {
+          return false;
+        } else if (*i >= '0' && *i <= '9') {
+          value += *i - '0';
+        } else if (*i >= 'a' && *i <= 'f') {
+          value += 10 + *i - 'a';
+        } else if (*i >= 'A' && *i <= 'F') {
+          value += 10 + *i - 'A';
+        } else {
+          return false;
+        }
+      }
+
+      ++i;
+      return true;
+    } else if (*i == 'U') {
+      for (int j = 0; j < 8; j++) {
+        value *= 16;
+        ++i;
+        n++;
+
+        if (i == end) {
+          return false;
+        } else if (*i >= '0' && *i <= '9') {
+          value += *i - '0';
+        } else if (*i >= 'a' && *i <= 'f') {
+          value += 10 + *i - 'a';
+        } else if (*i >= 'A' && *i <= 'F') {
+          value += 10 + *i - 'A';
+        } else {
+          return false;
+        }
+      }
+
+      ++i;
+      return true;
     } else if (*i >= '0' && *i <= '7') {
       value = (*i++) - '0';
       n++;
@@ -242,7 +467,7 @@ bool evalLiteralCharHelper(std::string::const_iterator &i, std::string::const_it
 
         if (i == end) {
           return true;
-        } else if (*i >= '0' && *i <= '8') {
+        } else if (*i >= '0' && *i <= '7') {
           value *= 8;
           value += (*i++) - '0';
           n++;
@@ -264,7 +489,7 @@ bool evalLiteralCharHelper(std::string::const_iterator &i, std::string::const_it
 }
 } // namespace
 
-bool evalLiteralChar(const std::string &text, char &value) {
+bool evalLiteralChar(const std::string &text, char32_t &value) {
   value = '\0';
 
   std::string::const_iterator i = text.cbegin();
@@ -320,7 +545,7 @@ bool evalLiteralString(const std::string &text, std::string &value) {
       endedCorrectly = true;
       break;
     } else {
-      char tmp;
+      char32_t tmp;
       if (!evalLiteralCharHelper(
               i,
               text.cend(),
@@ -328,10 +553,10 @@ bool evalLiteralString(const std::string &text, std::string &value) {
         return false;
       }
 
-      value.push_back(tmp);
+      value.push_back(0xff & tmp);
     }
   }
 
   return endedCorrectly;
 }
-} // namespace whiskey
+}

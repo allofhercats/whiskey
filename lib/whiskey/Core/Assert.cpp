@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include <whiskey/Core/Backtrace.hpp>
 #include <whiskey/Core/Color.hpp>
 
 namespace whiskey {
@@ -24,8 +23,9 @@ void setAssertStream(std::ostream &os) {
 
 void printAssertMessage(const char *file, int line, const char *desc) {
   getAssertStream() << Color::reset << file << ":" << line << ": "
-                << Color::magentaLight << "assertion failed: " << Color::white
-                << desc << Color::reset << "\n";
+                    << Color::magentaLight
+                    << "assertion failed: " << Color::white << desc
+                    << Color::reset << "\n";
   getAssertStream().flush();
 }
 
@@ -40,7 +40,6 @@ void printAssertReasonPost() {
 }
 
 [[noreturn]] void dieOnAssertFail() {
-  printBacktrace(getAssertStream());
   abort();
 }
 
@@ -48,7 +47,7 @@ void printAssertValueBool(const char *label,
                           AssertBool value,
                           const char *text) {
   getAssertStream() << Color::greyLight << "  " << label << ": " << Color::reset
-                << text << "\n";
+                    << text << "\n";
   getAssertStream() << "    which is: " << (value ? "true" : "false") << "\n";
   getAssertStream().flush();
 }
@@ -57,14 +56,14 @@ void printAssertValuePointer(const char *label,
                              AssertPointer value,
                              const char *text) {
   getAssertStream() << Color::greyLight << "  " << label << ": " << Color::reset
-                << text << "\n";
+                    << text << "\n";
   getAssertStream() << "    which is: " << value << "\n";
   getAssertStream().flush();
 }
 
 void printAssertValueInt(const char *label, AssertInt value, const char *text) {
   getAssertStream() << Color::greyLight << "  " << label << ": " << Color::reset
-                << text << "\n";
+                    << text << "\n";
   getAssertStream() << "    which is: " << value << "\n";
   getAssertStream().flush();
 }
@@ -73,7 +72,7 @@ void printAssertValueUInt(const char *label,
                           AssertUInt value,
                           const char *text) {
   getAssertStream() << Color::greyLight << "  " << label << ": " << Color::reset
-                << text << "\n";
+                    << text << "\n";
   getAssertStream() << "    which is: " << value << "\n";
   getAssertStream().flush();
 }

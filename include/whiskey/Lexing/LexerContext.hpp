@@ -11,17 +11,18 @@ class MessageBuffer;
 
 class LexerContext {
 private:
-  Location first;
-  Location last;
+  Source *source;
+  Token::LinenoType firstLineno;
+  Token::ColumnnoType firstColumnno;
+  Token::LinenoType lastLineno;
+  Token::ColumnnoType lastColumnno;
+  Token::LengthType length;
+  std::stringstream buffer;
   std::vector<Token> *tokens;
   MessageBuffer *msgs;
 
 public:
-  LexerContext(Location start, std::vector<Token> &tokens, MessageBuffer &msgs);
-
-  const Location &getFirst() const;
-  const Location &getLast() const;
-  Range getRange() const;
+  LexerContext(Source &source, std::vector<Token> &tokens, MessageBuffer &msgs);
 
   bool areMoreChars(size_t lookahead = 0) const;
   char32_t getChar(size_t lookahead = 0) const;

@@ -39,3 +39,13 @@ TEST(Unit_Core_Types, GetNDigits_Base16) {
   ASSERT_EQ(getNDigits(256, 16), 3);
   ASSERT_EQ(getNDigits(4095, 16), 3);
 }
+
+TEST(Unit_Core_Types, GetCharWidth) {
+  ASSERT_EQ(getCharWidth(0), 1);
+  ASSERT_EQ(getCharWidth(1), 1);
+  ASSERT_EQ(getCharWidth(0xff), 1);
+  ASSERT_EQ(getCharWidth(0x100), 2);
+  ASSERT_EQ(getCharWidth(0xffff), 2);
+  ASSERT_EQ(getCharWidth(0x10000), 4);
+  ASSERT_EQ(getCharWidth(0xffffffff), 4);
+}

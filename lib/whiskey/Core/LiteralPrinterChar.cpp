@@ -10,7 +10,7 @@ void LiteralPrinterChar::onPrint(std::ostream &os) const {
   if (useQuotes) {
     os << quote;
   }
-	
+
   if (value == quote) {
     os << '\\';
     os << quote;
@@ -46,31 +46,34 @@ void LiteralPrinterChar::onPrint(std::ostream &os) const {
   }
 }
 
-LiteralPrinterChar::LiteralPrinterChar(char value, char quote, bool useQuotes) : value(value), quote(quote), useQuotes(useQuotes) {}
+LiteralPrinterChar::LiteralPrinterChar(char value, char quote, bool useQuotes)
+    : value(value), quote(quote), useQuotes(useQuotes) {
+}
 
-LiteralPrinterChar::~LiteralPrinterChar() {}
+LiteralPrinterChar::~LiteralPrinterChar() {
+}
 
 char LiteralPrinterChar::getValue() const {
-	return value;
+  return value;
 }
 
 void LiteralPrinterChar::setValue(char value) {
-	this->value = value;
+  this->value = value;
 }
 
 char LiteralPrinterChar::getQuote() const {
-	return quote;
+  return quote;
 }
 
 void LiteralPrinterChar::setQuote(char value) {
-	quote = value;
+  quote = value;
 }
 
 bool LiteralPrinterChar::getUseQuotes() const {
-	return useQuotes;
+  return useQuotes;
 }
 
 void LiteralPrinterChar::setUseQuotes(bool value) {
-	useQuotes = value;
+  useQuotes = value;
 }
-}
+} // namespace whiskey

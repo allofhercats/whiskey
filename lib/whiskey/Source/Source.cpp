@@ -1,40 +1,78 @@
 #include <whiskey/Source/Source.hpp>
 
-#include <string.h>
-
 #include <whiskey/Core/Assert.hpp>
 
 namespace whiskey {
-const std::string Source::defaultPath = "--";
+Source::Source(std::istream &is, std::string defaultPath) : is(&is), offset(0), defaultPath(defaultPath) {
+	W_ASSERT_GT(defaultPath.size(), 0, "Cannot have empty default path.");
+	W_ASSERT_TRUE(is.good(), "Cannot create source from bad stream.");
 
-Source::Source()
-{}
+	is.seekg(0, std::ios_base::end);
+	W_ASSERT_FALSE(is.fail(), "Unable to seek within stream.");
 
-void Source::loadString(std::string value, std::string path) {
-  W_ASSERT_UGT(path.size(), 0, "Cannot have source with empty path.");
-  text = value;
-  this->path = path;
+	length = is.tellg();
+
+	is.seekg(0, std::ios_base::beg);
+	W_ASSERT_FALSE(is.fail(), "Unable to seek within stream.");
 }
 
-bool Source::loadFile(std::string path) {
-  
+const std::string &Source::getDefaultPath() const {
+	return defaultPath;
 }
 
-const std::string &Source::getPath() const {
-  return path;
+std::istream::off_type Source::getOffset() const {
+	return offset;
 }
 
-void Source::setPath(std::string value) {
-  W_ASSERT_GT(value.size(), 0, "Cannot have empty path.");
-  path = value;
+void Source::setOffset(std::istream::off_type value) {
+	W_ASSERT_LT(value, length, "Cannot seek past end of stream.");
+
+	is->seekg(value, std::ios_base::beg);
+	W_ASSERT_FALSE(is->fail(), "Unable to seek within stream.");
+
+	offset = value;
 }
 
-bool Source::isLoaded() const {
-  return !path.empty();
+bool Source::more() const {
+	return offset < length;
 }
 
-const std::string &Source::getText() const {
-  W_ASSERT_TRUE(isLoaded(), "Cannot get unloaded text.");
-  return text;
+char Source::get() const {
+	if (more()) {
+		int chr = is->peek();
+		if (chr == EOF) {
+			return 0;
+		} else if (chr == '\r') {
+			return '\n';
+		} else {
+			W_ASSERT_GE(chr, 0, "Read character is out of 1-byte range.");
+			W_ASSERT_LE(chr, 0xff, "Read character is out of 1-byte range.")
+			return (char)chr;
+		}
+	} else {
+		return 0;
+	}
+}
+
+char Source::eat() {
+	if (more()) {
+		int chr = is->get();
+		offset++;
+		if (chr == EOF) {
+			return 0;
+		} else if (chr == '\r') {
+			if (is->good() && is->peek() == '\n') {
+				is->get();
+				offset++;
+			}
+			return '\n';
+		} else {
+			W_ASSERT_GE(chr, 0, "Read character is out of 1-byte range.");
+			W_ASSERT_LE(chr, 0xff, "Read character is out of 1-byte range.")
+			return (char)chr;
+		}
+	} else {
+		return 0;
+	}
 }
 } // namespace whiskey

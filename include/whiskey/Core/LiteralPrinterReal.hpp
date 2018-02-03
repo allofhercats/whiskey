@@ -1,8 +1,8 @@
 #ifndef __WHISKEY_Core_LiteralPrinterReal_HPP
 #define __WHISKEY_Core_LiteralPrinterReal_HPP
 
-#include <whiskey/Core/Types.hpp>
 #include <whiskey/Core/LiteralPrinter.hpp>
+#include <whiskey/Core/Types.hpp>
 
 namespace whiskey {
 class LiteralPrinterReal : public LiteralPrinter {
@@ -16,8 +16,8 @@ protected:
 
 public:
   LiteralPrinterReal(Real value,
-                    unsigned int precision = 5,
-                    bool truncate = true);
+                     unsigned int precision = 5,
+                     bool truncate = true);
   virtual ~LiteralPrinterReal();
 
   Real getValue() const;

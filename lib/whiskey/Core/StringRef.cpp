@@ -38,7 +38,8 @@ namespace whiskey {
 //     width = 4;
 //     data.asChar32 = (Char32 *)value;
 //   } else {
-//     W_ASSERT_UNREACHABLE("Unsupported char width " << sizeof(wchar_t) << ".");
+//     W_ASSERT_UNREACHABLE("Unsupported char width " << sizeof(wchar_t) <<
+//     ".");
 //   }
 //   this->_length = length == String::npos ? getStringLength(value) : length;
 // }

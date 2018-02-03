@@ -85,7 +85,8 @@ namespace whiskey {
 //     }
 //     data.asChar32[this->_length] = 0;
 //   } else {
-//     W_ASSERT_UNREACHABLE("Unsupported char width " << sizeof(wchar_t) << ".");
+//     W_ASSERT_UNREACHABLE("Unsupported char width " << sizeof(wchar_t) <<
+//     ".");
 //   }
 // }
 
@@ -280,7 +281,8 @@ namespace whiskey {
 //       } else if (value.width == 4) {
 //         chr = readCharUTF32(value.data.asChar32, pos, value._length);
 //       } else {
-//         W_ASSERT_UNREACHABLE("Unsupported char width " << value.width << ".");
+//         W_ASSERT_UNREACHABLE("Unsupported char width " << value.width <<
+//         ".");
 //       }
 
 //       append(chr);

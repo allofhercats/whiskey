@@ -1,45 +1,42 @@
 #ifndef __WHISKEY_Messages_Message_HPP
 #define __WHISKEY_Messages_Message_HPP
 
-#include <whiskey/Source/Range.hpp>
+#include <whiskey/Source/Token.hpp>
 
 namespace whiskey {
+class Source;
+
 class Message {
 public:
-  enum ID {
-    CannotOpen,
-    UnexpectedChar,
-    MismatchedBlockComments,
-    ExclamationPointAlone,
-    MismatchedSingleQuotes,
-    MismatchedDoubleQuotes,
-    UnexpectedToken
-  };
-
   enum Severity { Note, Warning, Error, FatalError, InternalCompilerError };
 
-  static Severity getSeverity(ID id);
-
 private:
-  Range range;
-  ID id;
-  std::string desc;
+  Token token;
+  Severity severity;
+  std::string description;
 
 public:
-  Message(Range range, ID id, std::string desc);
+  Message(Token token, Severity severity, std::string desc);
 
-  Range &getRange();
-  const Range &getRange() const;
-  void setRange(Range value);
+  Token &getToken();
+  const Token &getToken() const;
+  void setToken(Token value);
 
-  ID getID() const;
-  void setID(ID value);
+  Severity getSeverity() const;
+  void setSeverity(Severity value);
 
-  const std::string &getDesc() const;
-  void setDesc(std::string value);
+  const std::string &getDescription() const;
+  void setDescription(std::string value);
 
-  void print(std::ostream &os) const;
+  void print(std::ostream &os, const Source &source) const;
 };
+
+bool operator<(const Message &lhs, const Message &rhs);
+bool operator<=(const Message &lhs, const Message &rhs);
+bool operator>(const Message &lhs, const Message &rhs);
+bool operator>=(const Message &lhs, const Message &rhs);
+bool operator!=(const Message &lhs, const Message &rhs);
+bool operator==(const Message &lhs, const Message &rhs);
 } // namespace whiskey
 
 #endif

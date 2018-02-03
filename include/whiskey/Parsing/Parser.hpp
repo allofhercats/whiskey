@@ -10,48 +10,48 @@ private:
   ParserContext ctx;
 
   static ParserResult parseBoundList(ParserContext &ctx,
-                                     Token::ID left,
+                                     TokenID left,
                                      ParserContext::Rule rule,
                                      const std::string &expected,
-                                     Token::ID right);
+                                     TokenID right);
   static ParserResult parseBoundSeparatedList(ParserContext &ctx,
-                                              Token::ID left,
+                                              TokenID left,
                                               ParserContext::Rule rule,
                                               const std::string &expected,
-                                              Token::ID sep,
-                                              Token::ID right);
+                                              TokenID sep,
+                                              TokenID right);
   static ParserResult parseTemplateList(ParserContext &ctx,
                                         ParserContext::Rule rule,
                                         const std::string &expected);
   static ParserResult parseSymbol(ParserContext &ctx,
                                   ParserContext::Rule templateArgRule,
-                                  std::function<Node *(Node *, Range)> builder);
+                                  std::function<Node *(Node *, Token)> builder);
   static ParserResult parseUnaryRight(
       ParserContext &ctx,
       ParserContext::Rule baseRule,
       const std::string &expected,
       std::initializer_list<
-          std::pair<Token::ID, std::function<Node *(Node *, Range)>>> builders);
+          std::pair<TokenID, std::function<Node *(Node *, Token)>>> builders);
   static ParserResult parseUnaryLeft(
       ParserContext &ctx,
       ParserContext::Rule baseRule,
       const std::string &expected,
       std::initializer_list<
-          std::pair<Token::ID, std::function<Node *(Node *, Range)>>> builders);
+          std::pair<TokenID, std::function<Node *(Node *, Token)>>> builders);
   static ParserResult parseBinary(
       ParserContext &ctx,
       ParserContext::Rule lhsRule,
       const std::string &expected,
       std::initializer_list<
-          std::pair<Token::ID, std::function<Node *(Node *, Node *, Range)>>>
+          std::pair<TokenID, std::function<Node *(Node *, Node *, Token)>>>
           builders);
   static ParserResult
   parseBoundTerm(ParserContext &ctx,
-                 Token::ID left,
+                 TokenID left,
                  ParserContext::Rule rule,
                  const std::string &expected,
-                 Token::ID right,
-                 std::function<Node *(Node *, Range)> builder);
+                 TokenID right,
+                 std::function<Node *(Node *, Token)> builder);
 
 public:
   static ParserResult parseTemplateEvalArg(ParserContext &ctx);

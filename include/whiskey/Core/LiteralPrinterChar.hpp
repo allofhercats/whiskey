@@ -14,9 +14,7 @@ protected:
   virtual void onPrint(std::ostream &os) const;
 
 public:
-  LiteralPrinterChar(char value,
-                    char quote = '\'',
-                    bool useQuotes = true);
+  LiteralPrinterChar(char value, char quote = '\'', bool useQuotes = true);
   virtual ~LiteralPrinterChar();
 
   char getValue() const;

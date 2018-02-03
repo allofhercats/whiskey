@@ -49,8 +49,8 @@ MessageBuffer &ParserContext::getMsgs() const {
 
 void ParserContext::errorUnexpectedToken(const std::string &expected) const {
   msgs->describe() << "expected " << expected << ", not ";
-  Token::printTokenID(msgs->describe(), getToken().getID());
-  msgs->emit(getToken().getRange(), Message::UnexpectedToken);
+  printTokenID(msgs->describe(), getToken().getID());
+  msgs->emit(getToken(), Message::UnexpectedToken);
 }
 
 ParserResult ParserContext::parse(ParserContext::Rule rule) {

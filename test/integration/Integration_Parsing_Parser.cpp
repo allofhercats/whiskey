@@ -697,12 +697,12 @@ TEST(Integration_Parsing_Parser, ParseExprUnaryRight_0) {
 }
 
 TEST(Integration_Parsing_Parser, ParseExprUnaryLeft_0) {
-  testHelper(Parser::parseExpr,
-             "x++",
-             {Token::Symbol, Token::Inc},
-             Node::createExprIncPost(
-                 Node::createExprSymbol(Field::createString("x"))),
-             true);
+  testHelper(
+      Parser::parseExpr,
+      "x++",
+      {Token::Symbol, Token::Inc},
+      Node::createExprIncPost(Node::createExprSymbol(Field::createString("x"))),
+      true);
 }
 
 TEST(Integration_Parsing_Parser, ParseExprBinary_0) {

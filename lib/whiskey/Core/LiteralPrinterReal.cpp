@@ -7,13 +7,13 @@
 
 namespace whiskey {
 void LiteralPrinterReal::onPrint(std::ostream &os) const {
-	if (value < 0) {
-		os << '-';
-		LiteralPrinterUInt((UInt64)(-(Int64)value)).print(os);
-	} else {
-		LiteralPrinterUInt((UInt64)(Int64)value).print(os);
-	}
-	
+  if (value < 0) {
+    os << '-';
+    LiteralPrinterUInt((UInt64)(-(Int64)value)).print(os);
+  } else {
+    LiteralPrinterUInt((UInt64)(Int64)value).print(os);
+  }
+
   long double dec = value - floor(value);
 
   os << '.';
@@ -55,31 +55,36 @@ void LiteralPrinterReal::onPrint(std::ostream &os) const {
   }
 }
 
-LiteralPrinterReal::LiteralPrinterReal(Real value, unsigned int precision, bool truncate) : value(value), precision(precision), truncate(truncate) {}
+LiteralPrinterReal::LiteralPrinterReal(Real value,
+                                       unsigned int precision,
+                                       bool truncate)
+    : value(value), precision(precision), truncate(truncate) {
+}
 
-LiteralPrinterReal::~LiteralPrinterReal() {}
+LiteralPrinterReal::~LiteralPrinterReal() {
+}
 
 Real LiteralPrinterReal::getValue() const {
-	return value;
+  return value;
 }
 
 void LiteralPrinterReal::setValue(Real value) {
-	this->value = value;
+  this->value = value;
 }
 
 unsigned int LiteralPrinterReal::getPrecision() const {
-	return precision;
+  return precision;
 }
 
 void LiteralPrinterReal::setPrecision(unsigned int value) {
-	precision = value;
+  precision = value;
 }
 
 bool LiteralPrinterReal::getTruncate() const {
-	return truncate;
+  return truncate;
 }
 
 void LiteralPrinterReal::setTruncate(bool value) {
-	truncate = value;
+  truncate = value;
 }
-}
+} // namespace whiskey

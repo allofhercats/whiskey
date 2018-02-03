@@ -20,6 +20,8 @@ typedef long double Real;
 
 template <typename T>
 int getNDigits(T value, int base = 10);
+
+int getCharWidth(char32_t value);
 } // namespace whiskey
 
 #include <whiskey/Core/Types.tpp>

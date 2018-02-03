@@ -10,7 +10,7 @@ void LiteralPrinterString::onPrint(std::ostream &os) const {
   if (useQuotes) {
     os << quote;
   }
-	
+
   for (char i : value) {
     LiteralPrinterChar(i, '\"', false).print(os);
   }
@@ -20,35 +20,40 @@ void LiteralPrinterString::onPrint(std::ostream &os) const {
   }
 }
 
-LiteralPrinterString::LiteralPrinterString(std::string value, char quote, bool useQuotes) : value(value), quote(quote), useQuotes(useQuotes) {}
+LiteralPrinterString::LiteralPrinterString(std::string value,
+                                           char quote,
+                                           bool useQuotes)
+    : value(value), quote(quote), useQuotes(useQuotes) {
+}
 
-LiteralPrinterString::~LiteralPrinterString() {}
+LiteralPrinterString::~LiteralPrinterString() {
+}
 
 std::string &LiteralPrinterString::getValue() {
   return value;
 }
 
 const std::string &LiteralPrinterString::getValue() const {
-	return value;
+  return value;
 }
 
 void LiteralPrinterString::setValue(std::string value) {
-	this->value = value;
+  this->value = value;
 }
 
 char LiteralPrinterString::getQuote() const {
-	return quote;
+  return quote;
 }
 
 void LiteralPrinterString::setQuote(char value) {
-	quote = value;
+  quote = value;
 }
 
 bool LiteralPrinterString::getUseQuotes() const {
-	return useQuotes;
+  return useQuotes;
 }
 
 void LiteralPrinterString::setUseQuotes(bool value) {
-	useQuotes = value;
+  useQuotes = value;
 }
-}
+} // namespace whiskey

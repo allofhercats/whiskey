@@ -1,8 +1,8 @@
 #ifndef __WHISKEY_Core_LiteralPrinterUInt_HPP
 #define __WHISKEY_Core_LiteralPrinterUInt_HPP
 
-#include <whiskey/Core/Types.hpp>
 #include <whiskey/Core/LiteralPrinter.hpp>
+#include <whiskey/Core/Types.hpp>
 
 namespace whiskey {
 class LiteralPrinterUInt : public LiteralPrinter {
@@ -20,9 +20,9 @@ public:
   static void printBasePrefix(std::ostream &os, int base);
 
   LiteralPrinterUInt(UInt64 value,
-                    int base = 10,
-                    bool usePrefix = true,
-                    int width = 0);
+                     int base = 10,
+                     bool usePrefix = true,
+                     int width = 0);
   virtual ~LiteralPrinterUInt();
 
   UInt64 getValue() const;

@@ -15,8 +15,8 @@ protected:
 
 public:
   LiteralPrinterString(std::string value,
-                    char quote = '\"',
-                    bool useQuotes = true);
+                       char quote = '\"',
+                       bool useQuotes = true);
   virtual ~LiteralPrinterString();
 
   std::string &getValue();
