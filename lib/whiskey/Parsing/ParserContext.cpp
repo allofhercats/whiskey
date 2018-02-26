@@ -1,79 +1,59 @@
 #include <whiskey/Parsing/ParserContext.hpp>
 
-#include <whiskey/Messages/MessageBuffer.hpp>
+#include <whiskey/Core/Verbose.hpp>
 
 namespace whiskey {
 ParserContext::ParserContext(const std::vector<Token> &tokens,
-                             MessageBuffer &msgs,
-                             unsigned int offset)
-    : tokens(&tokens), offset(0), msgs(&msgs) {
+                             std::vector<Token>::size_type offset)
+    : tokens(&tokens), offset(offset) {
 }
 
-bool ParserContext::areMoreTokens() const {
+bool ParserContext::more() const {
   return !injected.empty() || offset < tokens->size();
 }
 
-Token ParserContext::getToken() const {
+const Token &ParserContext::get() const {
   if (injected.empty()) {
     if (offset < tokens->size()) {
       return (*tokens)[offset];
     } else {
-      return Token();
+      return Token::eof;
     }
   } else {
     return injected.top();
   }
 }
 
-Token ParserContext::eatToken() {
+const Token &ParserContext::last() const {
+  return _last;
+}
+
+Token ParserContext::eat() {
+  Token rtn;
   if (injected.empty()) {
     if (offset < tokens->size()) {
-      return (*tokens)[offset++];
+      rtn = (*tokens)[offset++];
     } else {
-      return Token();
+      rtn = Token::eof;
     }
   } else {
-    Token rtn = injected.top();
+    Token tmp = injected.top();
     injected.pop();
-    return rtn;
-  }
-}
-
-void ParserContext::injectToken(Token token) {
-  injected.push(token);
-}
-
-MessageBuffer &ParserContext::getMsgs() const {
-  return *msgs;
-}
-
-void ParserContext::errorUnexpectedToken(const std::string &expected) const {
-  msgs->describe() << "expected " << expected << ", not ";
-  printTokenID(msgs->describe(), getToken().getID());
-  msgs->emit(getToken(), Message::UnexpectedToken);
-}
-
-ParserResult ParserContext::parse(ParserContext::Rule rule) {
-  ParserContext save = *this;
-  ParserResult res = rule(save);
-  if (res.isGood()) {
-    *this = save;
-  } else {
-    return ParserResult();
-  }
-  return res;
-}
-
-ParserResult
-ParserContext::parseAny(std::initializer_list<ParserContext::Rule> rules) {
-  ParserResult res;
-  for (const Rule &rule : rules) {
-    res = parse(rule);
-    if (res.isGood()) {
-      return res;
-    }
+    rtn = tmp;
   }
 
-  return ParserResult();
+  _last = rtn;
+
+  W_VERBOSE("eat " << rtn);
+
+  return rtn;
+}
+
+void ParserContext::inject(TokenID tokenID) {
+  W_VERBOSE("inject " << tokenID);
+
+  Token tmp = get();
+  tmp.setID(tokenID);
+  injected.push(tmp);
 }
 } // namespace whiskey

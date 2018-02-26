@@ -8,16 +8,14 @@
 
 namespace whiskey {
 class MessageContext {
-public:
-  typedef uint32_t CountType;
-  typedef uint32_t TabWidthType;
-
 private:
-  TabWidthType tabWidth;
+  unsigned int tabWidth;
   std::set<Message> messages;
   std::stringstream description;
-  CountType warningCount;
-  CountType errorCount;
+  size_t warningCount;
+  size_t errorCount;
+
+  void printSummary(std::ostream &os) const;
 
 public:
   MessageContext();
@@ -25,20 +23,21 @@ public:
 
   void clear();
 
-  void setTabWidth(TabWidthType value);
+  void setTabWidth(unsigned int value);
 
   std::set<Message> &getMessages();
   const std::set<Message> &getMessages() const;
 
-  CountType getWarningCount() const;
-  CountType getErrorCount() const;
-  CountType getMessageCount() const;
+  size_t getWarningCount() const;
+  size_t getErrorCount() const;
+  size_t getMessageCount() const;
 
   std::ostream &describe();
   void emit(Token token, Message::Severity severity);
   void emit(Message::Severity severity);
 
   void print(std::ostream &os, Source source) const;
+  void print(std::ostream &os) const;
 };
 } // namespace whiskey
 

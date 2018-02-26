@@ -29,6 +29,7 @@ public:
   void setDescription(std::string value);
 
   void print(std::ostream &os, const Source &source) const;
+  void print(std::ostream &os) const;
 };
 
 bool operator<(const Message &lhs, const Message &rhs);

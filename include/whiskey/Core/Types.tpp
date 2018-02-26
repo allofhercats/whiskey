@@ -1,8 +1,8 @@
 namespace whiskey {
 template <typename T>
-int getNDigits(T value, int base) {
+unsigned int getNDigits(T value, T base) {
   W_ASSERT_GT(
-      base, 0, "Cannot get n digits in non-positive base " << base << ".");
+      base, static_cast<decltype(base)>(0), "Cannot get n digits in non-positive base " << base << ".");
 
   if (value == 0) {
     return 1;
@@ -12,7 +12,7 @@ int getNDigits(T value, int base) {
   } else {
     unsigned int n = 0;
     while (value != 0) {
-      value /= base;
+      value /= static_cast<T>(base);
       n++;
     }
     return n;

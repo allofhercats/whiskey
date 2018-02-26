@@ -1,15 +1,19 @@
 #include <whiskey/Source/Token.hpp>
 
 #include <whiskey/Core/Assert.hpp>
-#include <whiskey/Core/LiteralPrinterString.hpp>
+#include <whiskey/Core/Literals.hpp>
 
 namespace whiskey {
 const Token::LinenoType Token::linenoNone = 0;
 const Token::ColumnnoType Token::columnnoNone = 0;
 
+const Token Token::eof;
+
 Token::Token() : lineno(Token::linenoNone), columnno(Token::columnnoNone), length(0), id(TokenID::None) {}
 
 Token::Token(TokenID id) : lineno(Token::linenoNone), columnno(Token::columnnoNone), length(0), id(id) {}
+
+Token::Token(TokenID id, std::string text) : lineno(Token::linenoNone), columnno(Token::columnnoNone), length(0), id(id), text(text) {}
 
 Token::Token(Token::LinenoType lineno, Token::ColumnnoType columnno, Token::LengthType length, TokenID id) : lineno(lineno), columnno(columnno), length(length), id(id) {}
 
@@ -104,7 +108,7 @@ std::ostream &operator<<(std::ostream &os, const Token &value) {
   printTokenIDDebug(os, value.getID());
   if (value.hasText()) {
     os << " ";
-    LiteralPrinterString(value.getText()).print(os);
+    printLiteralString(os, value.getText());
   }
   os << ">";
   return os;

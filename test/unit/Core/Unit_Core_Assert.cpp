@@ -1,22 +1,27 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
+#pragma clang diagnostic ignored "-Wsign-compare"
+#pragma clang diagnostic ignored "-Wdeprecated"
+#pragma clang diagnostic ignored "-Wshift-sign-overflow"
 #include <gtest/gtest.h>
-
-// #include <whiskey/Whiskey.hpp>
+#pragma clang diagnostic pop
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
 
 #include <whiskey/Core/Assert.hpp>
 
 using namespace whiskey;
 
 TEST(Unit_Core_Assert, Stream) {
-  ASSERT_NE(&getAssertStream(), nullptr);
+  ASSERT_NE(&getAssertOStream(), nullptr);
 
   std::stringstream ss;
-  setAssertStream(ss);
+  setAssertOStream(ss);
 
-  ASSERT_EQ(&getAssertStream(), &ss);
+  ASSERT_EQ(&getAssertOStream(), &ss);
   ASSERT_STREQ(ss.str().c_str(), "");
 
-  getAssertStream() << "hello, world\n";
-  ASSERT_EQ(&getAssertStream(), &ss);
+  getAssertOStream() << "hello, world\n";
+  ASSERT_EQ(&getAssertOStream(), &ss);
   ASSERT_STREQ(ss.str().c_str(), "hello, world\n");
 }
 
@@ -25,13 +30,13 @@ TEST(Unit_Core_Assert, Die) {
 }
 
 TEST(Unit_Core_Assert, Unreachable) {
-  setAssertStream(std::cerr);
+  setAssertOStream(std::cerr);
 
   ASSERT_DEATH({ W_ASSERT_UNREACHABLE("Hey, now."); }, "Hey, now.");
 }
 
 TEST(Unit_Core_Assert, True) {
-  setAssertStream(std::cerr);
+  setAssertOStream(std::cerr);
 
   W_ASSERT_TRUE(true, "");
 
@@ -40,7 +45,7 @@ TEST(Unit_Core_Assert, True) {
 }
 
 TEST(Unit_Core_Assert, False) {
-  setAssertStream(std::cerr);
+  setAssertOStream(std::cerr);
 
   W_ASSERT_FALSE(false, "");
 
@@ -49,9 +54,9 @@ TEST(Unit_Core_Assert, False) {
 }
 
 TEST(Unit_Core_Assert, Null) {
-  setAssertStream(std::cerr);
+  setAssertOStream(std::cerr);
 
-  W_ASSERT_NULL(nullptr, "");
+  W_ASSERT_NULL(static_cast<void *>(nullptr), "");
 
   int x;
 
@@ -59,17 +64,17 @@ TEST(Unit_Core_Assert, Null) {
 }
 
 TEST(Unit_Core_Assert, NonNull) {
-  setAssertStream(std::cerr);
+  setAssertOStream(std::cerr);
 
   int x;
 
   W_ASSERT_NONNULL(&x, "");
 
-  ASSERT_DEATH({ W_ASSERT_NONNULL(nullptr, "Hey, now."); }, "Hey, now.");
+  ASSERT_DEATH({ W_ASSERT_NONNULL(static_cast<void *>(nullptr), "Hey, now."); }, "Hey, now.");
 }
 
 TEST(Unit_Core_Assert, LT) {
-  setAssertStream(std::cerr);
+  setAssertOStream(std::cerr);
 
   W_ASSERT_LT(0, 1, "");
 
@@ -87,7 +92,7 @@ TEST(Unit_Core_Assert, LT) {
 }
 
 TEST(Unit_Core_Assert, LE) {
-  setAssertStream(std::cerr);
+  setAssertOStream(std::cerr);
 
   W_ASSERT_LE(0, 1, "");
 
@@ -105,7 +110,7 @@ TEST(Unit_Core_Assert, LE) {
 }
 
 TEST(Unit_Core_Assert, GT) {
-  setAssertStream(std::cerr);
+  setAssertOStream(std::cerr);
 
   W_ASSERT_GT(1, 0, "");
 
@@ -123,7 +128,7 @@ TEST(Unit_Core_Assert, GT) {
 }
 
 TEST(Unit_Core_Assert, GE) {
-  setAssertStream(std::cerr);
+  setAssertOStream(std::cerr);
 
   W_ASSERT_GE(1, 0, "");
 
@@ -140,71 +145,8 @@ TEST(Unit_Core_Assert, GE) {
   ASSERT_DEATH({ W_ASSERT_GE(-1, 1, "The ice we skate"); }, "The ice we skate");
 }
 
-TEST(Unit_Core_Assert, ULT) {
-  setAssertStream(std::cerr);
-
-  W_ASSERT_ULT(0, 1, "");
-
-  W_ASSERT_ULT(0, -1, "");
-
-  ASSERT_DEATH({ W_ASSERT_ULT(0, 0, "Is getting pretty thin."); },
-               "Is getting pretty thin.");
-
-  ASSERT_DEATH({ W_ASSERT_ULT(1, 0, "Waters gettin' warm,"); },
-               "Waters gettin' warm,");
-
-  ASSERT_DEATH({ W_ASSERT_ULT(-1, 0, "Waters gettin' warm,"); },
-               "Waters gettin' warm,");
-}
-
-TEST(Unit_Core_Assert, ULE) {
-  setAssertStream(std::cerr);
-
-  W_ASSERT_ULE(0, 1, "");
-
-  W_ASSERT_ULE(0, -1, "");
-
-  W_ASSERT_ULE(0, 0, "");
-
-  ASSERT_DEATH({ W_ASSERT_ULE(1, 0, "Yeah, we might as well swim."); },
-               "Yeah, we might as well swim.");
-
-  ASSERT_DEATH({ W_ASSERT_ULE(-1, 0, "Yeah, we might as well swim."); },
-               "Yeah, we might as well swim.");
-}
-
-TEST(Unit_Core_Assert, UGT) {
-  setAssertStream(std::cerr);
-
-  W_ASSERT_UGT(1, 0, "");
-
-  W_ASSERT_UGT(-1, 0, "");
-
-  ASSERT_DEATH({ W_ASSERT_UGT(0, 0, "World's on fire,"); }, "World's on fire,");
-
-  ASSERT_DEATH({ W_ASSERT_UGT(0, 1, "How 'bout jaws."); }, "How 'bout jaws.");
-
-  ASSERT_DEATH({ W_ASSERT_UGT(0, -1, "How 'bout jaws."); }, "How 'bout jaws.");
-}
-
-TEST(Unit_Core_Assert, UGE) {
-  setAssertStream(std::cerr);
-
-  W_ASSERT_UGE(1, 0, "");
-
-  W_ASSERT_UGE(-1, 0, "");
-
-  W_ASSERT_UGE(0, 0, "");
-
-  ASSERT_DEATH({ W_ASSERT_UGE(0, 1, "That's the way I like it"); },
-               "That's the way I like it");
-
-  ASSERT_DEATH({ W_ASSERT_UGE(0, -1, "That's the way I like it"); },
-               "That's the way I like it");
-}
-
 TEST(Unit_Core_Assert, NE) {
-  setAssertStream(std::cerr);
+  setAssertOStream(std::cerr);
 
   W_ASSERT_NE(0, 1, "");
 
@@ -217,7 +159,7 @@ TEST(Unit_Core_Assert, NE) {
 }
 
 TEST(Unit_Core_Assert, EQ) {
-  setAssertStream(std::cerr);
+  setAssertOStream(std::cerr);
 
   W_ASSERT_EQ(0, 0, "");
 

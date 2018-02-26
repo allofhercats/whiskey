@@ -1,124 +1,26 @@
 #ifndef __WHISKEY_Parsing_Parser_HPP
 #define __WHISKEY_Parsing_Parser_HPP
 
-#include <whiskey/Parsing/ParserContext.hpp>
-#include <whiskey/Parsing/ParserResult.hpp>
+#include <memory>
+
+#include <whiskey/Parsing/ParserGrammar.hpp>
 
 namespace whiskey {
+class Node;
+
 class Parser {
 private:
-  ParserContext ctx;
-
-  static ParserResult parseBoundList(ParserContext &ctx,
-                                     TokenID left,
-                                     ParserContext::Rule rule,
-                                     const std::string &expected,
-                                     TokenID right);
-  static ParserResult parseBoundSeparatedList(ParserContext &ctx,
-                                              TokenID left,
-                                              ParserContext::Rule rule,
-                                              const std::string &expected,
-                                              TokenID sep,
-                                              TokenID right);
-  static ParserResult parseTemplateList(ParserContext &ctx,
-                                        ParserContext::Rule rule,
-                                        const std::string &expected);
-  static ParserResult parseSymbol(ParserContext &ctx,
-                                  ParserContext::Rule templateArgRule,
-                                  std::function<Node *(Node *, Token)> builder);
-  static ParserResult parseUnaryRight(
-      ParserContext &ctx,
-      ParserContext::Rule baseRule,
-      const std::string &expected,
-      std::initializer_list<
-          std::pair<TokenID, std::function<Node *(Node *, Token)>>> builders);
-  static ParserResult parseUnaryLeft(
-      ParserContext &ctx,
-      ParserContext::Rule baseRule,
-      const std::string &expected,
-      std::initializer_list<
-          std::pair<TokenID, std::function<Node *(Node *, Token)>>> builders);
-  static ParserResult parseBinary(
-      ParserContext &ctx,
-      ParserContext::Rule lhsRule,
-      const std::string &expected,
-      std::initializer_list<
-          std::pair<TokenID, std::function<Node *(Node *, Node *, Token)>>>
-          builders);
-  static ParserResult
-  parseBoundTerm(ParserContext &ctx,
-                 TokenID left,
-                 ParserContext::Rule rule,
-                 const std::string &expected,
-                 TokenID right,
-                 std::function<Node *(Node *, Token)> builder);
+	ParserGrammar grammar;
 
 public:
-  static ParserResult parseTemplateEvalArg(ParserContext &ctx);
+	static void createGrammar(ParserGrammar &grammar);
 
-  static ParserResult parseTypeSymbol(ParserContext &ctx);
-  static ParserResult parseTypeAtomic(ParserContext &ctx);
-  static ParserResult parseTypeTerm(ParserContext &ctx);
-  static ParserResult parseTypeAccess(ParserContext &ctx);
-  static ParserResult parseTypeAccessUnary(ParserContext &ctx);
-  static ParserResult parseTypeFunction(ParserContext &ctx);
-  static ParserResult parseTypeGroup(ParserContext &ctx);
-  static ParserResult parseType(ParserContext &ctx);
+	Parser();
 
-  static ParserResult parseExprSymbol(ParserContext &ctx);
-  static ParserResult parseExprLiteralUInt(ParserContext &ctx);
-  static ParserResult parseExprLiteralReal(ParserContext &ctx);
-  static ParserResult parseExprGroup(ParserContext &ctx);
-  static ParserResult parseExprTerm(ParserContext &ctx);
-  static ParserResult parseExprAccess(ParserContext &ctx);
-  static ParserResult parseExprAccessUnary(ParserContext &ctx);
-  static ParserResult parseExprCall(ParserContext &ctx);
-  static ParserResult parseExprUnaryRight(ParserContext &ctx);
-  static ParserResult parseExprUnaryLeft(ParserContext &ctx);
-  static ParserResult parseExprExp(ParserContext &ctx);
-  static ParserResult parseExprMul(ParserContext &ctx);
-  static ParserResult parseExprAdd(ParserContext &ctx);
-  static ParserResult parseExprMod(ParserContext &ctx);
-  static ParserResult parseExprBitShR(ParserContext &ctx);
-  static ParserResult parseExprBitShL(ParserContext &ctx);
-  static ParserResult parseExprBitAnd(ParserContext &ctx);
-  static ParserResult parseExprBitOr(ParserContext &ctx);
-  static ParserResult parseExprCompare(ParserContext &ctx);
-  static ParserResult parseExprBoolNot(ParserContext &ctx);
-  static ParserResult parseExprBoolAnd(ParserContext &ctx);
-  static ParserResult parseExprBoolOr(ParserContext &ctx);
-  static ParserResult parseExprBoolImplies(ParserContext &ctx);
-  static ParserResult parseExprAssign(ParserContext &ctx);
-  static ParserResult parseExpr(ParserContext &ctx);
+	bool isGrammarInitted() const;
+	void initGrammar();
 
-  static ParserResult parseStmtEmpty(ParserContext &ctx);
-  static ParserResult parseStmtExpr(ParserContext &ctx);
-  static ParserResult parseStmtDecl(ParserContext &ctx);
-  static ParserResult parseStmtReturn(ParserContext &ctx);
-  static ParserResult parseStmtContinue(ParserContext &ctx);
-  static ParserResult parseStmtBreak(ParserContext &ctx);
-  static ParserResult parseStmtIf(ParserContext &ctx);
-  static ParserResult parseStmtWhile(ParserContext &ctx);
-  static ParserResult parseStmtFor(ParserContext &ctx);
-  static ParserResult parseStmtForEach(ParserContext &ctx);
-  static ParserResult parseStmtBlock(ParserContext &ctx);
-  static ParserResult parseStmt(ParserContext &ctx);
-
-  static ParserResult parseDeclVariableNoSemicolon(ParserContext &ctx);
-  static ParserResult parseDeclVariable(ParserContext &ctx);
-  static ParserResult parseDeclFunction(ParserContext &ctx);
-  static ParserResult parseDeclClass(ParserContext &ctx);
-  static ParserResult parseDeclNamespace(ParserContext &ctx);
-  static ParserResult parseDecl(ParserContext &ctx);
-
-  static ParserResult parseImport(ParserContext &ctx);
-  static ParserResult parseUnit(ParserContext &ctx);
-
-  Parser(const std::vector<Token> &tokens,
-         MessageBuffer &msgs,
-         unsigned int offset = 0);
-
-  Node *parse();
+	Node parse(ParserContext &ctx, MessageContext &msgs) const;
 };
 } // namespace whiskey
 

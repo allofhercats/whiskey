@@ -1,6 +1,11 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
+#pragma clang diagnostic ignored "-Wsign-compare"
+#pragma clang diagnostic ignored "-Wdeprecated"
+#pragma clang diagnostic ignored "-Wshift-sign-overflow"
 #include <gtest/gtest.h>
-
-// #include <whiskey/Whiskey.hpp>
+#pragma clang diagnostic pop
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
 
 #include <whiskey/AST/Node.hpp>
 #include <whiskey/Parsing/ParserResult.hpp>
@@ -14,7 +19,7 @@ TEST(Unit_Parsing_ParserResult, Empty) {
 }
 
 TEST(Unit_Parsing_ParserResult, Filled) {
-  ParserResult res(Node::createTypeAtomicInt32());
+  ParserResult res = ParserResult(Node());
 
   ASSERT_TRUE(res.isGood());
 }

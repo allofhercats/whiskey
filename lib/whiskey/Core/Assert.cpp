@@ -2,78 +2,33 @@
 
 #include <iostream>
 
-#include <whiskey/Core/Color.hpp>
-
 namespace whiskey {
 namespace {
-std::ostream *assertStream = nullptr;
+std::ostream *assertOStream = nullptr;
 }
 
-std::ostream &getAssertStream() {
-  if (assertStream == nullptr) {
-    assertStream = &std::cerr;
+std::ostream &getAssertOStream() {
+  if (assertOStream == nullptr) {
+    assertOStream = &std::cerr;
   }
 
-  return *assertStream;
+  return *assertOStream;
 }
 
-void setAssertStream(std::ostream &os) {
-  assertStream = &os;
+void setAssertOStream(std::ostream &os) {
+  assertOStream = &os;
 }
 
-void printAssertMessage(const char *file, int line, const char *desc) {
-  getAssertStream() << Color::reset << file << ":" << line << ": "
-                    << Color::magentaLight
-                    << "assertion failed: " << Color::white << desc
-                    << Color::reset << "\n";
-  getAssertStream().flush();
+void printAssertPrefix(const char *file, unsigned int line) {
+  getAssertOStream() << file << ":" << std::dec << line << ": assertion failed: ";
 }
 
-void printAssertReasonPre() {
-  getAssertStream() << Color::greyLight << " reason: " << Color::reset;
-  getAssertStream().flush();
+void printAssertSuffix(const char *requirement) {
+  getAssertOStream() << "\n  required: " << requirement << "\n";
 }
 
-void printAssertReasonPost() {
-  getAssertStream() << "\n";
-  getAssertStream().flush();
-}
-
-[[noreturn]] void dieOnAssertFail() {
+void dieOnAssertFail() {
+	getAssertOStream().flush();
   abort();
 }
-
-void printAssertValueBool(const char *label,
-                          AssertBool value,
-                          const char *text) {
-  getAssertStream() << Color::greyLight << "  " << label << ": " << Color::reset
-                    << text << "\n";
-  getAssertStream() << "    which is: " << (value ? "true" : "false") << "\n";
-  getAssertStream().flush();
 }
-
-void printAssertValuePointer(const char *label,
-                             AssertPointer value,
-                             const char *text) {
-  getAssertStream() << Color::greyLight << "  " << label << ": " << Color::reset
-                    << text << "\n";
-  getAssertStream() << "    which is: " << value << "\n";
-  getAssertStream().flush();
-}
-
-void printAssertValueInt(const char *label, AssertInt value, const char *text) {
-  getAssertStream() << Color::greyLight << "  " << label << ": " << Color::reset
-                    << text << "\n";
-  getAssertStream() << "    which is: " << value << "\n";
-  getAssertStream().flush();
-}
-
-void printAssertValueUInt(const char *label,
-                          AssertUInt value,
-                          const char *text) {
-  getAssertStream() << Color::greyLight << "  " << label << ": " << Color::reset
-                    << text << "\n";
-  getAssertStream() << "    which is: " << value << "\n";
-  getAssertStream().flush();
-}
-} // namespace whiskey

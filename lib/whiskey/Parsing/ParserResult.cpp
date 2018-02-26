@@ -1,21 +1,21 @@
 #include <whiskey/Parsing/ParserResult.hpp>
 
 namespace whiskey {
-ParserResult::ParserResult() : node(nullptr), good(false) {
+ParserResult::ParserResult() : good(false) {
 }
 
-ParserResult::ParserResult(Node *node) : node(node), good(true) {
+ParserResult::ParserResult(Node node) : node(node), good(true) {
 }
 
-Node *ParserResult::getNode() {
+Node &ParserResult::getNode() {
   return node;
 }
 
-const Node *ParserResult::getNode() const {
+const Node &ParserResult::getNode() const {
   return node;
 }
 
-void ParserResult::setNode(Node *value) {
+void ParserResult::setNode(Node value) {
   node = value;
 }
 

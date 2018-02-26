@@ -1,240 +1,147 @@
 #ifndef __WHISKEY_Core_Assert_HPP
 #define __WHISKEY_Core_Assert_HPP
 
-#include <stdint.h>
-
 #include <ostream>
 
-#define _W_ASSERT_PRINT_REASON(reason)      \
-  {                                         \
-    ::whiskey::printAssertReasonPre();      \
-    ::whiskey::getAssertStream() << reason; \
-    ::whiskey::printAssertReasonPost();     \
-  }
+#define _W_ASSERT_PRINT(desc, req) { \
+  ::whiskey::printAssertPrefix(__FILE__, __LINE__); \
+  ::whiskey::getAssertOStream() << desc; \
+  ::whiskey::printAssertSuffix((req)); \
+}
 
-#define W_ASSERT_UNREACHABLE(reason)                            \
-  {                                                             \
-    ::whiskey::printAssertMessage(                              \
-        __FILE__, __LINE__, "expected code to be unreachable"); \
-    _W_ASSERT_PRINT_REASON(reason);                             \
-    ::whiskey::dieOnAssertFail();                               \
-  }
+#define _W_ASSERT_PRINT_VALUE(label, value) { \
+  ::whiskey::printAssertValue<decltype((value))>((label), #value, (value)); \
+}
 
-#define W_ASSERT_TRUE(arg0, reason)                                     \
-  {                                                                     \
-    ::whiskey::AssertBool _w_arg0Value = (::whiskey::AssertBool)(arg0); \
-    if (!_w_arg0Value) {                                                \
-      ::whiskey::printAssertMessage(                                    \
-          __FILE__, __LINE__, "expected value to be true");             \
-      ::whiskey::printAssertValueBool("actual", _w_arg0Value, #arg0);   \
-      _W_ASSERT_PRINT_REASON(reason);                                   \
-      ::whiskey::dieOnAssertFail();                                     \
-    }                                                                   \
-  }
+#define _W_ASSERT_DIE() { \
+  ::whiskey::dieOnAssertFail(); \
+}
 
-#define W_ASSERT_FALSE(arg0, reason)                                    \
-  {                                                                     \
-    ::whiskey::AssertBool _w_arg0Value = (::whiskey::AssertBool)(arg0); \
-    if (_w_arg0Value) {                                                 \
-      ::whiskey::printAssertMessage(                                    \
-          __FILE__, __LINE__, "expected value to be false");            \
-      ::whiskey::printAssertValueBool("actual", _w_arg0Value, #arg0);   \
-      _W_ASSERT_PRINT_REASON(reason);                                   \
-      ::whiskey::dieOnAssertFail();                                     \
-    }                                                                   \
-  }
+#define _W_ASSERT_COMPARE(lhs, rhs) ::whiskey::compareOnAssert<decltype((lhs)), decltype((rhs))>((lhs), (rhs))
 
-#define W_ASSERT_NULL(arg0, reason)                                           \
-  {                                                                           \
-    ::whiskey::AssertPointer _w_arg0Value = (::whiskey::AssertPointer)(arg0); \
-    if (_w_arg0Value != nullptr) {                                            \
-      ::whiskey::printAssertMessage(                                          \
-          __FILE__, __LINE__, "expected value to be null");                   \
-      ::whiskey::printAssertValuePointer("actual", _w_arg0Value, #arg0);      \
-      _W_ASSERT_PRINT_REASON(reason);                                         \
-      ::whiskey::dieOnAssertFail();                                           \
-    }                                                                         \
-  }
+#define W_ASSERT_UNREACHABLE(desc) { \
+  _W_ASSERT_PRINT(desc, "Code is unreachable"); \
+  _W_ASSERT_DIE(); \
+}
 
-#define W_ASSERT_NONNULL(arg0, reason)                                        \
-  {                                                                           \
-    ::whiskey::AssertPointer _w_arg0Value = (::whiskey::AssertPointer)(arg0); \
-    if (_w_arg0Value == nullptr) {                                            \
-      ::whiskey::printAssertMessage(                                          \
-          __FILE__, __LINE__, "expected value to not be null");               \
-      ::whiskey::printAssertValuePointer("actual", _w_arg0Value, #arg0);      \
-      _W_ASSERT_PRINT_REASON(reason);                                         \
-      ::whiskey::dieOnAssertFail();                                           \
-    }                                                                         \
-  }
+#define W_ASSERT_TRUE(value, desc) { \
+  bool _w_assertValue = static_cast<bool>(value); \
+  if (!_w_assertValue) { \
+    _W_ASSERT_PRINT(desc, "Value is true"); \
+    _W_ASSERT_PRINT_VALUE("Value", _w_assertValue ? "true" : "false"); \
+    _W_ASSERT_DIE(); \
+  } \
+}
 
-#define W_ASSERT_LT(arg0, arg1, reason)                               \
-  {                                                                   \
-    ::whiskey::AssertInt _w_arg0Value = (::whiskey::AssertInt)(arg0); \
-    ::whiskey::AssertInt _w_arg1Value = (::whiskey::AssertInt)(arg1); \
-    if (!(_w_arg0Value < _w_arg1Value)) {                             \
-      ::whiskey::printAssertMessage(                                  \
-          __FILE__, __LINE__, "expected lhs to be less than rhs");    \
-      ::whiskey::printAssertValueInt("lhs", _w_arg0Value, #arg0);     \
-      ::whiskey::printAssertValueInt("rhs", _w_arg1Value, #arg1);     \
-      _W_ASSERT_PRINT_REASON(reason);                                 \
-      ::whiskey::dieOnAssertFail();                                   \
-    }                                                                 \
-  }
+#define W_ASSERT_FALSE(value, desc) { \
+  bool _w_assertValue = static_cast<bool>(value); \
+  if (_w_assertValue) { \
+    _W_ASSERT_PRINT(desc, "Value is false"); \
+    _W_ASSERT_PRINT_VALUE("Value", _w_assertValue ? "true" : "false"); \
+    _W_ASSERT_DIE(); \
+  } \
+}
 
-#define W_ASSERT_LE(arg0, arg1, reason)                                        \
-  {                                                                            \
-    ::whiskey::AssertInt _w_arg0Value = (::whiskey::AssertInt)(arg0);          \
-    ::whiskey::AssertInt _w_arg1Value = (::whiskey::AssertInt)(arg1);          \
-    if (!(_w_arg0Value <= _w_arg1Value)) {                                     \
-      ::whiskey::printAssertMessage(                                           \
-          __FILE__, __LINE__, "expected lhs to be less than or equal to rhs"); \
-      ::whiskey::printAssertValueInt("lhs", _w_arg0Value, #arg0);              \
-      ::whiskey::printAssertValueInt("rhs", _w_arg1Value, #arg1);              \
-      _W_ASSERT_PRINT_REASON(reason);                                          \
-      ::whiskey::dieOnAssertFail();                                            \
-    }                                                                          \
-  }
+#define W_ASSERT_NONNULL(value, desc) { \
+  decltype((value)) _w_assertValue = (value); \
+  if (_w_assertValue == nullptr) { \
+    _W_ASSERT_PRINT(desc, "Value is nonnull"); \
+    _W_ASSERT_PRINT_VALUE("Value", _w_assertValue); \
+    _W_ASSERT_DIE(); \
+  } \
+}
 
-#define W_ASSERT_GT(arg0, arg1, reason)                               \
-  {                                                                   \
-    ::whiskey::AssertInt _w_arg0Value = (::whiskey::AssertInt)(arg0); \
-    ::whiskey::AssertInt _w_arg1Value = (::whiskey::AssertInt)(arg1); \
-    if (!(_w_arg0Value > _w_arg1Value)) {                             \
-      ::whiskey::printAssertMessage(                                  \
-          __FILE__, __LINE__, "expected lhs to be greater than rhs"); \
-      ::whiskey::printAssertValueInt("lhs", _w_arg0Value, #arg0);     \
-      ::whiskey::printAssertValueInt("rhs", _w_arg1Value, #arg1);     \
-      _W_ASSERT_PRINT_REASON(reason);                                 \
-      ::whiskey::dieOnAssertFail();                                   \
-    }                                                                 \
-  }
+#define W_ASSERT_NULL(value, desc) { \
+  decltype((value)) _w_assertValue = (value); \
+  if (!(_w_assertValue == nullptr)) { \
+    _W_ASSERT_PRINT(desc, "Value is null"); \
+    _W_ASSERT_PRINT_VALUE("Value", _w_assertValue); \
+    _W_ASSERT_DIE(); \
+  } \
+}
 
-#define W_ASSERT_GE(arg0, arg1, reason)                               \
-  {                                                                   \
-    ::whiskey::AssertInt _w_arg0Value = (::whiskey::AssertInt)(arg0); \
-    ::whiskey::AssertInt _w_arg1Value = (::whiskey::AssertInt)(arg1); \
-    if (!(_w_arg0Value >= _w_arg1Value)) {                            \
-      ::whiskey::printAssertMessage(                                  \
-          __FILE__,                                                   \
-          __LINE__,                                                   \
-          "expected lhs to be greater than or equal to rhs");         \
-      ::whiskey::printAssertValueInt("lhs", _w_arg0Value, #arg0);     \
-      ::whiskey::printAssertValueInt("rhs", _w_arg1Value, #arg1);     \
-      _W_ASSERT_PRINT_REASON(reason);                                 \
-      ::whiskey::dieOnAssertFail();                                   \
-    }                                                                 \
-  }
+#define W_ASSERT_LT(lhs, rhs, desc) { \
+  decltype((lhs)) _w_assertLhs = (lhs); \
+  decltype((rhs)) _w_assertRhs = (rhs); \
+  if (!(_W_ASSERT_COMPARE(_w_assertLhs, _w_assertRhs) < 0)) { \
+    _W_ASSERT_PRINT(desc, "Lhs < Rhs"); \
+    _W_ASSERT_PRINT_VALUE("Lhs", _w_assertLhs); \
+    _W_ASSERT_PRINT_VALUE("Rhs", _w_assertRhs); \
+    _W_ASSERT_DIE(); \
+  } \
+}
 
-#define W_ASSERT_ULT(arg0, arg1, reason)                                \
-  {                                                                     \
-    ::whiskey::AssertUInt _w_arg0Value = (::whiskey::AssertUInt)(arg0); \
-    ::whiskey::AssertUInt _w_arg1Value = (::whiskey::AssertUInt)(arg1); \
-    if (!(_w_arg0Value < _w_arg1Value)) {                               \
-      ::whiskey::printAssertMessage(                                    \
-          __FILE__, __LINE__, "expected lhs to be less than rhs");      \
-      ::whiskey::printAssertValueUInt("lhs", _w_arg0Value, #arg0);      \
-      ::whiskey::printAssertValueUInt("rhs", _w_arg1Value, #arg1);      \
-      _W_ASSERT_PRINT_REASON(reason);                                   \
-      ::whiskey::dieOnAssertFail();                                     \
-    }                                                                   \
-  }
+#define W_ASSERT_LE(lhs, rhs, desc) { \
+  decltype((lhs)) _w_assertLhs = (lhs); \
+  decltype((rhs)) _w_assertRhs = (rhs); \
+  if (!(_W_ASSERT_COMPARE(_w_assertLhs, _w_assertRhs) <= 0)) { \
+    _W_ASSERT_PRINT(desc, "Lhs <= Rhs"); \
+    _W_ASSERT_PRINT_VALUE("Lhs", _w_assertLhs); \
+    _W_ASSERT_PRINT_VALUE("Rhs", _w_assertRhs); \
+    _W_ASSERT_DIE(); \
+  } \
+}
 
-#define W_ASSERT_ULE(arg0, arg1, reason)                                       \
-  {                                                                            \
-    ::whiskey::AssertUInt _w_arg0Value = (::whiskey::AssertUInt)(arg0);        \
-    ::whiskey::AssertUInt _w_arg1Value = (::whiskey::AssertUInt)(arg1);        \
-    if (!(_w_arg0Value <= _w_arg1Value)) {                                     \
-      ::whiskey::printAssertMessage(                                           \
-          __FILE__, __LINE__, "expected lhs to be less than or equal to rhs"); \
-      ::whiskey::printAssertValueUInt("lhs", _w_arg0Value, #arg0);             \
-      ::whiskey::printAssertValueUInt("rhs", _w_arg1Value, #arg1);             \
-      _W_ASSERT_PRINT_REASON(reason);                                          \
-      ::whiskey::dieOnAssertFail();                                            \
-    }                                                                          \
-  }
+#define W_ASSERT_GT(lhs, rhs, desc) { \
+  decltype((lhs)) _w_assertLhs = (lhs); \
+  decltype((rhs)) _w_assertRhs = (rhs); \
+  if (!(_W_ASSERT_COMPARE(_w_assertLhs, _w_assertRhs) > 0)) { \
+    _W_ASSERT_PRINT(desc, "Lhs > Rhs"); \
+    _W_ASSERT_PRINT_VALUE("Lhs", _w_assertLhs); \
+    _W_ASSERT_PRINT_VALUE("Rhs", _w_assertRhs); \
+    _W_ASSERT_DIE(); \
+  } \
+}
 
-#define W_ASSERT_UGT(arg0, arg1, reason)                                \
-  {                                                                     \
-    ::whiskey::AssertUInt _w_arg0Value = (::whiskey::AssertUInt)(arg0); \
-    ::whiskey::AssertUInt _w_arg1Value = (::whiskey::AssertUInt)(arg1); \
-    if (!(_w_arg0Value > _w_arg1Value)) {                               \
-      ::whiskey::printAssertMessage(                                    \
-          __FILE__, __LINE__, "expected lhs to be greater than rhs");   \
-      ::whiskey::printAssertValueUInt("lhs", _w_arg0Value, #arg0);      \
-      ::whiskey::printAssertValueUInt("rhs", _w_arg1Value, #arg1);      \
-      _W_ASSERT_PRINT_REASON(reason);                                   \
-      ::whiskey::dieOnAssertFail();                                     \
-    }                                                                   \
-  }
+#define W_ASSERT_GE(lhs, rhs, desc) { \
+  decltype((lhs)) _w_assertLhs = (lhs); \
+  decltype((rhs)) _w_assertRhs = (rhs); \
+  if (!(_W_ASSERT_COMPARE(_w_assertLhs, _w_assertRhs) >= 0)) { \
+    _W_ASSERT_PRINT(desc, "Lhs >= Rhs"); \
+    _W_ASSERT_PRINT_VALUE("Lhs", _w_assertLhs); \
+    _W_ASSERT_PRINT_VALUE("Rhs", _w_assertRhs); \
+    _W_ASSERT_DIE(); \
+  } \
+}
 
-#define W_ASSERT_UGE(arg0, arg1, reason)                                \
-  {                                                                     \
-    ::whiskey::AssertUInt _w_arg0Value = (::whiskey::AssertUInt)(arg0); \
-    ::whiskey::AssertUInt _w_arg1Value = (::whiskey::AssertUInt)(arg1); \
-    if (!(_w_arg0Value >= _w_arg1Value)) {                              \
-      ::whiskey::printAssertMessage(                                    \
-          __FILE__,                                                     \
-          __LINE__,                                                     \
-          "expected lhs to be greater than or equal to rhs");           \
-      ::whiskey::printAssertValueUInt("lhs", _w_arg0Value, #arg0);      \
-      ::whiskey::printAssertValueUInt("rhs", _w_arg1Value, #arg1);      \
-      _W_ASSERT_PRINT_REASON(reason);                                   \
-      ::whiskey::dieOnAssertFail();                                     \
-    }                                                                   \
-  }
+#define W_ASSERT_NE(lhs, rhs, desc) { \
+  decltype((lhs)) _w_assertLhs = (lhs); \
+  decltype((rhs)) _w_assertRhs = (rhs); \
+  if (!(_W_ASSERT_COMPARE(_w_assertLhs, _w_assertRhs) != 0)) { \
+    _W_ASSERT_PRINT(desc, "Lhs != Rhs"); \
+    _W_ASSERT_PRINT_VALUE("Lhs", _w_assertLhs); \
+    _W_ASSERT_PRINT_VALUE("Rhs", _w_assertRhs); \
+    _W_ASSERT_DIE(); \
+  } \
+}
 
-#define W_ASSERT_NE(arg0, arg1, reason)                               \
-  {                                                                   \
-    ::whiskey::AssertInt _w_arg0Value = (::whiskey::AssertInt)(arg0); \
-    ::whiskey::AssertInt _w_arg1Value = (::whiskey::AssertInt)(arg1); \
-    if (!(_w_arg0Value != _w_arg1Value)) {                            \
-      ::whiskey::printAssertMessage(                                  \
-          __FILE__, __LINE__, "expected values to not be equal");     \
-      ::whiskey::printAssertValueUInt("lhs", _w_arg0Value, #arg0);    \
-      ::whiskey::printAssertValueUInt("rhs", _w_arg1Value, #arg1);    \
-      _W_ASSERT_PRINT_REASON(reason);                                 \
-      ::whiskey::dieOnAssertFail();                                   \
-    }                                                                 \
-  }
-
-#define W_ASSERT_EQ(arg0, arg1, reason)                               \
-  {                                                                   \
-    ::whiskey::AssertInt _w_arg0Value = (::whiskey::AssertInt)(arg0); \
-    ::whiskey::AssertInt _w_arg1Value = (::whiskey::AssertInt)(arg1); \
-    if (!(_w_arg0Value == _w_arg1Value)) {                            \
-      ::whiskey::printAssertMessage(                                  \
-          __FILE__, __LINE__, "expected values to be equal");         \
-      ::whiskey::printAssertValueUInt("lhs", _w_arg0Value, #arg0);    \
-      ::whiskey::printAssertValueUInt("rhs", _w_arg1Value, #arg1);    \
-      _W_ASSERT_PRINT_REASON(reason);                                 \
-      ::whiskey::dieOnAssertFail();                                   \
-    }                                                                 \
-  }
+#define W_ASSERT_EQ(lhs, rhs, desc) { \
+  decltype((lhs)) _w_assertLhs = (lhs); \
+  decltype((rhs)) _w_assertRhs = (rhs); \
+  if (!(_W_ASSERT_COMPARE(_w_assertLhs, _w_assertRhs) == 0)) { \
+    _W_ASSERT_PRINT(desc, "Lhs == Rhs"); \
+    _W_ASSERT_PRINT_VALUE("Lhs", _w_assertLhs); \
+    _W_ASSERT_PRINT_VALUE("Rhs", _w_assertRhs); \
+    _W_ASSERT_DIE(); \
+  } \
+}
 
 namespace whiskey {
-typedef bool AssertBool;
-typedef void *AssertPointer;
-typedef int64_t AssertInt;
-typedef uint64_t AssertUInt;
+std::ostream &getAssertOStream();
+void setAssertOStream(std::ostream &os);
 
-std::ostream &getAssertStream();
-void setAssertStream(std::ostream &os);
+void printAssertPrefix(const char *file, unsigned int line);
+void printAssertSuffix(const char *requirement);
 
-void printAssertMessage(const char *file, int line, const char *desc);
-void printAssertReasonPre();
-void printAssertReasonPost();
+template<typename T>
+void printAssertValue(const char *label, const char *text, const T value);
+
 [[noreturn]] void dieOnAssertFail();
-void printAssertValueBool(const char *label,
-                          AssertBool value,
-                          const char *text);
-void printAssertValuePointer(const char *label,
-                             AssertPointer value,
-                             const char *text);
-void printAssertValueInt(const char *label, AssertInt value, const char *text);
-void printAssertValueUInt(const char *label,
-                          AssertUInt value,
-                          const char *text);
-} // namespace whiskey
+
+template<typename T, typename U>
+int compareOnAssert(const T lhs, const U rhs);
+}
+
+#include <whiskey/Core/Assert.tpp>
 
 #endif

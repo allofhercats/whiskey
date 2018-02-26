@@ -25,8 +25,11 @@ public:
   static const LinenoType linenoNone;
   static const ColumnnoType columnnoNone;
 
+  static const Token eof;
+
   Token();
   Token(TokenID id);
+  Token(TokenID id, std::string text);
   Token(LinenoType lineno, ColumnnoType columnno, LengthType length, TokenID id);
   Token(std::string path, LinenoType lineno, ColumnnoType columnno, LengthType length, TokenID id);
   Token(LinenoType lineno, ColumnnoType columnno, LengthType length, TokenID id, std::string text);

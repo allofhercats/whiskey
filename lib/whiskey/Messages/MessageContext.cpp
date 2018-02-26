@@ -5,6 +5,30 @@
 #include <whiskey/Source/Source.hpp>
 
 namespace whiskey {
+void MessageContext::printSummary(std::ostream &os) const {
+  if (warningCount > 0) {
+    os << warningCount << " warning";
+    if (warningCount != 1) {
+      os << "s";
+    }
+  }
+
+  if (warningCount > 0 && errorCount > 0) {
+    os << ", ";
+  }
+
+  if (errorCount > 0) {
+    os << errorCount << " error";
+    if (errorCount != 1) {
+      os << "s";
+    }
+  }
+
+  if (warningCount > 0 || errorCount > 0) {
+    os << ".\n";
+  }
+}
+
 MessageContext::MessageContext() : warningCount(0), errorCount(0) {
 }
 
@@ -16,15 +40,15 @@ const std::set<Message> &MessageContext::getMessages() const {
   return messages;
 }
 
-MessageContext::CountType MessageContext::getWarningCount() const {
+size_t MessageContext::getWarningCount() const {
   return warningCount;
 }
 
-MessageContext::CountType MessageContext::getErrorCount() const {
+size_t MessageContext::getErrorCount() const {
   return errorCount;
 }
 
-MessageContext::CountType MessageContext::getMessageCount() const {
+size_t MessageContext::getMessageCount() const {
   return messages.size();
 }
 
@@ -35,6 +59,12 @@ std::ostream &MessageContext::describe() {
 void MessageContext::emit(Token token, Message::Severity severity) {
   messages.insert(Message(token, severity, description.str()));
   description.str("");
+
+  if (severity == Message::Severity::Warning) {
+    warningCount++;
+  } else if (severity >= Message::Severity::Error) {
+    errorCount++;
+  }
 }
 
 void MessageContext::emit(Message::Severity severity) {
@@ -49,6 +79,9 @@ void MessageContext::print(std::ostream &os, Source source) const {
 
   while (source.more() && iter != messages.cend()) {
     if (lineno == iter->getToken().getLineno()) {
+      iter->print(os, source);
+      os << "\n";
+
       Token::ColumnnoType columnno = 1;
       int before = 0;
       int within = 0;
@@ -64,7 +97,7 @@ void MessageContext::print(std::ostream &os, Source source) const {
         }
 
         if (chr == '\t') {
-          for (int i = 0; i < tabWidth; i++) {
+          for (unsigned int i = 0; i < tabWidth; i++) {
             os << ' ';
           }
           if (!isAfter) {
@@ -116,26 +149,16 @@ void MessageContext::print(std::ostream &os, Source source) const {
 
   W_ASSERT_TRUE(iter == messages.cend(), "Must print all messages.");
 
-  if (warningCount > 0) {
-    os << warningCount << "warning";
-    if (warningCount != 1) {
-      os << "s";
-    }
+  printSummary(os);
+}
+
+void MessageContext::print(std::ostream &os) const {
+  for (const Message &i : messages) {
+    i.print(os);
+    os << "\n";
   }
 
-  if (warningCount > 0 && errorCount > 0) {
-    os << ", ";
-  }
-
-  if (errorCount > 0) {
-    os << errorCount << "error";
-    if (errorCount != 1) {
-      os << "s";
-    }
-  }
-
-  if (warningCount > 0 || errorCount > 0) {
-    os << ".\n";
-  }
+  os << "\n";
+  printSummary(os);
 }
 } // namespace whiskey

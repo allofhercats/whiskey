@@ -4,6 +4,8 @@
 #include <istream>
 #include <string>
 
+#include <whiskey/Core/Types.hpp>
+
 #define W_SOURCE_DEFAULT_PATH "--"
 
 namespace whiskey {
@@ -23,8 +25,8 @@ public:
   void setOffset(std::istream::off_type value);
 
   bool more() const;
-  char get() const;
-  char eat();
+  Char8 get() const;
+  Char8 eat();
 };
 } // namespace whiskey
 

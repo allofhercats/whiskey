@@ -1,8 +1,12 @@
-# CMake Options
+# CMake Configuration
 #-----------------------------------------------------------------------
 
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 project(whiskey)
+
+# Options
+#-----------------------------------------------------------------------
+option(enable_verbose "enable_verbose" ON)
 
 # Packages
 #-----------------------------------------------------------------------
@@ -28,13 +32,20 @@ add_definitions(${LLVM_DEFINITIONS})
 #-----------------------------------------------------------------------
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 --std=c11 -Wall")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -std=c++11 -Wall -fno-rtti")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -std=c++14 -fno-rtti -Wall -Wabsolute-value -Warray-bounds-pointer-arithmetic -Wassign-enum -Wbad-function-cast -Wbitfield-enum-conversion -Wc++14-compat -Wcast-align -Wcast-qual -Wchar-subscripts -Wcomma -Wcomment -Wconditional-uninitialized -Wcovered-switch-default -Wdeprecated -Wdisabled-macro-expansion -Wdouble-promotion -Wduplicate-enum -Wduplicate-method-arg -Wduplicate-method-match -Wembedded-directive -Wempty-translation-unit -Wfloat-conversion -Wheader-hygiene -Widiomatic-parentheses -Winfinite-recursion -Wmissing-prototypes -Wold-style-cast -Wover-aligned -Woverloaded-virtual -Wpedantic -Wrange-loop-analysis -Wreorder -Wshift-sign-overflow -Wshorten-64-to-32 -Wsign-compare -Wsign-conversion -Wswitch-enum -Wunused-variable")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rdynamic")
 
 # Fix for Ninja/Clang colored errors
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics -ferror-limit=5")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics -ferror-limit=5")
+endif()
+
+# Handling the EnableVerbose option
+if (${enable_verbose})
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DW_ENABLE_VERBOSE")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DW_ENABLE_VERBOSE")
 endif()
 
 # File lists

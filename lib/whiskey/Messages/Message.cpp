@@ -74,6 +74,41 @@ void Message::print(std::ostream &os, const Source &source) const {
   os << Color::reset << description;
 }
 
+void Message::print(std::ostream &os) const {
+  if (token.hasPath()) {
+    os << token.getPath() << ":";
+
+    if (token.hasLineno()) {
+      os << token.getLineno() << ":";
+      if (token.hasColumnno()) {
+        os << token.getColumnno() << ":";
+      }
+    }
+
+    os << " ";
+  }
+
+  switch (severity) {
+  case Message::Note:
+    os << Color::greyDark << "note: ";
+    break;
+  case Message::Warning:
+    os << Color::yellowLight << "warning: ";
+    break;
+  case Message::Error:
+    os << Color::redLight << "error: ";
+    break;
+  case Message::FatalError:
+    os << Color::redLight << "fatal error: ";
+    break;
+  case Message::InternalCompilerError:
+    os << Color::magentaLight << "internal compiler error: ";
+    break;
+  }
+
+  os << Color::reset << description;
+}
+
 bool operator<(const Message &lhs, const Message &rhs) {
   return lhs.getToken() < rhs.getToken();
 }

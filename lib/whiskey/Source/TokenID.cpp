@@ -11,87 +11,87 @@ void printTokenIDDebug(std::ostream &os, TokenID value) {
   case TokenID::Symbol:
     os << "Symbol";
     break;
-  case TokenID::KWBool:
-    os << "KWBool";
-    break;
-  case TokenID::KWInt8:
-    os << "KWInt8";
-    break;
-  case TokenID::KWInt16:
-    os << "KWInt16";
-    break;
-  case TokenID::KWInt32:
-    os << "KWInt32";
-    break;
-  case TokenID::KWInt64:
-    os << "KWInt64";
-    break;
-  case TokenID::KWUInt8:
-    os << "KWUInt8";
-    break;
-  case TokenID::KWUInt16:
-    os << "KWUInt16";
-    break;
-  case TokenID::KWUInt32:
-    os << "KWUInt32";
-    break;
-  case TokenID::KWUInt64:
-    os << "KWUInt64";
-    break;
-  case TokenID::KWFloat32:
-    os << "KWFloat32";
-    break;
-  case TokenID::KWFloat64:
-    os << "KWFloat64";
-    break;
-  case TokenID::KWReal:
-    os << "KWReal";
-    break;
-  case TokenID::KWNot:
-    os << "KWNot";
-    break;
-  case TokenID::KWAnd:
-    os << "KWAnd";
-    break;
-  case TokenID::KWOr:
-    os << "KWOr";
-    break;
-  case TokenID::KWReturn:
-    os << "KWReturn";
-    break;
-  case TokenID::KWContinue:
-    os << "KWContinue";
-    break;
-  case TokenID::KWBreak:
-    os << "KWBreak";
-    break;
-  case TokenID::KWIf:
-    os << "KWIf";
-    break;
-  case TokenID::KWElse:
-    os << "KWElse";
-    break;
-  case TokenID::KWWhile:
-    os << "KWWhile";
-    break;
-  case TokenID::KWFor:
-    os << "KWFor";
-    break;
-  case TokenID::KWForEach:
-    os << "KWForEach";
-    break;
-  case TokenID::KWClass:
-    os << "KWClass";
-    break;
-  case TokenID::KWInherits:
-    os << "KWInherits";
-    break;
-  case TokenID::KWNamespace:
-    os << "KWNamespace";
-    break;
-  case TokenID::KWImport:
-    os << "KWImport";
-    break;
+  // case TokenID::KWBool:
+  //   os << "KWBool";
+  //   break;
+  // case TokenID::KWInt8:
+  //   os << "KWInt8";
+  //   break;
+  // case TokenID::KWInt16:
+  //   os << "KWInt16";
+  //   break;
+  // case TokenID::KWInt32:
+  //   os << "KWInt32";
+  //   break;
+  // case TokenID::KWInt64:
+  //   os << "KWInt64";
+  //   break;
+  // case TokenID::KWUInt8:
+  //   os << "KWUInt8";
+  //   break;
+  // case TokenID::KWUInt16:
+  //   os << "KWUInt16";
+  //   break;
+  // case TokenID::KWUInt32:
+  //   os << "KWUInt32";
+  //   break;
+  // case TokenID::KWUInt64:
+  //   os << "KWUInt64";
+  //   break;
+  // case TokenID::KWFloat32:
+  //   os << "KWFloat32";
+  //   break;
+  // case TokenID::KWFloat64:
+  //   os << "KWFloat64";
+  //   break;
+  // case TokenID::KWReal:
+  //   os << "KWReal";
+  //   break;
+  // case TokenID::KWNot:
+  //   os << "KWNot";
+  //   break;
+  // case TokenID::KWAnd:
+  //   os << "KWAnd";
+  //   break;
+  // case TokenID::KWOr:
+  //   os << "KWOr";
+  //   break;
+  // case TokenID::KWReturn:
+  //   os << "KWReturn";
+  //   break;
+  // case TokenID::KWContinue:
+  //   os << "KWContinue";
+  //   break;
+  // case TokenID::KWBreak:
+  //   os << "KWBreak";
+  //   break;
+  // case TokenID::KWIf:
+  //   os << "KWIf";
+  //   break;
+  // case TokenID::KWElse:
+  //   os << "KWElse";
+  //   break;
+  // case TokenID::KWWhile:
+  //   os << "KWWhile";
+  //   break;
+  // case TokenID::KWFor:
+  //   os << "KWFor";
+  //   break;
+  // case TokenID::KWForEach:
+  //   os << "KWForEach";
+  //   break;
+  // case TokenID::KWClass:
+  //   os << "KWClass";
+  //   break;
+  // case TokenID::KWInherits:
+  //   os << "KWInherits";
+  //   break;
+  // case TokenID::KWNamespace:
+  //   os << "KWNamespace";
+  //   break;
+  // case TokenID::KWImport:
+  //   os << "KWImport";
+  //   break;
   case TokenID::Int:
     os << "Int";
     break;
@@ -256,87 +256,87 @@ void printTokenID(std::ostream &os, TokenID value) {
   case TokenID::Symbol:
     os << "symbol";
     break;
-  case TokenID::KWBool:
-    os << "'bool'";
-    break;
-  case TokenID::KWInt8:
-    os << "'int8'";
-    break;
-  case TokenID::KWInt16:
-    os << "'int16'";
-    break;
-  case TokenID::KWInt32:
-    os << "'int32'";
-    break;
-  case TokenID::KWInt64:
-    os << "'int64'";
-    break;
-  case TokenID::KWUInt8:
-    os << "'uint8'";
-    break;
-  case TokenID::KWUInt16:
-    os << "'uint16'";
-    break;
-  case TokenID::KWUInt32:
-    os << "'uint32'";
-    break;
-  case TokenID::KWUInt64:
-    os << "'uint64'";
-    break;
-  case TokenID::KWFloat32:
-    os << "'float32'";
-    break;
-  case TokenID::KWFloat64:
-    os << "'float64'";
-    break;
-  case TokenID::KWReal:
-    os << "'real'";
-    break;
-  case TokenID::KWNot:
-    os << "'not'";
-    break;
-  case TokenID::KWAnd:
-    os << "'and'";
-    break;
-  case TokenID::KWOr:
-    os << "'or'";
-    break;
-  case TokenID::KWReturn:
-    os << "'return'";
-    break;
-  case TokenID::KWContinue:
-    os << "'continue'";
-    break;
-  case TokenID::KWBreak:
-    os << "'break'";
-    break;
-  case TokenID::KWIf:
-    os << "'if'";
-    break;
-  case TokenID::KWElse:
-    os << "'else'";
-    break;
-  case TokenID::KWWhile:
-    os << "'while'";
-    break;
-  case TokenID::KWFor:
-    os << "'for'";
-    break;
-  case TokenID::KWForEach:
-    os << "'foreach'";
-    break;
-  case TokenID::KWClass:
-    os << "'class'";
-    break;
-  case TokenID::KWInherits:
-    os << "'inherits'";
-    break;
-  case TokenID::KWNamespace:
-    os << "'namespace'";
-    break;
-  case TokenID::KWImport:
-    os << "'import'";
-    break;
+  // case TokenID::KWBool:
+  //   os << "'bool'";
+  //   break;
+  // case TokenID::KWInt8:
+  //   os << "'int8'";
+  //   break;
+  // case TokenID::KWInt16:
+  //   os << "'int16'";
+  //   break;
+  // case TokenID::KWInt32:
+  //   os << "'int32'";
+  //   break;
+  // case TokenID::KWInt64:
+  //   os << "'int64'";
+  //   break;
+  // case TokenID::KWUInt8:
+  //   os << "'uint8'";
+  //   break;
+  // case TokenID::KWUInt16:
+  //   os << "'uint16'";
+  //   break;
+  // case TokenID::KWUInt32:
+  //   os << "'uint32'";
+  //   break;
+  // case TokenID::KWUInt64:
+  //   os << "'uint64'";
+  //   break;
+  // case TokenID::KWFloat32:
+  //   os << "'float32'";
+  //   break;
+  // case TokenID::KWFloat64:
+  //   os << "'float64'";
+  //   break;
+  // case TokenID::KWReal:
+  //   os << "'real'";
+  //   break;
+  // case TokenID::KWNot:
+  //   os << "'not'";
+  //   break;
+  // case TokenID::KWAnd:
+  //   os << "'and'";
+  //   break;
+  // case TokenID::KWOr:
+  //   os << "'or'";
+  //   break;
+  // case TokenID::KWReturn:
+  //   os << "'return'";
+  //   break;
+  // case TokenID::KWContinue:
+  //   os << "'continue'";
+  //   break;
+  // case TokenID::KWBreak:
+  //   os << "'break'";
+  //   break;
+  // case TokenID::KWIf:
+  //   os << "'if'";
+  //   break;
+  // case TokenID::KWElse:
+  //   os << "'else'";
+  //   break;
+  // case TokenID::KWWhile:
+  //   os << "'while'";
+  //   break;
+  // case TokenID::KWFor:
+  //   os << "'for'";
+  //   break;
+  // case TokenID::KWForEach:
+  //   os << "'foreach'";
+  //   break;
+  // case TokenID::KWClass:
+  //   os << "'class'";
+  //   break;
+  // case TokenID::KWInherits:
+  //   os << "'inherits'";
+  //   break;
+  // case TokenID::KWNamespace:
+  //   os << "'namespace'";
+  //   break;
+  // case TokenID::KWImport:
+  //   os << "'import'";
+  //   break;
   case TokenID::Int:
     os << "int";
     break;

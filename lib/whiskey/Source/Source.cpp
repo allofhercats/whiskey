@@ -4,7 +4,7 @@
 
 namespace whiskey {
 Source::Source(std::istream &is, std::string defaultPath) : is(&is), offset(0), defaultPath(defaultPath) {
-	W_ASSERT_GT(defaultPath.size(), 0, "Cannot have empty default path.");
+	W_ASSERT_GT(defaultPath.size(), 0u, "Cannot have empty default path.");
 	W_ASSERT_TRUE(is.good(), "Cannot create source from bad stream.");
 
 	is.seekg(0, std::ios_base::end);
@@ -37,7 +37,7 @@ bool Source::more() const {
 	return offset < length;
 }
 
-char Source::get() const {
+Char8 Source::get() const {
 	if (more()) {
 		int chr = is->peek();
 		if (chr == EOF) {
@@ -47,14 +47,14 @@ char Source::get() const {
 		} else {
 			W_ASSERT_GE(chr, 0, "Read character is out of 1-byte range.");
 			W_ASSERT_LE(chr, 0xff, "Read character is out of 1-byte range.")
-			return (char)chr;
+			return static_cast<Char8>(chr);
 		}
 	} else {
 		return 0;
 	}
 }
 
-char Source::eat() {
+Char8 Source::eat() {
 	if (more()) {
 		int chr = is->get();
 		offset++;
@@ -69,7 +69,7 @@ char Source::eat() {
 		} else {
 			W_ASSERT_GE(chr, 0, "Read character is out of 1-byte range.");
 			W_ASSERT_LE(chr, 0xff, "Read character is out of 1-byte range.")
-			return (char)chr;
+			return static_cast<Char8>(chr);
 		}
 	} else {
 		return 0;

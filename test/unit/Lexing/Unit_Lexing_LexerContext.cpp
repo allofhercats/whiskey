@@ -1,138 +1,90 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
+#pragma clang diagnostic ignored "-Wsign-compare"
+#pragma clang diagnostic ignored "-Wdeprecated"
+#pragma clang diagnostic ignored "-Wshift-sign-overflow"
 #include <gtest/gtest.h>
-
-// #include <whiskey/Whiskey.hpp>
+#pragma clang diagnostic pop
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
 
 #include <whiskey/Lexing/LexerContext.hpp>
-#include <whiskey/Messages/MessageBuffer.hpp>
+#include <whiskey/Messages/MessageContext.hpp>
 #include <whiskey/Source/Source.hpp>
 
 using namespace whiskey;
 
 TEST(Unit_Lexing_LexerContext, Simple) {
   std::string str = "abcdefghi";
-
-  Source *src = new Source();
-  src->loadString(str);
-
-  Location loc(*src);
+  std::stringstream ss(str);
+  Source source(ss);
   std::vector<Token> toks;
-  MessageBuffer *msgs = new MessageBuffer();
+  MessageContext msg;
 
-  LexerContext ctx(loc, toks, *msgs);
+  LexerContext ctx(source, toks);
 
-  ASSERT_TRUE(ctx.areMoreChars(0));
-  ASSERT_EQ(ctx.getChar(0), 'a');
-  ASSERT_TRUE(ctx.areMoreChars(1));
-  ASSERT_EQ(ctx.getChar(1), 'b');
-  ASSERT_FALSE(ctx.hasText());
-  ASSERT_TRUE(ctx.hasText(""));
+  ASSERT_TRUE(ctx.more());
+  ASSERT_EQ(ctx.get(), 'a');
 
-  ctx.eatChar();
-  ASSERT_TRUE(ctx.areMoreChars(0));
-  ASSERT_EQ(ctx.getChar(0), 'b');
-  ASSERT_TRUE(ctx.areMoreChars(1));
-  ASSERT_EQ(ctx.getChar(1), 'c');
-  ASSERT_TRUE(ctx.hasText());
-  ASSERT_TRUE(ctx.hasText("a"));
+  ctx.eat();
+  ASSERT_TRUE(ctx.more());
+  ASSERT_EQ(ctx.get(), 'b');
 
-  ctx.eatChar();
-  ASSERT_TRUE(ctx.areMoreChars(0));
-  ASSERT_EQ(ctx.getChar(0), 'c');
-  ASSERT_TRUE(ctx.areMoreChars(1));
-  ASSERT_EQ(ctx.getChar(1), 'd');
-  ASSERT_TRUE(ctx.hasText());
-  ASSERT_TRUE(ctx.hasText("ab"));
+  ctx.eat();
+  ASSERT_TRUE(ctx.more());
+  ASSERT_EQ(ctx.get(), 'c');
 
-  ctx.eatChar();
-  ASSERT_TRUE(ctx.areMoreChars(0));
-  ASSERT_EQ(ctx.getChar(0), 'd');
-  ASSERT_TRUE(ctx.areMoreChars(1));
-  ASSERT_EQ(ctx.getChar(1), 'e');
-  ASSERT_TRUE(ctx.hasText());
-  ASSERT_TRUE(ctx.hasText("abc"));
+  ctx.eat();
+  ASSERT_TRUE(ctx.more());
+  ASSERT_EQ(ctx.get(), 'd');
 
-  ctx.emitToken(Token::Symbol);
+  ctx.emit(TokenID::Symbol);
 
-  ASSERT_TRUE(ctx.areMoreChars(0));
-  ASSERT_EQ(ctx.getChar(0), 'd');
-  ASSERT_TRUE(ctx.areMoreChars(1));
-  ASSERT_EQ(ctx.getChar(1), 'e');
-  ASSERT_FALSE(ctx.hasText());
-  ASSERT_TRUE(ctx.hasText(""));
+  ASSERT_TRUE(ctx.more());
+  ASSERT_EQ(ctx.get(), 'd');
 
-  ctx.eatChar();
-  ASSERT_TRUE(ctx.areMoreChars(0));
-  ASSERT_EQ(ctx.getChar(0), 'e');
-  ASSERT_TRUE(ctx.areMoreChars(1));
-  ASSERT_EQ(ctx.getChar(1), 'f');
-  ASSERT_TRUE(ctx.hasText());
-  ASSERT_TRUE(ctx.hasText("d"));
+  ctx.eat();
+  ASSERT_TRUE(ctx.more());
+  ASSERT_EQ(ctx.get(), 'e');
 
-  ctx.eatChar();
-  ASSERT_TRUE(ctx.areMoreChars(0));
-  ASSERT_EQ(ctx.getChar(0), 'f');
-  ASSERT_TRUE(ctx.areMoreChars(1));
-  ASSERT_EQ(ctx.getChar(1), 'g');
-  ASSERT_TRUE(ctx.hasText());
-  ASSERT_TRUE(ctx.hasText("de"));
+  ctx.eat();
+  ASSERT_TRUE(ctx.more());
+  ASSERT_EQ(ctx.get(), 'f');
 
-  ctx.eatChar();
-  ASSERT_TRUE(ctx.areMoreChars(0));
-  ASSERT_EQ(ctx.getChar(0), 'g');
-  ASSERT_TRUE(ctx.areMoreChars(1));
-  ASSERT_EQ(ctx.getChar(1), 'h');
-  ASSERT_TRUE(ctx.hasText());
-  ASSERT_TRUE(ctx.hasText("def"));
+  ctx.eat();
+  ASSERT_TRUE(ctx.more());
+  ASSERT_EQ(ctx.get(), 'g');
 
-  ctx.skipToken();
+  ctx.skip();
 
-  ASSERT_TRUE(ctx.areMoreChars(0));
-  ASSERT_EQ(ctx.getChar(0), 'g');
-  ASSERT_TRUE(ctx.areMoreChars(1));
-  ASSERT_EQ(ctx.getChar(1), 'h');
-  ASSERT_FALSE(ctx.hasText());
-  ASSERT_TRUE(ctx.hasText(""));
+  ctx.buffer('g');
+  ASSERT_TRUE(ctx.more());
+  ASSERT_EQ(ctx.get(), 'g');
 
-  ctx.eatChar();
-  ASSERT_TRUE(ctx.areMoreChars(0));
-  ASSERT_EQ(ctx.getChar(0), 'h');
-  ASSERT_TRUE(ctx.areMoreChars(1));
-  ASSERT_EQ(ctx.getChar(1), 'i');
-  ASSERT_TRUE(ctx.hasText());
-  ASSERT_TRUE(ctx.hasText("g"));
+  ctx.buffer('h');
+  ctx.eat();
+  ASSERT_TRUE(ctx.more());
+  ASSERT_EQ(ctx.get(), 'h');
 
-  ctx.eatChar();
-  ASSERT_TRUE(ctx.areMoreChars(0));
-  ASSERT_EQ(ctx.getChar(0), 'i');
-  ASSERT_FALSE(ctx.areMoreChars(1));
-  ASSERT_EQ(ctx.getChar(1), 0);
-  ASSERT_TRUE(ctx.hasText());
-  ASSERT_TRUE(ctx.hasText("gh"));
+  ctx.buffer('i');
+  ctx.eat();
+  ASSERT_TRUE(ctx.more());
+  ASSERT_EQ(ctx.get(), 'i');
 
-  ctx.eatChar();
-  ASSERT_FALSE(ctx.areMoreChars(0));
-  ASSERT_EQ(ctx.getChar(0), 0);
-  ASSERT_FALSE(ctx.areMoreChars(1));
-  ASSERT_EQ(ctx.getChar(1), 0);
-  ASSERT_TRUE(ctx.hasText());
-  ASSERT_TRUE(ctx.hasText("ghi"));
+  ctx.eat();
+  ASSERT_FALSE(ctx.more());
+  ASSERT_EQ(ctx.get(), 0);
 
-  ctx.emitToken(Token::Int);
+  ctx.emit(TokenID::Int);
 
   ASSERT_EQ(toks.size(), 2);
 
   ASSERT_TRUE(toks[0].isGood());
-  ASSERT_EQ(toks[0].getID(), Token::Symbol);
-  ASSERT_EQ(toks[0].getRange().getLength(), 3);
-  ASSERT_EQ(toks[0].getRange().getStart().getOffset(), 0);
-  ASSERT_STREQ(toks[0].getRange().getText().c_str(), "abc");
+  ASSERT_EQ(toks[0].getID(), TokenID::Symbol);
+  ASSERT_EQ(toks[0].getLength(), 3);
+  ASSERT_STREQ(toks[0].getText().c_str(), "");
 
   ASSERT_TRUE(toks[1].isGood());
-  ASSERT_EQ(toks[1].getID(), Token::Int);
-  ASSERT_EQ(toks[1].getRange().getLength(), 3);
-  ASSERT_EQ(toks[1].getRange().getStart().getOffset(), 6);
-  ASSERT_STREQ(toks[1].getRange().getText().c_str(), "ghi");
-
-  delete msgs;
-  delete src;
+  ASSERT_EQ(toks[1].getID(), TokenID::Int);
+  ASSERT_EQ(toks[1].getLength(), 3);
+  ASSERT_STREQ(toks[1].getText().c_str(), "ghi");
 }

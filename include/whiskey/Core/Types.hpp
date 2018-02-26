@@ -14,14 +14,17 @@ typedef uint8_t UInt8;
 typedef uint16_t UInt16;
 typedef uint32_t UInt32;
 typedef uint64_t UInt64;
+typedef char Char8;
+typedef char16_t Char16;
+typedef char32_t Char32;
 typedef float Float32;
 typedef double Float64;
 typedef long double Real;
 
 template <typename T>
-int getNDigits(T value, int base = 10);
+unsigned int getNDigits(T value, T base = 10);
 
-int getCharWidth(char32_t value);
+unsigned int getCharWidth(Char32 value);
 } // namespace whiskey
 
 #include <whiskey/Core/Types.tpp>

@@ -5,39 +5,26 @@
 #include <stack>
 #include <vector>
 
-#include <whiskey/Parsing/ParserResult.hpp>
 #include <whiskey/Source/Token.hpp>
 
 namespace whiskey {
-class MessageBuffer;
-
 class ParserContext {
-public:
-  typedef std::function<ParserResult(ParserContext &)> Rule;
-
 private:
   const std::vector<Token> *tokens;
   std::stack<Token> injected;
-  unsigned int offset;
-  MessageBuffer *msgs;
+  std::vector<Token>::size_type offset;
+  Token _last;
 
 public:
   ParserContext(const std::vector<Token> &tokens,
-                MessageBuffer &msgs,
-                unsigned int offset = 0);
+                std::vector<Token>::size_type offset = 0);
 
-  bool areMoreTokens() const;
-  Token getToken() const;
-  Token eatToken();
+  bool more() const;
+  const Token &get() const;
+  const Token &last() const;
+  Token eat();
 
-  void injectToken(Token token);
-
-  MessageBuffer &getMsgs() const;
-
-  void errorUnexpectedToken(const std::string &expected) const;
-
-  ParserResult parse(Rule rule);
-  ParserResult parseAny(std::initializer_list<Rule> rules);
+  void inject(TokenID tokenID);
 };
 } // namespace whiskey
 

@@ -13,7 +13,7 @@ void printLiteralBool(std::ostream &os, bool value) {
 	}
 }
 
-void printLiteralUInt(std::ostream &os, uint64_t value, int base, int width, bool usePrefix) {
+void printLiteralUInt(std::ostream &os, UInt64 value, UInt64 base, unsigned int width, bool usePrefix) {
 	if (usePrefix) {
     switch (base) {
     	case 2:
@@ -28,25 +28,26 @@ void printLiteralUInt(std::ostream &os, uint64_t value, int base, int width, boo
     }
   }
 
-  int nDigits = getNDigits(value, base);
+  unsigned int nDigits = getNDigits(value, static_cast<UInt64>(base));
+  W_ASSERT_GE(nDigits, 1u, "Must have at least one digit.");
 
   if (width > nDigits) {
-    for (int i = 0; i < width - nDigits; i++) {
+    for (unsigned int i = 0; i < width - nDigits; i++) {
       os << '0';
     }
   }
 
-  int exp = (int)nDigits - 1;
+  long exp = static_cast<long>(nDigits) - 1;
   while (exp >= 0) {
-    uint64_t fac = 1;
+    UInt64 fac = 1;
     for (int i = 0; i < exp; i++) {
       fac *= base;
     }
-    uint64_t digit = (value / fac) % base;
+    UInt64 digit = (value / fac) % base;
     if (digit <= 9) {
-      os << (char)('0' + digit);
+      os << static_cast<char>('0' + digit);
     } else if (10 <= digit && digit <= 15) {
-      os << (char)('a' + (digit - 10));
+      os << static_cast<char>('a' + (digit - 10));
     } else {
       W_ASSERT_UNREACHABLE("Unsupported base " << base);
     }
@@ -54,46 +55,48 @@ void printLiteralUInt(std::ostream &os, uint64_t value, int base, int width, boo
   }
 }
 
-void printLiteralInt(std::ostream &os, int64_t value, int base, int width, bool usePrefix) {
-	if (value < 0) {
+void printLiteralInt(std::ostream &os, Int64 value, Int64 base, unsigned int width, bool usePrefix) {
+	W_ASSERT_GE(base, 0, "Cannot have negative base.");
+
+  if (value < 0) {
 		if (base == 10) {
 			os << "-";
 		}
 
-		printLiteralUInt(os, -value, base, width, usePrefix);
+		printLiteralUInt(os, static_cast<UInt64>(-value), static_cast<UInt64>(base), width, usePrefix);
 	} else {
-		printLiteralUInt(os, value, base, width, usePrefix);
+		printLiteralUInt(os, static_cast<UInt64>(value), static_cast<UInt64>(base), width, usePrefix);
 	}
 }
 
-void printLiteralReal(std::ostream &os, long double value, int precision, bool truncate) {
+void printLiteralReal(std::ostream &os, Real value, unsigned int precision, bool truncate) {
 	if (value < 0) {
     os << '-';
-    printLiteralUInt(os, (uint64_t)(-(int64_t)value), 10, 0, false);
+    printLiteralUInt(os, static_cast<UInt64>((-static_cast<Int64>(value))), 10, 0, false);
   } else {
-    printLiteralUInt(os, (uint64_t)(int64_t)value, 10, 0, false);
+    printLiteralUInt(os, static_cast<UInt64>(static_cast<Int64>(value)), 10, 0, false);
   }
 
-  long double dec = (value < 0 ? -value : value) - floor(value);
+  Real dec = (value < 0 ? -value : value) - floorl(value);
 
   os << '.';
 
   if (truncate) {
     unsigned int nDigits = 0;
-    long double decP = dec;
+    Real decP = dec;
     for (unsigned int i = 0; i < precision; i++) {
-      decP *= 10.0;
-      unsigned int digit = (unsigned int)decP % 10;
-      if (digit != 0) {
+      decP *= 10.0L;
+      Real digit = fmodl(floorl(decP), 10.0L);
+      if (digit != 0.0L) {
         nDigits = i;
       }
     }
 
     for (unsigned int i = 0; i <= nDigits; i++) {
-      dec *= 10.0;
-      unsigned int digit = (unsigned int)dec % 10;
-      if (digit <= 9) {
-        os << (char)('0' + digit);
+      dec *= 10.0L;
+      Real digit = fmodl(floorl(dec), 10.0L);
+      if (digit <= 9.0L) {
+        os << static_cast<char>('0' + static_cast<Int32>(digit));
       } else {
         W_ASSERT_UNREACHABLE("Unexpected digit in real value " << digit);
       }
@@ -104,10 +107,10 @@ void printLiteralReal(std::ostream &os, long double value, int precision, bool t
     }
   } else {
     for (unsigned int i = 0; i < precision; i++) {
-      dec *= 10.0;
-      unsigned int digit = (unsigned int)dec % 10;
-      if (digit <= 9) {
-        os << (char)('0' + digit);
+      dec *= 10.0L;
+      Real digit = fmodl(floorl(dec), 10.0L);
+      if (digit <= 9.0L) {
+        os << static_cast<char>('0' + static_cast<Int32>(digit));
       } else {
         W_ASSERT_UNREACHABLE("Unexpected digit in real value " << digit);
       }
@@ -115,12 +118,12 @@ void printLiteralReal(std::ostream &os, long double value, int precision, bool t
   }
 }
 
-void printLiteralChar(std::ostream &os, char32_t value, char quote, bool useQuotes) {
+void printLiteralChar(std::ostream &os, Char32 value, char quote, bool useQuotes) {
 	if (useQuotes) {
     os << quote;
   }
 
-  if (value == quote) {
+  if (value == static_cast<Char32>(quote)) {
     os << '\\';
     os << quote;
   } else if (value == '\a') {
@@ -143,8 +146,8 @@ void printLiteralChar(std::ostream &os, char32_t value, char quote, bool useQuot
     os << "\\0";
   } else if (value == '\\') {
     os << "\\\\";
-  } else if (isprint(value)) {
-    os << (char)value;
+  } else if (isprint(static_cast<int>(value))) {
+    os << static_cast<char>(value);
   } else if (getCharWidth(value) == 1) {
     os << "\\x";
     printLiteralUInt(os, value & 0xff, 16, 2, false);
@@ -187,7 +190,7 @@ bool evalLiteralBool(const std::string &text, bool &value) {
 	}
 }
 
-bool evalLiteralUInt(const std::string &text, uint64_t &value) {
+bool evalLiteralUInt(const std::string &text, UInt64 &value) {
   value = 0;
 
   std::string::const_iterator i = text.cbegin();
@@ -217,7 +220,7 @@ bool evalLiteralUInt(const std::string &text, uint64_t &value) {
       while (i != text.cend()) {
         if (*i >= '0' && *i <= '1') {
           value *= 2;
-          value += *i - '0';
+          value += static_cast<UInt64>(static_cast<int>(*i) - static_cast<int>('0'));
           ++i;
           n++;
         } else {
@@ -237,17 +240,17 @@ bool evalLiteralUInt(const std::string &text, uint64_t &value) {
       while (i != text.cend()) {
         if (*i >= '0' && *i <= '9') {
           value *= 16;
-          value += *i - '0';
+          value += static_cast<UInt64>(static_cast<int>(*i) - static_cast<int>('0'));
           ++i;
           n++;
         } else if (*i >= 'a' && *i <= 'f') {
           value *= 16;
-          value += 10 + *i - 'a';
+          value += static_cast<UInt64>(10 + static_cast<int>(*i) - static_cast<int>('a'));
           ++i;
           n++;
         } else if (*i >= 'A' && *i <= 'F') {
           value *= 16;
-          value += 10 + *i - 'A';
+          value += static_cast<UInt64>(10 + static_cast<int>(*i) - static_cast<int>('A'));
           ++i;
           n++;
         } else {
@@ -260,7 +263,7 @@ bool evalLiteralUInt(const std::string &text, uint64_t &value) {
       while (i != text.cend()) {
         if (*i >= '0' && *i <= '7') {
           value *= 8;
-          value += *i - '0';
+          value += static_cast<UInt64>(static_cast<int>(*i) - static_cast<int>('0'));
           ++i;
           n++;
         } else {
@@ -274,7 +277,7 @@ bool evalLiteralUInt(const std::string &text, uint64_t &value) {
     while (i != text.cend()) {
       if (*i >= '0' && *i <= '9') {
         value *= 10;
-        value += *i - '0';
+        value += static_cast<UInt64>(static_cast<int>(*i) - static_cast<int>('0'));
         ++i;
         n++;
       } else {
@@ -288,12 +291,12 @@ bool evalLiteralUInt(const std::string &text, uint64_t &value) {
   }
 }
 
-bool evalLiteralReal(const std::string &text, long double &value) {
-  long double _int = 0.0;
-  long double _dec = 0.0;
-  long double _fac = 1.0;
+bool evalLiteralReal(const std::string &text, Real &value) {
+  Real _int = 0.0L;
+  Real _dec = 0.0L;
+  Real _fac = 1.0L;
 
-  value = 0.0;
+  value = 0.0L;
 
   std::string::const_iterator i = text.cbegin();
   size_t n = 0;
@@ -306,8 +309,8 @@ bool evalLiteralReal(const std::string &text, long double &value) {
 
   while (i != text.cend()) {
     if (*i >= '0' && *i <= '9') {
-      _int *= 10.0;
-      _int += *i - '0';
+      _int *= 10.0L;
+      _int += static_cast<Real>(static_cast<int>(*i) - static_cast<int>('0'));
       ++i;
       n++;
     } else if (*i == '.') {
@@ -327,9 +330,9 @@ bool evalLiteralReal(const std::string &text, long double &value) {
 
   while (i != text.cend()) {
     if (*i >= '0' && *i <= '9') {
-      _dec *= 10.0;
-      _dec += *i - '0';
-      _fac *= 0.1;
+      _dec *= 10.0L;
+      _dec += static_cast<UInt64>(static_cast<int>(*i) - static_cast<int>('0'));
+      _fac *= 0.1L;
       ++i;
       n++;
     } else {
@@ -342,7 +345,7 @@ bool evalLiteralReal(const std::string &text, long double &value) {
 }
 
 namespace {
-bool evalLiteralCharHelper(std::string::const_iterator &i, std::string::const_iterator end, char32_t &value) {
+bool evalLiteralCharHelper(std::string::const_iterator &i, std::string::const_iterator end, Char32 &value) {
   value = 0;
 
   size_t n = 0;
@@ -400,11 +403,11 @@ bool evalLiteralCharHelper(std::string::const_iterator &i, std::string::const_it
         if (i == end) {
           return false;
         } else if (*i >= '0' && *i <= '9') {
-          value += *i - '0';
+          value += static_cast<Char32>(static_cast<int>(*i) - static_cast<int>('0'));
         } else if (*i >= 'a' && *i <= 'f') {
-          value += 10 + *i - 'a';
+          value += static_cast<Char32>(10 + static_cast<int>(*i) - static_cast<int>('a'));
         } else if (*i >= 'A' && *i <= 'F') {
-          value += 10 + *i - 'A';
+          value += static_cast<Char32>(10 + static_cast<int>(*i) - static_cast<int>('A'));
         } else {
           return false;
         }
@@ -421,11 +424,11 @@ bool evalLiteralCharHelper(std::string::const_iterator &i, std::string::const_it
         if (i == end) {
           return false;
         } else if (*i >= '0' && *i <= '9') {
-          value += *i - '0';
+          value += static_cast<Char32>(static_cast<int>(*i) - static_cast<int>('0'));
         } else if (*i >= 'a' && *i <= 'f') {
-          value += 10 + *i - 'a';
+          value += static_cast<Char32>(10 + static_cast<int>(*i) - static_cast<int>('a'));
         } else if (*i >= 'A' && *i <= 'F') {
-          value += 10 + *i - 'A';
+          value += static_cast<Char32>(10 + static_cast<int>(*i) - static_cast<int>('A'));
         } else {
           return false;
         }
@@ -442,11 +445,11 @@ bool evalLiteralCharHelper(std::string::const_iterator &i, std::string::const_it
         if (i == end) {
           return false;
         } else if (*i >= '0' && *i <= '9') {
-          value += *i - '0';
+          value += static_cast<Char32>(static_cast<int>(*i) - static_cast<int>('0'));
         } else if (*i >= 'a' && *i <= 'f') {
-          value += 10 + *i - 'a';
+          value += static_cast<Char32>(10 + static_cast<int>(*i) - static_cast<int>('a'));
         } else if (*i >= 'A' && *i <= 'F') {
-          value += 10 + *i - 'A';
+          value += static_cast<Char32>(10 + static_cast<int>(*i) - static_cast<int>('A'));
         } else {
           return false;
         }
@@ -455,21 +458,21 @@ bool evalLiteralCharHelper(std::string::const_iterator &i, std::string::const_it
       ++i;
       return true;
     } else if (*i >= '0' && *i <= '7') {
-      value = (*i++) - '0';
+      value = static_cast<Char32>(static_cast<int>(*i++) - static_cast<int>('0'));
       n++;
 
       if (i == end) {
         return true;
       } else if (*i >= '0' && *i <= '7') {
         value *= 8;
-        value += (*i++) - '0';
+        value += static_cast<Char32>(static_cast<int>(*i++) - static_cast<int>('0'));
         n++;
 
         if (i == end) {
           return true;
         } else if (*i >= '0' && *i <= '7') {
           value *= 8;
-          value += (*i++) - '0';
+          value += static_cast<Char32>(static_cast<int>(*i++) - static_cast<int>('0'));
           n++;
           return true;
         } else {
@@ -479,17 +482,17 @@ bool evalLiteralCharHelper(std::string::const_iterator &i, std::string::const_it
         return true;
       }
     } else {
-      value = *i++;
+      value = static_cast<Char32>(*i++);
       return true;
     }
   } else {
-    value = *i++;
+    value = static_cast<Char32>(*i++);
     return true;
   }
 }
 } // namespace
 
-bool evalLiteralChar(const std::string &text, char32_t &value) {
+bool evalLiteralChar(const std::string &text, Char32 &value) {
   value = '\0';
 
   std::string::const_iterator i = text.cbegin();
@@ -545,7 +548,7 @@ bool evalLiteralString(const std::string &text, std::string &value) {
       endedCorrectly = true;
       break;
     } else {
-      char32_t tmp;
+      Char32 tmp;
       if (!evalLiteralCharHelper(
               i,
               text.cend(),
@@ -553,7 +556,7 @@ bool evalLiteralString(const std::string &text, std::string &value) {
         return false;
       }
 
-      value.push_back(0xff & tmp);
+      value.push_back(static_cast<char>(0xff & tmp));
     }
   }
 

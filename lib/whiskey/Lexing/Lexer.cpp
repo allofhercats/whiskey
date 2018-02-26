@@ -1,417 +1,571 @@
 #include <whiskey/Lexing/Lexer.hpp>
 
-#include <whiskey/Core/LiteralPrinterChar.hpp>
-#include <whiskey/Messages/MessageBuffer.hpp>
+#include <string.h>
+
+#include <iostream>
+
+#include <whiskey/Core/Literals.hpp>
+#include <whiskey/Core/Verbose.hpp>
+#include <whiskey/Messages/MessageContext.hpp>
+#include <whiskey/Lexing/LexerContext.hpp>
 
 namespace whiskey {
-bool Lexer::isWhitespaceChar(char32_t value) {
-  return value == ' ' || value == '\t' || value == '\n';
+const char *Lexer::getStateName(Lexer::State state) {
+	switch (state) {
+		case Start: return "Start";
+		case Comment: return "Comment";
+		case CommentLine: return "CommentLine";
+		case CommentBlock: return "CommentBlock";
+		case Symbol: return "Symbol";
+		case SymbolPrimes: return "SymbolPrimes";
+		case Int: return "Int";
+		case Real: return "Real";
+		case Char: return "Char";
+		case String: return "String";
+		case Period: return "Period";
+		case Add: return "Add";
+		case Sub: return "Sub";
+		case Mul: return "Mul";
+		case Exp: return "Exp";
+		case Div: return "Div";
+		case DivInt: return "DivInt";
+		case DivReal: return "DivReal";
+		case Mod: return "Mod";
+		case BitAnd: return "BitAnd";
+		case BitOr: return "BitOr";
+		case BitXor: return "BitXor";
+		case LT: return "LT";
+		case BitShL: return "BitShL";
+		case GT: return "GT";
+		case BitShR: return "BitShR";
+		case Assign: return "Assign";
+		case NE: return "NE";
+	}
 }
 
-bool Lexer::isSymbolCharFirst(char32_t value) {
-  return (value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z') ||
-         value >= '\x80' || value == '_';
+void Lexer::lexOne(LexerContext &ctx, MessageContext &msg) {
+	switch (state) {
+		case Start:
+			if (chr >= 'a' && chr <= 'z') {
+				ctx.buffer(chr);
+				state = Symbol;
+				handled = true;
+			} else if (chr >= 'A' && chr <= 'Z') {
+				ctx.buffer(chr);
+				state = Symbol;
+				handled = true;
+			} else if (static_cast<uint8_t>(chr) >= 0x80) {
+				ctx.buffer(chr);
+				state = Symbol;
+				handled = true;
+			} else if (chr == '_') {
+				ctx.buffer(chr);
+				state = Symbol;
+				handled = true;
+			} else if (chr >= '0' && chr <= '9') {
+				ctx.buffer(chr);
+				state = Int;
+				handled = true;
+			} else if (chr == '\'') {
+				ctx.buffer(chr);
+				state = Char;
+				handled = true;
+			} else if (chr == '\"') {
+				ctx.buffer(chr);
+				state = String;
+				handled = true;
+			} else if (chr == ' ' || chr == '\t' || chr == '\n') {
+				ctx.skip();
+				handled = true;
+			} else if (chr == '#') {
+				state = Comment;
+				handled = true;
+			} else if (chr == '(') {
+				ctx.emit(TokenID::LParen);
+				handled = true;
+			} else if (chr == ')') {
+				ctx.emit(TokenID::RParen);
+				handled = true;
+			} else if (chr == '[') {
+				ctx.emit(TokenID::LBracket);
+				handled = true;
+			} else if (chr == ']') {
+				ctx.emit(TokenID::RBracket);
+				handled = true;
+			} else if (chr == '{') {
+				ctx.emit(TokenID::LBrace);
+				handled = true;
+			} else if (chr == '}') {
+				ctx.emit(TokenID::RBrace);
+				handled = true;
+			} else if (chr == ',') {
+				ctx.emit(TokenID::Comma);
+				handled = true;
+			} else if (chr == ';') {
+				ctx.emit(TokenID::Semicolon);
+				handled = true;
+			} else if (chr == '.') {
+				state = Period;
+				handled = true;
+			} else if (chr == '+') {
+				state = Add;
+				handled = true;
+			} else if (chr == '-') {
+				state = Sub;
+				handled = true;
+			} else if (chr == '*') {
+				state = Mul;
+				handled = true;
+			} else if (chr == '/') {
+				state = Div;
+				handled = true;
+			} else if (chr == '%') {
+				state = Mod;
+				handled = true;
+			} else if (chr == '~') {
+				ctx.emit(TokenID::BitNot);
+				handled = true;
+			} else if (chr == '&') {
+				state = BitAnd;
+				handled = true;
+			} else if (chr == '|') {
+				state = BitOr;
+				handled = true;
+			} else if (chr == '^') {
+				state = BitXor;
+				handled = true;
+			} else if (chr == '<') {
+				state = LT;
+				handled = true;
+			} else if (chr == '>') {
+				state = GT;
+				handled = true;
+			} else if (chr == '=') {
+				state = Assign;
+				handled = true;
+			} else if (chr == '!') {
+				state = NE;
+				handled = true;
+			} else if (chr == 0) {
+				running = false;
+				ctx.skip();
+			} else {
+				msg.describe() << "Use of illegal character ";
+				printLiteralChar(msg.describe(), static_cast<Char32>(chr));
+				msg.describe() << ".";
+				msg.emit(ctx.createErrorToken(), Message::Error);
+				handled = true;
+				ctx.skip();
+			}
+			break;
+		case Comment:
+			if (chr == '{') {
+				state = CommentBlock;
+				commentBlockLevel = 1;
+				handled = true;
+			} else {
+				state = CommentLine;
+			}
+			break;
+		case CommentLine:
+			if (chr == '\n' || chr == 0) {
+				ctx.skip();
+				state = Start;
+				handled = true;
+			} else {
+				handled = true;
+			}
+			break;
+		case CommentBlock:
+			if (last[1] == '#' && chr == '{') {
+				commentBlockLevel++;
+				handled = true;
+			} else if (last[1] == '}' && chr == '#') {
+				commentBlockLevel--;
+				if (commentBlockLevel <= 0) {
+					ctx.skip();
+					state = Start;
+					handled = true;
+				} else {
+					handled = true;
+				}
+			} else if (chr == 0) {
+				msg.describe() << "#{ expects closing }#.";
+				msg.emit(ctx.createErrorToken(), Message::Error);
+
+				ctx.skip();
+				state = Start;
+			} else {
+				handled = true;
+			}
+			break;
+		case Symbol:
+			if (chr >= 'a' && chr <= 'z') {
+				ctx.buffer(chr);
+				handled = true;
+			} else if (chr >= 'A' && chr <= 'Z') {
+				ctx.buffer(chr);
+				handled = true;
+			} else if (chr >= '0' && chr <= '9') {
+				ctx.buffer(chr);
+				handled = true;
+			} else if (static_cast<uint8_t>(chr) >= 0x80) {
+				ctx.buffer(chr);
+				handled = true;
+			} else if (chr == '_') {
+				ctx.buffer(chr);
+				handled = true;
+			} else if (chr == '\'') {
+				state = SymbolPrimes;
+			} else {
+				ctx.buffer(chr);
+				ctx.emit(TokenID::Symbol);
+				state = Start;
+			}
+			break;
+		case SymbolPrimes:
+			if (chr == '\'') {
+				ctx.buffer(chr);
+				handled = true;
+			} else {
+				ctx.buffer(chr);
+				ctx.emit(TokenID::Symbol);
+				state = Start;
+			}
+			break;
+		case Int:
+			if (chr >= '0' && chr <= '9') {
+				ctx.buffer(chr);
+				handled = true;
+			} else if (chr >= 'a' && chr <= 'z') {
+				ctx.buffer(chr);
+				handled = true;
+			} else if (chr >= 'A' && chr <= 'Z') {
+				ctx.buffer(chr);
+				handled = true;
+			} else if (chr == '.') {
+				ctx.buffer(chr);
+				state = Real;
+				handled = true;
+			} else {
+				ctx.buffer(chr);
+				ctx.emit(TokenID::Int);
+				state = Start;
+			}
+			break;
+		case Real:
+			if (chr >= '0' && chr <= '9') {
+				ctx.buffer(chr);
+				handled = true;
+			} else if (chr >= 'a' && chr <= 'z') {
+				ctx.buffer(chr);
+				handled = true;
+			} else if (chr >= 'A' && chr <= 'Z') {
+				ctx.buffer(chr);
+				handled = true;
+			} else {
+				ctx.buffer(chr);
+				ctx.emit(TokenID::Real);
+				state = Start;
+			}
+			break;
+		case Char:
+			if (chr == '\'' && (last[0] == '\\' || last[1] != '\\')) {
+				ctx.buffer(chr);
+				ctx.emit(TokenID::Char);
+				state = Start;
+				handled = true;
+			} else if (chr == 0) {
+				msg.describe() << "\' expects closing \'.";
+				msg.emit(ctx.createErrorToken(), Message::Error);
+				running = false;
+			} else {
+				ctx.buffer(chr);
+				handled = true;
+			}
+			break;
+		case String:
+			if (chr == '\"' && (last[0] == '\\' || last[1] != '\\')) {
+				ctx.buffer(chr);
+				ctx.emit(TokenID::String);
+				state = Start;
+				handled = true;
+			} else if (chr == 0) {
+				msg.describe() << "\" expects closing \".";
+				msg.emit(ctx.createErrorToken(), Message::Error);
+				running = false;
+			} else {
+				ctx.buffer(chr);
+				handled = true;
+			}
+			break;
+		case Period:
+			if (chr >= '0' && chr <= '9') {
+				ctx.buffer('.');
+				state = Real;
+			} else {
+				ctx.emit(TokenID::Period);
+				state = Start;
+				handled = true;
+			}
+			break;
+		case Add:
+			if (chr == '+') {
+				ctx.emit(TokenID::Inc);
+				state = Start;
+				handled = true;
+			} else if (chr == '=') {
+				ctx.emit(TokenID::AddAssign);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::Add);
+				state = Start;
+			}
+			break;
+		case Sub:
+			if (chr == '-') {
+				ctx.emit(TokenID::Dec);
+				state = Start;
+				handled = true;
+			} else if (chr == '=') {
+				ctx.emit(TokenID::SubAssign);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::Sub);
+				state = Start;
+			}
+			break;
+		case Mul:
+			if (chr == '*') {
+				state = Exp;
+				handled = true;
+			} else if (chr == '=') {
+				ctx.emit(TokenID::MulAssign);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::Mul);
+				state = Start;
+			}
+			break;
+		case Exp:
+			if (chr == '=') {
+				ctx.emit(TokenID::ExpAssign);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::Exp);
+				state = Start;
+			}
+			break;
+		case Div:
+			if (chr == '/') {
+				state = DivInt;
+				handled = true;
+			} else if (chr == '.') {
+				state = DivReal;
+				handled = true;
+			} else if (chr == '=') {
+				ctx.emit(TokenID::DivAssign);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::Div);
+				state = Start;
+			}
+			break;
+		case DivInt:
+			if (chr == '=') {
+				ctx.emit(TokenID::DivIntAssign);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::DivInt);
+				state = Start;
+			}
+			break;
+		case DivReal:
+			if (chr == '=') {
+				ctx.emit(TokenID::DivRealAssign);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::DivReal);
+				state = Start;
+			}
+			break;
+		case Mod:
+			if (chr == '=') {
+				ctx.emit(TokenID::ModAssign);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::Mod);
+				state = Start;
+			}
+			break;
+		case BitAnd:
+			if (chr == '=') {
+				ctx.emit(TokenID::BitAndAssign);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::BitAnd);
+				state = Start;
+			}
+			break;
+		case BitOr:
+			if (chr == '=') {
+				ctx.emit(TokenID::BitOrAssign);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::BitOr);
+				state = Start;
+			}
+			break;
+		case BitXor:
+			if (chr == '=') {
+				ctx.emit(TokenID::BitXorAssign);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::BitXor);
+				state = Start;
+			}
+			break;
+		case LT:
+			if (chr == '<') {
+				state = BitShL;
+				handled = true;
+			} else if (chr == '=') {
+				ctx.emit(TokenID::LE);
+				state = Start;
+				handled = true;
+			} else if (chr == '-') {
+				ctx.emit(TokenID::LArrow);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::LT);
+				state = Start;
+			}
+			break;
+		case BitShL:
+			if (chr == '=') {
+				ctx.emit(TokenID::BitShLAssign);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::BitShL);
+				state = Start;
+			}
+			break;
+		case GT:
+			if (chr == '>') {
+				state = BitShR;
+				handled = true;
+			} else if (chr == '=') {
+				ctx.emit(TokenID::GE);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::GT);
+				state = Start;
+			}
+			break;
+		case BitShR:
+			if (chr == '=') {
+				ctx.emit(TokenID::BitShRAssign);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::BitShR);
+				state = Start;
+			}
+			break;
+		case Assign:
+			if (chr == '=') {
+				ctx.emit(TokenID::EQ);
+				state = Start;
+				handled = true;
+			} else if (chr == '>') {
+				ctx.emit(TokenID::BoolImplies);
+				state = Start;
+				handled = true;
+			} else {
+				ctx.emit(TokenID::Assign);
+				state = Start;
+			}
+			break;
+		case NE:
+			if (chr == '=') {
+				ctx.emit(TokenID::NE);
+				state = Start;
+				handled = true;
+			} else {
+				msg.describe() << "'!' can only be used in '!=' operator, not on its own.";
+				msg.emit(ctx.createErrorToken(), Message::Error);
+
+				msg.describe() << "Use 'not' operator for boolean not.";
+				msg.emit(ctx.createErrorToken(), Message::Note);
+
+				ctx.skip();
+				state = Start;
+				handled = true;
+			}
+			break;
+	}
 }
 
-bool Lexer::isSymbolChar(char32_t value) {
-  return (value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z') ||
-         (value >= '0' && value <= '9') || value >= '\x80' || value == '_';
-}
+Lexer::Lexer() {}
 
-bool Lexer::isNumericCharFirst(char32_t value) {
-  return (value >= '0' && value <= '9');
-}
+void Lexer::lex(LexerContext &ctx, MessageContext &msg) {
+	state = Start;
+	chr = 0;
+	memset(last, 0, sizeof(last));
+	handled = true;
+	running = true;
 
-bool Lexer::isNumericChar(char32_t value) {
-  return (value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z') ||
-         (value >= '0' && value <= '9') || value == '_';
-}
+	while (running) {
+		if (handled) {
+			chr = ctx.eat();
 
-Lexer::Lexer(Location start, std::vector<Token> &tokens, MessageBuffer &msgs)
-    : ctx(start, tokens, msgs) {
-}
+			#ifdef W_ENABLE_VERBOSE
+			if (isprint(chr)) {
+				W_VERBOSE("read '" << chr << "' (" << std::hex << static_cast<int>(chr) << ")");
+			} else {
+				W_VERBOSE("read (" << std::hex << static_cast<int>(chr) << ")");
+			}
+			#endif
 
-void Lexer::lex() {
-  while (ctx.areMoreChars()) {
-    if (isWhitespaceChar(ctx.getChar())) {
-      ctx.eatChar();
-      ctx.skipToken();
-    } else if (ctx.getChar() == '#') {
-      ctx.eatChar();
-      if (ctx.getChar() == '{') {
-        char32_t last = 0;
-        int level = 1;
-        while (ctx.areMoreChars()) {
-          if (last == '}' && ctx.getChar() == '#') {
-            last = ctx.eatChar();
-            level--;
-            if (level <= 0) {
-              break;
-            }
-          } else if (last == '#' && ctx.getChar() == '{') {
-            last = ctx.eatChar();
-            level++;
-          } else {
-            last = ctx.eatChar();
-          }
-        }
-        if (level > 0) {
-          ctx.getMsgs().describe() << "#{ expects closing }#";
-          ctx.getMsgs().emit(ctx.getRange(), Message::MismatchedBlockComments);
-          ctx.skipToken();
-        }
-      } else {
-        while (ctx.areMoreChars()) {
-          if (ctx.getChar() == '\n') {
-            break;
-          } else {
-            ctx.eatChar();
-          }
-        }
-      }
-      ctx.skipToken();
-    } else if (isSymbolCharFirst(ctx.getChar())) {
-      ctx.eatChar();
-      while (ctx.areMoreChars()) {
-        if (!isSymbolChar(ctx.getChar())) {
-          break;
-        } else {
-          ctx.eatChar();
-        }
-      }
-      while (ctx.areMoreChars()) {
-        if (ctx.getChar() != '\'') {
-          break;
-        } else {
-          ctx.eatChar();
-        }
-      }
+			handled = false;
+		}
 
-      if (ctx.hasText("bool")) {
-        ctx.emitToken(Token::KWBool);
-      } else if (ctx.hasText("int8")) {
-        ctx.emitToken(Token::KWInt8);
-      } else if (ctx.hasText("int16")) {
-        ctx.emitToken(Token::KWInt16);
-      } else if (ctx.hasText("int32")) {
-        ctx.emitToken(Token::KWInt32);
-      } else if (ctx.hasText("int64")) {
-        ctx.emitToken(Token::KWInt64);
-      } else if (ctx.hasText("uint8")) {
-        ctx.emitToken(Token::KWUInt8);
-      } else if (ctx.hasText("uint16")) {
-        ctx.emitToken(Token::KWUInt16);
-      } else if (ctx.hasText("uint32")) {
-        ctx.emitToken(Token::KWUInt32);
-      } else if (ctx.hasText("uint64")) {
-        ctx.emitToken(Token::KWUInt64);
-      } else if (ctx.hasText("float32")) {
-        ctx.emitToken(Token::KWFloat32);
-      } else if (ctx.hasText("float64")) {
-        ctx.emitToken(Token::KWFloat64);
-      } else if (ctx.hasText("real")) {
-        ctx.emitToken(Token::Real);
-      } else if (ctx.hasText("not")) {
-        ctx.emitToken(Token::KWNot);
-      } else if (ctx.hasText("and")) {
-        ctx.emitToken(Token::KWAnd);
-      } else if (ctx.hasText("or")) {
-        ctx.emitToken(Token::KWOr);
-      } else if (ctx.hasText("return")) {
-        ctx.emitToken(Token::KWReturn);
-      } else if (ctx.hasText("continue")) {
-        ctx.emitToken(Token::KWContinue);
-      } else if (ctx.hasText("break")) {
-        ctx.emitToken(Token::KWBreak);
-      } else if (ctx.hasText("if")) {
-        ctx.emitToken(Token::KWIf);
-      } else if (ctx.hasText("else")) {
-        ctx.emitToken(Token::KWElse);
-      } else if (ctx.hasText("while")) {
-        ctx.emitToken(Token::KWWhile);
-      } else if (ctx.hasText("for")) {
-        ctx.emitToken(Token::KWFor);
-      } else if (ctx.hasText("foreach")) {
-        ctx.emitToken(Token::KWForEach);
-      } else if (ctx.hasText("class")) {
-        ctx.emitToken(Token::KWClass);
-      } else if (ctx.hasText("inherits")) {
-        ctx.emitToken(Token::KWInherits);
-      } else if (ctx.hasText("namespace")) {
-        ctx.emitToken(Token::KWNamespace);
-      } else if (ctx.hasText("import")) {
-        ctx.emitToken(Token::KWImport);
-      } else {
-        ctx.emitToken(Token::Symbol);
-      }
-    } else if (isNumericCharFirst(ctx.getChar())) {
-      ctx.eatChar();
-      while (ctx.areMoreChars()) {
-        if (!isNumericChar(ctx.getChar())) {
-          break;
-        } else {
-          ctx.eatChar();
-        }
-      }
-      if (ctx.getChar() == '.') {
-        if (isNumericCharFirst(ctx.getChar(1))) {
-          ctx.eatChar();
-          while (ctx.areMoreChars()) {
-            if (!isNumericChar(ctx.getChar())) {
-              break;
-            } else {
-              ctx.eatChar();
-            }
-          }
-          ctx.emitToken(Token::Real);
-        } else {
-          ctx.emitToken(Token::Int);
-        }
-      } else {
-        ctx.emitToken(Token::Int);
-      }
-    } else if (ctx.getChar() == '\'') {
-      ctx.eatChar();
-      char32_t last[2] = {0, 0};
-      bool endedCorrectly = false;
-      while (ctx.areMoreChars()) {
-        if (ctx.getChar() == '\'' && !(last[0] != '\\' && last[1] == '\\')) {
-          ctx.eatChar();
-          endedCorrectly = true;
-          break;
-        } else {
-          last[0] = last[1];
-          last[1] = ctx.eatChar();
-        }
-      }
-      if (!endedCorrectly) {
-        ctx.getMsgs().describe() << "' expects closing '";
-        ctx.getMsgs().emit(ctx.getRange(), Message::MismatchedSingleQuotes);
-        ctx.skipToken();
-      } else {
-        ctx.emitToken(Token::Char);
-      }
-    } else if (ctx.getChar() == '\"') {
-      ctx.eatChar();
-      char32_t last[2] = {0, 0};
-      bool endedCorrectly = false;
-      while (ctx.areMoreChars()) {
-        if (ctx.getChar() == '\"' && !(last[0] != '\\' && last[1] == '\\')) {
-          ctx.eatChar();
-          endedCorrectly = true;
-          break;
-        } else {
-          last[0] = last[1];
-          last[1] = ctx.eatChar();
-        }
-      }
-      if (!endedCorrectly) {
-        ctx.getMsgs().describe() << "\" expects closing \"";
-        ctx.getMsgs().emit(ctx.getRange(), Message::MismatchedDoubleQuotes);
-        ctx.skipToken();
-      } else {
-        ctx.emitToken(Token::String);
-      }
-    } else if (ctx.getChar() == '(') {
-      ctx.eatChar();
-      ctx.emitToken(Token::LParen);
-    } else if (ctx.getChar() == ')') {
-      ctx.eatChar();
-      ctx.emitToken(Token::RParen);
-    } else if (ctx.getChar() == '[') {
-      ctx.eatChar();
-      ctx.emitToken(Token::LBracket);
-    } else if (ctx.getChar() == ']') {
-      ctx.eatChar();
-      ctx.emitToken(Token::RBracket);
-    } else if (ctx.getChar() == '{') {
-      ctx.eatChar();
-      ctx.emitToken(Token::LBrace);
-    } else if (ctx.getChar() == '}') {
-      ctx.eatChar();
-      ctx.emitToken(Token::RBrace);
-    } else if (ctx.getChar() == ',') {
-      ctx.eatChar();
-      ctx.emitToken(Token::Comma);
-    } else if (ctx.getChar() == ';') {
-      ctx.eatChar();
-      ctx.emitToken(Token::Semicolon);
-    } else if (ctx.getChar() == '.') {
-      ctx.eatChar();
-      if (isNumericCharFirst(ctx.getChar())) {
-        ctx.eatChar();
-        while (ctx.areMoreChars()) {
-          if (!isNumericChar(ctx.getChar())) {
-            break;
-          } else {
-            ctx.eatChar();
-          }
-        }
-        ctx.emitToken(Token::Real);
-      } else {
-        ctx.emitToken(Token::Period);
-      }
-    } else if (ctx.getChar() == '+') {
-      ctx.eatChar();
-      if (ctx.getChar() == '+') {
-        ctx.eatChar();
-        ctx.emitToken(Token::Inc);
-      } else if (ctx.getChar() == '=') {
-        ctx.eatChar();
-        ctx.emitToken(Token::AddAssign);
-      } else {
-        ctx.emitToken(Token::Add);
-      }
-    } else if (ctx.getChar() == '-') {
-      ctx.eatChar();
-      if (ctx.getChar() == '-') {
-        ctx.eatChar();
-        ctx.emitToken(Token::Dec);
-      } else if (ctx.getChar() == '=') {
-        ctx.eatChar();
-        ctx.emitToken(Token::SubAssign);
-      } else {
-        ctx.emitToken(Token::Sub);
-      }
-    } else if (ctx.getChar() == '*') {
-      ctx.eatChar();
-      if (ctx.getChar() == '*') {
-        ctx.eatChar();
-        if (ctx.getChar() == '=') {
-          ctx.eatChar();
-          ctx.emitToken(Token::ExpAssign);
-        } else {
-          ctx.emitToken(Token::Exp);
-        }
-      } else if (ctx.getChar() == '=') {
-        ctx.eatChar();
-        ctx.emitToken(Token::MulAssign);
-      } else {
-        ctx.emitToken(Token::Mul);
-      }
-    } else if (ctx.getChar() == '/') {
-      ctx.eatChar();
-      if (ctx.getChar() == '/') {
-        ctx.eatChar();
-        if (ctx.getChar() == '=') {
-          ctx.eatChar();
-          ctx.emitToken(Token::DivIntAssign);
-        } else {
-          ctx.emitToken(Token::DivInt);
-        }
-      } else if (ctx.getChar() == '.') {
-        ctx.eatChar();
-        if (ctx.getChar() == '=') {
-          ctx.eatChar();
-          ctx.emitToken(Token::DivRealAssign);
-        } else {
-          ctx.emitToken(Token::DivReal);
-        }
-      } else if (ctx.getChar() == '=') {
-        ctx.eatChar();
-        ctx.emitToken(Token::DivAssign);
-      } else {
-        ctx.emitToken(Token::Div);
-      }
-    } else if (ctx.getChar() == '%') {
-      ctx.eatChar();
-      if (ctx.getChar() == '=') {
-        ctx.eatChar();
-        ctx.emitToken(Token::ModAssign);
-      } else {
-        ctx.emitToken(Token::Mod);
-      }
-    } else if (ctx.getChar() == '~') {
-      ctx.eatChar();
-      ctx.emitToken(Token::BitNot);
-    } else if (ctx.getChar() == '&') {
-      ctx.eatChar();
-      if (ctx.getChar() == '=') {
-        ctx.eatChar();
-        ctx.emitToken(Token::BitAndAssign);
-      } else {
-        ctx.emitToken(Token::BitAnd);
-      }
-    } else if (ctx.getChar() == '|') {
-      ctx.eatChar();
-      if (ctx.getChar() == '=') {
-        ctx.eatChar();
-        ctx.emitToken(Token::BitOrAssign);
-      } else {
-        ctx.emitToken(Token::BitOr);
-      }
-    } else if (ctx.getChar() == '^') {
-      ctx.eatChar();
-      if (ctx.getChar() == '=') {
-        ctx.eatChar();
-        ctx.emitToken(Token::BitXorAssign);
-      } else {
-        ctx.emitToken(Token::BitXor);
-      }
-    } else if (ctx.getChar() == '<') {
-      ctx.eatChar();
-      if (ctx.getChar() == '<') {
-        ctx.eatChar();
-        if (ctx.getChar() == '=') {
-          ctx.eatChar();
-          ctx.emitToken(Token::BitShLAssign);
-        } else {
-          ctx.emitToken(Token::BitShL);
-        }
-      } else if (ctx.getChar() == '=') {
-        ctx.eatChar();
-        ctx.emitToken(Token::LE);
-      } else if (ctx.getChar() == '-') {
-        ctx.eatChar();
-        ctx.emitToken(Token::LArrow);
-      } else {
-        ctx.emitToken(Token::LT);
-      }
-    } else if (ctx.getChar() == '>') {
-      ctx.eatChar();
-      if (ctx.getChar() == '>') {
-        ctx.eatChar();
-        if (ctx.getChar() == '=') {
-          ctx.eatChar();
-          ctx.emitToken(Token::BitShRAssign);
-        } else {
-          ctx.emitToken(Token::BitShR);
-        }
-      } else if (ctx.getChar() == '=') {
-        ctx.eatChar();
-        ctx.emitToken(Token::GE);
-      } else {
-        ctx.emitToken(Token::GT);
-      }
-    } else if (ctx.getChar() == '!') {
-      ctx.eatChar();
-      if (ctx.getChar() == '=') {
-        ctx.eatChar();
-        ctx.emitToken(Token::NE);
-      } else {
-        ctx.getMsgs().describe()
-            << "! can only be used in !=, use keyword not instead";
-        ctx.getMsgs().emit(ctx.getRange(), Message::ExclamationPointAlone);
-        ctx.skipToken();
-      }
-    } else if (ctx.getChar() == '=') {
-      ctx.eatChar();
-      if (ctx.getChar() == '=') {
-        ctx.eatChar();
-        ctx.emitToken(Token::EQ);
-      } else if (ctx.getChar() == '>') {
-        ctx.eatChar();
-        ctx.emitToken(Token::BoolImplies);
-      } else {
-        ctx.emitToken(Token::Assign);
-      }
-    } else {
-      ctx.getMsgs().describe() << "unexpected character ";
-      // LiteralPrinterChar(ctx.getChar()).print(ctx.getMsgs().describe());
-      ctx.getMsgs().emit(ctx.getRange(), Message::UnexpectedChar);
-      ctx.eatChar();
-      ctx.skipToken();
-    }
-  }
+		#ifdef W_ENABLE_VERBOSE
+		State stateBefore = state;
+		std::vector<Token>::size_type nTokensBefore = ctx.getNTokens();
+		#endif
+
+		lexOne(ctx, msg);
+
+		#ifdef W_ENABLE_VERBOSE
+		if (state != stateBefore) {
+			W_VERBOSE("state to " << getStateName(state));
+		}
+
+		if (ctx.getNTokens() > nTokensBefore) {
+			W_VERBOSE("emit " << ctx.getLastToken());
+		}
+		#endif
+
+		for (int i = 0; i < W_LEXER_SAVE_LAST-1; i++) {
+			last[i] = last[i+1];
+		}
+
+		last[W_LEXER_SAVE_LAST-1] = chr;
+	}
 }
-} // namespace whiskey
+}

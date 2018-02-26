@@ -1,7 +1,7 @@
 #include <whiskey/Core/Types.hpp>
 
 namespace whiskey {
-int getCharWidth(char32_t value) {
+unsigned int getCharWidth(Char32 value) {
 	if ((value & 0xff) == value) {
 		return 1;
 	} else if ((value & 0xffff) == value) {

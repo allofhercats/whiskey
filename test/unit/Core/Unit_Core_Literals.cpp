@@ -1,4 +1,11 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
+#pragma clang diagnostic ignored "-Wsign-compare"
+#pragma clang diagnostic ignored "-Wdeprecated"
+#pragma clang diagnostic ignored "-Wshift-sign-overflow"
 #include <gtest/gtest.h>
+#pragma clang diagnostic pop
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
 
 #include <whiskey/Core/Literals.hpp>
 
@@ -44,7 +51,7 @@ TEST(Unit_Core_Literals, UInt_Base2_NoPrefix_Width0) {
   ASSERT_STREQ("10000", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 2, 0, false);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 2, 0, false);
   ASSERT_STREQ(
       "1111111111111111111111111111111111111111111111111111111111111111",
       ss.str().c_str());
@@ -78,7 +85,7 @@ TEST(Unit_Core_Literals, UInt_Base2_NoPrefix_Width5) {
   ASSERT_STREQ("10000", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 2, 5, false);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 2, 5, false);
   ASSERT_STREQ(
       "1111111111111111111111111111111111111111111111111111111111111111",
       ss.str().c_str());
@@ -112,7 +119,7 @@ TEST(Unit_Core_Literals, UInt_Base2_Prefix_Width0) {
   ASSERT_STREQ("0b10000", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 2, 0, true);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 2, 0, true);
   ASSERT_STREQ(
       "0b1111111111111111111111111111111111111111111111111111111111111111",
       ss.str().c_str());
@@ -146,7 +153,7 @@ TEST(Unit_Core_Literals, UInt_Base2_Prefix_Width5) {
   ASSERT_STREQ("0b10000", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 2, 5, true);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 2, 5, true);
   ASSERT_STREQ(
       "0b1111111111111111111111111111111111111111111111111111111111111111",
       ss.str().c_str());
@@ -180,7 +187,7 @@ TEST(Unit_Core_Literals, UInt_Base8_NoPrefix_Width0) {
   ASSERT_STREQ("20", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 8, 0, false);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 8, 0, false);
   ASSERT_STREQ("1777777777777777777777", ss.str().c_str());
 }
 
@@ -212,7 +219,7 @@ TEST(Unit_Core_Literals, UInt_Base8_NoPrefix_Width5) {
   ASSERT_STREQ("00020", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 8, 5, false);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 8, 5, false);
   ASSERT_STREQ("1777777777777777777777", ss.str().c_str());
 }
 
@@ -244,7 +251,7 @@ TEST(Unit_Core_Literals, UInt_Base8_Prefix_Width0) {
   ASSERT_STREQ("020", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 8, 0, true);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 8, 0, true);
   ASSERT_STREQ("01777777777777777777777", ss.str().c_str());
 }
 
@@ -276,7 +283,7 @@ TEST(Unit_Core_Literals, UInt_Base8_Prefix_Width5) {
   ASSERT_STREQ("000020", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 8, 5, true);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 8, 5, true);
   ASSERT_STREQ("01777777777777777777777", ss.str().c_str());
 }
 
@@ -308,7 +315,7 @@ TEST(Unit_Core_Literals, UInt_Base10_NoPrefix_Width0) {
   ASSERT_STREQ("69420", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 10, 0, false);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 10, 0, false);
   ASSERT_STREQ("18446744073709551615", ss.str().c_str());
 }
 
@@ -340,7 +347,7 @@ TEST(Unit_Core_Literals, UInt_Base10_NoPrefix_Width5) {
   ASSERT_STREQ("69420", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 10, 5, false);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 10, 5, false);
   ASSERT_STREQ("18446744073709551615", ss.str().c_str());
 }
 
@@ -372,7 +379,7 @@ TEST(Unit_Core_Literals, UInt_Base10_Prefix_Width0) {
   ASSERT_STREQ("69420", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 10, 0, true);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 10, 0, true);
   ASSERT_STREQ("18446744073709551615", ss.str().c_str());
 }
 
@@ -404,7 +411,7 @@ TEST(Unit_Core_Literals, UInt_Base10_Prefix_Width5) {
   ASSERT_STREQ("69420", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 10, 5, true);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 10, 5, true);
   ASSERT_STREQ("18446744073709551615", ss.str().c_str());
 }
 
@@ -436,7 +443,7 @@ TEST(Unit_Core_Literals, UInt_Base16_NoPrefix_Width0) {
   ASSERT_STREQ("ff", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 16, 0, false);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 16, 0, false);
   ASSERT_STREQ("ffffffffffffffff", ss.str().c_str());
 }
 
@@ -468,7 +475,7 @@ TEST(Unit_Core_Literals, UInt_Base16_NoPrefix_Width5) {
   ASSERT_STREQ("000ff", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 16, 5, false);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 16, 5, false);
   ASSERT_STREQ("ffffffffffffffff", ss.str().c_str());
 }
 
@@ -500,7 +507,7 @@ TEST(Unit_Core_Literals, UInt_Base16_Prefix_Width0) {
   ASSERT_STREQ("0xff", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 16, 0, true);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 16, 0, true);
   ASSERT_STREQ("0xffffffffffffffff", ss.str().c_str());
 }
 
@@ -532,7 +539,7 @@ TEST(Unit_Core_Literals, UInt_Base16_Prefix_Width5) {
   ASSERT_STREQ("0x000ff", ss.str().c_str());
 
   ss.str("");
-  printLiteralUInt(ss, -1, 16, 5, true);
+  printLiteralUInt(ss, static_cast<UInt64>(-1), 16, 5, true);
   ASSERT_STREQ("0xffffffffffffffff", ss.str().c_str());
 }
 
@@ -540,51 +547,51 @@ TEST(Unit_Core_Literals, Real_Precision1_NoTruncate) {
   std::stringstream ss;
 
   ss.str("");
-  printLiteralReal(ss, 0.0, 1, false);
+  printLiteralReal(ss, 0.0L, 1, false);
   ASSERT_STREQ("0.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 1.0, 1, false);
+  printLiteralReal(ss, 1.0L, 1, false);
   ASSERT_STREQ("1.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 9.0, 1, false);
+  printLiteralReal(ss, 9.0L, 1, false);
   ASSERT_STREQ("9.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 10.0, 1, false);
+  printLiteralReal(ss, 10.0L, 1, false);
   ASSERT_STREQ("10.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 11.0, 1, false);
+  printLiteralReal(ss, 11.0L, 1, false);
   ASSERT_STREQ("11.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 69420.0, 1, false);
+  printLiteralReal(ss, 69420.0L, 1, false);
   ASSERT_STREQ("69420.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.1, 1, false);
+  printLiteralReal(ss, 0.1L, 1, false);
   ASSERT_STREQ("0.1", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.9, 1, false);
+  printLiteralReal(ss, 0.9L, 1, false);
   ASSERT_STREQ("0.9", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.5, 1, false);
+  printLiteralReal(ss, 0.5L, 1, false);
   ASSERT_STREQ("0.5", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.01, 1, false);
+  printLiteralReal(ss, 0.01L, 1, false);
   ASSERT_STREQ("0.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.09, 1, false);
+  printLiteralReal(ss, 0.09L, 1, false);
   ASSERT_STREQ("0.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.05, 1, false);
+  printLiteralReal(ss, 0.05L, 1, false);
   ASSERT_STREQ("0.0", ss.str().c_str());
 }
 
@@ -592,51 +599,51 @@ TEST(Unit_Core_Literals, Real_Precision1_Truncate) {
   std::stringstream ss;
 
   ss.str("");
-  printLiteralReal(ss, 0.0, 1, true);
+  printLiteralReal(ss, 0.0L, 1, true);
   ASSERT_STREQ("0.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 1.0, 1, true);
+  printLiteralReal(ss, 1.0L, 1, true);
   ASSERT_STREQ("1.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 9.0, 1, true);
+  printLiteralReal(ss, 9.0L, 1, true);
   ASSERT_STREQ("9.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 10.0, 1, true);
+  printLiteralReal(ss, 10.0L, 1, true);
   ASSERT_STREQ("10.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 11.0, 1, true);
+  printLiteralReal(ss, 11.0L, 1, true);
   ASSERT_STREQ("11.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 69420.0, 1, true);
+  printLiteralReal(ss, 69420.0L, 1, true);
   ASSERT_STREQ("69420.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.1, 1, true);
+  printLiteralReal(ss, 0.1L, 1, true);
   ASSERT_STREQ("0.1", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.9, 1, true);
+  printLiteralReal(ss, 0.9L, 1, true);
   ASSERT_STREQ("0.9", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.5, 1, true);
+  printLiteralReal(ss, 0.5L, 1, true);
   ASSERT_STREQ("0.5", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.01, 1, true);
+  printLiteralReal(ss, 0.01L, 1, true);
   ASSERT_STREQ("0.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.09, 1, true);
+  printLiteralReal(ss, 0.09L, 1, true);
   ASSERT_STREQ("0.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.05, 1, true);
+  printLiteralReal(ss, 0.05L, 1, true);
   ASSERT_STREQ("0.0", ss.str().c_str());
 }
 
@@ -644,51 +651,51 @@ TEST(Unit_Core_Literals, Real_Precision2_NoTruncate) {
   std::stringstream ss;
 
   ss.str("");
-  printLiteralReal(ss, 0.0, 2, false);
+  printLiteralReal(ss, 0.0L, 2, false);
   ASSERT_STREQ("0.00", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 1.0, 2, false);
+  printLiteralReal(ss, 1.0L, 2, false);
   ASSERT_STREQ("1.00", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 9.0, 2, false);
+  printLiteralReal(ss, 9.0L, 2, false);
   ASSERT_STREQ("9.00", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 10.0, 2, false);
+  printLiteralReal(ss, 10.0L, 2, false);
   ASSERT_STREQ("10.00", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 11.0, 2, false);
+  printLiteralReal(ss, 11.0L, 2, false);
   ASSERT_STREQ("11.00", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 69420.0, 2, false);
+  printLiteralReal(ss, 69420.0L, 2, false);
   ASSERT_STREQ("69420.00", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.1, 2, false);
+  printLiteralReal(ss, 0.1L, 2, false);
   ASSERT_STREQ("0.10", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.9, 2, false);
+  printLiteralReal(ss, 0.9L, 2, false);
   ASSERT_STREQ("0.90", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.5, 2, false);
+  printLiteralReal(ss, 0.5L, 2, false);
   ASSERT_STREQ("0.50", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.01, 2, false);
+  printLiteralReal(ss, 0.01L, 2, false);
   ASSERT_STREQ("0.01", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.09, 2, false);
+  printLiteralReal(ss, 0.09L, 2, false);
   ASSERT_STREQ("0.09", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.05, 2, false);
+  printLiteralReal(ss, 0.05L, 2, false);
   ASSERT_STREQ("0.05", ss.str().c_str());
 }
 
@@ -696,51 +703,51 @@ TEST(Unit_Core_Literals, Real_Precision2_Truncate) {
   std::stringstream ss;
 
   ss.str("");
-  printLiteralReal(ss, 0.0, 2, true);
+  printLiteralReal(ss, 0.0L, 2, true);
   ASSERT_STREQ("0.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 1.0, 2, true);
+  printLiteralReal(ss, 1.0L, 2, true);
   ASSERT_STREQ("1.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 9.0, 2, true);
+  printLiteralReal(ss, 9.0L, 2, true);
   ASSERT_STREQ("9.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 10.0, 2, true);
+  printLiteralReal(ss, 10.0L, 2, true);
   ASSERT_STREQ("10.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 11.0, 2, true);
+  printLiteralReal(ss, 11.0L, 2, true);
   ASSERT_STREQ("11.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 69420.0, 2, true);
+  printLiteralReal(ss, 69420.0L, 2, true);
   ASSERT_STREQ("69420.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.1, 2, true);
+  printLiteralReal(ss, 0.1L, 2, true);
   ASSERT_STREQ("0.1", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.9, 2, true);
+  printLiteralReal(ss, 0.9L, 2, true);
   ASSERT_STREQ("0.9", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.5, 2, true);
+  printLiteralReal(ss, 0.5L, 2, true);
   ASSERT_STREQ("0.5", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.01, 2, true);
+  printLiteralReal(ss, 0.01L, 2, true);
   ASSERT_STREQ("0.01", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.09, 2, true);
+  printLiteralReal(ss, 0.09L, 2, true);
   ASSERT_STREQ("0.09", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.05, 2, true);
+  printLiteralReal(ss, 0.05L, 2, true);
   ASSERT_STREQ("0.05", ss.str().c_str());
 }
 
@@ -748,87 +755,87 @@ TEST(Unit_Core_Literals, Real_Precision5_NoTruncate) {
   std::stringstream ss;
 
   ss.str("");
-  printLiteralReal(ss, 0.0, 5, false);
+  printLiteralReal(ss, 0.0L, 5, false);
   ASSERT_STREQ("0.00000", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 1.0, 5, false);
+  printLiteralReal(ss, 1.0L, 5, false);
   ASSERT_STREQ("1.00000", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 9.0, 5, false);
+  printLiteralReal(ss, 9.0L, 5, false);
   ASSERT_STREQ("9.00000", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 10.0, 5, false);
+  printLiteralReal(ss, 10.0L, 5, false);
   ASSERT_STREQ("10.00000", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 11.0, 5, false);
+  printLiteralReal(ss, 11.0L, 5, false);
   ASSERT_STREQ("11.00000", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 69420.0, 5, false);
+  printLiteralReal(ss, 69420.0L, 5, false);
   ASSERT_STREQ("69420.00000", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.1, 5, false);
+  printLiteralReal(ss, 0.1L, 5, false);
   ASSERT_STREQ("0.10000", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.9, 5, false);
+  printLiteralReal(ss, 0.9L, 5, false);
   ASSERT_STREQ("0.90000", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.5, 5, false);
+  printLiteralReal(ss, 0.5L, 5, false);
   ASSERT_STREQ("0.50000", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.01, 5, false);
+  printLiteralReal(ss, 0.01L, 5, false);
   ASSERT_STREQ("0.01000", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.09, 5, false);
+  printLiteralReal(ss, 0.09L, 5, false);
   ASSERT_STREQ("0.09000", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.05, 5, false);
+  printLiteralReal(ss, 0.05L, 5, false);
   ASSERT_STREQ("0.05000", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.001, 5, false);
+  printLiteralReal(ss, 0.001L, 5, false);
   ASSERT_STREQ("0.00100", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.009, 5, false);
+  printLiteralReal(ss, 0.009L, 5, false);
   ASSERT_STREQ("0.00900", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.005, 5, false);
+  printLiteralReal(ss, 0.005L, 5, false);
   ASSERT_STREQ("0.00500", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.0001, 5, false);
+  printLiteralReal(ss, 0.0001L, 5, false);
   ASSERT_STREQ("0.00010", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.0009, 5, false);
+  printLiteralReal(ss, 0.0009L, 5, false);
   ASSERT_STREQ("0.00090", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.0005, 5, false);
+  printLiteralReal(ss, 0.0005L, 5, false);
   ASSERT_STREQ("0.00050", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.00001, 5, false);
+  printLiteralReal(ss, 0.00001L, 5, false);
   ASSERT_STREQ("0.00001", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.00009, 5, false);
+  printLiteralReal(ss, 0.00009L, 5, false);
   ASSERT_STREQ("0.00009", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.00005, 5, false);
+  printLiteralReal(ss, 0.00005L, 5, false);
   ASSERT_STREQ("0.00005", ss.str().c_str());
 }
 
@@ -836,87 +843,87 @@ TEST(Unit_Core_Literals, Real_Precision5_Truncate) {
   std::stringstream ss;
 
   ss.str("");
-  printLiteralReal(ss, 0.0, 5, true);
+  printLiteralReal(ss, 0.0L, 5, true);
   ASSERT_STREQ("0.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 1.0, 5, true);
+  printLiteralReal(ss, 1.0L, 5, true);
   ASSERT_STREQ("1.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 9.0, 5, true);
+  printLiteralReal(ss, 9.0L, 5, true);
   ASSERT_STREQ("9.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 10.0, 5, true);
+  printLiteralReal(ss, 10.0L, 5, true);
   ASSERT_STREQ("10.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 11.0, 5, true);
+  printLiteralReal(ss, 11.0L, 5, true);
   ASSERT_STREQ("11.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 69420.0, 5, true);
+  printLiteralReal(ss, 69420.0L, 5, true);
   ASSERT_STREQ("69420.0", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.1, 5, true);
+  printLiteralReal(ss, 0.1L, 5, true);
   ASSERT_STREQ("0.1", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.9, 5, true);
+  printLiteralReal(ss, 0.9L, 5, true);
   ASSERT_STREQ("0.9", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.5, 5, true);
+  printLiteralReal(ss, 0.5L, 5, true);
   ASSERT_STREQ("0.5", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.01, 5, true);
+  printLiteralReal(ss, 0.01L, 5, true);
   ASSERT_STREQ("0.01", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.09, 5, true);
+  printLiteralReal(ss, 0.09L, 5, true);
   ASSERT_STREQ("0.09", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.05, 5, true);
+  printLiteralReal(ss, 0.05L, 5, true);
   ASSERT_STREQ("0.05", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.001, 5, true);
+  printLiteralReal(ss, 0.001L, 5, true);
   ASSERT_STREQ("0.001", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.009, 5, true);
+  printLiteralReal(ss, 0.009L, 5, true);
   ASSERT_STREQ("0.009", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.005, 5, true);
+  printLiteralReal(ss, 0.005L, 5, true);
   ASSERT_STREQ("0.005", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.0001, 5, true);
+  printLiteralReal(ss, 0.0001L, 5, true);
   ASSERT_STREQ("0.0001", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.0009, 5, true);
+  printLiteralReal(ss, 0.0009L, 5, true);
   ASSERT_STREQ("0.0009", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.0005, 5, true);
+  printLiteralReal(ss, 0.0005L, 5, true);
   ASSERT_STREQ("0.0005", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.00001, 5, true);
+  printLiteralReal(ss, 0.00001L, 5, true);
   ASSERT_STREQ("0.00001", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.00009, 5, true);
+  printLiteralReal(ss, 0.00009L, 5, true);
   ASSERT_STREQ("0.00009", ss.str().c_str());
 
   ss.str("");
-  printLiteralReal(ss, 0.00005, 5, true);
+  printLiteralReal(ss, 0.00005L, 5, true);
   ASSERT_STREQ("0.00005", ss.str().c_str());
 }
 
