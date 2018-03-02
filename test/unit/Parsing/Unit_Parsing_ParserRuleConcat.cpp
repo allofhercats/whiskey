@@ -24,7 +24,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Empty_Complete) {
 		std::make_unique<ParserRuleConcat>(
 			"asdf",
 			std::initializer_list<ParserRuleID>({}),
-			[](const std::vector<Node> &elements) {
+			[](const std::vector<Node> &elements, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -61,7 +61,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Complete) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
 			TokenID::LT,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -71,7 +71,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Complete) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf3",
 			TokenID::Symbol,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -81,7 +81,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Complete) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf4",
 			TokenID::GT,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -95,7 +95,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Complete) {
 				ruleTerm1,
 				ruleTerm2
 			}),
-			[](const std::vector<Node> &elements) {
+			[](const std::vector<Node> &elements, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -126,7 +126,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_Terms_Incomplete) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
 			TokenID::LT,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -136,7 +136,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_Terms_Incomplete) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf3",
 			TokenID::Symbol,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -146,7 +146,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_Terms_Incomplete) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf4",
 			TokenID::GT,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -160,7 +160,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_Terms_Incomplete) {
 				ruleTerm1,
 				ruleTerm2
 			}),
-			[](const std::vector<Node> &elements) {
+			[](const std::vector<Node> &elements, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -186,7 +186,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Incorrect) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
 			TokenID::LT,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -196,7 +196,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Incorrect) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf3",
 			TokenID::Symbol,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -206,7 +206,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Incorrect) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf4",
 			TokenID::GT,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -220,7 +220,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Incorrect) {
 				ruleTerm1,
 				ruleTerm2
 			}),
-			[](const std::vector<Node> &elements) {
+			[](const std::vector<Node> &elements, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -246,7 +246,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Empties_Complete) {
 	ParserRuleID ruleTerm0 = grammar.addRule(
 		std::make_unique<ParserRuleEmpty>(
 			"asdf2",
-			[]() {
+			[](MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -260,7 +260,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Empties_Complete) {
 				ruleTerm0,
 				ruleTerm0
 			}),
-			[](const std::vector<Node> &elements) {
+			[](const std::vector<Node> &elements, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -297,7 +297,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Complete) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
 			TokenID::LT,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -307,7 +307,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Complete) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf3",
 			TokenID::Symbol,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -317,7 +317,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Complete) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf4",
 			TokenID::GT,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -326,7 +326,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Complete) {
 	ParserRuleID ruleTerm3 = grammar.addRule(
 		std::make_unique<ParserRuleEmpty>(
 			"asdf5",
-			[]() {
+			[](MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -344,7 +344,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Complete) {
 				ruleTerm2,
 				ruleTerm3
 			}),
-			[](const std::vector<Node> &elements) {
+			[](const std::vector<Node> &elements, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -375,7 +375,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_TermsWithEmpties_Incomplete) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
 			TokenID::LT,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -385,7 +385,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_TermsWithEmpties_Incomplete) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf3",
 			TokenID::Symbol,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -395,7 +395,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_TermsWithEmpties_Incomplete) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf4",
 			TokenID::GT,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -404,7 +404,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_TermsWithEmpties_Incomplete) {
 	ParserRuleID ruleTerm3 = grammar.addRule(
 		std::make_unique<ParserRuleEmpty>(
 			"asdf5",
-			[]() {
+			[](MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -422,7 +422,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_TermsWithEmpties_Incomplete) {
 				ruleTerm2,
 				ruleTerm3
 			}),
-			[](const std::vector<Node> &elements) {
+			[](const std::vector<Node> &elements, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -448,7 +448,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Incorrect) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
 			TokenID::LT,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -458,7 +458,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Incorrect) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf3",
 			TokenID::Symbol,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -468,7 +468,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Incorrect) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf4",
 			TokenID::GT,
-			[](Token) {
+			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -477,7 +477,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Incorrect) {
 	ParserRuleID ruleTerm3 = grammar.addRule(
 		std::make_unique<ParserRuleEmpty>(
 			"asdf5",
-			[]() {
+			[](MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)
@@ -495,7 +495,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Incorrect) {
 				ruleTerm2,
 				ruleTerm3
 			}),
-			[](const std::vector<Node> &elements) {
+			[](const std::vector<Node> &elements, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty);
 		  }
 		)

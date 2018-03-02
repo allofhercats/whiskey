@@ -5,7 +5,7 @@
 
 namespace whiskey {
 ParserResult ParserRuleEmpty::onParse(const ParserGrammar &grammar, ParserContext &ctx, MessageContext &msgs) const {
-	return action();
+	return action(msgs);
 }
 
 ParserRuleEmpty::ParserRuleEmpty(std::string name, Action action) : ParserRule(name), action(action) {}

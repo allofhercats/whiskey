@@ -13,7 +13,7 @@ class Token;
 
 class ParserRuleTerm : public ParserRule {
 public:
-	typedef std::function<Node(Token)> Action;
+	typedef std::function<Node(Token, MessageContext &)> Action;
 
 private:
 	TokenID tokenID;

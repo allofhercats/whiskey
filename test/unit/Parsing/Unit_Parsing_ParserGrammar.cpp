@@ -28,32 +28,32 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_Empty) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::TypeSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::LParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf4",
 			TokenID::Comma,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf5",
 			TokenID::RParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
-		[](const std::vector<Node> &nodes) {
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
 			Node rtn = Node(NodeType::TypeAccess);
 			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
 			for (const Node &i : nodes) {
@@ -94,32 +94,32 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_Empty_MissingRight) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::TypeSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::LParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf4",
 			TokenID::Comma,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf5",
 			TokenID::RParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
-		[](const std::vector<Node> &nodes) {
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
 			Node rtn = Node(NodeType::TypeAccess);
 			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
 			for (const Node &i : nodes) {
@@ -151,32 +151,32 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_Empty_MissingLeft) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::TypeSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::LParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf4",
 			TokenID::Comma,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf5",
 			TokenID::RParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
-		[](const std::vector<Node> &nodes) {
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
 			Node rtn = Node(NodeType::TypeAccess);
 			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
 			for (const Node &i : nodes) {
@@ -208,32 +208,32 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_One) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::TypeSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::LParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf4",
 			TokenID::Comma,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf5",
 			TokenID::RParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
-		[](const std::vector<Node> &nodes) {
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
 			Node rtn = Node(NodeType::TypeAccess);
 			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
 			for (const Node &i : nodes) {
@@ -279,32 +279,32 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_One_MissingRight) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::TypeSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::LParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf4",
 			TokenID::Comma,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf5",
 			TokenID::RParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
-		[](const std::vector<Node> &nodes) {
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
 			Node rtn = Node(NodeType::TypeAccess);
 			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
 			for (const Node &i : nodes) {
@@ -337,32 +337,32 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_One_SepInsteadOfRight) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::TypeSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::LParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf4",
 			TokenID::Comma,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf5",
 			TokenID::RParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
-		[](const std::vector<Node> &nodes) {
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
 			Node rtn = Node(NodeType::TypeAccess);
 			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
 			for (const Node &i : nodes) {
@@ -396,32 +396,32 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_Two) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::TypeSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::LParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf4",
 			TokenID::Comma,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf5",
 			TokenID::RParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
-		[](const std::vector<Node> &nodes) {
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
 			Node rtn = Node(NodeType::TypeAccess);
 			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
 			for (const Node &i : nodes) {
@@ -475,32 +475,32 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingRight) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::TypeSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::LParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf4",
 			TokenID::Comma,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf5",
 			TokenID::RParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
-		[](const std::vector<Node> &nodes) {
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
 			Node rtn = Node(NodeType::TypeAccess);
 			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
 			for (const Node &i : nodes) {
@@ -535,32 +535,32 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_SepInsteadOfRight) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::TypeSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::LParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf4",
 			TokenID::Comma,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf5",
 			TokenID::RParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
-		[](const std::vector<Node> &nodes) {
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
 			Node rtn = Node(NodeType::TypeAccess);
 			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
 			for (const Node &i : nodes) {
@@ -596,32 +596,32 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingFirst) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::TypeSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::LParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf4",
 			TokenID::Comma,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf5",
 			TokenID::RParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
-		[](const std::vector<Node> &nodes) {
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
 			Node rtn = Node(NodeType::TypeAccess);
 			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
 			for (const Node &i : nodes) {
@@ -656,32 +656,32 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingSecond) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::TypeSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::LParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf4",
 			TokenID::Comma,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf5",
 			TokenID::RParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
-		[](const std::vector<Node> &nodes) {
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
 			Node rtn = Node(NodeType::TypeAccess);
 			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
 			for (const Node &i : nodes) {
@@ -716,32 +716,32 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingBoth) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::TypeSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::LParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf4",
 			TokenID::Comma,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
 			"asdf5",
 			TokenID::RParen,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
-		[](const std::vector<Node> &nodes) {
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
 			Node rtn = Node(NodeType::TypeAccess);
 			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
 			for (const Node &i : nodes) {
@@ -775,7 +775,7 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_Base) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -783,19 +783,19 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_Base) {
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Inc,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Dec,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Token token, Node rhs) {
+		[](Token token, Node rhs, MessageContext &ctx) {
 			if (token.getID() == TokenID::Inc) {
 				Node rtn = Node(NodeType::ExprIncPre, token);
 				rtn.setField(FieldTag::ExprIncPre_Arg, std::make_unique<FieldNode>(rhs));
@@ -835,7 +835,7 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Bad_Base) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -843,19 +843,19 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Bad_Base) {
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Inc,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Dec,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Token token, Node rhs) {
+		[](Token token, Node rhs, MessageContext &ctx) {
 			if (token.getID() == TokenID::Inc) {
 				Node rtn = Node(NodeType::ExprIncPre, token);
 				rtn.setField(FieldTag::ExprIncPre_Arg, std::make_unique<FieldNode>(rhs));
@@ -892,7 +892,7 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_Inc) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -900,19 +900,19 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_Inc) {
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Inc,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Dec,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Token token, Node rhs) {
+		[](Token token, Node rhs, MessageContext &ctx) {
 			if (token.getID() == TokenID::Inc) {
 				Node rtn = Node(NodeType::ExprIncPre, token);
 				rtn.setField(FieldTag::ExprIncPre_Arg, std::make_unique<FieldNode>(rhs));
@@ -955,7 +955,7 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Bad_MissingBase) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -963,19 +963,19 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Bad_MissingBase) {
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Inc,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Dec,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Token token, Node rhs) {
+		[](Token token, Node rhs, MessageContext &ctx) {
 			if (token.getID() == TokenID::Inc) {
 				Node rtn = Node(NodeType::ExprIncPre, token);
 				rtn.setField(FieldTag::ExprIncPre_Arg, std::make_unique<FieldNode>(rhs));
@@ -1012,7 +1012,7 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_Dec) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -1020,19 +1020,19 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_Dec) {
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Inc,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Dec,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Token token, Node rhs) {
+		[](Token token, Node rhs, MessageContext &ctx) {
 			if (token.getID() == TokenID::Inc) {
 				Node rtn = Node(NodeType::ExprIncPre, token);
 				rtn.setField(FieldTag::ExprIncPre_Arg, std::make_unique<FieldNode>(rhs));
@@ -1075,7 +1075,7 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_DecDec) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -1083,19 +1083,19 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_DecDec) {
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Inc,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Dec,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Token token, Node rhs) {
+		[](Token token, Node rhs, MessageContext &ctx) {
 			if (token.getID() == TokenID::Inc) {
 				Node rtn = Node(NodeType::ExprIncPre, token);
 				rtn.setField(FieldTag::ExprIncPre_Arg, std::make_unique<FieldNode>(rhs));
@@ -1141,7 +1141,7 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_DecInc) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -1149,19 +1149,19 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_DecInc) {
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Inc,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Dec,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Token token, Node rhs) {
+		[](Token token, Node rhs, MessageContext &ctx) {
 			if (token.getID() == TokenID::Inc) {
 				Node rtn = Node(NodeType::ExprIncPre, token);
 				rtn.setField(FieldTag::ExprIncPre_Arg, std::make_unique<FieldNode>(rhs));
@@ -1207,7 +1207,7 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_Base) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -1215,19 +1215,19 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_Base) {
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Inc,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Dec,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Node lhs, Token token) {
+		[](Node lhs, Token token, MessageContext &ctx) {
 			if (token.getID() == TokenID::Inc) {
 				Node rtn = Node(NodeType::ExprIncPost, token);
 				rtn.setField(FieldTag::ExprIncPost_Arg, std::make_unique<FieldNode>(lhs));
@@ -1267,7 +1267,7 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_Inc) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -1275,19 +1275,19 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_Inc) {
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Inc,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Dec,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Node lhs, Token token) {
+		[](Node lhs, Token token, MessageContext &ctx) {
 			if (token.getID() == TokenID::Inc) {
 				Node rtn = Node(NodeType::ExprIncPost, token);
 				rtn.setField(FieldTag::ExprIncPost_Arg, std::make_unique<FieldNode>(lhs));
@@ -1330,7 +1330,7 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_Dec) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -1338,19 +1338,19 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_Dec) {
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Inc,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Dec,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Node lhs, Token token) {
+		[](Node lhs, Token token, MessageContext &ctx) {
 			if (token.getID() == TokenID::Inc) {
 				Node rtn = Node(NodeType::ExprIncPost, token);
 				rtn.setField(FieldTag::ExprIncPost_Arg, std::make_unique<FieldNode>(lhs));
@@ -1393,7 +1393,7 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_DecDec) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -1401,19 +1401,19 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_DecDec) {
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Inc,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Dec,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Node lhs, Token token) {
+		[](Node lhs, Token token, MessageContext &ctx) {
 			if (token.getID() == TokenID::Inc) {
 				Node rtn = Node(NodeType::ExprIncPost, token);
 				rtn.setField(FieldTag::ExprIncPost_Arg, std::make_unique<FieldNode>(lhs));
@@ -1459,7 +1459,7 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_DecInc) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -1467,19 +1467,19 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_DecInc) {
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Inc,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf3",
 				TokenID::Dec,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Node lhs, Token token) {
+		[](Node lhs, Token token, MessageContext &ctx) {
 			if (token.getID() == TokenID::Inc) {
 				Node rtn = Node(NodeType::ExprIncPost, token);
 				rtn.setField(FieldTag::ExprIncPost_Arg, std::make_unique<FieldNode>(lhs));
@@ -1525,14 +1525,14 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Base) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -1540,19 +1540,19 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Base) {
 			grammar.addTerm(
 				"asdf4",
 				TokenID::Add,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf5",
 				TokenID::Sub,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Node lhs, Token token, Node rhs) {
+		[](Node lhs, Token token, Node rhs, MessageContext &ctx) {
 			if (token.getID() == TokenID::Add) {
 				Node rtn = Node(NodeType::ExprAdd, token);
 				rtn.setField(FieldTag::ExprAdd_Args, std::make_unique<FieldNodeVector>());
@@ -1595,14 +1595,14 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Add) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -1610,19 +1610,19 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Add) {
 			grammar.addTerm(
 				"asdf4",
 				TokenID::Add,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf5",
 				TokenID::Sub,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Node lhs, Token token, Node rhs) {
+		[](Node lhs, Token token, Node rhs, MessageContext &ctx) {
 			if (token.getID() == TokenID::Add) {
 				Node rtn = Node(NodeType::ExprAdd, token);
 				rtn.setField(FieldTag::ExprAdd_Args, std::make_unique<FieldNodeVector>());
@@ -1676,14 +1676,14 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Sub) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -1691,19 +1691,19 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Sub) {
 			grammar.addTerm(
 				"asdf4",
 				TokenID::Add,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf5",
 				TokenID::Sub,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Node lhs, Token token, Node rhs) {
+		[](Node lhs, Token token, Node rhs, MessageContext &ctx) {
 			if (token.getID() == TokenID::Add) {
 				Node rtn = Node(NodeType::ExprAdd, token);
 				rtn.setField(FieldTag::ExprAdd_Args, std::make_unique<FieldNodeVector>());
@@ -1756,14 +1756,14 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_AddSub) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -1771,19 +1771,19 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_AddSub) {
 			grammar.addTerm(
 				"asdf4",
 				TokenID::Add,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf5",
 				TokenID::Sub,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Node lhs, Token token, Node rhs) {
+		[](Node lhs, Token token, Node rhs, MessageContext &ctx) {
 			if (token.getID() == TokenID::Add) {
 				Node rtn = Node(NodeType::ExprAdd, token);
 				rtn.setField(FieldTag::ExprAdd_Args, std::make_unique<FieldNodeVector>());
@@ -1847,14 +1847,14 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Bad_Sub_MissingRHS) {
 		grammar.addTerm(
 			"asdf2",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
 		grammar.addTerm(
 			"asdf3",
 			TokenID::Symbol,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 				return Node(NodeType::ExprSymbol, token);
 			}
 		),
@@ -1862,19 +1862,19 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Bad_Sub_MissingRHS) {
 			grammar.addTerm(
 				"asdf4",
 				TokenID::Add,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
 				"asdf5",
 				TokenID::Sub,
-				[](Token token) {
+				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			)
 		},
-		[](Node lhs, Token token, Node rhs) {
+		[](Node lhs, Token token, Node rhs, MessageContext &ctx) {
 			if (token.getID() == TokenID::Add) {
 				Node rtn = Node(NodeType::ExprAdd, token);
 				rtn.setField(FieldTag::ExprAdd_Args, std::make_unique<FieldNodeVector>());

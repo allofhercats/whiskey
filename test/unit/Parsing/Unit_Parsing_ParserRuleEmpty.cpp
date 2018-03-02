@@ -18,7 +18,7 @@ using namespace whiskey;
 TEST(Unit_Parsing_ParserRuleEmpty, Good) {
   ParserGrammar grammar;
 
-  ParserRuleID rule = grammar.addRule(std::make_unique<ParserRuleEmpty>("asdf", []() {
+  ParserRuleID rule = grammar.addRule(std::make_unique<ParserRuleEmpty>("asdf", [](MessageContext &ctx) {
     return Node(NodeType::StmtEmpty);
   }));
 

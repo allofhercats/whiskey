@@ -13,10 +13,10 @@
 namespace whiskey {
 class ParserGrammar {
 public:
-	typedef std::function<Node(const std::vector<Node> &)> ActionList;
-	typedef std::function<Node(Token, Node)> ActionUnaryRight;
-	typedef std::function<Node(Node, Token)> ActionUnaryLeft;
-	typedef std::function<Node(Node, Token, Node)> ActionBinary;
+	typedef std::function<Node(const std::vector<Node> &, MessageContext &)> ActionList;
+	typedef std::function<Node(Token, Node, MessageContext &)> ActionUnaryRight;
+	typedef std::function<Node(Node, Token, MessageContext &)> ActionUnaryLeft;
+	typedef std::function<Node(Node, Token, Node, MessageContext &)> ActionBinary;
 
 private:
 	std::vector<std::unique_ptr<ParserRule>> rules;

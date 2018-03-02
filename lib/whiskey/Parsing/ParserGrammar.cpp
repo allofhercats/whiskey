@@ -95,7 +95,7 @@ ParserRuleID ParserGrammar::addList(std::string name, ParserRuleID element, Pars
 	ParserRuleID argsNonEmptyRec = addConcat(name, {
 		element,
 		sep
-	}, [](const std::vector<Node> &nodes) {
+	}, [](const std::vector<Node> &nodes, MessageContext &ctx) {
 		W_ASSERT_GE(nodes.size(), 3U, "Must have at least 3 nodes in concat.");
 
 		Node list = nodes[2];
@@ -122,7 +122,7 @@ ParserRuleID ParserGrammar::addList(std::string name, ParserRuleID element, Pars
 
 	static_cast<ParserRuleConcat &>(getRule(argsNonEmptyRec)).getChildren().push_back(argsNonEmpty);
 
-	ParserRuleID empty = addEmpty(name, []() {
+	ParserRuleID empty = addEmpty(name, [](MessageContext &ctx) {
 		return Node();
 	});
 
@@ -135,17 +135,17 @@ ParserRuleID ParserGrammar::addList(std::string name, ParserRuleID element, Pars
 		left,
 		args,
 		right
-	}, [action](const std::vector<Node> &nodes) {
+	}, [action](const std::vector<Node> &nodes, MessageContext &ctx) {
 		W_ASSERT_GE(nodes.size(), 3U, "Must have at least 3 nodes in concat.");
 		if (nodes[1].getType() == NodeType::None) {
 			std::vector<Node> tmp;
-			return action(tmp);
+			return action(tmp, ctx);
 		} else if (nodes[1].getType() == NodeType::List) {
-			return action(nodes[1].getField(FieldTag::List_Children).as<FieldNodeVector>().getValue());
+			return action(nodes[1].getField(FieldTag::List_Children).as<FieldNodeVector>().getValue(), ctx);
 		} else {
 			std::vector<Node> tmp;
 			tmp.push_back(nodes[1]);
-			return action(tmp);
+			return action(tmp, ctx);
 		}
 	});
 
@@ -159,8 +159,8 @@ ParserRuleID ParserGrammar::addUnaryRight(std::string name, ParserRuleID rhs, st
 		ParserRuleID opRule = addConcat(name, {
 			op,
 			unaryRight
-		}, [action](const std::vector<Node> &nodes) {
-			return action(nodes[0].getToken(), nodes[1]);
+		}, [action](const std::vector<Node> &nodes, MessageContext &ctx) {
+			return action(nodes[0].getToken(), nodes[1], ctx);
 		});
 
 		static_cast<ParserRuleAny &>(getRule(unaryRight)).getChildren().push_back(opRule);
@@ -178,7 +178,7 @@ ParserRuleID ParserGrammar::addUnaryLeft(std::string name, ParserRuleID lhs, std
 		ParserRuleID opRule = addConcat(name, {
 			op,
 			unaryLeftP
-		}, [](const std::vector<Node> &nodes) {
+		}, [](const std::vector<Node> &nodes, MessageContext &ctx) {
 			if (nodes[1].getType() == NodeType::None) {
 				Node tmp(nodes[0].getToken());
 				Node rtn(NodeType::List);
@@ -200,7 +200,7 @@ ParserRuleID ParserGrammar::addUnaryLeft(std::string name, ParserRuleID lhs, std
 		static_cast<ParserRuleAny &>(getRule(unaryLeftP)).getChildren().push_back(opRule);
 	}
 
-	ParserRuleID empty = addEmpty(name, []() {
+	ParserRuleID empty = addEmpty(name, [](MessageContext &ctx) {
 		return Node();
 	});
 
@@ -209,11 +209,11 @@ ParserRuleID ParserGrammar::addUnaryLeft(std::string name, ParserRuleID lhs, std
 	ParserRuleID unaryLeft = addConcat(name, {
 		lhs,
 		unaryLeftP
-	}, [action](const std::vector<Node> &nodes) {
+	}, [action](const std::vector<Node> &nodes, MessageContext &ctx) {
 		Node rtn = nodes[0];
 		if (nodes[1].getType() == NodeType::List) {
 			for (const Node &i : nodes[1].getField(FieldTag::List_Children).as<FieldNodeVector>().getValue()) {
-				rtn = action(rtn, i.getToken());
+				rtn = action(rtn, i.getToken(), ctx);
 			}
 		}
 		return rtn;
@@ -235,8 +235,8 @@ ParserRuleID ParserGrammar::addBinary(std::string name, ParserRuleID lhs, Parser
 			lhs,
 			op,
 			binary
-		}, [action](const std::vector<Node> &nodes) {
-			return action(nodes[0], nodes[1].getToken(), nodes[2]);
+		}, [action](const std::vector<Node> &nodes, MessageContext &ctx) {
+			return action(nodes[0], nodes[1].getToken(), nodes[2], ctx);
 		}, 2);
 		
 		static_cast<ParserRuleAny &>(getRule(binary)).getChildren().push_back(opRule);

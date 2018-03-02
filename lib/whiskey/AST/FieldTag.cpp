@@ -11,10 +11,21 @@ FieldTagInfo fieldTagInfos[] {
   FieldTagInfo("Arg", 0), // TypeGroup_Arg
   FieldTagInfo("Return", 0), // TypeFunction_Return
   FieldTagInfo("Args", 1), // TypeFunction_Args
-  FieldTagInfo("Type", 0), // ExprLiteralUInt_Type
-  FieldTagInfo("Value", 1), // ExprLiteralUInt_Value
-  FieldTagInfo("Type", 0), // ExprLiteralReal_Type
-  FieldTagInfo("Value", 1), // ExprLiteralReal_Value
+  FieldTagInfo("Value", 0), // ExprLiteralBool_Value
+  FieldTagInfo("Value", 0), // ExprLiteralInt8_Value
+  FieldTagInfo("Value", 0), // ExprLiteralInt16_Value
+  FieldTagInfo("Value", 0), // ExprLiteralInt32_Value
+  FieldTagInfo("Value", 0), // ExprLiteralInt64_Value
+  FieldTagInfo("Value", 0), // ExprLiteralUInt8_Value
+  FieldTagInfo("Value", 0), // ExprLiteralUInt16_Value
+  FieldTagInfo("Value", 0), // ExprLiteralUInt32_Value
+  FieldTagInfo("Value", 0), // ExprLiteralUInt64_Value
+  FieldTagInfo("Value", 0), // ExprLiteralChar8_Value
+  FieldTagInfo("Value", 0), // ExprLiteralChar16_Value
+  FieldTagInfo("Value", 0), // ExprLiteralChar32_Value
+  FieldTagInfo("Value", 0), // ExprLiteralFloat32_Value
+  FieldTagInfo("Value", 0), // ExprLiteralFloat64_Value
+  FieldTagInfo("Value", 0), // ExprLiteralReal_Value
   FieldTagInfo("Name", 0), // ExprSymbol_Name
   FieldTagInfo("TemplateEvalArgs", 1), // ExprSymbol_TemplateEvalArgs
   FieldTagInfo("Arg", 0), // ExprAccessUnary_Arg

@@ -6,13 +6,13 @@
 namespace whiskey {
 ParserResult ParserRuleTerm::onParse(const ParserGrammar &grammar, ParserContext &ctx, MessageContext &msgs) const {
 	if ((tokenID != TokenID::None && ctx.get().getID() == tokenID) && (tokenText.empty() || ctx.get().getText() == tokenText)) {
-		return action(ctx.eat());
+		return action(ctx.eat(), msgs);
 	} else {
 		for (const std::pair<TokenID, TokenID> &injection : tokenIDInjections) {
 			if (ctx.get().getID() == injection.first) {
 				Token token = ctx.eat();
 				ctx.inject(injection.second);
-				return action(token);
+				return action(token, msgs);
 			}
 		}
 		return ParserResult();

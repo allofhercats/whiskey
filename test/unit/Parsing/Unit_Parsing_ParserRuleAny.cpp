@@ -47,7 +47,7 @@ TEST(Unit_Parsing_ParserRuleAny, Good_One) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
 			TokenID::LT,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty, token);
 		  }
 		)
@@ -85,7 +85,7 @@ TEST(Unit_Parsing_ParserRuleAny, Bad_One) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
 			TokenID::LT,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty, token);
 		  }
 		)
@@ -119,7 +119,7 @@ TEST(Unit_Parsing_ParserRuleAny, Good_Two_First) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
 			TokenID::LT,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty, token);
 		  }
 		)
@@ -129,7 +129,7 @@ TEST(Unit_Parsing_ParserRuleAny, Good_Two_First) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
 			TokenID::GT,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty, token);
 		  }
 		)
@@ -168,7 +168,7 @@ TEST(Unit_Parsing_ParserRuleAny, Good_Two_Second) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
 			TokenID::LT,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty, token);
 		  }
 		)
@@ -178,7 +178,7 @@ TEST(Unit_Parsing_ParserRuleAny, Good_Two_Second) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
 			TokenID::GT,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty, token);
 		  }
 		)
@@ -217,7 +217,7 @@ TEST(Unit_Parsing_ParserRuleAny, Bad_Two) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
 			TokenID::LT,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty, token);
 		  }
 		)
@@ -227,7 +227,7 @@ TEST(Unit_Parsing_ParserRuleAny, Bad_Two) {
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
 			TokenID::GT,
-			[](Token token) {
+			[](Token token, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty, token);
 		  }
 		)
