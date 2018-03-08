@@ -135,7 +135,7 @@ target_link_libraries(test_unit_whiskey_messages lib_whiskey_messages gtest)
 
 add_executable(test_unit_whiskey_parsing ${test_unit_whiskey_parsing_files})
 set_target_properties(test_unit_whiskey_parsing PROPERTIES OUTPUT_NAME whiskey-test-unit-parsing)
-target_link_libraries(test_unit_whiskey_parsing lib_whiskey_ast lib_whiskey_parsing gtest)
+target_link_libraries(test_unit_whiskey_parsing lib_whiskey_ast lib_whiskey_parsing lib_whiskey_lexing gtest)
 
 add_executable(test_unit_whiskey_passes ${test_unit_whiskey_passes_files})
 set_target_properties(test_unit_whiskey_passes PROPERTIES OUTPUT_NAME whiskey-test-unit-passes)

@@ -5,7 +5,7 @@
 #include <whiskey/Parsing/ParserContext.hpp>
 
 namespace whiskey {
-ParserRule::ParserRule(std::string name) : name(name) {}
+ParserRule::ParserRule(std::string name, std::string expected) : name(name), expected(expected) {}
 
 std::string &ParserRule::getName() {
 	return name;
@@ -17,6 +17,18 @@ const std::string &ParserRule::getName() const {
 
 void ParserRule::setName(std::string value) {
 	name = value;
+}
+
+std::string &ParserRule::getExpected() {
+	return expected;
+}
+
+const std::string &ParserRule::getExpected() const {
+	return expected;
+}
+
+void ParserRule::setExpected(std::string value) {
+	expected = value;
 }
 
 ParserResult ParserRule::parse(const ParserGrammar &grammar, ParserContext &ctx, MessageContext &msgs) const {

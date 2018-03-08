@@ -2,7 +2,7 @@
 #define __WHISKEY_Messages_MessageContext_HPP
 
 #include <sstream>
-#include <set>
+#include <list>
 
 #include <whiskey/Messages/Message.hpp>
 
@@ -10,7 +10,7 @@ namespace whiskey {
 class MessageContext {
 private:
   unsigned int tabWidth;
-  std::set<Message> messages;
+  std::list<Message> messages;
   std::stringstream description;
   size_t warningCount;
   size_t errorCount;
@@ -25,8 +25,8 @@ public:
 
   void setTabWidth(unsigned int value);
 
-  std::set<Message> &getMessages();
-  const std::set<Message> &getMessages() const;
+  std::list<Message> &getMessages();
+  const std::list<Message> &getMessages() const;
 
   size_t getWarningCount() const;
   size_t getErrorCount() const;

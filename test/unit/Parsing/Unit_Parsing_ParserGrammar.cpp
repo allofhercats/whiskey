@@ -7,9 +7,6 @@
 #pragma clang diagnostic pop
 #pragma clang diagnostic ignored "-Wcovered-switch-default"
 
-#include <iostream>
-
-#include <whiskey/Core/Verbose.hpp>
 #include <whiskey/Messages/MessageContext.hpp>
 #include <whiskey/AST/Node.hpp>
 #include <whiskey/AST/FieldNode.hpp>
@@ -25,7 +22,9 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_Empty) {
 
 	ParserRuleID rule = grammar.addList(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -34,6 +33,7 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_Empty) {
 		),
 		grammar.addTerm(
 			"asdf3",
+			"asdf3",
 			TokenID::LParen,
 			[](Token token, MessageContext &ctx) {
 				return Node();
@@ -41,12 +41,14 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_Empty) {
 		),
 		grammar.addTerm(
 			"asdf4",
+			"asdf4",
 			TokenID::Comma,
 			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
+			"asdf5",
 			"asdf5",
 			TokenID::RParen,
 			[](Token token, MessageContext &ctx) {
@@ -91,7 +93,9 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_Empty_MissingRight) {
 
 	ParserRuleID rule = grammar.addList(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -100,6 +104,7 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_Empty_MissingRight) {
 		),
 		grammar.addTerm(
 			"asdf3",
+			"asdf3",
 			TokenID::LParen,
 			[](Token token, MessageContext &ctx) {
 				return Node();
@@ -107,12 +112,14 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_Empty_MissingRight) {
 		),
 		grammar.addTerm(
 			"asdf4",
+			"asdf4",
 			TokenID::Comma,
 			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
+			"asdf5",
 			"asdf5",
 			TokenID::RParen,
 			[](Token token, MessageContext &ctx) {
@@ -148,7 +155,9 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_Empty_MissingLeft) {
 
 	ParserRuleID rule = grammar.addList(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -157,6 +166,7 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_Empty_MissingLeft) {
 		),
 		grammar.addTerm(
 			"asdf3",
+			"asdf3",
 			TokenID::LParen,
 			[](Token token, MessageContext &ctx) {
 				return Node();
@@ -164,12 +174,14 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_Empty_MissingLeft) {
 		),
 		grammar.addTerm(
 			"asdf4",
+			"asdf4",
 			TokenID::Comma,
 			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
+			"asdf5",
 			"asdf5",
 			TokenID::RParen,
 			[](Token token, MessageContext &ctx) {
@@ -205,7 +217,9 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_One) {
 
 	ParserRuleID rule = grammar.addList(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -214,6 +228,7 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_One) {
 		),
 		grammar.addTerm(
 			"asdf3",
+			"asdf3",
 			TokenID::LParen,
 			[](Token token, MessageContext &ctx) {
 				return Node();
@@ -221,12 +236,14 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_One) {
 		),
 		grammar.addTerm(
 			"asdf4",
+			"asdf4",
 			TokenID::Comma,
 			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
+			"asdf5",
 			"asdf5",
 			TokenID::RParen,
 			[](Token token, MessageContext &ctx) {
@@ -276,7 +293,9 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_One_MissingRight) {
 
 	ParserRuleID rule = grammar.addList(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -285,6 +304,7 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_One_MissingRight) {
 		),
 		grammar.addTerm(
 			"asdf3",
+			"asdf3",
 			TokenID::LParen,
 			[](Token token, MessageContext &ctx) {
 				return Node();
@@ -292,12 +312,14 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_One_MissingRight) {
 		),
 		grammar.addTerm(
 			"asdf4",
+			"asdf4",
 			TokenID::Comma,
 			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
+			"asdf5",
 			"asdf5",
 			TokenID::RParen,
 			[](Token token, MessageContext &ctx) {
@@ -334,7 +356,9 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_One_SepInsteadOfRight) {
 
 	ParserRuleID rule = grammar.addList(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -343,6 +367,7 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_One_SepInsteadOfRight) {
 		),
 		grammar.addTerm(
 			"asdf3",
+			"asdf3",
 			TokenID::LParen,
 			[](Token token, MessageContext &ctx) {
 				return Node();
@@ -350,12 +375,14 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_One_SepInsteadOfRight) {
 		),
 		grammar.addTerm(
 			"asdf4",
+			"asdf4",
 			TokenID::Comma,
 			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
+			"asdf5",
 			"asdf5",
 			TokenID::RParen,
 			[](Token token, MessageContext &ctx) {
@@ -393,7 +420,9 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_Two) {
 
 	ParserRuleID rule = grammar.addList(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -402,6 +431,7 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_Two) {
 		),
 		grammar.addTerm(
 			"asdf3",
+			"asdf3",
 			TokenID::LParen,
 			[](Token token, MessageContext &ctx) {
 				return Node();
@@ -409,12 +439,14 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_Two) {
 		),
 		grammar.addTerm(
 			"asdf4",
+			"asdf4",
 			TokenID::Comma,
 			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
+			"asdf5",
 			"asdf5",
 			TokenID::RParen,
 			[](Token token, MessageContext &ctx) {
@@ -472,7 +504,9 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingRight) {
 
 	ParserRuleID rule = grammar.addList(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -481,6 +515,7 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingRight) {
 		),
 		grammar.addTerm(
 			"asdf3",
+			"asdf3",
 			TokenID::LParen,
 			[](Token token, MessageContext &ctx) {
 				return Node();
@@ -488,12 +523,14 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingRight) {
 		),
 		grammar.addTerm(
 			"asdf4",
+			"asdf4",
 			TokenID::Comma,
 			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
+			"asdf5",
 			"asdf5",
 			TokenID::RParen,
 			[](Token token, MessageContext &ctx) {
@@ -532,7 +569,9 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_SepInsteadOfRight) {
 
 	ParserRuleID rule = grammar.addList(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -541,6 +580,7 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_SepInsteadOfRight) {
 		),
 		grammar.addTerm(
 			"asdf3",
+			"asdf3",
 			TokenID::LParen,
 			[](Token token, MessageContext &ctx) {
 				return Node();
@@ -548,12 +588,14 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_SepInsteadOfRight) {
 		),
 		grammar.addTerm(
 			"asdf4",
+			"asdf4",
 			TokenID::Comma,
 			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
+			"asdf5",
 			"asdf5",
 			TokenID::RParen,
 			[](Token token, MessageContext &ctx) {
@@ -593,7 +635,9 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingFirst) {
 
 	ParserRuleID rule = grammar.addList(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -602,6 +646,7 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingFirst) {
 		),
 		grammar.addTerm(
 			"asdf3",
+			"asdf3",
 			TokenID::LParen,
 			[](Token token, MessageContext &ctx) {
 				return Node();
@@ -609,12 +654,14 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingFirst) {
 		),
 		grammar.addTerm(
 			"asdf4",
+			"asdf4",
 			TokenID::Comma,
 			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
+			"asdf5",
 			"asdf5",
 			TokenID::RParen,
 			[](Token token, MessageContext &ctx) {
@@ -653,7 +700,9 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingSecond) {
 
 	ParserRuleID rule = grammar.addList(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -662,6 +711,7 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingSecond) {
 		),
 		grammar.addTerm(
 			"asdf3",
+			"asdf3",
 			TokenID::LParen,
 			[](Token token, MessageContext &ctx) {
 				return Node();
@@ -669,12 +719,14 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingSecond) {
 		),
 		grammar.addTerm(
 			"asdf4",
+			"asdf4",
 			TokenID::Comma,
 			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
+			"asdf5",
 			"asdf5",
 			TokenID::RParen,
 			[](Token token, MessageContext &ctx) {
@@ -713,7 +765,9 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingBoth) {
 
 	ParserRuleID rule = grammar.addList(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -722,6 +776,7 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingBoth) {
 		),
 		grammar.addTerm(
 			"asdf3",
+			"asdf3",
 			TokenID::LParen,
 			[](Token token, MessageContext &ctx) {
 				return Node();
@@ -729,12 +784,14 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingBoth) {
 		),
 		grammar.addTerm(
 			"asdf4",
+			"asdf4",
 			TokenID::Comma,
 			[](Token token, MessageContext &ctx) {
 				return Node();
 			}
 		),
 		grammar.addTerm(
+			"asdf5",
 			"asdf5",
 			TokenID::RParen,
 			[](Token token, MessageContext &ctx) {
@@ -772,7 +829,9 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_Base) {
 
 	ParserRuleID rule = grammar.addUnaryRight(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -782,12 +841,14 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_Base) {
 		{
 			grammar.addTerm(
 				"asdf3",
+				"asdf2",
 				TokenID::Inc,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf3",
 				"asdf3",
 				TokenID::Dec,
 				[](Token token, MessageContext &ctx) {
@@ -832,7 +893,9 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Bad_Base) {
 
 	ParserRuleID rule = grammar.addUnaryRight(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -842,12 +905,14 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Bad_Base) {
 		{
 			grammar.addTerm(
 				"asdf3",
+				"asdf2",
 				TokenID::Inc,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf3",
 				"asdf3",
 				TokenID::Dec,
 				[](Token token, MessageContext &ctx) {
@@ -889,7 +954,9 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_Inc) {
 
 	ParserRuleID rule = grammar.addUnaryRight(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -899,12 +966,14 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_Inc) {
 		{
 			grammar.addTerm(
 				"asdf3",
+				"asdf2",
 				TokenID::Inc,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf3",
 				"asdf3",
 				TokenID::Dec,
 				[](Token token, MessageContext &ctx) {
@@ -952,7 +1021,9 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Bad_MissingBase) {
 
 	ParserRuleID rule = grammar.addUnaryRight(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -962,12 +1033,14 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Bad_MissingBase) {
 		{
 			grammar.addTerm(
 				"asdf3",
+				"asdf2",
 				TokenID::Inc,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf3",
 				"asdf3",
 				TokenID::Dec,
 				[](Token token, MessageContext &ctx) {
@@ -1009,7 +1082,9 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_Dec) {
 
 	ParserRuleID rule = grammar.addUnaryRight(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1019,12 +1094,14 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_Dec) {
 		{
 			grammar.addTerm(
 				"asdf3",
+				"asdf2",
 				TokenID::Inc,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf3",
 				"asdf3",
 				TokenID::Dec,
 				[](Token token, MessageContext &ctx) {
@@ -1072,7 +1149,9 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_DecDec) {
 
 	ParserRuleID rule = grammar.addUnaryRight(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1082,12 +1161,14 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_DecDec) {
 		{
 			grammar.addTerm(
 				"asdf3",
+				"asdf2",
 				TokenID::Inc,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf3",
 				"asdf3",
 				TokenID::Dec,
 				[](Token token, MessageContext &ctx) {
@@ -1138,7 +1219,9 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_DecInc) {
 
 	ParserRuleID rule = grammar.addUnaryRight(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1148,12 +1231,14 @@ TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_DecInc) {
 		{
 			grammar.addTerm(
 				"asdf3",
+				"asdf2",
 				TokenID::Inc,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf3",
 				"asdf3",
 				TokenID::Dec,
 				[](Token token, MessageContext &ctx) {
@@ -1204,7 +1289,9 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_Base) {
 
 	ParserRuleID rule = grammar.addUnaryLeft(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1214,12 +1301,14 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_Base) {
 		{
 			grammar.addTerm(
 				"asdf3",
+				"asdf3",
 				TokenID::Inc,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf3",
 				"asdf3",
 				TokenID::Dec,
 				[](Token token, MessageContext &ctx) {
@@ -1264,7 +1353,9 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_Inc) {
 
 	ParserRuleID rule = grammar.addUnaryLeft(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1274,12 +1365,14 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_Inc) {
 		{
 			grammar.addTerm(
 				"asdf3",
+				"asdf3",
 				TokenID::Inc,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf3",
 				"asdf3",
 				TokenID::Dec,
 				[](Token token, MessageContext &ctx) {
@@ -1327,7 +1420,9 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_Dec) {
 
 	ParserRuleID rule = grammar.addUnaryLeft(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1337,12 +1432,14 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_Dec) {
 		{
 			grammar.addTerm(
 				"asdf3",
+				"asdf3",
 				TokenID::Inc,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf3",
 				"asdf3",
 				TokenID::Dec,
 				[](Token token, MessageContext &ctx) {
@@ -1390,7 +1487,9 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_DecDec) {
 
 	ParserRuleID rule = grammar.addUnaryLeft(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1400,12 +1499,14 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_DecDec) {
 		{
 			grammar.addTerm(
 				"asdf3",
+				"asdf3",
 				TokenID::Inc,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf3",
 				"asdf3",
 				TokenID::Dec,
 				[](Token token, MessageContext &ctx) {
@@ -1456,7 +1557,9 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_DecInc) {
 
 	ParserRuleID rule = grammar.addUnaryLeft(
 		"asdf",
+		"asdf",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1466,12 +1569,14 @@ TEST(Unit_Parsing_ParserGrammar, UnaryLeft_Good_DecInc) {
 		{
 			grammar.addTerm(
 				"asdf3",
+				"asdf3",
 				TokenID::Inc,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf3",
 				"asdf3",
 				TokenID::Dec,
 				[](Token token, MessageContext &ctx) {
@@ -1522,7 +1627,9 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Base) {
 
 	ParserRuleID rule = grammar.addBinary(
 		"asdf",
+		"asdf2",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1530,6 +1637,7 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Base) {
 			}
 		),
 		grammar.addTerm(
+			"asdf3",
 			"asdf3",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1539,12 +1647,14 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Base) {
 		{
 			grammar.addTerm(
 				"asdf4",
+				"asdf4",
 				TokenID::Add,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf5",
 				"asdf5",
 				TokenID::Sub,
 				[](Token token, MessageContext &ctx) {
@@ -1592,7 +1702,9 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Add) {
 
 	ParserRuleID rule = grammar.addBinary(
 		"asdf",
+		"asdf2",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1600,6 +1712,7 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Add) {
 			}
 		),
 		grammar.addTerm(
+			"asdf3",
 			"asdf3",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1609,12 +1722,14 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Add) {
 		{
 			grammar.addTerm(
 				"asdf4",
+				"asdf4",
 				TokenID::Add,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf5",
 				"asdf5",
 				TokenID::Sub,
 				[](Token token, MessageContext &ctx) {
@@ -1673,7 +1788,9 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Sub) {
 
 	ParserRuleID rule = grammar.addBinary(
 		"asdf",
+		"asdf2",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1681,6 +1798,7 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Sub) {
 			}
 		),
 		grammar.addTerm(
+			"asdf3",
 			"asdf3",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1690,12 +1808,14 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_Sub) {
 		{
 			grammar.addTerm(
 				"asdf4",
+				"asdf4",
 				TokenID::Add,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf5",
 				"asdf5",
 				TokenID::Sub,
 				[](Token token, MessageContext &ctx) {
@@ -1753,7 +1873,9 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_AddSub) {
 
 	ParserRuleID rule = grammar.addBinary(
 		"asdf",
+		"asdf2",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1761,6 +1883,7 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_AddSub) {
 			}
 		),
 		grammar.addTerm(
+			"asdf3",
 			"asdf3",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1770,12 +1893,14 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Good_AddSub) {
 		{
 			grammar.addTerm(
 				"asdf4",
+				"asdf4",
 				TokenID::Add,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf5",
 				"asdf5",
 				TokenID::Sub,
 				[](Token token, MessageContext &ctx) {
@@ -1844,7 +1969,9 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Bad_Sub_MissingRHS) {
 
 	ParserRuleID rule = grammar.addBinary(
 		"asdf",
+		"asdf2",
 		grammar.addTerm(
+			"asdf2",
 			"asdf2",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1852,6 +1979,7 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Bad_Sub_MissingRHS) {
 			}
 		),
 		grammar.addTerm(
+			"asdf3",
 			"asdf3",
 			TokenID::Symbol,
 			[](Token token, MessageContext &ctx) {
@@ -1861,12 +1989,14 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Bad_Sub_MissingRHS) {
 		{
 			grammar.addTerm(
 				"asdf4",
+				"asdf4",
 				TokenID::Add,
 				[](Token token, MessageContext &ctx) {
 					return Node(token);
 				}
 			),
 			grammar.addTerm(
+				"asdf5",
 				"asdf5",
 				TokenID::Sub,
 				[](Token token, MessageContext &ctx) {
@@ -1903,4 +2033,1111 @@ TEST(Unit_Parsing_ParserGrammar, Binary_Bad_Sub_MissingRHS) {
 	ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
 
   ASSERT_GT(msgs.getMessageCount(), 0);
+}
+
+TEST(Unit_Parsing_ParserGrammar, TemplateList_Good_Empty) {
+	ParserGrammar grammar;
+
+	ParserRuleID type = grammar.addTerm(
+		"type",
+		"type",
+		TokenID::Symbol,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID expr = grammar.addTerm(
+		"expr",
+		"expr",
+		TokenID::Int,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID rule = grammar.addList(
+		"template args",
+		"template args",
+		grammar.addAny(
+			"template arg",
+			"template arg",
+			{
+				type,
+				expr
+			}
+		),
+		grammar.addTerm(
+			"<",
+			"<",
+			TokenID::LT,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			",",
+			",",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			">",
+			">",
+			TokenID::GT,
+			{
+				{TokenID::GE, TokenID::Assign},
+				{TokenID::BitShR, TokenID::GT},
+				{TokenID::BitShRAssign, TokenID::GE}
+			},
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn(NodeType::List);
+			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
+			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
+				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
+				nodes.begin(),
+				nodes.end()
+			);
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LT),
+    Token(TokenID::GT)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_EQ(msgs.getMessageCount(), 0);
+
+  ASSERT_TRUE(res.isGood());
+  ASSERT_EQ(res.getNode().getType(), NodeType::List);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).getFormat()),
+  	static_cast<int>(FieldFormat::NodeVector)
+  );
+  ASSERT_EQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().size(), 0);
+
+  ASSERT_FALSE(ctx.more());
+}
+
+TEST(Unit_Parsing_ParserGrammar, TemplateList_Bad_Empty_MissingRight) {
+	ParserGrammar grammar;
+
+	ParserRuleID type = grammar.addTerm(
+		"type",
+		"type",
+		TokenID::Symbol,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID expr = grammar.addTerm(
+		"expr",
+		"expr",
+		TokenID::Int,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID rule = grammar.addList(
+		"template args",
+		"template args",
+		grammar.addAny(
+			"template arg",
+			"template arg",
+			{
+				type,
+				expr
+			}
+		),
+		grammar.addTerm(
+			"<",
+			"<",
+			TokenID::LT,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			",",
+			",",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			">",
+			">",
+			TokenID::GT,
+			{
+				{TokenID::GE, TokenID::Assign},
+				{TokenID::BitShR, TokenID::GT},
+				{TokenID::BitShRAssign, TokenID::GE}
+			},
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn(NodeType::List);
+			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
+			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
+				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
+				nodes.begin(),
+				nodes.end()
+			);
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LT)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_GT(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
+}
+
+TEST(Unit_Parsing_ParserGrammar, TemplateList_Bad_Empty_MissingLeft) {
+	ParserGrammar grammar;
+
+	ParserRuleID type = grammar.addTerm(
+		"type",
+		"type",
+		TokenID::Symbol,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID expr = grammar.addTerm(
+		"expr",
+		"expr",
+		TokenID::Int,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID rule = grammar.addList(
+		"template args",
+		"template args",
+		grammar.addAny(
+			"template arg",
+			"template arg",
+			{
+				type,
+				expr
+			}
+		),
+		grammar.addTerm(
+			"<",
+			"<",
+			TokenID::LT,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			",",
+			",",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			">",
+			">",
+			TokenID::GT,
+			{
+				{TokenID::GE, TokenID::Assign},
+				{TokenID::BitShR, TokenID::GT},
+				{TokenID::BitShRAssign, TokenID::GE}
+			},
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn(NodeType::List);
+			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
+			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
+				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
+				nodes.begin(),
+				nodes.end()
+			);
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::GT)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_EQ(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
+}
+
+TEST(Unit_Parsing_ParserGrammar, TemplateList_Good_One) {
+	ParserGrammar grammar;
+
+	ParserRuleID type = grammar.addTerm(
+		"type",
+		"type",
+		TokenID::Symbol,
+		[](Token token, MessageContext &ctx) {
+			return Node(NodeType::TypeSymbol, token);
+		}
+	);
+
+	ParserRuleID expr = grammar.addTerm(
+		"expr",
+		"expr",
+		TokenID::Int,
+		[](Token token, MessageContext &ctx) {
+			return Node(NodeType::ExprLiteralInt32, token);
+		}
+	);
+
+	ParserRuleID rule = grammar.addList(
+		"template args",
+		"template args",
+		grammar.addAny(
+			"template arg",
+			"template arg",
+			{
+				type,
+				expr
+			}
+		),
+		grammar.addTerm(
+			"<",
+			"<",
+			TokenID::LT,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			",",
+			",",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			">",
+			">",
+			TokenID::GT,
+			{
+				{TokenID::GE, TokenID::Assign},
+				{TokenID::BitShR, TokenID::GT},
+				{TokenID::BitShRAssign, TokenID::GE}
+			},
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn(NodeType::List);
+			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
+			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
+				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
+				nodes.begin(),
+				nodes.end()
+			);
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LT),
+    Token(TokenID::Symbol, "x"),
+    Token(TokenID::GT)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+  ASSERT_EQ(msgs.getMessageCount(), 0);
+
+  ASSERT_TRUE(res.isGood());
+  ASSERT_EQ(res.getNode().getType(), NodeType::List);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::List_Children).getFormat()),
+  	static_cast<int>(FieldFormat::NodeVector)
+  );
+  ASSERT_EQ(res.getNode().getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().size(), 1);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::List_Children).as<FieldNodeVector>().getValue()[0].getType()),
+  	static_cast<int>(NodeType::TypeSymbol)
+  );
+
+  ASSERT_FALSE(ctx.more());
+}
+
+TEST(Unit_Parsing_ParserGrammar, TemplateList_Bad_One_MissingRight) {
+	ParserGrammar grammar;
+
+	ParserRuleID type = grammar.addTerm(
+		"type",
+		"type",
+		TokenID::Symbol,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID expr = grammar.addTerm(
+		"expr",
+		"expr",
+		TokenID::Int,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID rule = grammar.addList(
+		"template args",
+		"template args",
+		grammar.addAny(
+			"template arg",
+			"template arg",
+			{
+				type,
+				expr
+			}
+		),
+		grammar.addTerm(
+			"<",
+			"<",
+			TokenID::LT,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			",",
+			",",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			">",
+			">",
+			TokenID::GT,
+			{
+				{TokenID::GE, TokenID::Assign},
+				{TokenID::BitShR, TokenID::GT},
+				{TokenID::BitShRAssign, TokenID::GE}
+			},
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn(NodeType::List);
+			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
+			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
+				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
+				nodes.begin(),
+				nodes.end()
+			);
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LT),
+    Token(TokenID::Int, "5")
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_GT(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
+}
+
+TEST(Unit_Parsing_ParserGrammar, TemplateList_Bad_One_SepInsteadOfRight) {
+	ParserGrammar grammar;
+
+	ParserRuleID type = grammar.addTerm(
+		"type",
+		"type",
+		TokenID::Symbol,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID expr = grammar.addTerm(
+		"expr",
+		"expr",
+		TokenID::Int,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID rule = grammar.addList(
+		"template args",
+		"template args",
+		grammar.addAny(
+			"template arg",
+			"template arg",
+			{
+				type,
+				expr
+			}
+		),
+		grammar.addTerm(
+			"<",
+			"<",
+			TokenID::LT,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			",",
+			",",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			">",
+			">",
+			TokenID::GT,
+			{
+				{TokenID::GE, TokenID::Assign},
+				{TokenID::BitShR, TokenID::GT},
+				{TokenID::BitShRAssign, TokenID::GE}
+			},
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn(NodeType::List);
+			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
+			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
+				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
+				nodes.begin(),
+				nodes.end()
+			);
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LT),
+    Token(TokenID::Symbol),
+    Token(TokenID::Comma)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_GT(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
+}
+
+TEST(Unit_Parsing_ParserGrammar, TemplateList_Good_Two) {
+	ParserGrammar grammar;
+
+	ParserRuleID type = grammar.addTerm(
+		"type",
+		"type",
+		TokenID::Symbol,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID expr = grammar.addTerm(
+		"expr",
+		"expr",
+		TokenID::Int,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID rule = grammar.addList(
+		"template args",
+		"template args",
+		grammar.addAny(
+			"template arg",
+			"template arg",
+			{
+				type,
+				expr
+			}
+		),
+		grammar.addTerm(
+			"<",
+			"<",
+			TokenID::LT,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			",",
+			",",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			">",
+			">",
+			TokenID::GT,
+			{
+				{TokenID::GE, TokenID::Assign},
+				{TokenID::BitShR, TokenID::GT},
+				{TokenID::BitShRAssign, TokenID::GE}
+			},
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn(NodeType::List);
+			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
+			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
+				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
+				nodes.begin(),
+				nodes.end()
+			);
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LT),
+    Token(TokenID::Symbol, "x"),
+    Token(TokenID::Comma),
+    Token(TokenID::Int, "5"),
+    Token(TokenID::GT)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+  ASSERT_EQ(msgs.getMessageCount(), 0);
+
+  ASSERT_TRUE(res.isGood());
+  ASSERT_EQ(res.getNode().getType(), NodeType::List);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::List_Children).getFormat()),
+  	static_cast<int>(FieldFormat::NodeVector)
+  );
+  ASSERT_EQ(res.getNode().getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().size(), 2);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::List_Children).as<FieldNodeVector>().getValue()[0].getType()),
+  	static_cast<int>(NodeType::None)
+  );
+  ASSERT_STREQ(res.getNode().getField(FieldTag::List_Children).as<FieldNodeVector>().getValue()[0].getToken().getText().c_str(), "x");
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::List_Children).as<FieldNodeVector>().getValue()[1].getType()),
+  	static_cast<int>(NodeType::None)
+  );
+  ASSERT_STREQ(res.getNode().getField(FieldTag::List_Children).as<FieldNodeVector>().getValue()[1].getToken().getText().c_str(), "5");
+
+  ASSERT_FALSE(ctx.more());
+}
+
+TEST(Unit_Parsing_ParserGrammar, TemplateList_Two_MissingRight) {
+	ParserGrammar grammar;
+
+	ParserRuleID type = grammar.addTerm(
+		"type",
+		"type",
+		TokenID::Symbol,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID expr = grammar.addTerm(
+		"expr",
+		"expr",
+		TokenID::Int,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID rule = grammar.addList(
+		"template args",
+		"template args",
+		grammar.addAny(
+			"template arg",
+			"template arg",
+			{
+				type,
+				expr
+			}
+		),
+		grammar.addTerm(
+			"<",
+			"<",
+			TokenID::LT,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			",",
+			",",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			">",
+			">",
+			TokenID::GT,
+			{
+				{TokenID::GE, TokenID::Assign},
+				{TokenID::BitShR, TokenID::GT},
+				{TokenID::BitShRAssign, TokenID::GE}
+			},
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn(NodeType::List);
+			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
+			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
+				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
+				nodes.begin(),
+				nodes.end()
+			);
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LT),
+    Token(TokenID::Int),
+    Token(TokenID::Comma),
+    Token(TokenID::Symbol)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_GT(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
+}
+
+TEST(Unit_Parsing_ParserGrammar, TemplateList_Two_SepInsteadOfRight) {
+	ParserGrammar grammar;
+
+	ParserRuleID type = grammar.addTerm(
+		"type",
+		"type",
+		TokenID::Symbol,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID expr = grammar.addTerm(
+		"expr",
+		"expr",
+		TokenID::Int,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID rule = grammar.addList(
+		"template args",
+		"template args",
+		grammar.addAny(
+			"template arg",
+			"template arg",
+			{
+				type,
+				expr
+			}
+		),
+		grammar.addTerm(
+			"<",
+			"<",
+			TokenID::LT,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			",",
+			",",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			">",
+			">",
+			TokenID::GT,
+			{
+				{TokenID::GE, TokenID::Assign},
+				{TokenID::BitShR, TokenID::GT},
+				{TokenID::BitShRAssign, TokenID::GE}
+			},
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn(NodeType::List);
+			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
+			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
+				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
+				nodes.begin(),
+				nodes.end()
+			);
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LT),
+    Token(TokenID::Symbol),
+    Token(TokenID::Comma),
+    Token(TokenID::Int),
+    Token(TokenID::Comma)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_GT(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
+}
+
+TEST(Unit_Parsing_ParserGrammar, TemplateList_Two_MissingFirst) {
+	ParserGrammar grammar;
+
+	ParserRuleID type = grammar.addTerm(
+		"type",
+		"type",
+		TokenID::Symbol,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID expr = grammar.addTerm(
+		"expr",
+		"expr",
+		TokenID::Int,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID rule = grammar.addList(
+		"template args",
+		"template args",
+		grammar.addAny(
+			"template arg",
+			"template arg",
+			{
+				type,
+				expr
+			}
+		),
+		grammar.addTerm(
+			"<",
+			"<",
+			TokenID::LT,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			",",
+			",",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			">",
+			">",
+			TokenID::GT,
+			{
+				{TokenID::GE, TokenID::Assign},
+				{TokenID::BitShR, TokenID::GT},
+				{TokenID::BitShRAssign, TokenID::GE}
+			},
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn(NodeType::List);
+			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
+			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
+				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
+				nodes.begin(),
+				nodes.end()
+			);
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LT),
+    Token(TokenID::Comma),
+    Token(TokenID::Symbol),
+    Token(TokenID::GT)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_GT(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
+}
+
+TEST(Unit_Parsing_ParserGrammar, TemplateList_Two_MissingSecond) {
+	ParserGrammar grammar;
+
+	ParserRuleID type = grammar.addTerm(
+		"type",
+		"type",
+		TokenID::Symbol,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID expr = grammar.addTerm(
+		"expr",
+		"expr",
+		TokenID::Int,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID rule = grammar.addList(
+		"template args",
+		"template args",
+		grammar.addAny(
+			"template arg",
+			"template arg",
+			{
+				type,
+				expr
+			}
+		),
+		grammar.addTerm(
+			"<",
+			"<",
+			TokenID::LT,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			",",
+			",",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			">",
+			">",
+			TokenID::GT,
+			{
+				{TokenID::GE, TokenID::Assign},
+				{TokenID::BitShR, TokenID::GT},
+				{TokenID::BitShRAssign, TokenID::GE}
+			},
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn(NodeType::List);
+			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
+			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
+				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
+				nodes.begin(),
+				nodes.end()
+			);
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LT),
+    Token(TokenID::Int),
+    Token(TokenID::Comma),
+    Token(TokenID::GT)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_GT(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
+}
+
+TEST(Unit_Parsing_ParserGrammar, TemplateList_Two_MissingBoth) {
+	ParserGrammar grammar;
+
+	ParserRuleID type = grammar.addTerm(
+		"type",
+		"type",
+		TokenID::Symbol,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID expr = grammar.addTerm(
+		"expr",
+		"expr",
+		TokenID::Int,
+		[](Token token, MessageContext &ctx) {
+			return Node(token);
+		}
+	);
+
+	ParserRuleID rule = grammar.addList(
+		"template args",
+		"template args",
+		grammar.addAny(
+			"template arg",
+			"template arg",
+			{
+				type,
+				expr
+			}
+		),
+		grammar.addTerm(
+			"<",
+			"<",
+			TokenID::LT,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			",",
+			",",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		grammar.addTerm(
+			">",
+			">",
+			TokenID::GT,
+			{
+				{TokenID::GE, TokenID::Assign},
+				{TokenID::BitShR, TokenID::GT},
+				{TokenID::BitShRAssign, TokenID::GE}
+			},
+			[](Token token, MessageContext &ctx) {
+				return Node(token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn(NodeType::List);
+			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
+			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
+				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
+				nodes.begin(),
+				nodes.end()
+			);
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LT),
+    Token(TokenID::Comma),
+    Token(TokenID::GT)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_GT(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
 }

@@ -4,8 +4,7 @@ namespace whiskey {
 namespace {
 FieldTagInfo fieldTagInfos[] {
   FieldTagInfo("Children", 0), // List_Children
-	FieldTagInfo("Name", 0), // TypeSymbol_Name
-  FieldTagInfo("TemplateEvalArgs", 1), // TypeSymbol_TemplateEvalArgs
+	FieldTagInfo("TemplateEvalArgs", 0), // TypeSymbol_TemplateEvalArgs
   FieldTagInfo("Arg", 0), // TypeAccessUnary_Arg
   FieldTagInfo("Args", 0), // TypeAccess_Args
   FieldTagInfo("Arg", 0), // TypeGroup_Arg
@@ -26,7 +25,6 @@ FieldTagInfo fieldTagInfos[] {
   FieldTagInfo("Value", 0), // ExprLiteralFloat32_Value
   FieldTagInfo("Value", 0), // ExprLiteralFloat64_Value
   FieldTagInfo("Value", 0), // ExprLiteralReal_Value
-  FieldTagInfo("Name", 0), // ExprSymbol_Name
   FieldTagInfo("TemplateEvalArgs", 1), // ExprSymbol_TemplateEvalArgs
   FieldTagInfo("Arg", 0), // ExprAccessUnary_Arg
   FieldTagInfo("Args", 0), // ExprAccess_Args
@@ -114,28 +112,27 @@ FieldTagInfo fieldTagInfos[] {
   FieldTagInfo("Else", 2), // StmtIf_Else
   FieldTagInfo("Condition", 0), // StmtWhile_Condition
   FieldTagInfo("Body", 1), // StmtWhile_Body
+  FieldTagInfo("Name", 2), // StmtWhile_Name
   FieldTagInfo("Decls", 0), // StmtFor_Decls
   FieldTagInfo("Condition", 1), // StmtFor_Condition
   FieldTagInfo("Steps", 2), // StmtFor_Steps
   FieldTagInfo("Body", 3), // StmtFor_Body
-  FieldTagInfo("Decls", 0), // StmtForEach_Decls
-  FieldTagInfo("Sequences", 1), // StmtForEach_Sequences
+  FieldTagInfo("Name", 4), // StmtFor_Name
+  FieldTagInfo("Decl", 0), // StmtForEach_Decl
+  FieldTagInfo("Sequence", 1), // StmtForEach_Sequence
   FieldTagInfo("Body", 2), // StmtForEach_Body
+  FieldTagInfo("Name", 3), // StmtForEach_Name
   FieldTagInfo("Stmts", 0), // StmtBlock_Stmts
   FieldTagInfo("Type", 0), // DeclVariable_Type
-  FieldTagInfo("Name", 1), // DeclVariable_Name
   FieldTagInfo("TemplateDeclArgs", 2), // DeclVariable_TemplateDeclArgs
   FieldTagInfo("Initial", 3), // DeclVariable_Initial
   FieldTagInfo("Return", 0), // DeclFunction_Return
-  FieldTagInfo("Name", 1), // DeclFunction_Name
   FieldTagInfo("TemplateDeclArgs", 2), // DeclFunction_TemplateDeclArgs
   FieldTagInfo("Args", 3), // DeclFunction_Args
   FieldTagInfo("Body", 4), // DeclFunction_Body
-  FieldTagInfo("Name", 0), // DeclClass_Name
   FieldTagInfo("TemplateDeclArgs", 1), // DeclClass_TemplateDeclArgs
   FieldTagInfo("Inherits", 2), // DeclClass_Inherits
   FieldTagInfo("Members", 3), // DeclClass_Members
-  FieldTagInfo("Name", 0), // DeclNamespace_Name
   FieldTagInfo("Members", 1), // DeclNamespace_Members
   FieldTagInfo("Path", 0), // Import_Path
   FieldTagInfo("Members", 0) // Unit_Members

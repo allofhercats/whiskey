@@ -33,7 +33,7 @@ ParserResult ParserRuleConcat::onParse(const ParserGrammar &grammar, ParserConte
 	return action(nodes, msgs);
 }
 
-ParserRuleConcat::ParserRuleConcat(std::string name, std::initializer_list<ParserRuleID> children, Action action, int requiredAfter) : ParserRule(name), children(children), action(action), requiredAfter(requiredAfter) {}
+ParserRuleConcat::ParserRuleConcat(std::string name, std::string expected, std::initializer_list<ParserRuleID> children, Action action, int requiredAfter) : ParserRule(name, expected), children(children), action(action), requiredAfter(requiredAfter) {}
 
 std::vector<ParserRuleID> &ParserRuleConcat::getChildren() {
 	return children;

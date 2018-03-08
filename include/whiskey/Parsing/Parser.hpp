@@ -10,15 +10,22 @@ class Node;
 
 class Parser {
 private:
+	ParserRuleID ruleType;
+	ParserRuleID ruleExpr;
+	ParserRuleID ruleStmt;
+	ParserRuleID ruleDecl;
 	ParserGrammar grammar;
 
 public:
-	static void createGrammar(ParserGrammar &grammar);
-
 	Parser();
 
 	bool isGrammarInitted() const;
 	void initGrammar();
+	const ParserGrammar &getGrammar() const;
+	ParserRuleID getGrammarRuleType() const;
+	ParserRuleID getGrammarRuleExpr() const;
+	ParserRuleID getGrammarRuleStmt() const;
+	ParserRuleID getGrammarRuleDecl() const;
 
 	Node parse(ParserContext &ctx, MessageContext &msgs) const;
 };

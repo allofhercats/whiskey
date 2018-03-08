@@ -8,7 +8,7 @@ ParserResult ParserRuleEmpty::onParse(const ParserGrammar &grammar, ParserContex
 	return action(msgs);
 }
 
-ParserRuleEmpty::ParserRuleEmpty(std::string name, Action action) : ParserRule(name), action(action) {}
+ParserRuleEmpty::ParserRuleEmpty(std::string name, Action action) : ParserRule(name, ""), action(action) {}
 
 const ParserRuleEmpty::Action &ParserRuleEmpty::getAction() const {
 	return action;

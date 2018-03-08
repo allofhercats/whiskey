@@ -13,10 +13,19 @@ std::vector<std::unique_ptr<ParserRule>>::size_type ParserGrammar::getNRules() c
 	return rules.size();
 }
 
-ParserRuleID ParserGrammar::addRule(std::unique_ptr<ParserRule> rule) {
+ParserRuleID ParserGrammar::addForward() {
 	ParserRuleID rtn = rules.size();
-	rules.push_back(std::move(rule));
+	rules.push_back(std::unique_ptr<ParserRule>());
 	return rtn;
+}
+
+ParserRuleID ParserGrammar::addRule(std::unique_ptr<ParserRule> rule) {
+	return addRule(addForward(), std::move(rule));
+}
+
+ParserRuleID ParserGrammar::addRule(ParserRuleID forward, std::unique_ptr<ParserRule> rule) {
+	rules[forward] = std::move(rule);
+	return forward;
 }
 
 ParserRule &ParserGrammar::getRule(ParserRuleID ruleID) {
@@ -44,55 +53,75 @@ void ParserGrammar::setStartID(ParserRuleID ruleID) {
 }
 
 ParserRuleID ParserGrammar::addEmpty(std::string name, ParserRuleEmpty::Action action) {
-	ParserRuleID rtn = rules.size();
-	rules.push_back(std::make_unique<ParserRuleEmpty>(name, action));
-	return rtn;
+	return addEmpty(addForward(), name, action);
 }
 
-ParserRuleID ParserGrammar::addTerm(std::string name, TokenID tokenID, ParserRuleTerm::Action action) {
-	ParserRuleID rtn = rules.size();
-	rules.push_back(std::make_unique<ParserRuleTerm>(name, tokenID, action));
-	return rtn;
+ParserRuleID ParserGrammar::addEmpty(ParserRuleID forward, std::string name, ParserRuleEmpty::Action action) {
+	return addRule(forward, std::make_unique<ParserRuleEmpty>(name, action));
 }
 
-ParserRuleID ParserGrammar::addTerm(std::string name, TokenID tokenID, std::string tokenText, ParserRuleTerm::Action action) {
-	ParserRuleID rtn = rules.size();
-	rules.push_back(std::make_unique<ParserRuleTerm>(name, tokenID, tokenText, action));
-	return rtn;
+ParserRuleID ParserGrammar::addTerm(std::string name, std::string expected, TokenID tokenID, ParserRuleTerm::Action action) {
+	return addTerm(addForward(), name, expected, tokenID, action);
 }
 
-ParserRuleID ParserGrammar::addTerm(std::string name, TokenID tokenID, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action) {
-	ParserRuleID rtn = rules.size();
-	rules.push_back(std::make_unique<ParserRuleTerm>(name, tokenID, tokenIDInjections, action));
-	return rtn;
+ParserRuleID ParserGrammar::addTerm(ParserRuleID forward, std::string name, std::string expected, TokenID tokenID, ParserRuleTerm::Action action) {
+	return addRule(forward, std::make_unique<ParserRuleTerm>(name, expected, tokenID, action));
 }
 
-ParserRuleID ParserGrammar::addTerm(std::string name, TokenID tokenID, std::string tokenText, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action) {
-	ParserRuleID rtn = rules.size();
-	rules.push_back(std::make_unique<ParserRuleTerm>(name, tokenID, tokenText, tokenIDInjections, action));
-	return rtn;
+ParserRuleID ParserGrammar::addTerm(std::string name, std::string expected, TokenID tokenID, std::string tokenText, ParserRuleTerm::Action action) {
+	return addTerm(addForward(), name, expected, tokenID, tokenText, action);
 }
 
-ParserRuleID ParserGrammar::addTerm(std::string name, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action) {
-	ParserRuleID rtn = rules.size();
-	rules.push_back(std::make_unique<ParserRuleTerm>(name, tokenIDInjections, action));
-	return rtn;
+ParserRuleID ParserGrammar::addTerm(ParserRuleID forward, std::string name, std::string expected, TokenID tokenID, std::string tokenText, ParserRuleTerm::Action action) {
+	return addRule(forward, std::make_unique<ParserRuleTerm>(name, expected, tokenID, tokenText, action));
 }
 
-ParserRuleID ParserGrammar::addConcat(std::string name, std::initializer_list<ParserRuleID> children, ParserRuleConcat::Action action, int requiredAfter) {
-	ParserRuleID rtn = rules.size();
-	rules.push_back(std::make_unique<ParserRuleConcat>(name, children, action, requiredAfter));
-	return rtn;
+ParserRuleID ParserGrammar::addTerm(std::string name, std::string expected, TokenID tokenID, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action) {
+	return addTerm(addForward(), name, expected, tokenID, tokenIDInjections, action);
 }
 
-ParserRuleID ParserGrammar::addAny(std::string name, std::initializer_list<ParserRuleID> children) {
-	ParserRuleID rtn = rules.size();
-	rules.push_back(std::make_unique<ParserRuleAny>(name, children));
-	return rtn;
+ParserRuleID ParserGrammar::addTerm(ParserRuleID forward, std::string name, std::string expected, TokenID tokenID, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action) {
+	return addRule(forward, std::make_unique<ParserRuleTerm>(name, expected, tokenID, tokenIDInjections, action));
 }
 
-ParserRuleID ParserGrammar::addList(std::string name, ParserRuleID element, ParserRuleID left, ParserRuleID sep, ParserRuleID right, ActionList action) {
-	ParserRuleID argsNonEmptyRec = addConcat(name, {
+ParserRuleID ParserGrammar::addTerm(std::string name, std::string expected, TokenID tokenID, std::string tokenText, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action) {
+	return addTerm(addForward(), name, expected, tokenID, tokenText, tokenIDInjections, action);
+}
+
+ParserRuleID ParserGrammar::addTerm(ParserRuleID forward, std::string name, std::string expected, TokenID tokenID, std::string tokenText, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action) {
+	return addRule(forward, std::make_unique<ParserRuleTerm>(name, expected, tokenID, tokenText, tokenIDInjections, action));
+}
+
+ParserRuleID ParserGrammar::addTerm(std::string name, std::string expected, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action) {
+	return addTerm(addForward(), name, expected, tokenIDInjections, action);
+}
+
+ParserRuleID ParserGrammar::addTerm(ParserRuleID forward, std::string name, std::string expected, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action) {
+	return addRule(forward, std::make_unique<ParserRuleTerm>(name, expected, tokenIDInjections, action));
+}
+
+ParserRuleID ParserGrammar::addConcat(std::string name, std::string expected, std::initializer_list<ParserRuleID> children, ParserRuleConcat::Action action, int requiredAfter) {
+	return addConcat(addForward(), name, expected, children, action, requiredAfter);
+}
+
+ParserRuleID ParserGrammar::addConcat(ParserRuleID forward, std::string name, std::string expected, std::initializer_list<ParserRuleID> children, ParserRuleConcat::Action action, int requiredAfter) {
+	return addRule(forward, std::make_unique<ParserRuleConcat>(name, expected, children, action, requiredAfter));
+}
+
+ParserRuleID ParserGrammar::addAny(std::string name, std::string expected, std::initializer_list<ParserRuleID> children) {
+	return addAny(addForward(), name, expected, children);
+}
+
+ParserRuleID ParserGrammar::addAny(ParserRuleID forward, std::string name, std::string expected, std::initializer_list<ParserRuleID> children) {
+	return addRule(forward, std::make_unique<ParserRuleAny>(name, expected, children));
+}
+
+ParserRuleID ParserGrammar::addList(std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID sep, ParserRuleID right, ActionList action) {
+	return addList(addForward(), name, expected, element, left, sep, right, action);
+}
+
+ParserRuleID ParserGrammar::addList(ParserRuleID forward, std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID sep, ParserRuleID right, ActionList action) {
+	ParserRuleID argsNonEmptyRec = addConcat("ListArgsNonEmptyRec", "", {
 		element,
 		sep
 	}, [](const std::vector<Node> &nodes, MessageContext &ctx) {
@@ -115,23 +144,23 @@ ParserRuleID ParserGrammar::addList(std::string name, ParserRuleID element, Pars
 	},
 	0);
 	
-	ParserRuleID argsNonEmpty = addAny(name, {
+	ParserRuleID argsNonEmpty = addAny("ListArgsNonEmpty", "", {
 		argsNonEmptyRec,
 		element
 	});
 
 	static_cast<ParserRuleConcat &>(getRule(argsNonEmptyRec)).getChildren().push_back(argsNonEmpty);
 
-	ParserRuleID empty = addEmpty(name, [](MessageContext &ctx) {
+	ParserRuleID empty = addEmpty("Empty", [](MessageContext &ctx) {
 		return Node();
 	});
 
-	ParserRuleID args = addAny(name, {
+	ParserRuleID args = addAny("ListArgs", "", {
 		argsNonEmpty,
 		empty
 	});
 
-	ParserRuleID list = addConcat(name, {
+	ParserRuleID list = addConcat(forward, name, expected, {
 		left,
 		args,
 		right
@@ -152,11 +181,15 @@ ParserRuleID ParserGrammar::addList(std::string name, ParserRuleID element, Pars
 	return list;
 }
 
-ParserRuleID ParserGrammar::addUnaryRight(std::string name, ParserRuleID rhs, std::initializer_list<ParserRuleID> ops, ActionUnaryRight action) {
-	ParserRuleID unaryRight = addAny(name, {});
+ParserRuleID ParserGrammar::addUnaryRight(std::string name, std::string expected, ParserRuleID rhs, std::initializer_list<ParserRuleID> ops, ActionUnaryRight action) {
+	return addUnaryRight(addForward(), name, expected, rhs, ops, action);
+}
+
+ParserRuleID ParserGrammar::addUnaryRight(ParserRuleID forward, std::string name, std::string expected, ParserRuleID rhs, std::initializer_list<ParserRuleID> ops, ActionUnaryRight action) {
+	ParserRuleID unaryRight = addAny(forward, name, expected, {});
 
 	for (ParserRuleID op : ops) {
-		ParserRuleID opRule = addConcat(name, {
+		ParserRuleID opRule = addConcat("UnaryRightOp", "", {
 			op,
 			unaryRight
 		}, [action](const std::vector<Node> &nodes, MessageContext &ctx) {
@@ -171,11 +204,15 @@ ParserRuleID ParserGrammar::addUnaryRight(std::string name, ParserRuleID rhs, st
 	return unaryRight;
 }
 
-ParserRuleID ParserGrammar::addUnaryLeft(std::string name, ParserRuleID lhs, std::initializer_list<ParserRuleID> ops, ActionUnaryLeft action) {
-	ParserRuleID unaryLeftP = addAny(name, {});
+ParserRuleID ParserGrammar::addUnaryLeft(std::string name, std::string expected, ParserRuleID lhs, std::initializer_list<ParserRuleID> ops, ActionUnaryLeft action) {
+	return addUnaryLeft(addForward(), name, expected, lhs, ops, action);
+}
+
+ParserRuleID ParserGrammar::addUnaryLeft(ParserRuleID forward, std::string name, std::string expected, ParserRuleID lhs, std::initializer_list<ParserRuleID> ops, ActionUnaryLeft action) {
+	ParserRuleID unaryLeftP = addAny("UnaryLeftOpRec", "", {});
 
 	for (ParserRuleID op : ops) {
-		ParserRuleID opRule = addConcat(name, {
+		ParserRuleID opRule = addConcat("UnaryLeftOp", "", {
 			op,
 			unaryLeftP
 		}, [](const std::vector<Node> &nodes, MessageContext &ctx) {
@@ -200,13 +237,13 @@ ParserRuleID ParserGrammar::addUnaryLeft(std::string name, ParserRuleID lhs, std
 		static_cast<ParserRuleAny &>(getRule(unaryLeftP)).getChildren().push_back(opRule);
 	}
 
-	ParserRuleID empty = addEmpty(name, [](MessageContext &ctx) {
+	ParserRuleID empty = addEmpty("Empty", [](MessageContext &ctx) {
 		return Node();
 	});
 
 	static_cast<ParserRuleAny &>(getRule(unaryLeftP)).getChildren().push_back(empty);
 
-	ParserRuleID unaryLeft = addConcat(name, {
+	ParserRuleID unaryLeft = addConcat(forward, name, expected, {
 		lhs,
 		unaryLeftP
 	}, [action](const std::vector<Node> &nodes, MessageContext &ctx) {
@@ -222,16 +259,15 @@ ParserRuleID ParserGrammar::addUnaryLeft(std::string name, ParserRuleID lhs, std
 	return unaryLeft;
 }
 
-ParserRuleID ParserGrammar::addBinary(std::string name, ParserRuleID lhs, ParserRuleID rhs, std::initializer_list<ParserRuleID> ops, ActionBinary action) {
-	// binary : lhs op0 binary
-	//        | lhs op1 binary
-	//        ...
-	//        | rhs
+ParserRuleID ParserGrammar::addBinary(std::string name, std::string expected, ParserRuleID lhs, ParserRuleID rhs, std::initializer_list<ParserRuleID> ops, ActionBinary action) {
+	return addBinary(addForward(), name, expected, lhs, rhs, ops, action);
+}
 
-	ParserRuleID binary = addAny(name, {});
+ParserRuleID ParserGrammar::addBinary(ParserRuleID forward, std::string name, std::string expected, ParserRuleID lhs, ParserRuleID rhs, std::initializer_list<ParserRuleID> ops, ActionBinary action) {
+	ParserRuleID binary = addAny(forward, name, expected, {});
 
 	for (ParserRuleID op : ops) {
-		ParserRuleID opRule = addConcat("hi", {
+		ParserRuleID opRule = addConcat("BinaryOp", "", {
 			lhs,
 			op,
 			binary

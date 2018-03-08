@@ -23,7 +23,7 @@ protected:
   }
 
 public:
-  MyRule() : ParserRule("asdf") {}
+  MyRule() : ParserRule("asdf", "asdf") {}
 };
 
 TEST(Unit_Parsing_ParserRule, Simple) {

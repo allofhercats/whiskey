@@ -17,7 +17,7 @@ ParserResult ParserRuleAny::onParse(const ParserGrammar &grammar, ParserContext 
 	return ParserResult();
 }
 
-ParserRuleAny::ParserRuleAny(std::string name, std::initializer_list<ParserRuleID> children) : ParserRule(name), children(children) {}
+ParserRuleAny::ParserRuleAny(std::string name, std::string expected, std::initializer_list<ParserRuleID> children) : ParserRule(name, expected), children(children) {}
 
 std::vector<ParserRuleID> &ParserRuleAny::getChildren() {
 	return children;

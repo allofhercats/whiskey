@@ -9,8 +9,8 @@
   ::whiskey::printAssertSuffix((req)); \
 }
 
-#define _W_ASSERT_PRINT_VALUE(label, value) { \
-  ::whiskey::printAssertValue<decltype((value))>((label), #value, (value)); \
+#define _W_ASSERT_PRINT_VALUE(label, text, value) { \
+  ::whiskey::printAssertValue<decltype((value))>((label), text, (value)); \
 }
 
 #define _W_ASSERT_DIE() { \
@@ -28,7 +28,7 @@
   bool _w_assertValue = static_cast<bool>(value); \
   if (!_w_assertValue) { \
     _W_ASSERT_PRINT(desc, "Value is true"); \
-    _W_ASSERT_PRINT_VALUE("Value", _w_assertValue ? "true" : "false"); \
+    _W_ASSERT_PRINT_VALUE("Value", #value, _w_assertValue ? "true" : "false"); \
     _W_ASSERT_DIE(); \
   } \
 }
@@ -37,7 +37,7 @@
   bool _w_assertValue = static_cast<bool>(value); \
   if (_w_assertValue) { \
     _W_ASSERT_PRINT(desc, "Value is false"); \
-    _W_ASSERT_PRINT_VALUE("Value", _w_assertValue ? "true" : "false"); \
+    _W_ASSERT_PRINT_VALUE("Value", #value, _w_assertValue ? "true" : "false"); \
     _W_ASSERT_DIE(); \
   } \
 }
@@ -46,7 +46,7 @@
   decltype((value)) _w_assertValue = (value); \
   if (_w_assertValue == nullptr) { \
     _W_ASSERT_PRINT(desc, "Value is nonnull"); \
-    _W_ASSERT_PRINT_VALUE("Value", _w_assertValue); \
+    _W_ASSERT_PRINT_VALUE("Value", #value, _w_assertValue); \
     _W_ASSERT_DIE(); \
   } \
 }
@@ -55,7 +55,7 @@
   decltype((value)) _w_assertValue = (value); \
   if (!(_w_assertValue == nullptr)) { \
     _W_ASSERT_PRINT(desc, "Value is null"); \
-    _W_ASSERT_PRINT_VALUE("Value", _w_assertValue); \
+    _W_ASSERT_PRINT_VALUE("Value", #value, _w_assertValue); \
     _W_ASSERT_DIE(); \
   } \
 }
@@ -65,8 +65,8 @@
   decltype((rhs)) _w_assertRhs = (rhs); \
   if (!(_W_ASSERT_COMPARE(_w_assertLhs, _w_assertRhs) < 0)) { \
     _W_ASSERT_PRINT(desc, "Lhs < Rhs"); \
-    _W_ASSERT_PRINT_VALUE("Lhs", _w_assertLhs); \
-    _W_ASSERT_PRINT_VALUE("Rhs", _w_assertRhs); \
+    _W_ASSERT_PRINT_VALUE("Lhs", #lhs, _w_assertLhs); \
+    _W_ASSERT_PRINT_VALUE("Rhs", #rhs, _w_assertRhs); \
     _W_ASSERT_DIE(); \
   } \
 }
@@ -76,8 +76,8 @@
   decltype((rhs)) _w_assertRhs = (rhs); \
   if (!(_W_ASSERT_COMPARE(_w_assertLhs, _w_assertRhs) <= 0)) { \
     _W_ASSERT_PRINT(desc, "Lhs <= Rhs"); \
-    _W_ASSERT_PRINT_VALUE("Lhs", _w_assertLhs); \
-    _W_ASSERT_PRINT_VALUE("Rhs", _w_assertRhs); \
+    _W_ASSERT_PRINT_VALUE("Lhs", #lhs, _w_assertLhs); \
+    _W_ASSERT_PRINT_VALUE("Rhs", #rhs, _w_assertRhs); \
     _W_ASSERT_DIE(); \
   } \
 }
@@ -87,8 +87,8 @@
   decltype((rhs)) _w_assertRhs = (rhs); \
   if (!(_W_ASSERT_COMPARE(_w_assertLhs, _w_assertRhs) > 0)) { \
     _W_ASSERT_PRINT(desc, "Lhs > Rhs"); \
-    _W_ASSERT_PRINT_VALUE("Lhs", _w_assertLhs); \
-    _W_ASSERT_PRINT_VALUE("Rhs", _w_assertRhs); \
+    _W_ASSERT_PRINT_VALUE("Lhs", #lhs, _w_assertLhs); \
+    _W_ASSERT_PRINT_VALUE("Rhs", #rhs, _w_assertRhs); \
     _W_ASSERT_DIE(); \
   } \
 }
@@ -98,8 +98,8 @@
   decltype((rhs)) _w_assertRhs = (rhs); \
   if (!(_W_ASSERT_COMPARE(_w_assertLhs, _w_assertRhs) >= 0)) { \
     _W_ASSERT_PRINT(desc, "Lhs >= Rhs"); \
-    _W_ASSERT_PRINT_VALUE("Lhs", _w_assertLhs); \
-    _W_ASSERT_PRINT_VALUE("Rhs", _w_assertRhs); \
+    _W_ASSERT_PRINT_VALUE("Lhs", #lhs, _w_assertLhs); \
+    _W_ASSERT_PRINT_VALUE("Rhs", #rhs, _w_assertRhs); \
     _W_ASSERT_DIE(); \
   } \
 }
@@ -109,8 +109,8 @@
   decltype((rhs)) _w_assertRhs = (rhs); \
   if (!(_W_ASSERT_COMPARE(_w_assertLhs, _w_assertRhs) != 0)) { \
     _W_ASSERT_PRINT(desc, "Lhs != Rhs"); \
-    _W_ASSERT_PRINT_VALUE("Lhs", _w_assertLhs); \
-    _W_ASSERT_PRINT_VALUE("Rhs", _w_assertRhs); \
+    _W_ASSERT_PRINT_VALUE("Lhs", #lhs, _w_assertLhs); \
+    _W_ASSERT_PRINT_VALUE("Rhs", #rhs, _w_assertRhs); \
     _W_ASSERT_DIE(); \
   } \
 }
@@ -120,8 +120,8 @@
   decltype((rhs)) _w_assertRhs = (rhs); \
   if (!(_W_ASSERT_COMPARE(_w_assertLhs, _w_assertRhs) == 0)) { \
     _W_ASSERT_PRINT(desc, "Lhs == Rhs"); \
-    _W_ASSERT_PRINT_VALUE("Lhs", _w_assertLhs); \
-    _W_ASSERT_PRINT_VALUE("Rhs", _w_assertRhs); \
+    _W_ASSERT_PRINT_VALUE("Lhs", #lhs, _w_assertLhs); \
+    _W_ASSERT_PRINT_VALUE("Rhs", #rhs, _w_assertRhs); \
     _W_ASSERT_DIE(); \
   } \
 }

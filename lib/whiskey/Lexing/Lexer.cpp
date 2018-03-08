@@ -218,7 +218,6 @@ void Lexer::lexOne(LexerContext &ctx, MessageContext &msg) {
 			} else if (chr == '\'') {
 				state = SymbolPrimes;
 			} else {
-				ctx.buffer(chr);
 				ctx.emit(TokenID::Symbol);
 				state = Start;
 			}

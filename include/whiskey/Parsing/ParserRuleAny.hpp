@@ -18,7 +18,7 @@ protected:
 	ParserResult onParse(const ParserGrammar &grammar, ParserContext &ctx, MessageContext &msgs) const final;
 
 public:
-	ParserRuleAny(std::string name, std::initializer_list<ParserRuleID> children = {});
+	ParserRuleAny(std::string name, std::string expected, std::initializer_list<ParserRuleID> children = {});
 
 	std::vector<ParserRuleID> &getChildren();
 	const std::vector<ParserRuleID> &getChildren() const;

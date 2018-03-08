@@ -23,6 +23,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Empty_Complete) {
 	ParserRuleID rule = grammar.addRule(
 		std::make_unique<ParserRuleConcat>(
 			"asdf",
+			"asdf",
 			std::initializer_list<ParserRuleID>({}),
 			[](const std::vector<Node> &elements, MessageContext &ctx) {
 		    return Node(NodeType::StmtEmpty);
@@ -60,6 +61,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Complete) {
 	ParserRuleID ruleTerm0 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
+			"asdf2",
 			TokenID::LT,
 			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
@@ -69,6 +71,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Complete) {
 
 	ParserRuleID ruleTerm1 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
+			"asdf3",
 			"asdf3",
 			TokenID::Symbol,
 			[](Token, MessageContext &) {
@@ -80,6 +83,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Complete) {
 	ParserRuleID ruleTerm2 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
 			"asdf4",
+			"asdf4",
 			TokenID::GT,
 			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
@@ -89,6 +93,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Complete) {
 
 	ParserRuleID rule = grammar.addRule(
 		std::make_unique<ParserRuleConcat>(
+			"asdf",
 			"asdf",
 			std::initializer_list<ParserRuleID>({
 				ruleTerm0,
@@ -125,6 +130,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_Terms_Incomplete) {
 	ParserRuleID ruleTerm0 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
+			"asdf2",
 			TokenID::LT,
 			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
@@ -134,6 +140,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_Terms_Incomplete) {
 
 	ParserRuleID ruleTerm1 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
+			"asdf3",
 			"asdf3",
 			TokenID::Symbol,
 			[](Token, MessageContext &) {
@@ -145,6 +152,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_Terms_Incomplete) {
 	ParserRuleID ruleTerm2 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
 			"asdf4",
+			"asdf4",
 			TokenID::GT,
 			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
@@ -154,6 +162,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_Terms_Incomplete) {
 
 	ParserRuleID rule = grammar.addRule(
 		std::make_unique<ParserRuleConcat>(
+			"asdf",
 			"asdf",
 			std::initializer_list<ParserRuleID>({
 				ruleTerm0,
@@ -185,6 +194,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Incorrect) {
 	ParserRuleID ruleTerm0 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
+			"asdf2",
 			TokenID::LT,
 			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
@@ -194,6 +204,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Incorrect) {
 
 	ParserRuleID ruleTerm1 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
+			"asdf3",
 			"asdf3",
 			TokenID::Symbol,
 			[](Token, MessageContext &) {
@@ -205,6 +216,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Incorrect) {
 	ParserRuleID ruleTerm2 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
 			"asdf4",
+			"asdf4",
 			TokenID::GT,
 			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
@@ -214,6 +226,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Terms_Incorrect) {
 
 	ParserRuleID rule = grammar.addRule(
 		std::make_unique<ParserRuleConcat>(
+			"asdf",
 			"asdf",
 			std::initializer_list<ParserRuleID>({
 				ruleTerm0,
@@ -254,6 +267,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_Empties_Complete) {
 
 	ParserRuleID rule = grammar.addRule(
 		std::make_unique<ParserRuleConcat>(
+			"asdf",
 			"asdf",
 			std::initializer_list<ParserRuleID>({
 				ruleTerm0,
@@ -296,6 +310,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Complete) {
 	ParserRuleID ruleTerm0 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
+			"asdf2",
 			TokenID::LT,
 			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
@@ -305,6 +320,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Complete) {
 
 	ParserRuleID ruleTerm1 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
+			"asdf3",
 			"asdf3",
 			TokenID::Symbol,
 			[](Token, MessageContext &) {
@@ -316,6 +332,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Complete) {
 	ParserRuleID ruleTerm2 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
 			"asdf4",
+			"asdf4",
 			TokenID::GT,
 			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
@@ -325,7 +342,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Complete) {
 
 	ParserRuleID ruleTerm3 = grammar.addRule(
 		std::make_unique<ParserRuleEmpty>(
-			"asdf5",
+			"asdf5",	
 			[](MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
 		  }
@@ -334,6 +351,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Complete) {
 
 	ParserRuleID rule = grammar.addRule(
 		std::make_unique<ParserRuleConcat>(
+			"asdf",
 			"asdf",
 			std::initializer_list<ParserRuleID>({
 				ruleTerm3,
@@ -374,6 +392,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_TermsWithEmpties_Incomplete) {
 	ParserRuleID ruleTerm0 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
+			"asdf2",
 			TokenID::LT,
 			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
@@ -384,6 +403,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_TermsWithEmpties_Incomplete) {
 	ParserRuleID ruleTerm1 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
 			"asdf3",
+			"asdf3",
 			TokenID::Symbol,
 			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
@@ -393,6 +413,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_TermsWithEmpties_Incomplete) {
 
 	ParserRuleID ruleTerm2 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
+			"asdf4",
 			"asdf4",
 			TokenID::GT,
 			[](Token, MessageContext &) {
@@ -412,6 +433,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Bad_TermsWithEmpties_Incomplete) {
 
 	ParserRuleID rule = grammar.addRule(
 		std::make_unique<ParserRuleConcat>(
+			"asdf",
 			"asdf",
 			std::initializer_list<ParserRuleID>({
 				ruleTerm3,
@@ -447,6 +469,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Incorrect) {
 	ParserRuleID ruleTerm0 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
 			"asdf2",
+			"asdf2",
 			TokenID::LT,
 			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
@@ -457,6 +480,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Incorrect) {
 	ParserRuleID ruleTerm1 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
 			"asdf3",
+			"asdf3",
 			TokenID::Symbol,
 			[](Token, MessageContext &) {
 		    return Node(NodeType::StmtEmpty);
@@ -466,6 +490,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Incorrect) {
 
 	ParserRuleID ruleTerm2 = grammar.addRule(
 		std::make_unique<ParserRuleTerm>(
+			"asdf4",
 			"asdf4",
 			TokenID::GT,
 			[](Token, MessageContext &) {
@@ -485,6 +510,7 @@ TEST(Unit_Parsing_ParserRuleConcat, Good_TermsWithEmpties_Incorrect) {
 
 	ParserRuleID rule = grammar.addRule(
 		std::make_unique<ParserRuleConcat>(
+			"asdf",
 			"asdf",
 			std::initializer_list<ParserRuleID>({
 				ruleTerm3,

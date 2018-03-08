@@ -20,20 +20,24 @@ Node::Node(const Node &other) {
 	type = other.type;
 	token = other.token;
 	for (const std::unique_ptr<Field> &i : other.fields) {
-		if (i->getFormat() == FieldFormat::Int) {
-			fields.push_back(std::make_unique<FieldInt>(static_cast<const FieldInt &>(*i)));
-		} else if (i->getFormat() == FieldFormat::UInt) {
-			fields.push_back(std::make_unique<FieldUInt>(static_cast<const FieldUInt &>(*i)));
-		} else if (i->getFormat() == FieldFormat::Real) {
-			fields.push_back(std::make_unique<FieldReal>(static_cast<const FieldReal &>(*i)));
-		} else if (i->getFormat() == FieldFormat::String) {
-			fields.push_back(std::make_unique<FieldString>(static_cast<const FieldString &>(*i)));
-		} else if (i->getFormat() == FieldFormat::Node) {
-			fields.push_back(std::make_unique<FieldNode>(static_cast<const FieldNode &>(*i)));
-		} else if (i->getFormat() == FieldFormat::NodeVector) {
-			fields.push_back(std::make_unique<FieldNodeVector>(static_cast<const FieldNodeVector &>(*i)));
+		if (i) {
+			if (i->getFormat() == FieldFormat::Int) {
+				fields.push_back(std::make_unique<FieldInt>(static_cast<const FieldInt &>(*i)));
+			} else if (i->getFormat() == FieldFormat::UInt) {
+				fields.push_back(std::make_unique<FieldUInt>(static_cast<const FieldUInt &>(*i)));
+			} else if (i->getFormat() == FieldFormat::Real) {
+				fields.push_back(std::make_unique<FieldReal>(static_cast<const FieldReal &>(*i)));
+			} else if (i->getFormat() == FieldFormat::String) {
+				fields.push_back(std::make_unique<FieldString>(static_cast<const FieldString &>(*i)));
+			} else if (i->getFormat() == FieldFormat::Node) {
+				fields.push_back(std::make_unique<FieldNode>(static_cast<const FieldNode &>(*i)));
+			} else if (i->getFormat() == FieldFormat::NodeVector) {
+				fields.push_back(std::make_unique<FieldNodeVector>(static_cast<const FieldNodeVector &>(*i)));
+			} else {
+				W_ASSERT_UNREACHABLE("Unsupported field format " << static_cast<int>(i->getFormat()) << ".");
+			}
 		} else {
-			W_ASSERT_UNREACHABLE("Unsupported field format " << static_cast<int>(i->getFormat()) << ".");
+			fields.push_back(std::unique_ptr<Field>());
 		}
 	}
 }
@@ -140,9 +144,22 @@ bool Node::operator==(const Node &other) const {
 	std::vector<std::unique_ptr<Field>>::const_iterator ib = other.fields.cbegin();
 
 	while (ia != fields.cend() && ib != other.fields.cend()) {
-		if (*ia != *ib) {
-			return false;
+		if (*ia) {
+			if (*ib) {
+				if (**ia != **ib) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			if (*ib) {
+				return false;
+			}
 		}
+
+		++ia;
+		++ib;
 	}
 
 	if ((ia == fields.cend()) != (ib == other.fields.cend())) {
@@ -152,17 +169,27 @@ bool Node::operator==(const Node &other) const {
 	return true;
 }
 
+bool Node::operator!=(const Node &other) const {
+	return !this->operator==(other);
+}
+
 void Node::print(std::ostream &os, int indent) const {
 	os << type;
 
+	std::vector<FieldTag>::size_type index = 0;
 	for (const std::unique_ptr<Field> &i : fields) {
-		os << '\n';
+		if (i) {
+			os << '\n';
 
-		for (int j = 0; j < indent+2; j++) {
-			os << ' ';
+			for (int j = 0; j < indent+2; j++) {
+				os << ' ';
+			}
+		
+			os << FieldTagInfo::get(NodeTypeInfo::get(type).getFields()[index]).getName() << ":";
+			i->print(os, indent+2);
 		}
 
-		i->print(os, indent+2);
+		index++;
 	}
 }
 

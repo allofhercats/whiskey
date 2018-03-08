@@ -19,15 +19,15 @@ ParserResult ParserRuleTerm::onParse(const ParserGrammar &grammar, ParserContext
 	}
 }
 
-ParserRuleTerm::ParserRuleTerm(std::string name, TokenID tokenID, Action action) : ParserRule(name), tokenID(tokenID), action(action) {}
+ParserRuleTerm::ParserRuleTerm(std::string name, std::string expected, TokenID tokenID, Action action) : ParserRule(name, expected), tokenID(tokenID), action(action) {}
 
-ParserRuleTerm::ParserRuleTerm(std::string name, TokenID tokenID, std::string tokenText, Action action) : ParserRule(name), tokenID(tokenID), tokenText(tokenText), action(action) {}
+ParserRuleTerm::ParserRuleTerm(std::string name, std::string expected, TokenID tokenID, std::string tokenText, Action action) : ParserRule(name, expected), tokenID(tokenID), tokenText(tokenText), action(action) {}
 
-ParserRuleTerm::ParserRuleTerm(std::string name, TokenID tokenID, std::vector<std::pair<TokenID, TokenID>> tokenIDInjections, Action action) : ParserRule(name), tokenID(tokenID), tokenIDInjections(tokenIDInjections), action(action) {}
+ParserRuleTerm::ParserRuleTerm(std::string name, std::string expected, TokenID tokenID, std::vector<std::pair<TokenID, TokenID>> tokenIDInjections, Action action) : ParserRule(name, expected), tokenID(tokenID), tokenIDInjections(tokenIDInjections), action(action) {}
 
-ParserRuleTerm::ParserRuleTerm(std::string name, TokenID tokenID, std::string tokenText, std::vector<std::pair<TokenID, TokenID>> tokenIDInjections, Action action) : ParserRule(name), tokenID(tokenID), tokenText(tokenText), tokenIDInjections(tokenIDInjections), action(action) {}
+ParserRuleTerm::ParserRuleTerm(std::string name, std::string expected, TokenID tokenID, std::string tokenText, std::vector<std::pair<TokenID, TokenID>> tokenIDInjections, Action action) : ParserRule(name, expected), tokenID(tokenID), tokenText(tokenText), tokenIDInjections(tokenIDInjections), action(action) {}
 
-ParserRuleTerm::ParserRuleTerm(std::string name, std::vector<std::pair<TokenID, TokenID>> tokenIDInjections, Action action) : ParserRule(name), tokenID(TokenID::None), tokenIDInjections(tokenIDInjections), action(action) {}
+ParserRuleTerm::ParserRuleTerm(std::string name, std::string expected, std::vector<std::pair<TokenID, TokenID>> tokenIDInjections, Action action) : ParserRule(name, expected), tokenID(TokenID::None), tokenIDInjections(tokenIDInjections), action(action) {}
 
 TokenID ParserRuleTerm::getTokenID() const {
 	return tokenID;

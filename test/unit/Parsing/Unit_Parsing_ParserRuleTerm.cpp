@@ -18,7 +18,7 @@ using namespace whiskey;
 TEST(Unit_Parsing_ParserRuleTerm, Good) {
   ParserGrammar grammar;
 
-  ParserRuleID rule = grammar.addRule(std::make_unique<ParserRuleTerm>("asdf", TokenID::Symbol, [](Token token, MessageContext &) {
+  ParserRuleID rule = grammar.addRule(std::make_unique<ParserRuleTerm>("asdf", "asdf", TokenID::Symbol, [](Token token, MessageContext &) {
     return Node(NodeType::StmtEmpty, token);
   }));
 
@@ -40,7 +40,7 @@ TEST(Unit_Parsing_ParserRuleTerm, Good) {
 TEST(Unit_Parsing_ParserRuleTerm, Bad) {
   ParserGrammar grammar;
 
-  ParserRuleID rule = grammar.addRule(std::make_unique<ParserRuleTerm>("asdf", TokenID::Symbol, [](Token token, MessageContext &) {
+  ParserRuleID rule = grammar.addRule(std::make_unique<ParserRuleTerm>("asdf", "asdf", TokenID::Symbol, [](Token token, MessageContext &) {
     return Node(NodeType::StmtEmpty, token);
   }));
 
@@ -59,7 +59,7 @@ TEST(Unit_Parsing_ParserRuleTerm, Bad) {
 TEST(Unit_Parsing_ParserRuleTerm, Keyword_Good) {
   ParserGrammar grammar;
 
-  ParserRuleID rule = grammar.addRule(std::make_unique<ParserRuleTerm>("asdf", TokenID::Symbol, "hi", [](Token token, MessageContext &) {
+  ParserRuleID rule = grammar.addRule(std::make_unique<ParserRuleTerm>("asdf", "asdf", TokenID::Symbol, "hi", [](Token token, MessageContext &) {
     return Node(NodeType::StmtEmpty, token);
   }));
 
@@ -82,7 +82,7 @@ TEST(Unit_Parsing_ParserRuleTerm, Keyword_Good) {
 TEST(Unit_Parsing_ParserRuleTerm, Keyword_Bad_Text) {
   ParserGrammar grammar;
 
-  ParserRuleID rule = grammar.addRule(std::make_unique<ParserRuleTerm>("asdf", TokenID::Symbol, "hi", [](Token token, MessageContext &) {
+  ParserRuleID rule = grammar.addRule(std::make_unique<ParserRuleTerm>("asdf", "asdf", TokenID::Symbol, "hi", [](Token token, MessageContext &) {
     return Node(NodeType::StmtEmpty, token);
   }));
 
@@ -101,7 +101,7 @@ TEST(Unit_Parsing_ParserRuleTerm, Keyword_Bad_Text) {
 TEST(Unit_Parsing_ParserRuleTerm, Keyword_Bad_TokenID) {
   ParserGrammar grammar;
 
-  ParserRuleID rule = grammar.addRule(std::make_unique<ParserRuleTerm>("asdf", TokenID::Symbol, "hi", [](Token token, MessageContext &) {
+  ParserRuleID rule = grammar.addRule(std::make_unique<ParserRuleTerm>("asdf", "asdf", TokenID::Symbol, "hi", [](Token token, MessageContext &) {
     return Node(NodeType::StmtEmpty, token);
   }));
 
@@ -122,6 +122,7 @@ TEST(Unit_Parsing_ParserRuleTerm, Injecting_Good_WithBase_Base_Middle) {
 
   ParserRuleID rule = grammar.addRule(
     std::make_unique<ParserRuleTerm>(
+      "asdf",
       "asdf",
       TokenID::GT,
       std::vector<std::pair<TokenID, TokenID>>({
@@ -161,6 +162,7 @@ TEST(Unit_Parsing_ParserRuleTerm, Injecting_Good_WithBase_Base_End) {
   ParserRuleID rule = grammar.addRule(
     std::make_unique<ParserRuleTerm>(
       "asdf",
+      "asdf",
       TokenID::GT,
       std::vector<std::pair<TokenID, TokenID>>({
         {TokenID::GE, TokenID::Assign},
@@ -195,6 +197,7 @@ TEST(Unit_Parsing_ParserRuleTerm, Injecting_Good_WithBase_Injecting_Middle) {
 
   ParserRuleID rule = grammar.addRule(
     std::make_unique<ParserRuleTerm>(
+      "asdf",
       "asdf",
       TokenID::GT,
       std::vector<std::pair<TokenID, TokenID>>({
@@ -236,6 +239,7 @@ TEST(Unit_Parsing_ParserRuleTerm, Injecting_Good_WithBase_Injecting_End) {
   ParserRuleID rule = grammar.addRule(
     std::make_unique<ParserRuleTerm>(
       "asdf",
+      "asdf",
       TokenID::GT,
       std::vector<std::pair<TokenID, TokenID>>({
         {TokenID::GE, TokenID::Assign},
@@ -273,6 +277,7 @@ TEST(Unit_Parsing_ParserRuleTerm, Injecting_Bad_NoBase_Base_Middle) {
   ParserRuleID rule = grammar.addRule(
     std::make_unique<ParserRuleTerm>(
       "asdf",
+      "asdf",
       std::vector<std::pair<TokenID, TokenID>>({
         {TokenID::GE, TokenID::Assign},
         {TokenID::BitShR, TokenID::GT},
@@ -303,6 +308,7 @@ TEST(Unit_Parsing_ParserRuleTerm, Injecting_Bad_NoBase_Base_End) {
   ParserRuleID rule = grammar.addRule(
     std::make_unique<ParserRuleTerm>(
       "asdf",
+      "asdf",
       std::vector<std::pair<TokenID, TokenID>>({
         {TokenID::GE, TokenID::Assign},
         {TokenID::BitShR, TokenID::GT},
@@ -331,6 +337,7 @@ TEST(Unit_Parsing_ParserRuleTerm, Injecting_Good_NoBase_Injecting_Middle) {
 
   ParserRuleID rule = grammar.addRule(
     std::make_unique<ParserRuleTerm>(
+      "asdf",
       "asdf",
       std::vector<std::pair<TokenID, TokenID>>({
         {TokenID::GE, TokenID::Assign},
@@ -371,6 +378,7 @@ TEST(Unit_Parsing_ParserRuleTerm, Injecting_Good_NoBase_Injecting_End) {
   ParserRuleID rule = grammar.addRule(
     std::make_unique<ParserRuleTerm>(
       "asdf",
+      "asdf",
       std::vector<std::pair<TokenID, TokenID>>({
         {TokenID::GE, TokenID::Assign},
         {TokenID::BitShR, TokenID::GT},
@@ -406,6 +414,7 @@ TEST(Unit_Parsing_ParserRuleTerm, Injecting_Bad_TokenID) {
 
   ParserRuleID rule = grammar.addRule(
     std::make_unique<ParserRuleTerm>(
+      "asdf",
       "asdf",
       TokenID::GT,
       std::vector<std::pair<TokenID, TokenID>>({

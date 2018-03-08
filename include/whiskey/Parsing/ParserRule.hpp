@@ -14,12 +14,13 @@ class MessageContext;
 class ParserRule {
 private:
 	std::string name;
+	std::string expected;
 
 protected:
 	virtual ParserResult onParse(const ParserGrammar &grammar, ParserContext &ctx, MessageContext &msgs) const = 0;
 
 public:
-	ParserRule(std::string name);
+	ParserRule(std::string name, std::string expected);
 
 	template<class T>
   T &as();
@@ -29,6 +30,10 @@ public:
 	std::string &getName();
 	const std::string &getName() const;
 	void setName(std::string value);
+
+	std::string &getExpected();
+	const std::string &getExpected() const;
+	void setExpected(std::string value);
 
 	ParserResult parse(const ParserGrammar &grammar, ParserContext &ctx, MessageContext &msgs) const;
 };
