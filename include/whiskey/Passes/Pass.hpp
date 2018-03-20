@@ -13,8 +13,8 @@ private:
   std::vector<std::string> dependencies;
 
 protected:
-  virtual Node *onRunPre(Node *node) = 0;
-  virtual Node *onRunPost(Node *node) = 0;
+  virtual void onRunPre(Node &node) = 0;
+  virtual void onRunPost(Node &node) = 0;
 
 public:
   Pass(std::string name, std::initializer_list<std::string> dependencies = {});
@@ -24,8 +24,8 @@ public:
   const std::string &getName() const;
   const std::vector<std::string> &getDependencies() const;
 
-  Node *runPre(Node *node);
-  Node *runPost(Node *node);
+  void runPre(Node &node);
+  void runPost(Node &node);
 };
 } // namespace whiskey
 

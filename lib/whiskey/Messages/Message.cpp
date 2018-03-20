@@ -37,6 +37,14 @@ void Message::setDescription(std::string value) {
   description = value;
 }
 
+std::list<Message> &Message::getChildren() {
+  return children;
+}
+
+const std::list<Message> &Message::getChildren() const {
+  return children;
+}
+
 void Message::print(std::ostream &os, const Source &source) const {
   if (token.hasPath()) {
     os << token.getPath() << ":";

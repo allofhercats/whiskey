@@ -42,12 +42,8 @@ public:
 	ParserRuleID addEmpty(ParserRuleID forward, std::string name, ParserRuleEmpty::Action action);
 	ParserRuleID addTerm(std::string name, std::string expected, TokenID tokenID, ParserRuleTerm::Action action);
 	ParserRuleID addTerm(ParserRuleID forward, std::string name, std::string expected, TokenID tokenID, ParserRuleTerm::Action action);
-	ParserRuleID addTerm(std::string name, std::string expected, TokenID tokenID, std::string tokenText, ParserRuleTerm::Action action);
-	ParserRuleID addTerm(ParserRuleID forward, std::string name, std::string expected, TokenID tokenID, std::string tokenText, ParserRuleTerm::Action action);
 	ParserRuleID addTerm(std::string name, std::string expected, TokenID tokenID, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action);
 	ParserRuleID addTerm(ParserRuleID forward, std::string name, std::string expected, TokenID tokenID, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action);
-	ParserRuleID addTerm(std::string name, std::string expected, TokenID tokenID, std::string tokenText, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action);
-	ParserRuleID addTerm(ParserRuleID forward, std::string name, std::string expected, TokenID tokenID, std::string tokenText, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action);
 	ParserRuleID addTerm(std::string name, std::string expected, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action);
 	ParserRuleID addTerm(ParserRuleID forward, std::string name, std::string expected, std::initializer_list<std::pair<TokenID, TokenID>> tokenIDInjections, ParserRuleTerm::Action action);
 	ParserRuleID addConcat(std::string name, std::string expected, std::initializer_list<ParserRuleID> children, ParserRuleConcat::Action action, int requiredAfter = 1);
@@ -55,8 +51,16 @@ public:
 	ParserRuleID addAny(std::string name, std::string expected, std::initializer_list<ParserRuleID> children);
 	ParserRuleID addAny(ParserRuleID forward, std::string name, std::string expected, std::initializer_list<ParserRuleID> children);
 
+	ParserRuleID addOptional(std::string name, std::string expected, ParserRuleID base, ParserRuleEmpty::Action action);
+	ParserRuleID addOptional(ParserRuleID forward, std::string name, std::string expected, ParserRuleID base, ParserRuleEmpty::Action action);
 	ParserRuleID addList(std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID sep, ParserRuleID right, ActionList action);
 	ParserRuleID addList(ParserRuleID forward, std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID sep, ParserRuleID right, ActionList action);
+	ParserRuleID addListSeparated(std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID sep, ParserRuleID right, ActionList action);
+	ParserRuleID addListSeparated(ParserRuleID forward, std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID sep, ParserRuleID right, ActionList action);
+	ParserRuleID addListBound(std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID right, ActionList action);
+	ParserRuleID addListBound(ParserRuleID forward, std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID right, ActionList action);
+	ParserRuleID addListBoundSeparated(std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID sep, ParserRuleID right, ActionList action);
+	ParserRuleID addListBoundSeparated(ParserRuleID forward, std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID sep, ParserRuleID right, ActionList action);
 	ParserRuleID addUnaryRight(std::string name, std::string expected, ParserRuleID rhs, std::initializer_list<ParserRuleID> ops, ActionUnaryRight action);
 	ParserRuleID addUnaryRight(ParserRuleID forward, std::string name, std::string expected, ParserRuleID rhs, std::initializer_list<ParserRuleID> ops, ActionUnaryRight action);
 	ParserRuleID addUnaryLeft(std::string name, std::string expected, ParserRuleID lhs, std::initializer_list<ParserRuleID> ops, ActionUnaryLeft action);

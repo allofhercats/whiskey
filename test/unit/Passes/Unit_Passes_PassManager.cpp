@@ -1,8 +1,14 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
+#pragma clang diagnostic ignored "-Wsign-compare"
+#pragma clang diagnostic ignored "-Wdeprecated"
+#pragma clang diagnostic ignored "-Wshift-sign-overflow"
 #include <gtest/gtest.h>
+#pragma clang diagnostic pop
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
 
-// #include <whiskey/Whiskey.hpp>
-
-#include <whiskey/AST/Field.hpp>
+#include <whiskey/AST/FieldNode.hpp>
+#include <whiskey/AST/FieldNodeVector.hpp>
 #include <whiskey/AST/Node.hpp>
 #include <whiskey/Passes/PassManager.hpp>
 
@@ -13,16 +19,15 @@ TEST(Unit_Passes_PassManager, Empty) {
 
   ASSERT_FALSE(pm.hasPass("asdf"));
 
-  Node *orig = Node::createDeclVariable(
-      Node::createTypeAtomicInt32(),
-      Field::createString("x"),
-      Node::createExprSymbol(Field::createString("y")));
+  Node orig(NodeType::ExprCall);
+  orig.setField(FieldTag::ExprCall_Callee, std::make_unique<FieldNode>(Node(NodeType::ExprSymbol)));
+  orig.setField(FieldTag::ExprCall_Args, std::make_unique<FieldNodeVector>());
+  orig.getField(FieldTag::ExprCall_Args).as<FieldNodeVector>().getValue().push_back(Node(NodeType::ExprSymbol));
+  orig.getField(FieldTag::ExprCall_Args).as<FieldNodeVector>().getValue().push_back(Node(NodeType::ExprSymbol));
 
-  Node *final = orig;
+  Node final = orig;
 
-  pm.run(&final);
+  pm.run(final);
 
   ASSERT_EQ(final, orig);
-
-  delete orig;
 }

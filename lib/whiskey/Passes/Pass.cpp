@@ -5,7 +5,7 @@
 namespace whiskey {
 Pass::Pass(std::string name, std::initializer_list<std::string> dependencies)
     : name(name), dependencies(dependencies) {
-  W_ASSERT_GT(name.size(), 0, "Cannot have pass with empty name.");
+  W_ASSERT_GT(name.size(), 0u, "Cannot have pass with empty name.");
 }
 
 Pass::~Pass() {
@@ -19,11 +19,11 @@ const std::vector<std::string> &Pass::getDependencies() const {
   return dependencies;
 }
 
-Node *Pass::runPre(Node *node) {
+void Pass::runPre(Node &node) {
   return onRunPre(node);
 }
 
-Node *Pass::runPost(Node *node) {
+void Pass::runPost(Node &node) {
   return onRunPost(node);
 }
 } // namespace whiskey

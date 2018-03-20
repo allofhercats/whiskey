@@ -9,17 +9,15 @@ bool FieldNodeVector::onCompare(const Field &other) const {
 
 void FieldNodeVector::onPrint(std::ostream &os, int indent) const {
 	if (value.empty()) {
-		os << "<empty list>\n";
+		os << "<empty list>";
 	} else {
 		int n = 0;
 		for (const Node &i : value) {
-			if (n > 0) {
-				os << '\n';
-				for (int j = 0; j < indent+2; j++) {
-					os << ' ';
-				}
+			os << '\n';
+			for (int j = 0; j < indent+2; j++) {
+				os << ' ';
 			}
-
+			
 			os << "[" << (n++) << "] ";
 			i.print(os, indent+2);
 		}

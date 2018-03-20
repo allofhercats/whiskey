@@ -37,6 +37,7 @@ public:
   char eat();
 
   void buffer(char chr);
+  std::string getBuffer() const;
 
   void emit(TokenID id);
   void skip();

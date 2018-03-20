@@ -7,7 +7,6 @@
 #pragma clang diagnostic pop
 #pragma clang diagnostic ignored "-Wcovered-switch-default"
 
-int main(int argc, char *argv[]) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+TEST(Integration_Fuckit, Empty) {
+	
 }

@@ -18,9 +18,9 @@ public:
   PassManager(const PassManager &) = delete;
 
   bool hasPass(const std::string &name);
-  void addPass(Pass *pass);
+  void addPass(std::unique_ptr<Pass> pass);
 
-  void run(Node **node);
+  void run(Node &node);
 };
 } // namespace whiskey
 

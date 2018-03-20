@@ -1,7 +1,7 @@
 #ifndef __WHISKEY_Printing_Precedence_HPP
 #define __WHISKEY_Printing_Precedence_HPP
 
-#include <whiskey/AST/Node.hpp>
+#include <whiskey/AST/NodeType.hpp>
 
 namespace whiskey {
 enum class Precedence {
@@ -32,7 +32,7 @@ enum class Precedence {
   TypeTerm
 };
 
-Precedence getPrecedence(Node::Kind kind);
+Precedence getPrecedence(NodeType type);
 bool needsParenthesis(Precedence inner, Precedence outer);
 } // namespace whiskey
 

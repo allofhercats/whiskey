@@ -424,7 +424,7 @@ TEST(Unit_Lexing_Lexer, KWNot) {
   ASSERT_EQ(msgs.getMessageCount(), 0);
   ASSERT_EQ(toks.size(), 1);
 
-  ASSERT_EQ(toks[0].getID(), TokenID::Symbol);
+  ASSERT_EQ(toks[0].getID(), TokenID::KWNot);
   ASSERT_STREQ(toks[0].getText().c_str(), "not");
 }
 

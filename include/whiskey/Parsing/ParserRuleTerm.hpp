@@ -17,7 +17,6 @@ public:
 
 private:
 	TokenID tokenID;
-	std::string tokenText;
 	std::vector<std::pair<TokenID, TokenID>> tokenIDInjections;
 	Action action;
 
@@ -26,17 +25,11 @@ protected:
 
 public:
 	ParserRuleTerm(std::string name, std::string expected, TokenID tokenID, Action action);
-	ParserRuleTerm(std::string name, std::string expected, TokenID tokenID, std::string tokenText, Action action);
 	ParserRuleTerm(std::string name, std::string expected, TokenID tokenID, std::vector<std::pair<TokenID, TokenID>> tokenIDInjections, Action action);
-	ParserRuleTerm(std::string name, std::string expected, TokenID tokenID, std::string tokenText, std::vector<std::pair<TokenID, TokenID>> tokenIDInjections, Action action);
 	ParserRuleTerm(std::string name, std::string expected, std::vector<std::pair<TokenID, TokenID>> tokenIDInjections, Action action);
 
 	TokenID getTokenID() const;
 	void setTokenID(TokenID value);
-
-	std::string &getTokenText();
-	const std::string &getTokenText() const;
-	void setTokenText(std::string value);
 
 	std::vector<std::pair<TokenID, TokenID>> &getTokenIDInjections();
 	const std::vector<std::pair<TokenID, TokenID>> &getTokenIDInjections() const;

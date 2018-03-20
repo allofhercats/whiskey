@@ -68,6 +68,8 @@ std::ostream &MessageContext::describe() {
 
 void MessageContext::emit(Token token, Message::Severity severity) {
   Message message(token, severity, description.str());
+  message.getChildren().swap(children);
+
   if (messages.empty()) {
     messages.push_back(message);
   } else {
@@ -99,6 +101,15 @@ void MessageContext::emit(Message::Severity severity) {
   emit(Token(), severity);
 }
 
+void MessageContext::emitChild(Token token, Message::Severity severity) {
+  children.push_back(Message(token, severity, description.str()));
+  description.str("");
+}
+
+void MessageContext::emitChild(Message::Severity severity) {
+  emitChild(Token(), severity);
+}
+
 void MessageContext::print(std::ostream &os, Source source) const {
   if (!messages.empty()) {
     source.setOffset(0);
@@ -123,6 +134,9 @@ void MessageContext::print(std::ostream &os, Source source) const {
           if (!isWithin && columnno >= iter->getToken().getColumnno()) {
             isWithin = true;
             os << Color::green;
+          } else if ((isWithin && !isAfter) && columnno >= iter->getToken().getColumnno() + iter->getToken().getLength()) {
+            isAfter = true;
+            os << Color::reset;
           }
 
           if (chr == '\t') {
@@ -147,11 +161,6 @@ void MessageContext::print(std::ostream &os, Source source) const {
             }
           }
 
-          if ((isWithin && !isAfter) && columnno >= iter->getToken().getColumnno() + iter->getToken().getLength()) {
-            isAfter = true;
-            os << Color::reset;
-          }
-
           columnno++;
         }
 
@@ -169,6 +178,12 @@ void MessageContext::print(std::ostream &os, Source source) const {
 
         os << Color::reset << '\n';
         source.eat();
+
+        for (const Message &j : iter->getChildren()) {
+          os << "\n";
+          j.print(os);
+        }
+
         iter++;
       } else {
         while (source.more() && source.eat() != '\n');
@@ -188,6 +203,12 @@ void MessageContext::print(std::ostream &os) const {
   if (!messages.empty()) {
     for (const Message &i : messages) {
       i.print(os);
+
+      for (const Message &j : i.getChildren()) {
+        os << "\n";
+        j.print(os);
+      }
+
       os << "\n";
     }
 

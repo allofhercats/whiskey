@@ -35,8 +35,12 @@ void LexerContext::buffer(char chr) {
   _buffer << chr;
 }
 
+std::string LexerContext::getBuffer() const {
+  return _buffer.str();
+}
+
 void LexerContext::emit(TokenID id) {
-  Token tmp(path, firstLineno, firstColumnno, length, id, _buffer.str());
+  Token tmp(path.empty() ? source->getDefaultPath() : path, firstLineno, firstColumnno, length, id, _buffer.str());
   skip();
   tokens->push_back(tmp);
 }

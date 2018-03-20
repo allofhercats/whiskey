@@ -1,6 +1,8 @@
 #include <whiskey/Passes/PassManager.hpp>
 
 #include <whiskey/AST/Node.hpp>
+#include <whiskey/AST/FieldNode.hpp>
+#include <whiskey/AST/FieldNodeVector.hpp>
 #include <whiskey/Passes/Pass.hpp>
 
 namespace whiskey {
@@ -17,8 +19,8 @@ bool PassManager::hasPass(const std::string &name) {
   return false;
 }
 
-void PassManager::addPass(Pass *pass) {
-  W_ASSERT_NONNULL(pass, "Cannot add null pass.");
+void PassManager::addPass(std::unique_ptr<Pass> pass) {
+  W_ASSERT_TRUE(pass, "Cannot add null pass.");
 
   for (const std::string &dep : pass->getDependencies()) {
     W_ASSERT_TRUE(hasPass(dep),
@@ -26,44 +28,32 @@ void PassManager::addPass(Pass *pass) {
                            << dep << "'.");
   }
 
-  passes.push_back(std::unique_ptr<Pass>(pass));
+  passes.push_back(std::move(pass));
 }
 
-void PassManager::run(Node **node) {
-  W_ASSERT_NONNULL(node, "Cannot run pass manager on null node reference.");
-
-  if (*node == nullptr) {
+void PassManager::run(Node &node) {
+  if (node.getType() == NodeType::None) {
     return;
   }
 
   for (auto &pass : passes) {
-    Node *res = pass->runPre(*node);
-    if (res != nullptr && res != *node) {
-      // delete *node;
-      *node = res;
-    }
+    pass->runPre(node);
   }
 
-  for (int i = 0; i < Node::getKindInfo((*node)->getKind()).getNFields(); i++) {
-    if ((*node)->getField(i)->getKind() == Field::Kind::Node) {
-      Node *orig = (*node)->getField(i)->getNode();
-      Node *final = orig;
-      if (final != nullptr) {
-        run(&final);
-      }
-      if (final != nullptr && final != orig) {
-        delete orig;
-        (*node)->getField(i)->setNode(final);
+  for (FieldTag i : NodeTypeInfo::get(node.getType()).getFields()) {
+    if (node.hasField(i)) {
+      if (node.getField(i).getFormat() == FieldFormat::Node) {
+        run(node.getField(i).as<FieldNode>().getValue());
+      } else if (node.getField(i).getFormat() == FieldFormat::NodeVector) {
+        for (Node &j : node.getField(i).as<FieldNodeVector>().getValue()) {
+          run(j);
+        }
       }
     }
   }
 
   for (auto &pass : passes) {
-    Node *res = pass->runPost(*node);
-    if (res != nullptr && res != *node) {
-      // delete node;
-      *node = res;
-    }
+    pass->runPost(node);
   }
 }
 } // namespace whiskey

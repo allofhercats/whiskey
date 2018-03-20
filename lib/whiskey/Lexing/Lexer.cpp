@@ -43,6 +43,71 @@ const char *Lexer::getStateName(Lexer::State state) {
 	}
 }
 
+void Lexer::emitSymbol(LexerContext &ctx) {
+	std::string buffer = ctx.getBuffer();
+	if (buffer == "bool") {
+		ctx.emit(TokenID::KWBool);
+	} else if (buffer == "int8") {
+		ctx.emit(TokenID::KWInt8);
+	} else if (buffer == "int16") {
+		ctx.emit(TokenID::KWInt16);
+	} else if (buffer == "int32") {
+		ctx.emit(TokenID::KWInt32);
+	} else if (buffer == "int64") {
+		ctx.emit(TokenID::KWInt64);
+	} else if (buffer == "uint8") {
+		ctx.emit(TokenID::KWUInt8);
+	} else if (buffer == "uint16") {
+		ctx.emit(TokenID::KWUInt16);
+	} else if (buffer == "uint32") {
+		ctx.emit(TokenID::KWUInt32);
+	} else if (buffer == "uint64") {
+		ctx.emit(TokenID::KWUInt64);
+	} else if (buffer == "float32") {
+		ctx.emit(TokenID::KWFloat32);
+	} else if (buffer == "float64") {
+		ctx.emit(TokenID::KWFloat64);
+	} else if (buffer == "real") {
+		ctx.emit(TokenID::KWReal);
+	} else if (buffer == "true") {
+		ctx.emit(TokenID::KWTrue);
+	} else if (buffer == "false") {
+		ctx.emit(TokenID::KWFalse);
+	} else if (buffer == "not") {
+		ctx.emit(TokenID::KWNot);
+	} else if (buffer == "and") {
+		ctx.emit(TokenID::KWAnd);
+	} else if (buffer == "or") {
+		ctx.emit(TokenID::KWOr);
+	} else if (buffer == "return") {
+		ctx.emit(TokenID::KWReturn);
+	} else if (buffer == "continue") {
+		ctx.emit(TokenID::KWContinue);
+	} else if (buffer == "break") {
+		ctx.emit(TokenID::KWBreak);
+	} else if (buffer == "if") {
+		ctx.emit(TokenID::KWIf);
+	} else if (buffer == "else") {
+		ctx.emit(TokenID::KWElse);
+	} else if (buffer == "while") {
+		ctx.emit(TokenID::KWWhile);
+	} else if (buffer == "for") {
+		ctx.emit(TokenID::KWFor);
+	} else if (buffer == "foreach") {
+		ctx.emit(TokenID::KWForEach);
+	} else if (buffer == "class") {
+		ctx.emit(TokenID::KWClass);
+	} else if (buffer == "inherits") {
+		ctx.emit(TokenID::KWInherits);
+	} else if (buffer == "namespace") {
+		ctx.emit(TokenID::KWNamespace);
+	} else if (buffer == "import") {
+		ctx.emit(TokenID::KWImport);
+	} else {
+		ctx.emit(TokenID::Symbol);
+	}
+}
+
 void Lexer::lexOne(LexerContext &ctx, MessageContext &msg) {
 	switch (state) {
 		case Start:
@@ -218,7 +283,7 @@ void Lexer::lexOne(LexerContext &ctx, MessageContext &msg) {
 			} else if (chr == '\'') {
 				state = SymbolPrimes;
 			} else {
-				ctx.emit(TokenID::Symbol);
+				emitSymbol(ctx);
 				state = Start;
 			}
 			break;
@@ -227,8 +292,7 @@ void Lexer::lexOne(LexerContext &ctx, MessageContext &msg) {
 				ctx.buffer(chr);
 				handled = true;
 			} else {
-				ctx.buffer(chr);
-				ctx.emit(TokenID::Symbol);
+				emitSymbol(ctx);
 				state = Start;
 			}
 			break;
@@ -247,7 +311,6 @@ void Lexer::lexOne(LexerContext &ctx, MessageContext &msg) {
 				state = Real;
 				handled = true;
 			} else {
-				ctx.buffer(chr);
 				ctx.emit(TokenID::Int);
 				state = Start;
 			}
@@ -263,7 +326,6 @@ void Lexer::lexOne(LexerContext &ctx, MessageContext &msg) {
 				ctx.buffer(chr);
 				handled = true;
 			} else {
-				ctx.buffer(chr);
 				ctx.emit(TokenID::Real);
 				state = Start;
 			}
@@ -305,7 +367,6 @@ void Lexer::lexOne(LexerContext &ctx, MessageContext &msg) {
 			} else {
 				ctx.emit(TokenID::Period);
 				state = Start;
-				handled = true;
 			}
 			break;
 		case Add:
@@ -505,11 +566,11 @@ void Lexer::lexOne(LexerContext &ctx, MessageContext &msg) {
 				state = Start;
 				handled = true;
 			} else {
+				msg.describe() << "Use 'not' operator for boolean not.";
+				msg.emitChild(ctx.createErrorToken(), Message::Note);
+
 				msg.describe() << "'!' can only be used in '!=' operator, not on its own.";
 				msg.emit(ctx.createErrorToken(), Message::Error);
-
-				msg.describe() << "Use 'not' operator for boolean not.";
-				msg.emit(ctx.createErrorToken(), Message::Note);
 
 				ctx.skip();
 				state = Start;

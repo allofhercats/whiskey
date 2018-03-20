@@ -16,7 +16,7 @@ ParserResult ParserRuleConcat::onParse(const ParserGrammar &grammar, ParserConte
 		if (!res.isGood()) {
 			if (requiredAfter > 0 && n >= requiredAfter) {
 				W_VERBOSE("concat requirement failed after " << n << " >= " << requiredAfter << " for " << getName());
-				msgs.describe() << "expected " << grammar.getRule(id).getName() << ", instead of ";
+				msgs.describe() << "expected " << grammar.getRule(id).getExpected() << " instead of ";
 				printTokenID(msgs.describe(), ctx.get().getID());
 				msgs.emit(ctx.get(), Message::Severity::Error);
 				return ParserResult();

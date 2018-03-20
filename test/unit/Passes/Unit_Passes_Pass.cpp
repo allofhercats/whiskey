@@ -1,6 +1,11 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
+#pragma clang diagnostic ignored "-Wsign-compare"
+#pragma clang diagnostic ignored "-Wdeprecated"
+#pragma clang diagnostic ignored "-Wshift-sign-overflow"
 #include <gtest/gtest.h>
-
-// #include <whiskey/Whiskey.hpp>
+#pragma clang diagnostic pop
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
 
 #include <whiskey/Passes/Pass.hpp>
 
@@ -8,12 +13,10 @@ using namespace whiskey;
 
 class Echo : public Pass {
 protected:
-  Node *onRunPre(Node *node) {
-    return node;
+  void onRunPre(Node &node) {
   }
 
-  Node *onRunPost(Node *node) {
-    return nullptr;
+  void onRunPost(Node &node) {
   }
 
 public:

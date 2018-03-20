@@ -10,6 +10,7 @@ namespace whiskey {
 class MessageContext {
 private:
   unsigned int tabWidth;
+  std::list<Message> children;
   std::list<Message> messages;
   std::stringstream description;
   size_t warningCount;
@@ -35,6 +36,8 @@ public:
   std::ostream &describe();
   void emit(Token token, Message::Severity severity);
   void emit(Message::Severity severity);
+  void emitChild(Token token, Message::Severity severity);
+  void emitChild(Message::Severity severity);
 
   void print(std::ostream &os, Source source) const;
   void print(std::ostream &os) const;

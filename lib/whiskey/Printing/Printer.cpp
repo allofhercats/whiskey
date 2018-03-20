@@ -1,5 +1,7 @@
 #include <whiskey/Printing/Printer.hpp>
 
+#include <whiskey/AST/Node.hpp>
+
 namespace whiskey {
 const unsigned int Printer::defaultTabWidth = 2;
 
@@ -34,12 +36,12 @@ void Printer::setTabWidth(unsigned int value) {
 }
 
 void Printer::print(std::ostream &os,
-                    const Node *node,
+                    const Node &node,
                     unsigned int indent,
                     Precedence outer) {
   bool np = false;
-  if (node != nullptr && usePrecedence) {
-    np = needsParenthesis(getPrecedence(node->getKind()), outer);
+  if (usePrecedence) {
+    np = needsParenthesis(getPrecedence(node.getType()), outer);
   }
   if (np) {
     os << "(";

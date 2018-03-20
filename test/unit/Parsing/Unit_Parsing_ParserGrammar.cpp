@@ -17,10 +17,10 @@
 
 using namespace whiskey;
 
-TEST(Unit_Parsing_ParserGrammar, List_Good_Empty) {
+TEST(Unit_Parsing_ParserGrammar, ListBoundSeparated_Good_Empty) {
 	ParserGrammar grammar;
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"asdf",
 		"asdf",
 		grammar.addTerm(
@@ -88,10 +88,10 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_Empty) {
   ASSERT_FALSE(ctx.more());
 }
 
-TEST(Unit_Parsing_ParserGrammar, List_Bad_Empty_MissingRight) {
+TEST(Unit_Parsing_ParserGrammar, ListBoundSeparated_Bad_Empty_MissingRight) {
 	ParserGrammar grammar;
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"asdf",
 		"asdf",
 		grammar.addTerm(
@@ -150,10 +150,10 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_Empty_MissingRight) {
   ASSERT_FALSE(res.isGood());
 }
 
-TEST(Unit_Parsing_ParserGrammar, List_Bad_Empty_MissingLeft) {
+TEST(Unit_Parsing_ParserGrammar, ListBoundSeparated_Bad_Empty_MissingLeft) {
 	ParserGrammar grammar;
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"asdf",
 		"asdf",
 		grammar.addTerm(
@@ -212,10 +212,10 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_Empty_MissingLeft) {
   ASSERT_FALSE(res.isGood());
 }
 
-TEST(Unit_Parsing_ParserGrammar, List_Good_One) {
+TEST(Unit_Parsing_ParserGrammar, ListBoundSeparated_Good_One) {
 	ParserGrammar grammar;
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"asdf",
 		"asdf",
 		grammar.addTerm(
@@ -288,10 +288,10 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_One) {
   ASSERT_FALSE(ctx.more());
 }
 
-TEST(Unit_Parsing_ParserGrammar, List_Bad_One_MissingRight) {
+TEST(Unit_Parsing_ParserGrammar, ListBoundSeparated_Bad_One_MissingRight) {
 	ParserGrammar grammar;
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"asdf",
 		"asdf",
 		grammar.addTerm(
@@ -351,10 +351,10 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_One_MissingRight) {
   ASSERT_FALSE(res.isGood());
 }
 
-TEST(Unit_Parsing_ParserGrammar, List_Bad_One_SepInsteadOfRight) {
+TEST(Unit_Parsing_ParserGrammar, ListBoundSeparated_Bad_One_SepInsteadOfRight) {
 	ParserGrammar grammar;
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"asdf",
 		"asdf",
 		grammar.addTerm(
@@ -415,10 +415,10 @@ TEST(Unit_Parsing_ParserGrammar, List_Bad_One_SepInsteadOfRight) {
   ASSERT_FALSE(res.isGood());
 }
 
-TEST(Unit_Parsing_ParserGrammar, List_Good_Two) {
+TEST(Unit_Parsing_ParserGrammar, ListBoundSeparated_Good_Two) {
 	ParserGrammar grammar;
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"asdf",
 		"asdf",
 		grammar.addTerm(
@@ -499,10 +499,10 @@ TEST(Unit_Parsing_ParserGrammar, List_Good_Two) {
   ASSERT_FALSE(ctx.more());
 }
 
-TEST(Unit_Parsing_ParserGrammar, List_Two_MissingRight) {
+TEST(Unit_Parsing_ParserGrammar, ListBoundSeparated_Two_MissingRight) {
 	ParserGrammar grammar;
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"asdf",
 		"asdf",
 		grammar.addTerm(
@@ -564,10 +564,10 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingRight) {
   ASSERT_FALSE(res.isGood());
 }
 
-TEST(Unit_Parsing_ParserGrammar, List_Two_SepInsteadOfRight) {
+TEST(Unit_Parsing_ParserGrammar, ListBoundSeparated_Two_SepInsteadOfRight) {
 	ParserGrammar grammar;
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"asdf",
 		"asdf",
 		grammar.addTerm(
@@ -630,10 +630,10 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_SepInsteadOfRight) {
   ASSERT_FALSE(res.isGood());
 }
 
-TEST(Unit_Parsing_ParserGrammar, List_Two_MissingFirst) {
+TEST(Unit_Parsing_ParserGrammar, ListBoundSeparated_Two_MissingFirst) {
 	ParserGrammar grammar;
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"asdf",
 		"asdf",
 		grammar.addTerm(
@@ -695,10 +695,10 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingFirst) {
   ASSERT_FALSE(res.isGood());
 }
 
-TEST(Unit_Parsing_ParserGrammar, List_Two_MissingSecond) {
+TEST(Unit_Parsing_ParserGrammar, ListBoundSeparated_Two_MissingSecond) {
 	ParserGrammar grammar;
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"asdf",
 		"asdf",
 		grammar.addTerm(
@@ -760,10 +760,10 @@ TEST(Unit_Parsing_ParserGrammar, List_Two_MissingSecond) {
   ASSERT_FALSE(res.isGood());
 }
 
-TEST(Unit_Parsing_ParserGrammar, List_Two_MissingBoth) {
+TEST(Unit_Parsing_ParserGrammar, ListBoundSeparated_Two_MissingBoth) {
 	ParserGrammar grammar;
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"asdf",
 		"asdf",
 		grammar.addTerm(
@@ -2056,7 +2056,7 @@ TEST(Unit_Parsing_ParserGrammar, TemplateList_Good_Empty) {
 		}
 	);
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"template args",
 		"template args",
 		grammar.addAny(
@@ -2152,7 +2152,7 @@ TEST(Unit_Parsing_ParserGrammar, TemplateList_Bad_Empty_MissingRight) {
 		}
 	);
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"template args",
 		"template args",
 		grammar.addAny(
@@ -2239,7 +2239,7 @@ TEST(Unit_Parsing_ParserGrammar, TemplateList_Bad_Empty_MissingLeft) {
 		}
 	);
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"template args",
 		"template args",
 		grammar.addAny(
@@ -2326,7 +2326,7 @@ TEST(Unit_Parsing_ParserGrammar, TemplateList_Good_One) {
 		}
 	);
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"template args",
 		"template args",
 		grammar.addAny(
@@ -2427,7 +2427,7 @@ TEST(Unit_Parsing_ParserGrammar, TemplateList_Bad_One_MissingRight) {
 		}
 	);
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"template args",
 		"template args",
 		grammar.addAny(
@@ -2515,7 +2515,7 @@ TEST(Unit_Parsing_ParserGrammar, TemplateList_Bad_One_SepInsteadOfRight) {
 		}
 	);
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"template args",
 		"template args",
 		grammar.addAny(
@@ -2604,7 +2604,7 @@ TEST(Unit_Parsing_ParserGrammar, TemplateList_Good_Two) {
 		}
 	);
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"template args",
 		"template args",
 		grammar.addAny(
@@ -2713,7 +2713,7 @@ TEST(Unit_Parsing_ParserGrammar, TemplateList_Two_MissingRight) {
 		}
 	);
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"template args",
 		"template args",
 		grammar.addAny(
@@ -2803,7 +2803,7 @@ TEST(Unit_Parsing_ParserGrammar, TemplateList_Two_SepInsteadOfRight) {
 		}
 	);
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"template args",
 		"template args",
 		grammar.addAny(
@@ -2894,7 +2894,7 @@ TEST(Unit_Parsing_ParserGrammar, TemplateList_Two_MissingFirst) {
 		}
 	);
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"template args",
 		"template args",
 		grammar.addAny(
@@ -2984,7 +2984,7 @@ TEST(Unit_Parsing_ParserGrammar, TemplateList_Two_MissingSecond) {
 		}
 	);
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"template args",
 		"template args",
 		grammar.addAny(
@@ -3074,7 +3074,7 @@ TEST(Unit_Parsing_ParserGrammar, TemplateList_Two_MissingBoth) {
 		}
 	);
 
-	ParserRuleID rule = grammar.addList(
+	ParserRuleID rule = grammar.addListBoundSeparated(
 		"template args",
 		"template args",
 		grammar.addAny(

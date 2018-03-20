@@ -51,6 +51,7 @@ private:
 	bool running;
 	int commentBlockLevel;
 
+	void emitSymbol(LexerContext &ctx);
 	void lexOne(LexerContext &ctx, MessageContext &msg);
 
 public:

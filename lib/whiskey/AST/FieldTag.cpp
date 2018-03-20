@@ -25,7 +25,7 @@ FieldTagInfo fieldTagInfos[] {
   FieldTagInfo("Value", 0), // ExprLiteralFloat32_Value
   FieldTagInfo("Value", 0), // ExprLiteralFloat64_Value
   FieldTagInfo("Value", 0), // ExprLiteralReal_Value
-  FieldTagInfo("TemplateEvalArgs", 1), // ExprSymbol_TemplateEvalArgs
+  FieldTagInfo("TemplateEvalArgs", 0), // ExprSymbol_TemplateEvalArgs
   FieldTagInfo("Arg", 0), // ExprAccessUnary_Arg
   FieldTagInfo("Args", 0), // ExprAccess_Args
   FieldTagInfo("Arg", 0), // ExprGroup_Arg
@@ -124,16 +124,16 @@ FieldTagInfo fieldTagInfos[] {
   FieldTagInfo("Name", 3), // StmtForEach_Name
   FieldTagInfo("Stmts", 0), // StmtBlock_Stmts
   FieldTagInfo("Type", 0), // DeclVariable_Type
-  FieldTagInfo("TemplateDeclArgs", 2), // DeclVariable_TemplateDeclArgs
-  FieldTagInfo("Initial", 3), // DeclVariable_Initial
+  FieldTagInfo("TemplateDeclArgs", 1), // DeclVariable_TemplateDeclArgs
+  FieldTagInfo("Initial", 2), // DeclVariable_Initial
   FieldTagInfo("Return", 0), // DeclFunction_Return
-  FieldTagInfo("TemplateDeclArgs", 2), // DeclFunction_TemplateDeclArgs
-  FieldTagInfo("Args", 3), // DeclFunction_Args
-  FieldTagInfo("Body", 4), // DeclFunction_Body
-  FieldTagInfo("TemplateDeclArgs", 1), // DeclClass_TemplateDeclArgs
-  FieldTagInfo("Inherits", 2), // DeclClass_Inherits
-  FieldTagInfo("Members", 3), // DeclClass_Members
-  FieldTagInfo("Members", 1), // DeclNamespace_Members
+  FieldTagInfo("TemplateDeclArgs", 1), // DeclFunction_TemplateDeclArgs
+  FieldTagInfo("Args", 2), // DeclFunction_Args
+  FieldTagInfo("Body", 3), // DeclFunction_Body
+  FieldTagInfo("TemplateDeclArgs", 0), // DeclClass_TemplateDeclArgs
+  FieldTagInfo("Inherits", 1), // DeclClass_Inherits
+  FieldTagInfo("Members", 2), // DeclClass_Members
+  FieldTagInfo("Members", 0), // DeclNamespace_Members
   FieldTagInfo("Path", 0), // Import_Path
   FieldTagInfo("Members", 0) // Unit_Members
 };
