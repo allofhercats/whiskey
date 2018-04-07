@@ -3,6 +3,261 @@
 #include <whiskey/Core/Assert.hpp>
 
 namespace whiskey {
+bool evalTokenID(const std::string &text, TokenID &value) {
+  if (text == "None") {
+    value = TokenID::None;
+    return true;
+  } else if (text == "Symbol") {
+    value = TokenID::Symbol;
+    return true;
+  } else if (text == "KWVoid") {
+    value = TokenID::KWVoid;
+    return true;
+  } else if (text == "KWBool") {
+    value = TokenID::KWBool;
+    return true;
+  } else if (text == "KWInt8") {
+    value = TokenID::KWInt8;
+    return true;
+  } else if (text == "KWInt16") {
+    value = TokenID::KWInt16;
+    return true;
+  } else if (text == "KWInt32") {
+    value = TokenID::KWInt32;
+    return true;
+  } else if (text == "KWInt64") {
+    value = TokenID::KWInt64;
+    return true;
+  } else if (text == "KWUInt8") {
+    value = TokenID::KWUInt8;
+    return true;
+  } else if (text == "KWUInt16") {
+    value = TokenID::KWUInt16;
+    return true;
+  } else if (text == "KWUInt32") {
+    value = TokenID::KWUInt32;
+    return true;
+  } else if (text == "KWUInt64") {
+    value = TokenID::KWUInt64;
+    return true;
+  } else if (text == "KWFloat32") {
+    value = TokenID::KWFloat32;
+    return true;
+  } else if (text == "KWFloat64") {
+    value = TokenID::KWFloat64;
+    return true;
+  } else if (text == "KWReal") {
+    value = TokenID::KWReal;
+    return true;
+  } else if (text == "KWTrue") {
+    value = TokenID::KWTrue;
+    return true;
+  } else if (text == "KWFalse") {
+    value = TokenID::KWFalse;
+    return true;
+  } else if (text == "KWNot") {
+    value = TokenID::KWNot;
+    return true;
+  } else if (text == "KWAnd") {
+    value = TokenID::KWAnd;
+    return true;
+  } else if (text == "KWOr") {
+    value = TokenID::KWOr;
+    return true;
+  } else if (text == "KWReturn") {
+    value = TokenID::KWReturn;
+    return true;
+  } else if (text == "KWContinue") {
+    value = TokenID::KWContinue;
+    return true;
+  } else if (text == "KWBreak") {
+    value = TokenID::KWBreak;
+    return true;
+  } else if (text == "KWIf") {
+    value = TokenID::KWIf;
+    return true;
+  } else if (text == "KWElse") {
+    value = TokenID::KWElse;
+    return true;
+  } else if (text == "KWWhile") {
+    value = TokenID::KWWhile;
+    return true;
+  } else if (text == "KWFor") {
+    value = TokenID::KWFor;
+    return true;
+  } else if (text == "KWForEach") {
+    value = TokenID::KWForEach;
+    return true;
+  } else if (text == "KWClass") {
+    value = TokenID::KWClass;
+    return true;
+  } else if (text == "KWInherits") {
+    value = TokenID::KWInherits;
+    return true;
+  } else if (text == "KWNamespace") {
+    value = TokenID::KWNamespace;
+    return true;
+  } else if (text == "KWImport") {
+    value = TokenID::KWImport;
+    return true;
+  } else if (text == "Int") {
+    value = TokenID::Int;
+    return true;
+  } else if (text == "Real") {
+    value = TokenID::Real;
+    return true;
+  } else if (text == "Char") {
+    value = TokenID::Char;
+    return true;
+  } else if (text == "String") {
+    value = TokenID::String;
+    return true;
+  } else if (text == "LParen") {
+    value = TokenID::LParen;
+    return true;
+  } else if (text == "RParen") {
+    value = TokenID::RParen;
+    return true;
+  } else if (text == "LBracket") {
+    value = TokenID::LBracket;
+    return true;
+  } else if (text == "RBracket") {
+    value = TokenID::RBracket;
+    return true;
+  } else if (text == "LBrace") {
+    value = TokenID::LBrace;
+    return true;
+  } else if (text == "RBrace") {
+    value = TokenID::RBrace;
+    return true;
+  } else if (text == "Comma") {
+    value = TokenID::Comma;
+    return true;
+  } else if (text == "Semicolon") {
+    value = TokenID::Semicolon;
+    return true;
+  } else if (text == "Period") {
+    value = TokenID::Period;
+    return true;
+  } else if (text == "Add") {
+    value = TokenID::Add;
+    return true;
+  } else if (text == "Inc") {
+    value = TokenID::Inc;
+    return true;
+  } else if (text == "AddAssign") {
+    value = TokenID::AddAssign;
+    return true;
+  } else if (text == "Sub") {
+    value = TokenID::Sub;
+    return true;
+  } else if (text == "Dec") {
+    value = TokenID::Dec;
+    return true;
+  } else if (text == "SubAssign") {
+    value = TokenID::SubAssign;
+    return true;
+  } else if (text == "Mul") {
+    value = TokenID::Mul;
+    return true;
+  } else if (text == "MulAssign") {
+    value = TokenID::MulAssign;
+    return true;
+  } else if (text == "Exp") {
+    value = TokenID::Exp;
+    return true;
+  } else if (text == "ExpAssign") {
+    value = TokenID::ExpAssign;
+    return true;
+  } else if (text == "Div") {
+    value = TokenID::Div;
+    return true;
+  } else if (text == "DivAssign") {
+    value = TokenID::DivAssign;
+    return true;
+  } else if (text == "DivInt") {
+    value = TokenID::DivInt;
+    return true;
+  } else if (text == "DivIntAssign") {
+    value = TokenID::DivIntAssign;
+    return true;
+  } else if (text == "DivReal") {
+    value = TokenID::DivReal;
+    return true;
+  } else if (text == "DivRealAssign") {
+    value = TokenID::DivRealAssign;
+    return true;
+  } else if (text == "Mod") {
+    value = TokenID::Mod;
+    return true;
+  } else if (text == "ModAssign") {
+    value = TokenID::ModAssign;
+    return true;
+  } else if (text == "BitNot") {
+    value = TokenID::BitNot;
+    return true;
+  } else if (text == "BitAnd") {
+    value = TokenID::BitAnd;
+    return true;
+  } else if (text == "BitAndAssign") {
+    value = TokenID::BitAndAssign;
+    return true;
+  } else if (text == "BitOr") {
+    value = TokenID::BitOr;
+    return true;
+  } else if (text == "BitOrAssign") {
+    value = TokenID::BitOrAssign;
+    return true;
+  } else if (text == "BitXor") {
+    value = TokenID::BitXor;
+    return true;
+  } else if (text == "BitXorAssign") {
+    value = TokenID::BitXorAssign;
+    return true;
+  } else if (text == "BitShL") {
+    value = TokenID::BitShL;
+    return true;
+  } else if (text == "BitShLAssign") {
+    value = TokenID::BitShLAssign;
+    return true;
+  } else if (text == "BitShR") {
+    value = TokenID::BitShR;
+    return true;
+  } else if (text == "BitShRAssign") {
+    value = TokenID::BitShRAssign;
+    return true;
+  } else if (text == "LT") {
+    value = TokenID::LT;
+    return true;
+  } else if (text == "LE") {
+    value = TokenID::LE;
+    return true;
+  } else if (text == "GT") {
+    value = TokenID::GT;
+    return true;
+  } else if (text == "GE") {
+    value = TokenID::GE;
+    return true;
+  } else if (text == "NE") {
+    value = TokenID::NE;
+    return true;
+  } else if (text == "EQ") {
+    value = TokenID::EQ;
+    return true;
+  } else if (text == "BoolImplies") {
+    value = TokenID::BoolImplies;
+    return true;
+  } else if (text == "Assign") {
+    value = TokenID::Assign;
+    return true;
+  } else if (text == "LArrow") {
+    value = TokenID::LArrow;
+    return true;
+  } else {
+    return false;
+  }
+}
+
 void printTokenIDDebug(std::ostream &os, TokenID value) {
   switch (value) {
   case TokenID::None:
@@ -10,6 +265,9 @@ void printTokenIDDebug(std::ostream &os, TokenID value) {
     break;
   case TokenID::Symbol:
     os << "Symbol";
+    break;
+  case TokenID::KWVoid:
+    os << "KWVoid";
     break;
   case TokenID::KWBool:
     os << "KWBool";
@@ -261,6 +519,9 @@ void printTokenID(std::ostream &os, TokenID value) {
     break;
   case TokenID::Symbol:
     os << "symbol";
+    break;
+  case TokenID::KWVoid:
+    os << "'void'";
     break;
   case TokenID::KWBool:
     os << "'bool'";

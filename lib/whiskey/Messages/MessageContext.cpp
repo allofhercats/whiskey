@@ -114,11 +114,20 @@ void MessageContext::print(std::ostream &os, Source source) const {
   if (!messages.empty()) {
     source.setOffset(0);
 
+    if (!source.more()) {
+      print(os);
+      return;
+    }
+
     std::list<Message>::const_iterator iter = messages.cbegin();
     Token::LinenoType lineno = 1;
 
     while (source.more() && iter != messages.cend()) {
-      if (lineno == iter->getToken().getLineno()) {
+      if (!iter->getToken().hasLineno()) {
+        iter->print(os);
+        os << "\n";
+        iter++;
+      } else if (lineno == iter->getToken().getLineno()) {
         iter->print(os, source);
         os << "\n";
 

@@ -1,13 +1,26 @@
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wcovered-switch-default"
-#pragma clang diagnostic ignored "-Wsign-compare"
-#pragma clang diagnostic ignored "-Wdeprecated"
-#pragma clang diagnostic ignored "-Wshift-sign-overflow"
-#include <gtest/gtest.h>
-#pragma clang diagnostic pop
-#pragma clang diagnostic ignored "-Wcovered-switch-default"
+#include <iostream>
+
+#include <whiskey-testing/IntegrationTest.hpp>
+#include <whiskey-testing/IntegrationTestSet.hpp>
+#include <whiskey-testing/IntegrationTestLoader.hpp>
+
+using namespace whiskey;
 
 int main(int argc, char *argv[]) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+	if (argc <= 1) {
+		std::cerr << "error: usage: " << argv[0] << " <*.yaml>\n";
+		return 1;
+	}
+
+	IntegrationTestLoader loader;
+	IntegrationTestSet tests;
+
+	for (int i = 1; i < argc; i++) {
+		IntegrationTest test;
+		if (loader.load(argv[i], test)) {
+			tests.getTests().push_back(test);
+		}
+	}
+
+  return tests.run() ? 0 : 1;
 }

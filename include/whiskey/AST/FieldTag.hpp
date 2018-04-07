@@ -142,6 +142,8 @@ enum class FieldTag {
   Unit_Members
 };
 
+std::ostream &operator<<(std::ostream &os, FieldTag value);
+
 enum class FieldFormat {
   Int,
   UInt,
@@ -150,6 +152,8 @@ enum class FieldFormat {
   Node,
   NodeVector
 };
+
+std::ostream &operator<<(std::ostream &os, FieldFormat value);
 
 class Field;
 

@@ -824,6 +824,923 @@ TEST(Unit_Parsing_ParserGrammar, ListBoundSeparated_Two_MissingBoth) {
   ASSERT_FALSE(res.isGood());
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+TEST(Unit_Parsing_ParserGrammar, ListSeparated_Good_Empty) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addListSeparated(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		grammar.addTerm(
+			"asdf4",
+			"asdf4",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_EQ(msgs.getMessageCount(), 0);
+
+  ASSERT_TRUE(res.isGood());
+  ASSERT_EQ(res.getNode().getType(), NodeType::TypeAccess);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).getFormat()),
+  	static_cast<int>(FieldFormat::NodeVector)
+  );
+  ASSERT_EQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().size(), 0);
+
+  ASSERT_FALSE(ctx.more());
+}
+
+TEST(Unit_Parsing_ParserGrammar, ListSeparated_Good_One) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addListSeparated(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		grammar.addTerm(
+			"asdf4",
+			"asdf4",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::Symbol, "x")
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+  ASSERT_EQ(msgs.getMessageCount(), 0);
+
+  ASSERT_TRUE(res.isGood());
+  ASSERT_EQ(res.getNode().getType(), NodeType::TypeAccess);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).getFormat()),
+  	static_cast<int>(FieldFormat::NodeVector)
+  );
+  ASSERT_EQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().size(), 1);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[0].getType()),
+  	static_cast<int>(NodeType::TypeSymbol)
+  );
+
+  ASSERT_FALSE(ctx.more());
+}
+
+TEST(Unit_Parsing_ParserGrammar, ListSeparated_Good_Two) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addListSeparated(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		grammar.addTerm(
+			"asdf4",
+			"asdf4",
+			TokenID::Comma,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::Symbol, "x"),
+    Token(TokenID::Comma),
+    Token(TokenID::Symbol, "y")
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+  ASSERT_EQ(msgs.getMessageCount(), 0);
+
+  ASSERT_TRUE(res.isGood());
+  ASSERT_EQ(res.getNode().getType(), NodeType::TypeAccess);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).getFormat()),
+  	static_cast<int>(FieldFormat::NodeVector)
+  );
+  ASSERT_EQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().size(), 2);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[0].getType()),
+  	static_cast<int>(NodeType::TypeSymbol)
+  );
+  ASSERT_STREQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[0].getToken().getText().c_str(), "x");
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[1].getType()),
+  	static_cast<int>(NodeType::TypeSymbol)
+  );
+  ASSERT_STREQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[1].getToken().getText().c_str(), "y");
+
+  ASSERT_FALSE(ctx.more());
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TEST(Unit_Parsing_ParserGrammar, List_Good_Empty) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addList(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_EQ(msgs.getMessageCount(), 0);
+
+  ASSERT_TRUE(res.isGood());
+  ASSERT_EQ(res.getNode().getType(), NodeType::TypeAccess);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).getFormat()),
+  	static_cast<int>(FieldFormat::NodeVector)
+  );
+  ASSERT_EQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().size(), 0);
+
+  ASSERT_FALSE(ctx.more());
+}
+
+TEST(Unit_Parsing_ParserGrammar, List_Good_One) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addList(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::Symbol, "x")
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+  ASSERT_EQ(msgs.getMessageCount(), 0);
+
+  ASSERT_TRUE(res.isGood());
+  ASSERT_EQ(res.getNode().getType(), NodeType::TypeAccess);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).getFormat()),
+  	static_cast<int>(FieldFormat::NodeVector)
+  );
+  ASSERT_EQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().size(), 1);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[0].getType()),
+  	static_cast<int>(NodeType::TypeSymbol)
+  );
+
+  ASSERT_FALSE(ctx.more());
+}
+
+TEST(Unit_Parsing_ParserGrammar, List_Good_Two) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addList(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::Symbol, "x"),
+    Token(TokenID::Symbol, "y")
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+  ASSERT_EQ(msgs.getMessageCount(), 0);
+
+  ASSERT_TRUE(res.isGood());
+  ASSERT_EQ(res.getNode().getType(), NodeType::TypeAccess);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).getFormat()),
+  	static_cast<int>(FieldFormat::NodeVector)
+  );
+  ASSERT_EQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().size(), 2);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[0].getType()),
+  	static_cast<int>(NodeType::TypeSymbol)
+  );
+  ASSERT_STREQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[0].getToken().getText().c_str(), "x");
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[1].getType()),
+  	static_cast<int>(NodeType::TypeSymbol)
+  );
+  ASSERT_STREQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[1].getToken().getText().c_str(), "y");
+
+  ASSERT_FALSE(ctx.more());
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TEST(Unit_Parsing_ParserGrammar, ListBound_Good_Empty) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addListBound(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		grammar.addTerm(
+			"asdf3",
+			"asdf3",
+			TokenID::LParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		grammar.addTerm(
+			"asdf5",
+			"asdf5",
+			TokenID::RParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LParen),
+    Token(TokenID::RParen)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_EQ(msgs.getMessageCount(), 0);
+
+  ASSERT_TRUE(res.isGood());
+  ASSERT_EQ(res.getNode().getType(), NodeType::TypeAccess);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).getFormat()),
+  	static_cast<int>(FieldFormat::NodeVector)
+  );
+  ASSERT_EQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().size(), 0);
+
+  ASSERT_FALSE(ctx.more());
+}
+
+TEST(Unit_Parsing_ParserGrammar, ListBound_Bad_Empty_MissingRight) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addListBound(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		grammar.addTerm(
+			"asdf3",
+			"asdf3",
+			TokenID::LParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		grammar.addTerm(
+			"asdf5",
+			"asdf5",
+			TokenID::RParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LParen)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_GT(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
+}
+
+TEST(Unit_Parsing_ParserGrammar, ListBound_Bad_Empty_MissingLeft) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addListBound(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		grammar.addTerm(
+			"asdf3",
+			"asdf3",
+			TokenID::LParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		grammar.addTerm(
+			"asdf5",
+			"asdf5",
+			TokenID::RParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::RParen)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_EQ(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
+}
+
+TEST(Unit_Parsing_ParserGrammar, ListBound_Good_One) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addListBound(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		grammar.addTerm(
+			"asdf3",
+			"asdf3",
+			TokenID::LParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		grammar.addTerm(
+			"asdf5",
+			"asdf5",
+			TokenID::RParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LParen),
+    Token(TokenID::Symbol, "x"),
+    Token(TokenID::RParen)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+  ASSERT_EQ(msgs.getMessageCount(), 0);
+
+  ASSERT_TRUE(res.isGood());
+  ASSERT_EQ(res.getNode().getType(), NodeType::TypeAccess);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).getFormat()),
+  	static_cast<int>(FieldFormat::NodeVector)
+  );
+  ASSERT_EQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().size(), 1);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[0].getType()),
+  	static_cast<int>(NodeType::TypeSymbol)
+  );
+
+  ASSERT_FALSE(ctx.more());
+}
+
+TEST(Unit_Parsing_ParserGrammar, ListBound_Bad_One_MissingRight) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addListBound(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		grammar.addTerm(
+			"asdf3",
+			"asdf3",
+			TokenID::LParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		grammar.addTerm(
+			"asdf5",
+			"asdf5",
+			TokenID::RParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LParen),
+    Token(TokenID::Symbol)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_GT(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
+}
+
+TEST(Unit_Parsing_ParserGrammar, ListBound_Bad_One_SepInsteadOfRight) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addListBound(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		grammar.addTerm(
+			"asdf3",
+			"asdf3",
+			TokenID::LParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		grammar.addTerm(
+			"asdf5",
+			"asdf5",
+			TokenID::RParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LParen),
+    Token(TokenID::Symbol)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_GT(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
+}
+
+TEST(Unit_Parsing_ParserGrammar, ListBound_Good_Two) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addListBound(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		grammar.addTerm(
+			"asdf3",
+			"asdf3",
+			TokenID::LParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		grammar.addTerm(
+			"asdf5",
+			"asdf5",
+			TokenID::RParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LParen),
+    Token(TokenID::Symbol, "x"),
+    Token(TokenID::Symbol, "y"),
+    Token(TokenID::RParen)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+  ASSERT_EQ(msgs.getMessageCount(), 0);
+
+  ASSERT_TRUE(res.isGood());
+  ASSERT_EQ(res.getNode().getType(), NodeType::TypeAccess);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).getFormat()),
+  	static_cast<int>(FieldFormat::NodeVector)
+  );
+  ASSERT_EQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().size(), 2);
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[0].getType()),
+  	static_cast<int>(NodeType::TypeSymbol)
+  );
+  ASSERT_STREQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[0].getToken().getText().c_str(), "x");
+  ASSERT_EQ(
+  	static_cast<int>(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[1].getType()),
+  	static_cast<int>(NodeType::TypeSymbol)
+  );
+  ASSERT_STREQ(res.getNode().getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue()[1].getToken().getText().c_str(), "y");
+
+  ASSERT_FALSE(ctx.more());
+}
+
+TEST(Unit_Parsing_ParserGrammar, ListBound_Two_MissingRight) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addListBound(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		grammar.addTerm(
+			"asdf3",
+			"asdf3",
+			TokenID::LParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		grammar.addTerm(
+			"asdf5",
+			"asdf5",
+			TokenID::RParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LParen),
+    Token(TokenID::Symbol),
+    Token(TokenID::Symbol)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_GT(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
+}
+
+TEST(Unit_Parsing_ParserGrammar, ListBound_Two_SepInsteadOfRight) {
+	ParserGrammar grammar;
+
+	ParserRuleID rule = grammar.addListBound(
+		"asdf",
+		"asdf",
+		grammar.addTerm(
+			"asdf2",
+			"asdf2",
+			TokenID::Symbol,
+			[](Token token, MessageContext &ctx) {
+				return Node(NodeType::TypeSymbol, token);
+			}
+		),
+		grammar.addTerm(
+			"asdf3",
+			"asdf3",
+			TokenID::LParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		grammar.addTerm(
+			"asdf5",
+			"asdf5",
+			TokenID::RParen,
+			[](Token token, MessageContext &ctx) {
+				return Node();
+			}
+		),
+		[](const std::vector<Node> &nodes, MessageContext &ctx) {
+			Node rtn = Node(NodeType::TypeAccess);
+			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
+			for (const Node &i : nodes) {
+				rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(i);
+			}
+			return rtn;
+		}
+	);
+
+  std::vector<Token> toks = {
+    Token(TokenID::LParen),
+    Token(TokenID::Symbol),
+    Token(TokenID::Symbol),
+    Token(TokenID::Comma)
+  };
+
+  ParserContext ctx(toks);
+  MessageContext msgs;
+  
+  ParserResult res = grammar.getRule(rule).parse(grammar, ctx, msgs);
+
+	ASSERT_GT(msgs.getMessageCount(), 0);
+
+  ASSERT_FALSE(res.isGood());
+}
+
 TEST(Unit_Parsing_ParserGrammar, UnaryRight_Good_Base) {
 	ParserGrammar grammar;
 

@@ -42,6 +42,13 @@ public:
   const Field &getField(FieldTag fieldTag) const;
   const Field &getField(std::vector<std::unique_ptr<Field>>::size_type index) const;
 
+  void setFieldUInt(FieldTag fieldTag, UInt64 value = 0);
+  void setFieldInt(FieldTag fieldTag, Int64 value = 0);
+  void setFieldReal(FieldTag fieldTag, Real value = 0);
+  void setFieldString(FieldTag fieldTag, std::string value = "");
+  void setFieldNode(FieldTag fieldTag, Node value = Node());
+  void setFieldNodeVector(FieldTag fieldTag, std::vector<Node> value = {});
+
   bool operator==(const Node &other) const;
   bool operator!=(const Node &other) const;
 

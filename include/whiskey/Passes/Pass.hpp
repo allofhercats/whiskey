@@ -6,6 +6,7 @@
 
 namespace whiskey {
 class Node;
+class MessageContext;
 
 class Pass {
 private:
@@ -13,8 +14,8 @@ private:
   std::vector<std::string> dependencies;
 
 protected:
-  virtual void onRunPre(Node &node) = 0;
-  virtual void onRunPost(Node &node) = 0;
+  virtual bool onRunPre(Node &node, MessageContext &msgs) = 0;
+  virtual bool onRunPost(Node &node, MessageContext &msgs) = 0;
 
 public:
   Pass(std::string name, std::initializer_list<std::string> dependencies = {});
@@ -24,8 +25,8 @@ public:
   const std::string &getName() const;
   const std::vector<std::string> &getDependencies() const;
 
-  void runPre(Node &node);
-  void runPost(Node &node);
+  bool runPre(Node &node, MessageContext &msgs);
+  bool runPost(Node &node, MessageContext &msgs);
 };
 } // namespace whiskey
 

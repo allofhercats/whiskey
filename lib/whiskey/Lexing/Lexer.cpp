@@ -45,7 +45,9 @@ const char *Lexer::getStateName(Lexer::State state) {
 
 void Lexer::emitSymbol(LexerContext &ctx) {
 	std::string buffer = ctx.getBuffer();
-	if (buffer == "bool") {
+	if (buffer == "void") {
+		ctx.emit(TokenID::KWVoid);
+	} else if (buffer == "bool") {
 		ctx.emit(TokenID::KWBool);
 	} else if (buffer == "int8") {
 		ctx.emit(TokenID::KWInt8);

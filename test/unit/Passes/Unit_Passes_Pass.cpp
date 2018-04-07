@@ -13,10 +13,12 @@ using namespace whiskey;
 
 class Echo : public Pass {
 protected:
-  void onRunPre(Node &node) {
+  bool onRunPre(Node &node, MessageContext &msgs) {
+    return true;
   }
 
-  void onRunPost(Node &node) {
+  bool onRunPost(Node &node, MessageContext &msgs) {
+    return true;
   }
 
 public:

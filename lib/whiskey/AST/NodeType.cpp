@@ -5,6 +5,7 @@ namespace {
 NodeTypeInfo nodeTypeInfos[] {
 	NodeTypeInfo("None", NodeTypeCategory::None, {}),
 	NodeTypeInfo("List", NodeTypeCategory::Internal, {FieldTag::List_Children}),
+	NodeTypeInfo("TypeVoid", NodeTypeCategory::Type, {}),
 	NodeTypeInfo("TypeAtomicBool", NodeTypeCategory::Type, {}),
 	NodeTypeInfo("TypeAtomicInt8", NodeTypeCategory::Type, {}),
 	NodeTypeInfo("TypeAtomicInt16", NodeTypeCategory::Type, {}),
@@ -103,6 +104,28 @@ NodeTypeInfo nodeTypeInfos[] {
 	NodeTypeInfo("Import", NodeTypeCategory::Import, {FieldTag::Import_Path}),
 	NodeTypeInfo("Unit", NodeTypeCategory::Unit, {FieldTag::Unit_Members})
 };
+}
+
+bool evalNodeType(const std::string &text, NodeType &value) {
+	for (size_t i = 0; i < sizeof(nodeTypeInfos) / sizeof(NodeTypeInfo); ++i) {
+		if (nodeTypeInfos[i].getName() == text) {
+			value = static_cast<NodeType>(i);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool evalFieldTag(NodeType nodeType, const std::string &text, FieldTag &value) {
+	for (FieldTag j : nodeTypeInfos[static_cast<ssize_t>(nodeType)].getFields()) {
+		if (FieldTagInfo::get(j).getName() == text) {
+			value = j;
+			return true;
+		}
+	}
+
+	return false;
 }
 
 std::ostream &operator<<(std::ostream &os, NodeType value) {

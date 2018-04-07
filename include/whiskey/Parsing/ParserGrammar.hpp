@@ -53,10 +53,10 @@ public:
 
 	ParserRuleID addOptional(std::string name, std::string expected, ParserRuleID base, ParserRuleEmpty::Action action);
 	ParserRuleID addOptional(ParserRuleID forward, std::string name, std::string expected, ParserRuleID base, ParserRuleEmpty::Action action);
-	ParserRuleID addList(std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID sep, ParserRuleID right, ActionList action);
-	ParserRuleID addList(ParserRuleID forward, std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID sep, ParserRuleID right, ActionList action);
-	ParserRuleID addListSeparated(std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID sep, ParserRuleID right, ActionList action);
-	ParserRuleID addListSeparated(ParserRuleID forward, std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID sep, ParserRuleID right, ActionList action);
+	ParserRuleID addList(std::string name, std::string expected, ParserRuleID element, ActionList action);
+	ParserRuleID addList(ParserRuleID forward, std::string name, std::string expected, ParserRuleID element, ActionList action);
+	ParserRuleID addListSeparated(std::string name, std::string expected, ParserRuleID element, ParserRuleID sep, ActionList action);
+	ParserRuleID addListSeparated(ParserRuleID forward, std::string name, std::string expected, ParserRuleID element, ParserRuleID sep, ActionList action);
 	ParserRuleID addListBound(std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID right, ActionList action);
 	ParserRuleID addListBound(ParserRuleID forward, std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID right, ActionList action);
 	ParserRuleID addListBoundSeparated(std::string name, std::string expected, ParserRuleID element, ParserRuleID left, ParserRuleID sep, ParserRuleID right, ActionList action);

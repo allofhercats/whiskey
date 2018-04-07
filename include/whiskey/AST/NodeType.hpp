@@ -10,6 +10,7 @@ namespace whiskey {
 enum class NodeType {
   None,
   List,
+  TypeVoid,
   TypeAtomicBool,
   TypeAtomicInt8,
   TypeAtomicInt16,
@@ -109,6 +110,8 @@ enum class NodeType {
   Unit
 };
 
+bool evalNodeType(const std::string &text, NodeType &value);
+bool evalFieldTag(NodeType nodeType, const std::string &text, FieldTag &value);
 std::ostream &operator<<(std::ostream &os, NodeType value);
 
 enum class NodeTypeCategory {

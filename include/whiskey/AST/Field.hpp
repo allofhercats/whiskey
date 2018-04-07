@@ -26,6 +26,27 @@ public:
 
   FieldFormat getFormat() const;
 
+  UInt64 getUInt() const;
+  void setUInt(UInt64 value);
+
+  Int64 getInt() const;
+  void setInt(Int64 value);
+
+  Real getReal() const;
+  void setReal(Real value);
+
+  std::string &getString();
+  const std::string &getString() const;
+  void setString(std::string value);
+
+  Node &getNode();
+  const Node &getNode() const;
+  void setNode(Node value);
+
+  std::vector<Node> &getNodeVector();
+  const std::vector<Node> &getNodeVector() const;
+  void setNodeVector(std::vector<Node> value);
+
   void printAsLiteral(std::ostream &os) const;
 
   bool operator==(const Field &other) const;

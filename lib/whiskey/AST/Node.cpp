@@ -135,6 +135,30 @@ const Field &Node::getField(std::vector<std::unique_ptr<Field>>::size_type index
 	return *fields[index];
 }
 
+void Node::setFieldUInt(FieldTag fieldTag, UInt64 value) {
+	setField(fieldTag, std::make_unique<FieldUInt>(value));
+}
+
+void Node::setFieldInt(FieldTag fieldTag, Int64 value) {
+	setField(fieldTag, std::make_unique<FieldInt>(value));
+}
+
+void Node::setFieldReal(FieldTag fieldTag, Real value) {
+	setField(fieldTag, std::make_unique<FieldReal>(value));
+}
+
+void Node::setFieldString(FieldTag fieldTag, std::string value) {
+	setField(fieldTag, std::make_unique<FieldString>(value));
+}
+
+void Node::setFieldNode(FieldTag fieldTag, Node value) {
+	setField(fieldTag, std::make_unique<FieldNode>(value));
+}
+
+void Node::setFieldNodeVector(FieldTag fieldTag, std::vector<Node> value) {
+	setField(fieldTag, std::make_unique<FieldNodeVector>(value));
+}
+
 bool Node::operator==(const Node &other) const {
 	if (type != other.type) {
 		return false;

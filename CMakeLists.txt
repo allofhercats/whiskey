@@ -62,7 +62,9 @@ file(GLOB_RECURSE lib_whiskey_parsing_files lib/whiskey/Parsing/*.cpp)
 file(GLOB_RECURSE lib_whiskey_passes_files lib/whiskey/Passes/*.cpp)
 file(GLOB_RECURSE lib_whiskey_printing_files lib/whiskey/Printing/*.cpp)
 file(GLOB_RECURSE lib_whiskey_source_files lib/whiskey/Source/*.cpp)
+file(GLOB_RECURSE lib_whiskey_testing_files lib/whiskey-testing/*.cpp)
 file(GLOB_RECURSE test_unit_whiskey_ast_files test/unit/AST/*.cpp)
+file(GLOB_RECURSE test_unit_whiskey_codegen_files test/unit/CodeGen/*.cpp)
 file(GLOB_RECURSE test_unit_whiskey_core_files test/unit/Core/*.cpp)
 file(GLOB_RECURSE test_unit_whiskey_lexing_files test/unit/Lexing/*.cpp)
 file(GLOB_RECURSE test_unit_whiskey_messages_files test/unit/Messages/*.cpp)
@@ -81,6 +83,7 @@ target_link_libraries(lib_whiskey_ast lib_whiskey_core lib_whiskey_source)
 
 add_library(lib_whiskey_codegen ${lib_whiskey_codegen_files})
 set_target_properties(lib_whiskey_codegen PROPERTIES OUTPUT_NAME WhiskeyCodeGen)
+target_link_libraries(lib_whiskey_codegen lib_whiskey_ast ${llvm_libs})
 
 add_library(lib_whiskey_core ${lib_whiskey_core_files})
 set_target_properties(lib_whiskey_core PROPERTIES OUTPUT_NAME WhiskeyCore)
@@ -110,12 +113,20 @@ add_library(lib_whiskey_source ${lib_whiskey_source_files})
 set_target_properties(lib_whiskey_source PROPERTIES OUTPUT_NAME WhiskeySource)
 target_link_libraries(lib_whiskey_source lib_whiskey_core lib_whiskey_messages)
 
+add_library(lib_whiskey_testing ${lib_whiskey_testing_files})
+set_target_properties(lib_whiskey_testing PROPERTIES OUTPUT_NAME WhiskeyTesting)
+target_link_libraries(lib_whiskey_testing lib_whiskey_lexing)
+
 # Unit tests
 #-----------------------------------------------------------------------
 
 add_executable(test_unit_whiskey_ast ${test_unit_whiskey_ast_files})
 set_target_properties(test_unit_whiskey_ast PROPERTIES OUTPUT_NAME whiskey-test-unit-ast)
 target_link_libraries(test_unit_whiskey_ast lib_whiskey_ast gtest)
+
+add_executable(test_unit_whiskey_codegen ${test_unit_whiskey_codegen_files})
+set_target_properties(test_unit_whiskey_codegen PROPERTIES OUTPUT_NAME whiskey-test-unit-codegen)
+target_link_libraries(test_unit_whiskey_codegen lib_whiskey_codegen gtest)
 
 add_executable(test_unit_whiskey_core ${test_unit_whiskey_core_files})
 set_target_properties(test_unit_whiskey_core PROPERTIES OUTPUT_NAME whiskey-test-unit-core)
@@ -146,7 +157,7 @@ target_link_libraries(test_unit_whiskey_source lib_whiskey_source gtest)
 
 add_executable(test_integration_whiskey ${test_integration_whiskey_files})
 set_target_properties(test_integration_whiskey PROPERTIES OUTPUT_NAME whiskey-test-integration)
-target_link_libraries(test_integration_whiskey lib_whiskey_core lib_whiskey_source lib_whiskey_ast lib_whiskey_lexing lib_whiskey_parsing lib_whiskey_passes lib_whiskey_printing lib_whiskey_codegen gtest ${llvm_libs})
+target_link_libraries(test_integration_whiskey lib_whiskey_core lib_whiskey_source lib_whiskey_ast lib_whiskey_lexing lib_whiskey_parsing lib_whiskey_passes lib_whiskey_printing lib_whiskey_codegen lib_whiskey_testing ${llvm_libs} yaml-cpp)
 
 # CMake Tests
 #-----------------------------------------------------------------------
@@ -154,6 +165,7 @@ target_link_libraries(test_integration_whiskey lib_whiskey_core lib_whiskey_sour
 enable_testing()
 
 add_test(NAME ctest_unit_whiskey_ast COMMAND ./whiskey-test-unit-ast)
+add_test(NAME ctest_unit_whiskey_codegen COMMAND ./whiskey-test-unit-codegen)
 add_test(NAME ctest_unit_whiskey_core COMMAND ./whiskey-test-unit-core)
 add_test(NAME ctest_unit_whiskey_lexing COMMAND ./whiskey-test-unit-lexing)
 add_test(NAME ctest_unit_whiskey_messages COMMAND ./whiskey-test-unit-messages)
@@ -161,4 +173,3 @@ add_test(NAME ctest_unit_whiskey_parsing COMMAND ./whiskey-test-unit-parsing)
 add_test(NAME ctest_unit_whiskey_passes COMMAND ./whiskey-test-unit-passes)
 add_test(NAME ctest_unit_whiskey_source COMMAND ./whiskey-test-unit-source)
 add_test(NAME ctest_integration COMMAND ./whiskey-test-integration)
-# add_test(NAME ctest_feature COMMAND ./whiskey-test-feature)

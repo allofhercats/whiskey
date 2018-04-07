@@ -1,5 +1,7 @@
 #include <whiskey/AST/FieldTag.hpp>
 
+#include <ostream>
+
 namespace whiskey {
 namespace {
 FieldTagInfo fieldTagInfos[] {
@@ -137,6 +139,35 @@ FieldTagInfo fieldTagInfos[] {
   FieldTagInfo("Path", 0), // Import_Path
   FieldTagInfo("Members", 0) // Unit_Members
 };
+}
+
+std::ostream &operator<<(std::ostream &os, FieldTag value) {
+  os << FieldTagInfo::get(value).getName();
+  return os;
+}
+
+std::ostream &operator<<(std::ostream &os, FieldFormat value) {
+  switch (value) {
+    case FieldFormat::Int:
+      os << "Int";
+      break;
+    case FieldFormat::UInt:
+      os << "UInt";
+      break;
+    case FieldFormat::Real:
+      os << "Real";
+      break;
+    case FieldFormat::String:
+      os << "String";
+      break;
+    case FieldFormat::Node:
+      os << "Node";
+      break;
+    case FieldFormat::NodeVector:
+      os << "NodeVector";
+      break;
+  }
+  return os;
 }
 
 const FieldTagInfo &FieldTagInfo::get(FieldTag fieldTag) {

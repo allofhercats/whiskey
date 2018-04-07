@@ -21,7 +21,23 @@ bool Parser::isGrammarInitted() const {
 void Parser::initGrammar() {
 	grammar = ParserGrammar();
 
+	ParserRuleID empty = grammar.addEmpty(
+		"Empty",
+		[](MessageContext &msgs) {
+			return Node();
+		}
+	);
+
 	ParserRuleID type = grammar.addForward();
+
+	ParserRuleID typeVoid = grammar.addTerm(
+		"TypeVoid",
+		"'void'",
+		TokenID::KWVoid,
+		[](Token token, MessageContext &msgs) {
+			return Node(NodeType::TypeVoid, token);
+		}
+	);
 
 	ParserRuleID typeAtomicBool = grammar.addTerm(
 		"TypeAtomicBool",
@@ -131,14 +147,12 @@ void Parser::initGrammar() {
 		}
 	);
 
-	ParserRuleID typeSymbolNonTemplate = grammar.addTerm(
-		"TypeSymbolNonTemplate",
-		"type",
+	ParserRuleID symbol = grammar.addTerm(
+		"Symbol",
+		"symbol",
 		TokenID::Symbol,
 		[](Token token, MessageContext &msgs) {
-			Node rtn(NodeType::TypeSymbol, token);
-			rtn.setField(FieldTag::TypeSymbol_TemplateEvalArgs, std::make_unique<FieldNodeVector>());
-			return rtn;
+			return Node(token);
 		}
 	);
 
@@ -194,31 +208,19 @@ void Parser::initGrammar() {
 		rightAngleBracket,
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::List);
-			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
-			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
-				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
-				nodes.begin(),
-				nodes.end()
-			);
+			rtn.setFieldNodeVector(FieldTag::List_Children, nodes);
 			return rtn;
 		}
 	);
 
-	ParserRuleID templateArgsEvalOptional = grammar.addEmpty(
-		"TemplateArgsEvalOptional",
-		[](MessageContext &msgs) {
-			Node rtn(NodeType::List);
-			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
-			return rtn;
-		}
-	);
-
-	ParserRuleID templateArgsEval = grammar.addAny(
+	ParserRuleID templateArgsEvalOptional = grammar.addOptional(
 		"TemplateArgsEval",
 		"template arguments",
-		{
-			templateArgsEvalNonOptional,
-			templateArgsEvalOptional
+		templateArgsEvalNonOptional,
+		[](MessageContext &msgs) {
+			Node rtn(NodeType::List);
+			rtn.setFieldNodeVector(FieldTag::List_Children);
+			return rtn;
 		}
 	);
 
@@ -226,12 +228,12 @@ void Parser::initGrammar() {
 		"TypeSymbol",
 		"type",
 		{
-			typeSymbolNonTemplate,
-			templateArgsEval
+			symbol,
+			templateArgsEvalOptional
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
-			Node rtn = nodes[0];
-			rtn.setField(FieldTag::TypeSymbol_TemplateEvalArgs, std::make_unique<FieldNodeVector>(nodes[1].getField(FieldTag::List_Children).as<FieldNodeVector>()));
+			Node rtn = Node(NodeType::TypeSymbol, nodes[0].getToken());
+			rtn.setFieldNodeVector(FieldTag::TypeSymbol_TemplateEvalArgs, nodes[1].getField(FieldTag::List_Children).getNodeVector());
 			return rtn;
 		}
 	);
@@ -242,6 +244,7 @@ void Parser::initGrammar() {
 		"TypeAtomic",
 		"type",
 		{
+			typeVoid,
 			typeAtomicBool,
 			typeAtomicInt8,
 			typeAtomicInt16,
@@ -278,9 +281,7 @@ void Parser::initGrammar() {
 		},
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			Node rtn(NodeType::TypeAccess, token);
-			rtn.setField(FieldTag::TypeAccess_Args, std::make_unique<FieldNodeVector>());
-			rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(lhs);
-			rtn.getField(FieldTag::TypeAccess_Args).as<FieldNodeVector>().getValue().push_back(rhs);
+			rtn.setFieldNodeVector(FieldTag::TypeAccess_Args, {lhs, rhs});
 			return rtn;
 		}
 	);
@@ -294,7 +295,7 @@ void Parser::initGrammar() {
 		},
 		[](Token token, Node rhs, MessageContext &msgs) {
 			Node rtn(NodeType::TypeAccessUnary, token);
-			rtn.setField(FieldTag::TypeAccessUnary_Arg, std::make_unique<FieldNode>(rhs));
+			rtn.setFieldNode(FieldTag::TypeAccessUnary_Arg, rhs);
 			return rtn;
 		}
 	);
@@ -349,12 +350,7 @@ void Parser::initGrammar() {
 		rightParen,
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::List);
-			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
-			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
-				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
-				nodes.begin(),
-				nodes.end()
-			);
+			rtn.setFieldNodeVector(FieldTag::List_Children, nodes);
 			return rtn;
 		}
 	);
@@ -369,8 +365,8 @@ void Parser::initGrammar() {
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::TypeFunction, nodes[1].getToken());
-			rtn.setField(FieldTag::TypeFunction_Return, std::make_unique<FieldNode>(nodes[0]));
-			rtn.setField(FieldTag::TypeFunction_Args, std::make_unique<FieldNodeVector>(nodes[2].getField(FieldTag::List_Children).as<FieldNodeVector>()));
+			rtn.setFieldNode(FieldTag::TypeFunction_Return, nodes[0]);
+			rtn.setFieldNodeVector(FieldTag::TypeFunction_Args, nodes[2].getField(FieldTag::List_Children).getNodeVector());
 			return rtn;
 		},
 		2
@@ -392,7 +388,7 @@ void Parser::initGrammar() {
 		TokenID::KWFalse,
 		[](Token token, MessageContext &msgs) {
 			Node rtn(NodeType::ExprLiteralBool, token);
-			rtn.setField(FieldTag::ExprLiteralBool_Value, std::make_unique<FieldUInt>(0));
+			rtn.setFieldUInt(FieldTag::ExprLiteralBool_Value, 0);
 			return rtn;
 		}
 	);
@@ -403,7 +399,7 @@ void Parser::initGrammar() {
 		TokenID::KWTrue,
 		[](Token token, MessageContext &msgs) {
 			Node rtn(NodeType::ExprLiteralBool, token);
-			rtn.setField(FieldTag::ExprLiteralBool_Value, std::make_unique<FieldUInt>(1));
+			rtn.setFieldUInt(FieldTag::ExprLiteralBool_Value, 1);
 			return rtn;
 		}
 	);
@@ -425,13 +421,13 @@ void Parser::initGrammar() {
 			UInt64 tmp;
 			if (evalLiteralUInt(token.getText(), tmp)) {
 				Node rtn(NodeType::ExprLiteralUInt64, token);
-				rtn.setField(FieldTag::ExprLiteralUInt64_Value, std::make_unique<FieldUInt>(tmp));
+				rtn.setFieldUInt(FieldTag::ExprLiteralUInt64_Value, tmp);
 				return rtn;
 			} else {
 				msgs.describe() << "invalid integer format";
 				msgs.emit(token, Message::Severity::Error);
 				Node rtn(NodeType::ExprLiteralUInt64, token);
-				rtn.setField(FieldTag::ExprLiteralUInt64_Value, std::make_unique<FieldUInt>(0));
+				rtn.setFieldUInt(FieldTag::ExprLiteralUInt64_Value, 0);
 				return rtn;
 			}
 		}
@@ -445,13 +441,13 @@ void Parser::initGrammar() {
 			Char32 tmp;
 			if (evalLiteralChar(token.getText(), tmp)) {
 				Node rtn(NodeType::ExprLiteralChar32, token);
-				rtn.setField(FieldTag::ExprLiteralChar32_Value, std::make_unique<FieldUInt>(tmp));
+				rtn.setFieldUInt(FieldTag::ExprLiteralChar32_Value, tmp);
 				return rtn;
 			} else {
 				msgs.describe() << "invalid character format";
 				msgs.emit(token, Message::Severity::Error);
 				Node rtn(NodeType::ExprLiteralChar32, token);
-				rtn.setField(FieldTag::ExprLiteralChar32_Value, std::make_unique<FieldUInt>(0));
+				rtn.setFieldUInt(FieldTag::ExprLiteralChar32_Value, 0);
 				return rtn;
 			}
 		}
@@ -465,26 +461,15 @@ void Parser::initGrammar() {
 			Real tmp;
 			if (evalLiteralReal(token.getText(), tmp)) {
 				Node rtn(NodeType::ExprLiteralReal, token);
-				rtn.setField(FieldTag::ExprLiteralReal_Value, std::make_unique<FieldReal>(tmp));
+				rtn.setFieldReal(FieldTag::ExprLiteralReal_Value, tmp);
 				return rtn;
 			} else {
 				msgs.describe() << "invalid real format";
 				msgs.emit(token, Message::Severity::Error);
 				Node rtn(NodeType::ExprLiteralReal, token);
-				rtn.setField(FieldTag::ExprLiteralReal_Value, std::make_unique<FieldReal>(0));
+				rtn.setFieldReal(FieldTag::ExprLiteralReal_Value, 0);
 				return rtn;
 			}
-		}
-	);
-
-	ParserRuleID exprSymbolNonTemplate = grammar.addTerm(
-		"ExprSymbolNonTemplate",
-		"expression",
-		TokenID::Symbol,
-		[](Token token, MessageContext &msgs) {
-			Node rtn(NodeType::ExprSymbol, token);
-			rtn.setField(FieldTag::ExprSymbol_TemplateEvalArgs, std::make_unique<FieldNodeVector>());
-			return rtn;
 		}
 	);
 
@@ -492,12 +477,12 @@ void Parser::initGrammar() {
 		"ExprSymbol",
 		"expression",
 		{
-			exprSymbolNonTemplate,
-			templateArgsEval
+			symbol,
+			templateArgsEvalOptional
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
-			Node rtn = nodes[0];
-			rtn.setField(FieldTag::ExprSymbol_TemplateEvalArgs, std::make_unique<FieldNodeVector>(nodes[1].getField(FieldTag::List_Children).as<FieldNodeVector>()));
+			Node rtn(NodeType::ExprSymbol, nodes[0].getToken());
+			rtn.setFieldNodeVector(FieldTag::ExprSymbol_TemplateEvalArgs, nodes[1].getField(FieldTag::List_Children).getNodeVector());
 			return rtn;
 		}
 	);
@@ -528,9 +513,7 @@ void Parser::initGrammar() {
 		},
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			Node rtn(NodeType::ExprAccess, token);
-			rtn.setField(FieldTag::ExprAccess_Args, std::make_unique<FieldNodeVector>());
-			rtn.getField(FieldTag::ExprAccess_Args).as<FieldNodeVector>().getValue().push_back(lhs);
-			rtn.getField(FieldTag::ExprAccess_Args).as<FieldNodeVector>().getValue().push_back(rhs);
+			rtn.setFieldNodeVector(FieldTag::ExprAccess_Args, {lhs, rhs});
 			return rtn;
 		}
 	);
@@ -544,7 +527,7 @@ void Parser::initGrammar() {
 		},
 		[](Token token, Node rhs, MessageContext &msgs) {
 			Node rtn(NodeType::ExprAccessUnary, token);
-			rtn.setField(FieldTag::ExprAccessUnary_Arg, std::make_unique<FieldNode>(rhs));
+			rtn.setFieldNode(FieldTag::ExprAccessUnary_Arg, rhs);
 			return rtn;
 		}
 	);
@@ -574,29 +557,17 @@ void Parser::initGrammar() {
 		rightParen,
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::List);
-			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
-			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
-				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
-				nodes.begin(),
-				nodes.end()
-			);
+			rtn.setFieldNodeVector(FieldTag::List_Children, nodes);
 			return rtn;
 		}
 	);
 
-	ParserRuleID exprCallArgsEmpty = grammar.addEmpty(
+	ParserRuleID exprCallArgsOptional = grammar.addOptional(
 		"ExprCallArgsOptional",
+		"call arguments",
+		exprCallArgsNonOptional,
 		[](MessageContext &msgs) {
 			return Node();
-		}
-	);
-
-	ParserRuleID exprCallArgs = grammar.addAny(
-		"ExprCallArgs",
-		"call arguments",
-		{
-			exprCallArgsNonOptional,
-			exprCallArgsEmpty
 		}
 	);
 
@@ -605,13 +576,13 @@ void Parser::initGrammar() {
 		"expression",
 		{
 			exprAccessUnary,
-			exprCallArgs
+			exprCallArgsOptional
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			if (nodes[1].getType() == NodeType::List) {
 				Node rtn(NodeType::ExprCall, nodes[1].getToken());
-				rtn.setField(FieldTag::ExprCall_Callee, std::make_unique<FieldNode>(nodes[0]));
-				rtn.setField(FieldTag::ExprCall_Args, std::make_unique<FieldNodeVector>(nodes[1].getField(FieldTag::List_Children).as<FieldNodeVector>()));
+				rtn.setFieldNode(FieldTag::ExprCall_Callee, nodes[0]);
+				rtn.setFieldNodeVector(FieldTag::ExprCall_Args, nodes[1].getField(FieldTag::List_Children).getNodeVector());
 				return rtn;
 			} else {
 				return nodes[0];
@@ -668,19 +639,19 @@ void Parser::initGrammar() {
 		[](Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::Sub) {
 				Node rtn(NodeType::ExprNeg);
-				rtn.setField(FieldTag::ExprNeg_Arg, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprNeg_Arg, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::Inc) {
 				Node rtn(NodeType::ExprIncPre);
-				rtn.setField(FieldTag::ExprIncPre_Arg, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprIncPre_Arg, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::Dec) {
 				Node rtn(NodeType::ExprDecPre);
-				rtn.setField(FieldTag::ExprDecPre_Arg, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprDecPre_Arg, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::BitNot) {
 				Node rtn(NodeType::ExprBitNot);
-				rtn.setField(FieldTag::ExprBitNot_Arg, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprBitNot_Arg, rhs);
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -699,11 +670,11 @@ void Parser::initGrammar() {
 		[](Node lhs, Token token, MessageContext &msgs) {
 			if (token.getID() == TokenID::Inc) {
 				Node rtn(NodeType::ExprIncPost);
-				rtn.setField(FieldTag::ExprIncPost_Arg, std::make_unique<FieldNode>(lhs));
+				rtn.setFieldNode(FieldTag::ExprIncPost_Arg, lhs);
 				return rtn;
 			} else if (token.getID() == TokenID::Dec) {
 				Node rtn(NodeType::ExprDecPost);
-				rtn.setField(FieldTag::ExprDecPost_Arg, std::make_unique<FieldNode>(lhs));
+				rtn.setFieldNode(FieldTag::ExprDecPost_Arg, lhs);
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -731,8 +702,8 @@ void Parser::initGrammar() {
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::Exp) {
 				Node rtn(NodeType::ExprExp, token);
-				rtn.setField(FieldTag::ExprExp_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprExp_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprExp_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprExp_RHS, rhs);
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -790,24 +761,22 @@ void Parser::initGrammar() {
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::Mul) {
 				Node rtn(NodeType::ExprMul, token);
-				rtn.setField(FieldTag::ExprMul_Args, std::make_unique<FieldNodeVector>());
-				rtn.getField(FieldTag::ExprMul_Args).as<FieldNodeVector>().getValue().push_back(lhs);
-				rtn.getField(FieldTag::ExprMul_Args).as<FieldNodeVector>().getValue().push_back(rhs);
+				rtn.setFieldNodeVector(FieldTag::ExprMul_Args, {lhs, rhs});
 				return rtn;
 			} else if (token.getID() == TokenID::Div) {
 				Node rtn(NodeType::ExprDiv, token);
-				rtn.setField(FieldTag::ExprDiv_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprDiv_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprDiv_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprDiv_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::DivInt) {
 				Node rtn(NodeType::ExprDivInt, token);
-				rtn.setField(FieldTag::ExprDivInt_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprDivInt_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprDivInt_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprDivInt_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::DivReal) {
 				Node rtn(NodeType::ExprDivReal, token);
-				rtn.setField(FieldTag::ExprDivReal_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprDivReal_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprDivReal_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprDivReal_RHS, rhs);
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -836,14 +805,12 @@ void Parser::initGrammar() {
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::Add) {
 				Node rtn(NodeType::ExprAdd, token);
-				rtn.setField(FieldTag::ExprAdd_Args, std::make_unique<FieldNodeVector>());
-				rtn.getField(FieldTag::ExprAdd_Args).as<FieldNodeVector>().getValue().push_back(lhs);
-				rtn.getField(FieldTag::ExprAdd_Args).as<FieldNodeVector>().getValue().push_back(rhs);
+				rtn.setFieldNodeVector(FieldTag::ExprAdd_Args, {lhs, rhs});
 				return rtn;	
 			} else if (token.getID() == TokenID::Sub) {
 				Node rtn(NodeType::ExprSub, token);
-				rtn.setField(FieldTag::ExprSub_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprSub_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprSub_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprSub_RHS, rhs);
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -871,8 +838,8 @@ void Parser::initGrammar() {
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::Mod) {
 				Node rtn(NodeType::ExprMod, token);
-				rtn.setField(FieldTag::ExprMod_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprMod_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprMod_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprMod_RHS, rhs);
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -900,8 +867,8 @@ void Parser::initGrammar() {
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::BitShR) {
 				Node rtn(NodeType::ExprBitShR, token);
-				rtn.setField(FieldTag::ExprBitShR_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprBitShR_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprBitShR_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprBitShR_RHS, rhs);
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -929,8 +896,8 @@ void Parser::initGrammar() {
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::BitShL) {
 				Node rtn(NodeType::ExprBitShL, token);
-				rtn.setField(FieldTag::ExprBitShL_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprBitShL_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprBitShL_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprBitShL_RHS, rhs);
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -958,9 +925,7 @@ void Parser::initGrammar() {
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::BitAnd) {
 				Node rtn(NodeType::ExprBitAnd, token);
-				rtn.setField(FieldTag::ExprBitAnd_Args, std::make_unique<FieldNodeVector>());
-				rtn.getField(FieldTag::ExprBitAnd_Args).as<FieldNodeVector>().getValue().push_back(lhs);
-				rtn.getField(FieldTag::ExprBitAnd_Args).as<FieldNodeVector>().getValue().push_back(rhs);
+				rtn.setFieldNodeVector(FieldTag::ExprBitAnd_Args, {lhs, rhs});
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -998,15 +963,11 @@ void Parser::initGrammar() {
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::BitOr) {
 				Node rtn(NodeType::ExprBitOr, token);
-				rtn.setField(FieldTag::ExprBitOr_Args, std::make_unique<FieldNodeVector>());
-				rtn.getField(FieldTag::ExprBitOr_Args).as<FieldNodeVector>().getValue().push_back(lhs);
-				rtn.getField(FieldTag::ExprBitOr_Args).as<FieldNodeVector>().getValue().push_back(rhs);
+				rtn.setFieldNodeVector(FieldTag::ExprBitOr_Args, {lhs, rhs});
 				return rtn;
 			} else if (token.getID() == TokenID::BitXor) {
 				Node rtn(NodeType::ExprBitXor, token);
-				rtn.setField(FieldTag::ExprBitXor_Args, std::make_unique<FieldNodeVector>());
-				rtn.getField(FieldTag::ExprBitXor_Args).as<FieldNodeVector>().getValue().push_back(lhs);
-				rtn.getField(FieldTag::ExprBitXor_Args).as<FieldNodeVector>().getValue().push_back(rhs);
+				rtn.setFieldNodeVector(FieldTag::ExprBitXor_Args, {lhs, rhs});
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -1084,33 +1045,33 @@ void Parser::initGrammar() {
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::LT) {
 				Node rtn(NodeType::ExprLT, token);
-				rtn.setField(FieldTag::ExprLT_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprLT_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprLT_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprLT_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::LE) {
 				Node rtn(NodeType::ExprLE, token);
-				rtn.setField(FieldTag::ExprLE_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprLE_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprLE_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprLE_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::GT) {
 				Node rtn(NodeType::ExprGT, token);
-				rtn.setField(FieldTag::ExprGT_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprGT_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprGT_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprGT_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::GE) {
 				Node rtn(NodeType::ExprGE, token);
-				rtn.setField(FieldTag::ExprGE_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprGE_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprGE_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprGE_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::NE) {
 				Node rtn(NodeType::ExprNE, token);
-				rtn.setField(FieldTag::ExprNE_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprNE_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprNE_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprNE_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::EQ) {
 				Node rtn(NodeType::ExprEQ, token);
-				rtn.setField(FieldTag::ExprEQ_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprEQ_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprEQ_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprEQ_RHS, rhs);
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -1137,7 +1098,7 @@ void Parser::initGrammar() {
 		[](Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::KWNot) {
 				Node rtn(NodeType::ExprBoolNot);
-				rtn.setField(FieldTag::ExprBoolNot_Arg, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprBoolNot_Arg, rhs);
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -1165,9 +1126,7 @@ void Parser::initGrammar() {
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::KWAnd) {
 				Node rtn(NodeType::ExprBoolAnd, token);
-				rtn.setField(FieldTag::ExprBoolAnd_Args, std::make_unique<FieldNodeVector>());
-				rtn.getField(FieldTag::ExprBoolAnd_Args).as<FieldNodeVector>().getValue().push_back(lhs);
-				rtn.getField(FieldTag::ExprBoolAnd_Args).as<FieldNodeVector>().getValue().push_back(rhs);
+				rtn.setFieldNodeVector(FieldTag::ExprBoolAnd_Args, {lhs, rhs});
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -1195,9 +1154,7 @@ void Parser::initGrammar() {
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::KWOr) {
 				Node rtn(NodeType::ExprBoolOr, token);
-				rtn.setField(FieldTag::ExprBoolOr_Args, std::make_unique<FieldNodeVector>());
-				rtn.getField(FieldTag::ExprBoolOr_Args).as<FieldNodeVector>().getValue().push_back(lhs);
-				rtn.getField(FieldTag::ExprBoolOr_Args).as<FieldNodeVector>().getValue().push_back(rhs);
+				rtn.setFieldNodeVector(FieldTag::ExprBoolOr_Args, {lhs, rhs});
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -1225,9 +1182,7 @@ void Parser::initGrammar() {
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::BoolImplies) {
 				Node rtn(NodeType::ExprBoolImplies, token);
-				rtn.setField(FieldTag::ExprBoolImplies_Args, std::make_unique<FieldNodeVector>());
-				rtn.getField(FieldTag::ExprBoolImplies_Args).as<FieldNodeVector>().getValue().push_back(lhs);
-				rtn.getField(FieldTag::ExprBoolImplies_Args).as<FieldNodeVector>().getValue().push_back(rhs);
+				rtn.setFieldNodeVector(FieldTag::ExprBoolImplies_Args, {lhs, rhs});
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -1376,63 +1331,63 @@ void Parser::initGrammar() {
 		[](Node lhs, Token token, Node rhs, MessageContext &msgs) {
 			if (token.getID() == TokenID::AddAssign) {
 				Node rtn(NodeType::ExprAddAssign, token);
-				rtn.setField(FieldTag::ExprAddAssign_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprAddAssign_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprAddAssign_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprAddAssign_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::SubAssign) {
 				Node rtn(NodeType::ExprSubAssign, token);
-				rtn.setField(FieldTag::ExprSubAssign_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprSubAssign_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprSubAssign_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprSubAssign_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::MulAssign) {
 				Node rtn(NodeType::ExprMulAssign, token);
-				rtn.setField(FieldTag::ExprMulAssign_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprMulAssign_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprMulAssign_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprMulAssign_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::DivIntAssign) {
 				Node rtn(NodeType::ExprDivIntAssign, token);
-				rtn.setField(FieldTag::ExprDivIntAssign_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprDivIntAssign_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprDivIntAssign_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprDivIntAssign_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::DivRealAssign) {
 				Node rtn(NodeType::ExprDivRealAssign, token);
-				rtn.setField(FieldTag::ExprDivRealAssign_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprDivRealAssign_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprDivRealAssign_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprDivRealAssign_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::ModAssign) {
 				Node rtn(NodeType::ExprModAssign, token);
-				rtn.setField(FieldTag::ExprModAssign_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprModAssign_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprModAssign_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprModAssign_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::BitAndAssign) {
 				Node rtn(NodeType::ExprBitAndAssign, token);
-				rtn.setField(FieldTag::ExprBitAndAssign_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprBitAndAssign_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprBitAndAssign_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprBitAndAssign_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::BitOrAssign) {
 				Node rtn(NodeType::ExprBitOrAssign, token);
-				rtn.setField(FieldTag::ExprBitOrAssign_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprBitOrAssign_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprBitOrAssign_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprBitOrAssign_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::BitXorAssign) {
 				Node rtn(NodeType::ExprBitXorAssign, token);
-				rtn.setField(FieldTag::ExprBitXorAssign_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprBitXorAssign_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprBitXorAssign_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprBitXorAssign_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::BitShLAssign) {
 				Node rtn(NodeType::ExprBitShLAssign, token);
-				rtn.setField(FieldTag::ExprBitShLAssign_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprBitShLAssign_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprBitShLAssign_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprBitShLAssign_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::BitShRAssign) {
 				Node rtn(NodeType::ExprBitShRAssign, token);
-				rtn.setField(FieldTag::ExprBitShRAssign_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprBitShRAssign_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprBitShRAssign_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprBitShRAssign_RHS, rhs);
 				return rtn;
 			} else if (token.getID() == TokenID::Assign) {
 				Node rtn(NodeType::ExprAssign, token);
-				rtn.setField(FieldTag::ExprAssign_LHS, std::make_unique<FieldNode>(lhs));
-				rtn.setField(FieldTag::ExprAssign_RHS, std::make_unique<FieldNode>(rhs));
+				rtn.setFieldNode(FieldTag::ExprAssign_LHS, lhs);
+				rtn.setFieldNode(FieldTag::ExprAssign_RHS, rhs);
 				return rtn;
 			} else {
 				W_ASSERT_UNREACHABLE("Unexpected operator.");
@@ -1440,51 +1395,15 @@ void Parser::initGrammar() {
 		}
 	);
 
-	ParserRuleID exprListRecEmpty = grammar.addEmpty(
-		"ExprListRecEmpty",
-		[](MessageContext &msgs) {
-			Node rtn(NodeType::List);
-			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
-			return rtn;
-		}
-	);
-
-	ParserRuleID exprListNonEmpty = grammar.addForward();
-
-	ParserRuleID exprListRec = grammar.addAny(
-		"ExprListRec",
-		"expression",
-		{
-			exprListNonEmpty,
-			exprListRecEmpty
-		}
-	);
-
-	grammar.addConcat(
-		exprListNonEmpty,
-		"ExprListNonEmpty",
-		"expression",
-		{
-			expr,
-			comma,
-			exprListRec
-		},
-		[](const std::vector<Node> &nodes, MessageContext &msgs) {
-			Node rtn = nodes[2];
-			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
-				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().begin(),
-				nodes[0]
-			);
-			return rtn;
-		}
-	);
-
-	ParserRuleID exprList = grammar.addAny(
+	ParserRuleID exprList = grammar.addListSeparated(
 		"ExprList",
 		"expression",
-		{
-			exprListNonEmpty,
-			exprListRecEmpty
+		expr,
+		comma,
+		[](const std::vector<Node> &nodes, MessageContext &msgs) {
+			Node rtn(NodeType::List);
+			rtn.setFieldNodeVector(FieldTag::List_Children, nodes);
+			return rtn;
 		}
 	);
 
@@ -1517,7 +1436,7 @@ void Parser::initGrammar() {
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::StmtExpr, nodes[1].getToken());
-			rtn.setField(FieldTag::StmtExpr_Expr, std::make_unique<FieldNode>(nodes[0]));
+			rtn.setFieldNode(FieldTag::StmtExpr_Expr, nodes[0]);
 			return rtn;
 		}
 	);
@@ -1532,7 +1451,7 @@ void Parser::initGrammar() {
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::StmtDecl, nodes[0].getToken());
-			rtn.setField(FieldTag::StmtDecl_Decl, std::make_unique<FieldNode>(nodes[0]));
+			rtn.setFieldNode(FieldTag::StmtDecl_Decl, nodes[0]);
 			return rtn;
 		}
 	);
@@ -1569,7 +1488,7 @@ void Parser::initGrammar() {
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn = Node(NodeType::StmtReturn, nodes[0].getToken());
-			rtn.setField(FieldTag::StmtReturn_Arg, std::make_unique<FieldNode>(nodes[1]));
+			rtn.setFieldNode(FieldTag::StmtReturn_Arg, nodes[1]);
 			return rtn;
 		}
 	);
@@ -1605,15 +1524,6 @@ void Parser::initGrammar() {
 		2
 	);
 
-	ParserRuleID symbol = grammar.addTerm(
-		"Symbol",
-		"symbol",
-		TokenID::Symbol,
-		[](Token token, MessageContext &msgs) {
-			return Node(token);
-		}
-	);
-
 	ParserRuleID stmtContinueWithSymbol = grammar.addConcat(
 		"StmtContinueWithSymbol",
 		"statement",
@@ -1624,7 +1534,7 @@ void Parser::initGrammar() {
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn = Node(NodeType::StmtContinue, nodes[0].getToken());
-			rtn.setField(FieldTag::StmtContinue_Name, std::make_unique<FieldString>(nodes[1].getToken().getText()));
+			rtn.setFieldString(FieldTag::StmtContinue_Name, nodes[1].getToken().getText());
 			return rtn;
 		}
 	);
@@ -1670,7 +1580,7 @@ void Parser::initGrammar() {
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn = Node(NodeType::StmtBreak, nodes[0].getToken());
-			rtn.setField(FieldTag::StmtBreak_Name, std::make_unique<FieldString>(nodes[1].getToken().getText()));
+			rtn.setFieldString(FieldTag::StmtBreak_Name, nodes[1].getToken().getText());
 			return rtn;
 		}
 	);
@@ -1716,19 +1626,12 @@ void Parser::initGrammar() {
 		}
 	);
 
-	ParserRuleID elseEmpty = grammar.addEmpty(
-		"ElseEmpty",
-		[](MessageContext &msgs) {
-			return Node();
-		}
-	);
-
-	ParserRuleID elseOptional = grammar.addAny(
+	ParserRuleID elseOptional = grammar.addOptional(
 		"ElseOptional",
 		"statement",
-		{
-			elseNonOptional,
-			elseEmpty
+		elseNonOptional,
+		[](MessageContext &msgs) {
+			return Node();
 		}
 	);
 
@@ -1745,10 +1648,10 @@ void Parser::initGrammar() {
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::StmtIf, nodes[0].getToken());
-			rtn.setField(FieldTag::StmtIf_Condition, std::make_unique<FieldNode>(nodes[2]));
-			rtn.setField(FieldTag::StmtIf_Then, std::make_unique<FieldNode>(nodes[4]));
+			rtn.setFieldNode(FieldTag::StmtIf_Condition, nodes[2]);
+			rtn.setFieldNode(FieldTag::StmtIf_Then, nodes[4]);
 			if (nodes[5].getType() != NodeType::None) {
-				rtn.setField(FieldTag::StmtIf_Else, std::make_unique<FieldNode>(nodes[5]));
+				rtn.setFieldNode(FieldTag::StmtIf_Else, nodes[5]);
 			}
 			return rtn;
 		}
@@ -1775,8 +1678,8 @@ void Parser::initGrammar() {
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::StmtWhile, nodes[0].getToken());
-			rtn.setField(FieldTag::StmtWhile_Condition, std::make_unique<FieldNode>(nodes[2]));
-			rtn.setField(FieldTag::StmtWhile_Body, std::make_unique<FieldNode>(nodes[4]));
+			rtn.setFieldNode(FieldTag::StmtWhile_Condition, nodes[2]);
+			rtn.setFieldNode(FieldTag::StmtWhile_Body, nodes[4]);
 			return rtn;
 		}
 	);
@@ -1808,10 +1711,10 @@ void Parser::initGrammar() {
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::StmtFor, nodes[0].getToken());
-			rtn.setField(FieldTag::StmtFor_Decls, std::make_unique<FieldNodeVector>(nodes[2].getField(FieldTag::List_Children).as<FieldNodeVector>()));
-			rtn.setField(FieldTag::StmtFor_Condition, std::make_unique<FieldNode>(nodes[4]));
-			rtn.setField(FieldTag::StmtFor_Steps, std::make_unique<FieldNodeVector>(nodes[6].getField(FieldTag::List_Children).as<FieldNodeVector>()));
-			rtn.setField(FieldTag::StmtFor_Body, std::make_unique<FieldNode>(nodes[8]));
+			rtn.setFieldNodeVector(FieldTag::StmtFor_Decls, nodes[2].getField(FieldTag::List_Children).getNodeVector());
+			rtn.setFieldNode(FieldTag::StmtFor_Condition, nodes[4]);
+			rtn.setFieldNodeVector(FieldTag::StmtFor_Steps, nodes[6].getField(FieldTag::List_Children).getNodeVector());
+			rtn.setFieldNode(FieldTag::StmtFor_Body, nodes[8]);
 			return rtn;
 		}
 	);
@@ -1841,57 +1744,10 @@ void Parser::initGrammar() {
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::StmtForEach, nodes[0].getToken());
-			rtn.setField(FieldTag::StmtForEach_Decl, std::make_unique<FieldNode>(nodes[2]));
-			rtn.setField(FieldTag::StmtForEach_Sequence, std::make_unique<FieldNode>(nodes[4]));
-			rtn.setField(FieldTag::StmtForEach_Body, std::make_unique<FieldNode>(nodes[6]));
+			rtn.setFieldNode(FieldTag::StmtForEach_Decl, nodes[2]);
+			rtn.setFieldNode(FieldTag::StmtForEach_Sequence, nodes[4]);
+			rtn.setFieldNode(FieldTag::StmtForEach_Body, nodes[6]);
 			return rtn;
-		}
-	);
-
-	ParserRuleID stmtListRecEmpty = grammar.addEmpty(
-		"StmtListRecEmpty",
-		[](MessageContext &msgs) {
-			Node rtn(NodeType::List);
-			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
-			return rtn;
-		}
-	);
-
-	ParserRuleID stmtListNonEmpty = grammar.addForward();
-
-	ParserRuleID stmtListRec = grammar.addAny(
-		"StmtListRec",
-		"statement",
-		{
-			stmtListNonEmpty,
-			stmtListRecEmpty
-		}
-	);
-
-	grammar.addConcat(
-		stmtListNonEmpty,
-		"StmtListNonEmpty",
-		"statement",
-		{
-			stmt,
-			stmtListRec
-		},
-		[](const std::vector<Node> &nodes, MessageContext &msgs) {
-			Node rtn = nodes[1];
-			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
-				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().begin(),
-				nodes[0]
-			);
-			return rtn;
-		}
-	);
-
-	ParserRuleID stmtList = grammar.addAny(
-		"StmtList",
-		"statement",
-		{
-			stmtListNonEmpty,
-			stmtListRecEmpty
 		}
 	);
 
@@ -1913,17 +1769,15 @@ void Parser::initGrammar() {
 		}
 	);
 
-	ParserRuleID stmtBlock = grammar.addConcat(
+	ParserRuleID stmtBlock = grammar.addListBound(
 		"StmtBlock",
 		"statement",
-		{
-			leftBrace,
-			stmtList,
-			rightBrace
-		},
+		stmt,
+		leftBrace,
+		rightBrace,
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
-			Node rtn(NodeType::StmtBlock, nodes[0].getToken());
-			rtn.setField(FieldTag::StmtBlock_Stmts, std::make_unique<FieldNodeVector>(nodes[1].getField(FieldTag::List_Children).as<FieldNodeVector>()));
+			Node rtn(NodeType::StmtBlock);
+			rtn.setFieldNodeVector(FieldTag::StmtBlock_Stmts, nodes);
 			return rtn;
 		}
 	);
@@ -1956,38 +1810,19 @@ void Parser::initGrammar() {
 		rightAngleBracket,
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::List);
-			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
-			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
-				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
-				nodes.begin(),
-				nodes.end()
-			);
+			rtn.setFieldNodeVector(FieldTag::List_Children, nodes);
 			return rtn;
 		}
 	);
 
-	ParserRuleID templateArgsDeclOptional = grammar.addEmpty(
+	ParserRuleID templateArgsDeclOptional = grammar.addOptional(
 		"TemplateArgsDeclOptional",
+		"template arguments",
+		templateArgsDeclNonOptional,
 		[](MessageContext &msgs) {
 			Node rtn(NodeType::List);
-			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
+			rtn.setFieldNodeVector(FieldTag::List_Children);
 			return rtn;
-		}
-	);
-
-	ParserRuleID templateArgsDecl = grammar.addAny(
-		"TemplateArgsDecl",
-		"template arguments",
-		{
-			templateArgsDeclNonOptional,
-			templateArgsDeclOptional
-		}
-	);
-
-	ParserRuleID empty = grammar.addEmpty(
-		"Empty",
-		[](MessageContext &msgs) {
-			return Node();
 		}
 	);
 
@@ -2003,7 +1838,7 @@ void Parser::initGrammar() {
 		}
 	);
 
-	ParserRuleID declVariableAssignment = grammar.addAny(
+	ParserRuleID declVariableAssignmentOptional = grammar.addAny(
 		"DeclVariableAssignment",
 		"=",
 		{
@@ -2019,66 +1854,30 @@ void Parser::initGrammar() {
 		{
 			type,
 			symbol,
-			templateArgsDecl,
-			declVariableAssignment
+			templateArgsDeclOptional,
+			declVariableAssignmentOptional
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::DeclVariable, nodes[1].getToken());
-			rtn.setField(FieldTag::DeclVariable_Type, std::make_unique<FieldNode>(nodes[0]));
-			rtn.setField(FieldTag::DeclVariable_TemplateDeclArgs, std::make_unique<FieldNodeVector>(nodes[2].getField(FieldTag::List_Children).as<FieldNodeVector>()));
+			rtn.setFieldNode(FieldTag::DeclVariable_Type, nodes[0]);
+			rtn.setFieldNodeVector(FieldTag::DeclVariable_TemplateDeclArgs, nodes[2].getField(FieldTag::List_Children).getNodeVector());
 			if (nodes[3].getType() != NodeType::None) {
-				rtn.setField(FieldTag::DeclVariable_Initial, std::make_unique<FieldNode>(nodes[3]));
+				rtn.setFieldNode(FieldTag::DeclVariable_Initial, nodes[3]);
 			}
 			return rtn;
 		}
 	);
 
-	ParserRuleID declVariableListRecEmpty = grammar.addEmpty(
-		"DeclVariableListRecEmpty",
-		[](MessageContext &msgs) {
-			Node rtn(NodeType::List);
-			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
-			return rtn;
-		}
-	);
-
-	ParserRuleID declVariableListNonEmpty = grammar.addForward();
-
-	ParserRuleID declVariableListRec = grammar.addAny(
-		"DeclVariableListRec",
-		"declaration",
-		{
-			declVariableListNonEmpty,
-			declVariableListRecEmpty
-		}
-	);
-
-	grammar.addConcat(
-		declVariableListNonEmpty,
-		"ExprListNonEmpty",
-		"declaration",
-		{
-			declVariableNoSemicolon,
-			comma,
-			declVariableListRec
-		},
-		[](const std::vector<Node> &nodes, MessageContext &msgs) {
-			Node rtn = nodes[2];
-			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
-				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().begin(),
-				nodes[0]
-			);
-			return rtn;
-		}
-	);
-
-	grammar.addAny(
+	grammar.addListSeparated(
 		declVariableList,
 		"DeclVariableList",
 		"declaration",
-		{
-			declVariableListNonEmpty,
-			declVariableListRecEmpty
+		declVariableNoSemicolon,
+		comma,
+		[](const std::vector<Node> &nodes, MessageContext &msgs) {
+			Node rtn(NodeType::List);
+			rtn.setFieldNodeVector(FieldTag::List_Children, nodes);
+			return rtn;
 		}
 	);
 
@@ -2103,12 +1902,7 @@ void Parser::initGrammar() {
 		rightParen,
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::List);
-			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
-			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
-				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().end(),
-				nodes.begin(),
-				nodes.end()
-			);
+			rtn.setFieldNodeVector(FieldTag::List_Children, nodes);
 			return rtn;
 		}
 	);
@@ -2141,16 +1935,16 @@ void Parser::initGrammar() {
 		{
 			type,
 			symbol,
-			templateArgsDecl,
+			templateArgsDeclOptional,
 			declFunctionArgs,
 			declFunctionBody
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::DeclFunction, nodes[1].getToken());
-			rtn.setField(FieldTag::DeclFunction_Return, std::make_unique<FieldNode>(nodes[0]));
-			rtn.setField(FieldTag::DeclFunction_TemplateDeclArgs, std::make_unique<FieldNodeVector>(nodes[2].getField(FieldTag::List_Children).as<FieldNodeVector>()));
-			rtn.setField(FieldTag::DeclFunction_Args, std::make_unique<FieldNodeVector>(nodes[3].getField(FieldTag::List_Children).as<FieldNodeVector>()));
-			rtn.setField(FieldTag::DeclFunction_Body, std::make_unique<FieldNode>(nodes[4]));
+			rtn.setFieldNode(FieldTag::DeclFunction_Return, nodes[0]);
+			rtn.setFieldNodeVector(FieldTag::DeclFunction_TemplateDeclArgs, nodes[2].getField(FieldTag::List_Children).getNodeVector());
+			rtn.setFieldNodeVector(FieldTag::DeclFunction_Args, nodes[3].getField(FieldTag::List_Children).getNodeVector());
+			rtn.setFieldNode(FieldTag::DeclFunction_Body, nodes[4]);
 			return rtn;
 		},
 		4
@@ -2173,15 +1967,15 @@ void Parser::initGrammar() {
 		{
 			class_,
 			symbol,
-			templateArgsDecl,
+			templateArgsDeclOptional,
 			leftBrace,
 			declList,
 			rightBrace
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::DeclClass, nodes[1].getToken());
-			rtn.setField(FieldTag::DeclClass_TemplateDeclArgs, std::make_unique<FieldNodeVector>(nodes[2].getField(FieldTag::List_Children).as<FieldNodeVector>()));
-			rtn.setField(FieldTag::DeclClass_Members, std::make_unique<FieldNodeVector>(nodes[4].getField(FieldTag::List_Children).as<FieldNodeVector>()));
+			rtn.setFieldNodeVector(FieldTag::DeclClass_TemplateDeclArgs, nodes[2].getField(FieldTag::List_Children).getNodeVector());
+			rtn.setFieldNodeVector(FieldTag::DeclClass_Members, nodes[4].getField(FieldTag::List_Children).getNodeVector());
 			return rtn;
 		}
 	);
@@ -2207,7 +2001,7 @@ void Parser::initGrammar() {
 		},
 		[](const std::vector<Node> &nodes, MessageContext &msgs) {
 			Node rtn(NodeType::DeclNamespace, nodes[1].getToken());
-			rtn.setField(FieldTag::DeclNamespace_Members, std::make_unique<FieldNodeVector>(nodes[3].getField(FieldTag::List_Children).as<FieldNodeVector>()));
+			rtn.setFieldNodeVector(FieldTag::DeclNamespace_Members, nodes[3].getField(FieldTag::List_Children).getNodeVector());
 			return rtn;
 		}
 	);
@@ -2224,51 +2018,15 @@ void Parser::initGrammar() {
 		}
 	);
 
-	ParserRuleID declListRecEmpty = grammar.addEmpty(
-		"DeclListRecEmpty",
-		[](MessageContext &msgs) {
-			Node rtn(NodeType::List);
-			rtn.setField(FieldTag::List_Children, std::make_unique<FieldNodeVector>());
-			return rtn;
-		}
-	);
-
-	ParserRuleID declListNonEmpty = grammar.addForward();
-
-	ParserRuleID declListRec = grammar.addAny(
-		"DeclListRec",
-		"declaration",
-		{
-			declListNonEmpty,
-			declListRecEmpty
-		}
-	);
-
-	grammar.addConcat(
-		declListNonEmpty,
-		"DeclListNonEmpty",
-		"declaration",
-		{
-			decl,
-			declListRec
-		},
-		[](const std::vector<Node> &nodes, MessageContext &msgs) {
-			Node rtn = nodes[2];
-			rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().insert(
-				rtn.getField(FieldTag::List_Children).as<FieldNodeVector>().getValue().begin(),
-				nodes[0]
-			);
-			return rtn;
-		}
-	);
-
-	grammar.addAny(
+	grammar.addList(
 		declList,
 		"DeclList",
 		"declaration",
-		{
-			declListNonEmpty,
-			declListRecEmpty
+		decl,
+		[](const std::vector<Node> &nodes, MessageContext &msgs) {
+			Node rtn(NodeType::List);
+			rtn.setFieldNodeVector(FieldTag::List_Children, nodes);
+			return rtn;
 		}
 	);
 
@@ -2302,13 +2060,13 @@ void Parser::initGrammar() {
 			std::string tmp;
 			if (evalLiteralString(nodes[1].getToken().getText(), tmp)) {
 				Node rtn(NodeType::Import, nodes[0].getToken());
-				rtn.setField(FieldTag::Import_Path, std::make_unique<FieldString>(tmp));
+				rtn.setFieldString(FieldTag::Import_Path, tmp);
 				return rtn;
 			} else {
 				msgs.describe() << "invalid string format";
 				msgs.emit(nodes[1].getToken(), Message::Severity::Error);
 				Node rtn(NodeType::Import, nodes[0].getToken());
-				rtn.setField(FieldTag::Import_Path, std::make_unique<FieldString>(""));
+				rtn.setFieldString(FieldTag::Import_Path);
 				return rtn;
 			}
 		}
@@ -2322,51 +2080,15 @@ void Parser::initGrammar() {
 			decl
 		}
 	);
-
-	ParserRuleID unitMemberListRecEmpty = grammar.addEmpty(
-		"UnitMemberListRecEmpty",
-		[](MessageContext &msgs) {
-			Node rtn(NodeType::Unit);
-			rtn.setField(FieldTag::Unit_Members, std::make_unique<FieldNodeVector>());
-			return rtn;
-		}
-	);
-
-	ParserRuleID unitMemberListNonEmpty = grammar.addForward();
-
-	ParserRuleID unitMemberListRec = grammar.addAny(
-		"UnitMemberListRec",
-		"top-level statement",
-		{
-			unitMemberListNonEmpty,
-			unitMemberListRecEmpty
-		}
-	);
-
-	grammar.addConcat(
-		unitMemberListNonEmpty,
-		"UnitMemberListNonEmpty",
-		"top-level statement",
-		{
-			unitMember,
-			unitMemberListRec
-		},
-		[](const std::vector<Node> &nodes, MessageContext &msgs) {
-			Node rtn = nodes[2];
-			rtn.getField(FieldTag::Unit_Members).as<FieldNodeVector>().getValue().insert(
-				rtn.getField(FieldTag::Unit_Members).as<FieldNodeVector>().getValue().begin(),
-				nodes[0]
-			);
-			return rtn;
-		}
-	);
-
-	ParserRuleID unit = grammar.addAny(
+	
+	ParserRuleID unit = grammar.addList(
 		"Unit",
 		"top-level statement",
-		{
-			unitMemberListNonEmpty,
-			unitMemberListRecEmpty
+		unitMember,
+		[](const std::vector<Node> &nodes, MessageContext &msgs) {
+			Node rtn(NodeType::Unit);
+			rtn.setFieldNodeVector(FieldTag::Unit_Members, nodes);
+			return rtn;
 		}
 	);
 

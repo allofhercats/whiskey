@@ -1,6 +1,7 @@
 #include <whiskey/Source/Source.hpp>
 
 #include <whiskey/Core/Assert.hpp>
+#include <whiskey/Core/Verbose.hpp>
 
 namespace whiskey {
 Source::Source(std::istream &is, std::string defaultPath) : is(&is), offset(0), defaultPath(defaultPath) {
@@ -11,6 +12,7 @@ Source::Source(std::istream &is, std::string defaultPath) : is(&is), offset(0), 
 	W_ASSERT_FALSE(is.fail(), "Unable to seek within stream.");
 
 	length = is.tellg();
+	W_VERBOSE("create source of length " << length << " with default path '" << defaultPath << "'");
 
 	is.seekg(0, std::ios_base::beg);
 	W_ASSERT_FALSE(is.fail(), "Unable to seek within stream.");

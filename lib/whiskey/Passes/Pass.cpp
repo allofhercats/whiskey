@@ -19,11 +19,11 @@ const std::vector<std::string> &Pass::getDependencies() const {
   return dependencies;
 }
 
-void Pass::runPre(Node &node) {
-  return onRunPre(node);
+bool Pass::runPre(Node &node, MessageContext &msgs) {
+  return onRunPre(node, msgs);
 }
 
-void Pass::runPost(Node &node) {
-  return onRunPost(node);
+bool Pass::runPost(Node &node, MessageContext &msgs) {
+  return onRunPost(node, msgs);
 }
 } // namespace whiskey

@@ -31,29 +31,39 @@ void PassManager::addPass(std::unique_ptr<Pass> pass) {
   passes.push_back(std::move(pass));
 }
 
-void PassManager::run(Node &node) {
+bool PassManager::run(Node &node, MessageContext &msgs) {
   if (node.getType() == NodeType::None) {
-    return;
+    return true;
   }
 
   for (auto &pass : passes) {
-    pass->runPre(node);
+    if (!pass->runPre(node, msgs)) {
+      return false;
+    }
   }
 
   for (FieldTag i : NodeTypeInfo::get(node.getType()).getFields()) {
     if (node.hasField(i)) {
       if (node.getField(i).getFormat() == FieldFormat::Node) {
-        run(node.getField(i).as<FieldNode>().getValue());
+        if (!run(node.getField(i).as<FieldNode>().getValue(), msgs)) {
+          return false;
+        }
       } else if (node.getField(i).getFormat() == FieldFormat::NodeVector) {
         for (Node &j : node.getField(i).as<FieldNodeVector>().getValue()) {
-          run(j);
+          if (!run(j, msgs)) {
+            return false;
+          }
         }
       }
     }
   }
 
   for (auto &pass : passes) {
-    pass->runPost(node);
+    if (!pass->runPost(node, msgs)) {
+      return false;
+    }
   }
+
+  return true;
 }
 } // namespace whiskey

@@ -54,11 +54,9 @@ void testParser(const Parser &parser, ParserRuleID rule, std::string text, std::
 
   ParserResult result = parser.getGrammar().getRule(rule).parse(parser.getGrammar(), parserContext, messageContext);
 
-  messageContext.print(std::cout, source);
-
-  ASSERT_FALSE(parserContext.more());
-
   if (expectsSuccess) {
+    messageContext.print(std::cout, source);
+    ASSERT_FALSE(parserContext.more());
     ASSERT_TRUE(result.isGood());
     ASSERT_EQ(messageContext.getMessageCount(), 0);
     if (result.getNode() != astExpected) {
@@ -70,7 +68,7 @@ void testParser(const Parser &parser, ParserRuleID rule, std::string text, std::
       FAIL();
     }
   } else {
-    ASSERT_FALSE(result.isGood());
+    ASSERT_FALSE(result.isGood() && !parserContext.more());
   }
 }
 
@@ -129,6 +127,40 @@ TEST(Unit_Parsing_Parser, Good_TypeSymbol_TemplateArgsEmpty) {
     },
     ast,
     true
+  );
+}
+
+TEST(Unit_Parsing_Parser, Bad_TypeSymbol_MissingLeft) {
+  Parser parser;
+  parser.initGrammar();
+
+  testParser(
+    parser,
+    parser.getGrammarRuleType(),
+    "x>",
+    {
+      TokenID::Symbol,
+      TokenID::GT
+    },
+    Node(),
+    false
+  );
+}
+
+TEST(Unit_Parsing_Parser, Bad_TypeSymbol_MissingRight) {
+  Parser parser;
+  parser.initGrammar();
+
+  testParser(
+    parser,
+    parser.getGrammarRuleType(),
+    "x<",
+    {
+      TokenID::Symbol,
+      TokenID::LT
+    },
+    Node(),
+    false
   );
 }
 

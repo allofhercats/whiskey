@@ -20,7 +20,7 @@ public:
   bool hasPass(const std::string &name);
   void addPass(std::unique_ptr<Pass> pass);
 
-  void run(Node &node);
+  bool run(Node &node, MessageContext &msgs);
 };
 } // namespace whiskey
 

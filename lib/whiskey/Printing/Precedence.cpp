@@ -9,6 +9,8 @@ Precedence getPrecedence(NodeType type) {
       return Precedence::None;
     case NodeType::List:
       return Precedence::None;
+    case NodeType::TypeVoid:
+      return Precedence::TypeTerm;
     case NodeType::TypeAtomicBool:
       return Precedence::TypeTerm;
     case NodeType::TypeAtomicInt8:

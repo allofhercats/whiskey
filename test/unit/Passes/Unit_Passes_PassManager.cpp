@@ -7,6 +7,7 @@
 #pragma clang diagnostic pop
 #pragma clang diagnostic ignored "-Wcovered-switch-default"
 
+#include <whiskey/Messages/MessageContext.hpp>
 #include <whiskey/AST/FieldNode.hpp>
 #include <whiskey/AST/FieldNodeVector.hpp>
 #include <whiskey/AST/Node.hpp>
@@ -16,6 +17,7 @@ using namespace whiskey;
 
 TEST(Unit_Passes_PassManager, Empty) {
   PassManager pm;
+  MessageContext msgs;
 
   ASSERT_FALSE(pm.hasPass("asdf"));
 
@@ -27,7 +29,7 @@ TEST(Unit_Passes_PassManager, Empty) {
 
   Node final = orig;
 
-  pm.run(final);
+  pm.run(final, msgs);
 
   ASSERT_EQ(final, orig);
 }

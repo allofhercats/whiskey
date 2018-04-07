@@ -21,6 +21,7 @@ void printLiteralString(std::ostream &os, const std::string &value, char quote =
 
 bool evalLiteralBool(const std::string &text, bool &value);
 bool evalLiteralUInt(const std::string &text, UInt64 &value);
+bool evalLiteralInt(const std::string &text, Int64 &value);
 bool evalLiteralReal(const std::string &text, Real &value);
 bool evalLiteralChar(const std::string &text, Char32 &value);
 bool evalLiteralString(const std::string &text, std::string &value);

@@ -291,6 +291,30 @@ bool evalLiteralUInt(const std::string &text, UInt64 &value) {
   }
 }
 
+bool evalLiteralInt(const std::string &text, Int64 &value) {
+  if (text.empty()) {
+    return false;
+  } else if (text[0] == '-') {
+    UInt64 tmp;
+    if (evalLiteralUInt(text.substr(1), tmp)) {
+      W_ASSERT_LE(tmp, LONG_MAX, "Cast to signed integer will cause overflow.");
+      value = static_cast<Int64>(tmp);
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    UInt64 tmp;
+    if (evalLiteralUInt(text, tmp)) {
+      W_ASSERT_LE(tmp, LONG_MAX, "Cast to signed integer will cause overflow.");
+      value = static_cast<Int64>(tmp);
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
 bool evalLiteralReal(const std::string &text, Real &value) {
   Real _int = 0.0L;
   Real _dec = 0.0L;

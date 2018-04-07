@@ -7,6 +7,7 @@ namespace whiskey {
 enum class TokenID {
   None,
   Symbol,
+  KWVoid,
   KWBool,
   KWInt8,
   KWInt16,
@@ -89,6 +90,7 @@ enum class TokenID {
   LArrow
 };
 
+bool evalTokenID(const std::string &text, TokenID &value);
 void printTokenIDDebug(std::ostream &os, TokenID value);
 void printTokenID(std::ostream &os, TokenID value);
 }
