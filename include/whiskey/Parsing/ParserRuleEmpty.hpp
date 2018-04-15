@@ -12,7 +12,7 @@ class Token;
 
 class ParserRuleEmpty : public ParserRule {
 public:
-	typedef std::function<Node(MessageContext &)> Action;
+	typedef std::function<std::unique_ptr<Node>(MessageContext &)> Action;
 
 private:
 	Action action;

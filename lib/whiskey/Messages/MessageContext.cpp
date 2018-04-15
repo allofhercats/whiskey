@@ -110,7 +110,7 @@ void MessageContext::emitChild(Message::Severity severity) {
   emitChild(Token(), severity);
 }
 
-void MessageContext::print(std::ostream &os, Source source) const {
+void MessageContext::print(std::ostream &os, Source &source) const {
   if (!messages.empty()) {
     source.setOffset(0);
 

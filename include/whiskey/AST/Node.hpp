@@ -20,11 +20,9 @@ public:
   Node(NodeType type);
   Node(Token token);
   Node(NodeType type, Token token);
-  Node(const Node &other);
-  Node(Node &&other);
+  Node(const Node &) = delete;
 
-  Node &operator=(const Node &other);
-  Node &operator=(Node &&other);
+  std::unique_ptr<Node> clone() const;
 
   Token &getToken();
   const Token &getToken() const;
@@ -56,12 +54,12 @@ public:
   std::string &getFieldString(FieldTag fieldTag);
   const std::string &getFieldString(FieldTag fieldTag) const;
   Node &setFieldString(FieldTag fieldTag, std::string value = "");
-  Node &getFieldNode(FieldTag fieldTag);
-  const Node &getFieldNode(FieldTag fieldTag) const;
-  Node &setFieldNode(FieldTag fieldTag, Node value = Node());
-  std::vector<Node> &getFieldNodeVector(FieldTag fieldTag);
-  const std::vector<Node> &getFieldNodeVector(FieldTag fieldTag) const;
-  Node &setFieldNodeVector(FieldTag fieldTag, std::vector<Node> value = {});
+  std::unique_ptr<Node> &getFieldNode(FieldTag fieldTag);
+  const std::unique_ptr<Node> &getFieldNode(FieldTag fieldTag) const;
+  Node &setFieldNode(FieldTag fieldTag, std::unique_ptr<Node> value = nullptr);
+  std::vector<std::unique_ptr<Node>> &getFieldNodeVector(FieldTag fieldTag);
+  const std::vector<std::unique_ptr<Node>> &getFieldNodeVector(FieldTag fieldTag) const;
+  Node &setFieldNodeVector(FieldTag fieldTag, std::vector<std::unique_ptr<Node>> value = {});
   Scope &getFieldScope(FieldTag fieldTag);
   const Scope &getFieldScope(FieldTag fieldTag) const;
   Node &setFieldScope(FieldTag fieldTag);

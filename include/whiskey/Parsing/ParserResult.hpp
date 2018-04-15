@@ -6,16 +6,16 @@
 namespace whiskey {
 class ParserResult {
 private:
-  Node node;
+  std::unique_ptr<Node> node;
   bool good;
 
 public:
   ParserResult();
-  ParserResult(Node node);
+  ParserResult(const std::unique_ptr<Node> &node);
 
-  Node &getNode();
-  const Node &getNode() const;
-  void setNode(Node value);
+  std::unique_ptr<Node> &getNode();
+  const std::unique_ptr<Node> &getNode() const;
+  void setNode(std::unique_ptr<Node> value);
 
   bool isGood() const;
   void setGood(bool value);

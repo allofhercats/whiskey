@@ -27,7 +27,7 @@ public:
 	ParserRuleID getGrammarRuleStmt() const;
 	ParserRuleID getGrammarRuleDecl() const;
 
-	Node parse(ParserContext &ctx, MessageContext &msgs) const;
+	std::unique_ptr<Node> parse(ParserContext &ctx, MessageContext &msgs) const;
 };
 } // namespace whiskey
 

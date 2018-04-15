@@ -39,7 +39,7 @@ public:
   void emitChild(Token token, Message::Severity severity);
   void emitChild(Message::Severity severity);
 
-  void print(std::ostream &os, Source source) const;
+  void print(std::ostream &os, Source &source) const;
   void print(std::ostream &os) const;
 };
 } // namespace whiskey

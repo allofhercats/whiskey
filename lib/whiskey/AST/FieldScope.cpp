@@ -4,6 +4,10 @@
 #include <whiskey/AST/Scope.hpp>
 
 namespace whiskey {
+std::unique_ptr<Field> FieldScope::onClone() const {
+	
+}
+
 bool FieldScope::onCompare(const Field &other) const {
 	return true;
 }

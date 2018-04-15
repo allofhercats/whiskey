@@ -8,7 +8,6 @@
 
 namespace whiskey {
 enum class NodeType {
-  None,
   List,
   TypeVoid,
   TypeAtomicBool,

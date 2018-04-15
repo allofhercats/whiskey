@@ -56,6 +56,7 @@ private:
 
 public:
 	Lexer();
+	Lexer(const Lexer &) = delete;
 
 	void lex(LexerContext &ctx, MessageContext &msg);
 };

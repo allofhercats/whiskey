@@ -3,6 +3,10 @@
 #include <whiskey/Core/Literals.hpp>
 
 namespace whiskey {
+std::unique_ptr<Field> FieldNodeVector::onClone() const {
+	return std::make_unique<FieldNodeVector>(value);
+}
+
 bool FieldNodeVector::onCompare(const Field &other) const {
 	return value == static_cast<const FieldNodeVector &>(other).value;
 }

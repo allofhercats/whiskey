@@ -20,6 +20,7 @@ public:
   static std::string stripUnneededWhitespace(const std::string &text);
 
   Source(std::istream &is, std::string defaultPath = W_SOURCE_DEFAULT_PATH);
+  Source(const Source &) = delete;
 
   const std::string &getDefaultPath() const;
 

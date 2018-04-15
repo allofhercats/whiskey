@@ -23,17 +23,19 @@ Node::Node(const Node &other) {
 	for (const std::unique_ptr<Field> &i : other.fields) {
 		if (i) {
 			if (i->getFormat() == FieldFormat::Int) {
-				fields.push_back(std::make_unique<FieldInt>(static_cast<const FieldInt &>(*i)));
+				fields.push_back(static_cast<const FieldInt &>(*i).clone());
 			} else if (i->getFormat() == FieldFormat::UInt) {
-				fields.push_back(std::make_unique<FieldUInt>(static_cast<const FieldUInt &>(*i)));
+				fields.push_back(static_cast<const FieldUInt &>(*i).clone());
 			} else if (i->getFormat() == FieldFormat::Real) {
-				fields.push_back(std::make_unique<FieldReal>(static_cast<const FieldReal &>(*i)));
+				fields.push_back(static_cast<const FieldReal &>(*i).clone());
 			} else if (i->getFormat() == FieldFormat::String) {
-				fields.push_back(std::make_unique<FieldString>(static_cast<const FieldString &>(*i)));
+				fields.push_back(static_cast<const FieldString &>(*i).clone());
 			} else if (i->getFormat() == FieldFormat::Node) {
-				fields.push_back(std::make_unique<FieldNode>(static_cast<const FieldNode &>(*i)));
+				fields.push_back(static_cast<const FieldNode &>(*i).clone());
 			} else if (i->getFormat() == FieldFormat::NodeVector) {
-				fields.push_back(std::make_unique<FieldNodeVector>(static_cast<const FieldNodeVector &>(*i)));
+				fields.push_back(static_cast<const FieldNodeVector &>(*i).clone());
+			} else if (i->getFormat() == FieldFormat::Scope) {
+				fields.push_back(static_cast<const FieldScope &>(*i).clone());
 			} else {
 				W_ASSERT_UNREACHABLE("Unsupported field format " << static_cast<int>(i->getFormat()) << ".");
 			}
@@ -54,20 +56,26 @@ Node &Node::operator=(const Node &other) {
 	token = other.token;
 	fields.clear();
 	for (const std::unique_ptr<Field> &i : other.fields) {
-		if (i->getFormat() == FieldFormat::Int) {
-			fields.push_back(std::make_unique<FieldInt>(static_cast<const FieldInt &>(*i)));
-		} else if (i->getFormat() == FieldFormat::UInt) {
-			fields.push_back(std::make_unique<FieldUInt>(static_cast<const FieldUInt &>(*i)));
-		} else if (i->getFormat() == FieldFormat::Real) {
-			fields.push_back(std::make_unique<FieldReal>(static_cast<const FieldReal &>(*i)));
-		} else if (i->getFormat() == FieldFormat::String) {
-			fields.push_back(std::make_unique<FieldString>(static_cast<const FieldString &>(*i)));
-		} else if (i->getFormat() == FieldFormat::Node) {
-			fields.push_back(std::make_unique<FieldNode>(static_cast<const FieldNode &>(*i)));
-		} else if (i->getFormat() == FieldFormat::NodeVector) {
-			fields.push_back(std::make_unique<FieldNodeVector>(static_cast<const FieldNodeVector &>(*i)));
+		if (i) {
+			if (i->getFormat() == FieldFormat::Int) {
+				fields.push_back(static_cast<const FieldInt &>(*i).clone());
+			} else if (i->getFormat() == FieldFormat::UInt) {
+				fields.push_back(static_cast<const FieldUInt &>(*i).clone());
+			} else if (i->getFormat() == FieldFormat::Real) {
+				fields.push_back(static_cast<const FieldReal &>(*i).clone());
+			} else if (i->getFormat() == FieldFormat::String) {
+				fields.push_back(static_cast<const FieldString &>(*i).clone());
+			} else if (i->getFormat() == FieldFormat::Node) {
+				fields.push_back(static_cast<const FieldNode &>(*i).clone());
+			} else if (i->getFormat() == FieldFormat::NodeVector) {
+				fields.push_back(static_cast<const FieldNodeVector &>(*i).clone());
+			} else if (i->getFormat() == FieldFormat::Scope) {
+				fields.push_back(static_cast<const FieldScope &>(*i).clone());
+			} else {
+				W_ASSERT_UNREACHABLE("Unsupported field format " << static_cast<int>(i->getFormat()) << ".");
+			}
 		} else {
-			W_ASSERT_UNREACHABLE("Unsupported field format.");
+			fields.push_back(std::unique_ptr<Field>());
 		}
 	}
 	return *this;

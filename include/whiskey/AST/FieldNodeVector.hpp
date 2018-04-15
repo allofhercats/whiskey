@@ -10,6 +10,7 @@ private:
 	std::vector<Node> value;
 
 protected:
+	std::unique_ptr<Field> onClone() const;
 	bool onCompare(const Field &other) const;
 	void onPrint(std::ostream &os, int indent) const;
 

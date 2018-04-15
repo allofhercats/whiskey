@@ -16,6 +16,10 @@ void Field::onPrintAsLiteral(std::ostream &os) const {
 
 Field::Field(FieldFormat format) : format(format) {}
 
+std::unique_ptr<Field> Field::clone() const {
+	return onClone();
+}
+
 FieldFormat Field::getFormat() const {
 	return format;
 }

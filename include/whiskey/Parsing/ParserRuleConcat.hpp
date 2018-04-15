@@ -13,7 +13,7 @@ class Token;
 
 class ParserRuleConcat : public ParserRule {
 public:
-	typedef std::function<Node(const std::vector<Node> &, MessageContext &)> Action;
+	typedef std::function<const std::unique_ptr<Node>&(const std::vector<std::unique_ptr<Node>> &, MessageContext &)> Action;
 
 private:
 	std::vector<ParserRuleID> children;

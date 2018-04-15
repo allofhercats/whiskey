@@ -3,6 +3,10 @@
 #include <whiskey/Core/Literals.hpp>
 
 namespace whiskey {
+std::unique_ptr<Field> FieldReal::onClone() const {
+	return std::make_unique<FieldReal>(value);
+}
+
 void FieldReal::onPrintAsLiteral(std::ostream &os) const {
 	printLiteralReal(os, value);
 }
