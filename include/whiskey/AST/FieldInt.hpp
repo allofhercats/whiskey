@@ -16,7 +16,8 @@ protected:
 public:
 	FieldInt(Int64 value);
 
-	Int64 getValue() const;
+	Int64 &getValue();
+	const Int64 &getValue() const;
   void setValue(Int64 value);
 };
 }

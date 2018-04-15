@@ -7,18 +7,18 @@
 #pragma clang diagnostic pop
 #pragma clang diagnostic ignored "-Wcovered-switch-default"
 
-#include <whiskey/Passes/Pass.hpp>
+#include <whiskey/AST/Pass.hpp>
 
 using namespace whiskey;
 
 class Echo : public Pass {
 protected:
-  bool onRunPre(Node &node, MessageContext &msgs) {
-    return true;
+  PassResult onRunPre(Node &node, MessageContext &msgs) {
+    return PassResult::Good;
   }
 
-  bool onRunPost(Node &node, MessageContext &msgs) {
-    return true;
+  PassResult onRunPost(Node &node, MessageContext &msgs) {
+    return PassResult::Good;
   }
 
 public:

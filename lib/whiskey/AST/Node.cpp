@@ -6,6 +6,7 @@
 #include <whiskey/AST/FieldString.hpp>
 #include <whiskey/AST/FieldNode.hpp>
 #include <whiskey/AST/FieldNodeVector.hpp>
+#include <whiskey/AST/FieldScope.hpp>
 
 namespace whiskey {
 Node::Node() : type(NodeType::None) {}
@@ -135,28 +136,103 @@ const Field &Node::getField(std::vector<std::unique_ptr<Field>>::size_type index
 	return *fields[index];
 }
 
-void Node::setFieldUInt(FieldTag fieldTag, UInt64 value) {
+void Node::removeField(std::vector<std::unique_ptr<Field>>::size_type index) {
+	fields[index].reset();
+}
+
+void Node::removeField(FieldTag fieldTag) {
+	return removeField(FieldTagInfo::get(fieldTag).getIndex());
+}
+
+UInt64 &Node::getFieldUInt(FieldTag fieldTag) {
+	return getField(fieldTag).getUInt();
+}
+
+const UInt64 &Node::getFieldUInt(FieldTag fieldTag) const {
+	return getField(fieldTag).getUInt();
+}
+
+Node &Node::setFieldUInt(FieldTag fieldTag, UInt64 value) {
 	setField(fieldTag, std::make_unique<FieldUInt>(value));
+	return *this;
 }
 
-void Node::setFieldInt(FieldTag fieldTag, Int64 value) {
+Int64 &Node::getFieldInt(FieldTag fieldTag) {
+	return getField(fieldTag).getInt();
+}
+
+const Int64 &Node::getFieldInt(FieldTag fieldTag) const {
+	return getField(fieldTag).getInt();
+}
+
+Node &Node::setFieldInt(FieldTag fieldTag, Int64 value) {
 	setField(fieldTag, std::make_unique<FieldInt>(value));
+	return *this;
 }
 
-void Node::setFieldReal(FieldTag fieldTag, Real value) {
+Real &Node::getFieldReal(FieldTag fieldTag) {
+	return getField(fieldTag).getReal();
+}
+
+const Real &Node::getFieldReal(FieldTag fieldTag) const {
+	return getField(fieldTag).getReal();
+}
+
+Node &Node::setFieldReal(FieldTag fieldTag, Real value) {
 	setField(fieldTag, std::make_unique<FieldReal>(value));
+	return *this;
 }
 
-void Node::setFieldString(FieldTag fieldTag, std::string value) {
+std::string &Node::getFieldString(FieldTag fieldTag) {
+	return getField(fieldTag).getString();
+}
+
+const std::string &Node::getFieldString(FieldTag fieldTag) const {
+	return getField(fieldTag).getString();
+}
+
+Node &Node::setFieldString(FieldTag fieldTag, std::string value) {
 	setField(fieldTag, std::make_unique<FieldString>(value));
+	return *this;
 }
 
-void Node::setFieldNode(FieldTag fieldTag, Node value) {
+Node &Node::getFieldNode(FieldTag fieldTag) {
+	return getField(fieldTag).getNode();
+}
+
+const Node &Node::getFieldNode(FieldTag fieldTag) const {
+	return getField(fieldTag).getNode();
+}
+
+Node &Node::setFieldNode(FieldTag fieldTag, Node value) {
 	setField(fieldTag, std::make_unique<FieldNode>(value));
+	return *this;
 }
 
-void Node::setFieldNodeVector(FieldTag fieldTag, std::vector<Node> value) {
+std::vector<Node> &Node::getFieldNodeVector(FieldTag fieldTag) {
+	return getField(fieldTag).getNodeVector();
+}
+
+const std::vector<Node> &Node::getFieldNodeVector(FieldTag fieldTag) const {
+	return getField(fieldTag).getNodeVector();
+}
+
+Node &Node::setFieldNodeVector(FieldTag fieldTag, std::vector<Node> value) {
 	setField(fieldTag, std::make_unique<FieldNodeVector>(value));
+	return *this;
+}
+
+Scope &Node::getFieldScope(FieldTag fieldTag) {
+	return getField(fieldTag).getScope();
+}
+
+const Scope &Node::getFieldScope(FieldTag fieldTag) const {
+	return getField(fieldTag).getScope();
+}
+
+Node &Node::setFieldScope(FieldTag fieldTag) {
+	setField(fieldTag, std::make_unique<FieldScope>());
+	return *this;
 }
 
 bool Node::operator==(const Node &other) const {

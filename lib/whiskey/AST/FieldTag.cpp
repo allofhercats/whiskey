@@ -125,6 +125,7 @@ FieldTagInfo fieldTagInfos[] {
   FieldTagInfo("Body", 2), // StmtForEach_Body
   FieldTagInfo("Name", 3), // StmtForEach_Name
   FieldTagInfo("Stmts", 0), // StmtBlock_Stmts
+  FieldTagInfo("Scope", 1), // StmtBlock_Scope
   FieldTagInfo("Type", 0), // DeclVariable_Type
   FieldTagInfo("TemplateDeclArgs", 1), // DeclVariable_TemplateDeclArgs
   FieldTagInfo("Initial", 2), // DeclVariable_Initial
@@ -132,12 +133,16 @@ FieldTagInfo fieldTagInfos[] {
   FieldTagInfo("TemplateDeclArgs", 1), // DeclFunction_TemplateDeclArgs
   FieldTagInfo("Args", 2), // DeclFunction_Args
   FieldTagInfo("Body", 3), // DeclFunction_Body
+  FieldTagInfo("Scope", 4), // DeclFunction_Scope
   FieldTagInfo("TemplateDeclArgs", 0), // DeclClass_TemplateDeclArgs
   FieldTagInfo("Inherits", 1), // DeclClass_Inherits
   FieldTagInfo("Members", 2), // DeclClass_Members
+  FieldTagInfo("Scope", 3), // DeclClass_Scope
   FieldTagInfo("Members", 0), // DeclNamespace_Members
+  FieldTagInfo("Scope", 1), // DeclNamespace_Scope
   FieldTagInfo("Path", 0), // Import_Path
-  FieldTagInfo("Members", 0) // Unit_Members
+  FieldTagInfo("Members", 0), // Unit_Members
+  FieldTagInfo("Scope", 1) // Unit_Scope
 };
 }
 
@@ -165,6 +170,9 @@ std::ostream &operator<<(std::ostream &os, FieldFormat value) {
       break;
     case FieldFormat::NodeVector:
       os << "NodeVector";
+      break;
+    case FieldFormat::Scope:
+      os << "Scope";
       break;
   }
   return os;

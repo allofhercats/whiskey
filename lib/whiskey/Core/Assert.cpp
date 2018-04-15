@@ -1,34 +1,66 @@
 #include <whiskey/Core/Assert.hpp>
 
+#include <map>
 #include <iostream>
 
 namespace whiskey {
 namespace {
-std::ostream *assertOStream = nullptr;
+std::map<AssertMode, std::ostream *> assertOStreams;
+std::map<AssertMode, size_t> assertFails;
 }
 
-std::ostream &getAssertOStream() {
-  if (assertOStream == nullptr) {
-    assertOStream = &std::cerr;
+const size_t assertModeCount = static_cast<size_t>(AssertMode::Last) - static_cast<size_t>(AssertMode::First) + 1;
+
+std::ostream &getAssertOStream(AssertMode mode) {
+	if (assertOStreams.find(mode) == assertOStreams.end()) {
+		assertOStreams[mode] = nullptr;
+	}
+
+	if (assertOStreams[mode] == nullptr) {
+    assertOStreams[mode] = &std::cerr;
   }
 
-  return *assertOStream;
+  return *assertOStreams[mode];
 }
 
-void setAssertOStream(std::ostream &os) {
-  assertOStream = &os;
+void setAssertOStream(AssertMode mode, std::ostream &os) {
+	assertOStreams[mode] = &os;
 }
 
-void printAssertPrefix(const char *file, unsigned int line) {
-  getAssertOStream() << file << ":" << std::dec << line << ": assertion failed: ";
+size_t getNAssertFailures(AssertMode mode) {
+	if (assertFails.find(mode) == assertFails.end()) {
+		assertFails[mode] = 0;
+	}
+
+	return assertFails[mode];
 }
 
-void printAssertSuffix(const char *requirement) {
-  getAssertOStream() << "\n  required: " << requirement << "\n";
+void printAssertPrefix(AssertMode mode, const char *file, unsigned int line) {
+  getAssertOStream(mode) << file << ":" << std::dec << line << ": ";
+  switch (mode) {
+  	case AssertMode::Internal:
+  		getAssertOStream(mode) << "assertion failed: ";
+  		break;
+  	case AssertMode::Test:
+  		getAssertOStream(mode) << "test assertion failed: ";
+  		break;
+  }
 }
 
-void dieOnAssertFail() {
-	getAssertOStream().flush();
+void printAssertSuffix(AssertMode mode, const char *requirement) {
+  getAssertOStream(mode) << "\n  required: " << requirement << "\n";
+}
+
+void failAssertDie() {
+	getAssertOStream(AssertMode::Internal).flush();
   abort();
+}
+
+void failAssert(AssertMode mode) {
+	if (assertFails.find(mode) == assertFails.end()) {
+		assertFails[mode] = 0;
+	}
+
+	++assertFails[mode];
 }
 }

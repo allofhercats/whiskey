@@ -1,4 +1,4 @@
-#include <whiskey/Passes/Pass.hpp>
+#include <whiskey/AST/Pass.hpp>
 
 #include <whiskey/Core/Assert.hpp>
 
@@ -19,11 +19,11 @@ const std::vector<std::string> &Pass::getDependencies() const {
   return dependencies;
 }
 
-bool Pass::runPre(Node &node, MessageContext &msgs) {
+PassResult Pass::runPre(Node &node, MessageContext &msgs) {
   return onRunPre(node, msgs);
 }
 
-bool Pass::runPost(Node &node, MessageContext &msgs) {
+PassResult Pass::runPost(Node &node, MessageContext &msgs) {
   return onRunPost(node, msgs);
 }
 } // namespace whiskey

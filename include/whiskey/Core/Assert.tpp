@@ -1,8 +1,8 @@
 namespace whiskey {
 template<typename T>
-void printAssertValue(const char *label, const char *text, const T value) {
-	getAssertOStream() << "  " << label << ": " << text << "\n";
-	getAssertOStream() << "    = " << value << "\n";
+void printAssertValue(AssertMode mode, const char *label, const char *text, const T value) {
+	getAssertOStream(mode) << "  " << label << ": " << text << "\n";
+	getAssertOStream(mode) << "    = " << value << "\n";
 }
 
 template<typename T, typename U>

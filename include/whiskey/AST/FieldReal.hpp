@@ -16,7 +16,8 @@ protected:
 public:
 	FieldReal(Real value);
 
-	Real getValue() const;
+	Real &getValue();
+	const Real &getValue() const;
   void setValue(Real value);
 };
 }

@@ -1,18 +1,22 @@
 #include <whiskey/CodeGen/LLVMGenerator.hpp>
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wshorten-64-to-32"
-#pragma clang diagnostic ignored "-Wsign-conversion"
-#pragma clang diagnostic ignored "-Wold-style-cast"
-#pragma clang diagnostic ignored "-Wswitch-enum"
-#pragma clang diagnostic ignored "-Wdeprecated"
+// #pragma clang diagnostic push
+// #pragma clang diagnostic ignored "-Wshorten-64-to-32"
+// #pragma clang diagnostic ignored "-Wsign-conversion"
+// #pragma clang diagnostic ignored "-Wold-style-cast"
+// #pragma clang diagnostic ignored "-Wswitch-enum"
+// #pragma clang diagnostic ignored "-Wdeprecated"
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/IR/Verifier.h>
-#pragma clang diagnostic pop
+#include <llvm/Transforms/Scalar.h>
+#include <llvm/Transforms/Scalar/GVN.h>
+// #pragma clang diagnostic pop
 
 #include <whiskey/AST/Node.hpp>
 
 namespace whiskey {
+bool LLVMGenerator::isJITInitted = false;
+
 llvm::Type *LLVMGenerator::generateTypeFunction(const Node &node) {
 	W_ASSERT_EQ(node.getType(), NodeType::TypeFunction, "Can only generate node of given type.");
 	W_ASSERT_TRUE(node.hasField(FieldTag::TypeFunction_Return), "Required field missing.");
@@ -277,8 +281,37 @@ void LLVMGenerator::generateStmtBlock(const Node &node) {
 	}
 }
 
+// void *LLVMGenerator::jitCompile(llvm::Function *func) {
+// 	if (!isJITInitted) {
+// 		isJITInitted = true;
+
+// 		llvm::InitializeNativeTarget();
+// 		llvm::InitializeNativeTargetAsmPrinter();
+// 		llvm::InitializeNativeTargetAsmParser();
+// 	}
+// }
+
+void LLVMGenerator::onGenerateUnit(const Node &node) {
+	for (const Node &i : node.getFieldNodeVector(FieldTag::Unit_Members)) {
+		if (i.getType() == NodeType::DeclVariable) {
+			generateDeclVariable(i);
+		} else if (i.getType() == NodeType::DeclFunction) {
+			generateDeclFunction(i);
+		} else {
+			W_ASSERT_UNREACHABLE("Unsupported unit member.");
+		}
+	}
+}
+
 LLVMGenerator::LLVMGenerator() : llvmBuilder(llvmCtx) {
 	llvmModule = std::make_unique<llvm::Module>("jeffrey", llvmCtx);
+	
+	llvmPassMgr = std::make_unique<llvm::legacy::FunctionPassManager>(llvmModule.get());
+	llvmPassMgr->add(llvm::createInstructionCombiningPass());
+	llvmPassMgr->add(llvm::createReassociatePass());
+	llvmPassMgr->add(llvm::createGVNPass());
+	llvmPassMgr->add(llvm::createCFGSimplificationPass());
+	llvmPassMgr->doInitialization();
 }
 
 llvm::Type *LLVMGenerator::generateType(const Node &node) {
@@ -377,6 +410,25 @@ void LLVMGenerator::generateStmt(const Node &node) {
 #pragma clang diagnostic pop
 }
 
+llvm::GlobalVariable *LLVMGenerator::generateDeclVariable(const Node &node) {
+	W_ASSERT_EQ(node.getType(), NodeType::DeclVariable, "Can only generate node of given type.");
+	W_ASSERT_TRUE(node.hasField(FieldTag::DeclVariable_Type), "Required field missing.");
+	W_ASSERT_EQ(node.getField(FieldTag::DeclVariable_Type).getFormat(), FieldFormat::Node, "Field of unexpected format.");
+	W_ASSERT_FALSE(node.hasField(FieldTag::DeclVariable_TemplateDeclArgs) && !node.getField(FieldTag::DeclFunction_TemplateDeclArgs).getNodeVector().empty(), "Unsupported template arguments.");
+	W_ASSERT_FALSE(node.hasField(FieldTag::DeclVariable_Initial), "Unsupported initializer.");
+	
+	llvm::GlobalVariable *gv = new llvm::GlobalVariable(
+		*llvmModule,
+		generateType(node.getFieldNode(FieldTag::DeclVariable_Type)),
+		false,
+		llvm::GlobalVariable::CommonLinkage,
+		0,
+		node.getToken().getText()
+	);
+
+	return gv;
+}
+
 llvm::Function *LLVMGenerator::generateDeclFunction(const Node &node) {
 	W_ASSERT_EQ(node.getType(), NodeType::DeclFunction, "Can only generate node of given type.");
 	W_ASSERT_TRUE(node.hasField(FieldTag::DeclFunction_Return), "Required field missing.");
@@ -423,6 +475,12 @@ llvm::Function *LLVMGenerator::generateDeclFunction(const Node &node) {
 		W_ASSERT_UNREACHABLE("Unable to verify function.");
 	}
 
+	llvmPassMgr->run(*func);
+
 	return func;
+}
+
+std::unique_ptr<llvm::Module> &LLVMGenerator::getLLVMModule() {
+	return llvmModule;
 }
 }

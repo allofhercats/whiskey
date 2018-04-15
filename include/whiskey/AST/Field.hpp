@@ -6,6 +6,7 @@
 
 namespace whiskey {
 class Node;
+class Scope;
 
 class Field {
 private:
@@ -26,13 +27,16 @@ public:
 
   FieldFormat getFormat() const;
 
-  UInt64 getUInt() const;
+  UInt64 &getUInt();
+  const UInt64 &getUInt() const;
   void setUInt(UInt64 value);
 
-  Int64 getInt() const;
+  Int64 &getInt();
+  const Int64 &getInt() const;
   void setInt(Int64 value);
 
-  Real getReal() const;
+  Real &getReal();
+  const Real &getReal() const;
   void setReal(Real value);
 
   std::string &getString();
@@ -46,6 +50,9 @@ public:
   std::vector<Node> &getNodeVector();
   const std::vector<Node> &getNodeVector() const;
   void setNodeVector(std::vector<Node> value);
+
+  Scope &getScope();
+  const Scope &getScope() const;
 
   void printAsLiteral(std::ostream &os) const;
 

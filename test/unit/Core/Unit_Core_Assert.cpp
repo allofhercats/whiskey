@@ -12,31 +12,42 @@
 using namespace whiskey;
 
 TEST(Unit_Core_Assert, Stream) {
-  ASSERT_NE(&getAssertOStream(), nullptr);
+  ASSERT_NE(&getAssertOStream(AssertMode::Internal), nullptr);
+  ASSERT_NE(&getAssertOStream(AssertMode::Test), nullptr);
 
-  std::stringstream ss;
-  setAssertOStream(ss);
+  std::stringstream ss0;
+  setAssertOStream(AssertMode::Internal, ss0);
 
-  ASSERT_EQ(&getAssertOStream(), &ss);
-  ASSERT_STREQ(ss.str().c_str(), "");
+  std::stringstream ss1;
+  setAssertOStream(AssertMode::Test, ss1);
 
-  getAssertOStream() << "hello, world\n";
-  ASSERT_EQ(&getAssertOStream(), &ss);
-  ASSERT_STREQ(ss.str().c_str(), "hello, world\n");
+  ASSERT_EQ(&getAssertOStream(AssertMode::Internal), &ss0);
+  ASSERT_STREQ(ss0.str().c_str(), "");
+
+  ASSERT_EQ(&getAssertOStream(AssertMode::Test), &ss1);
+  ASSERT_STREQ(ss1.str().c_str(), "");
+
+  getAssertOStream(AssertMode::Internal) << "hello, world\n";
+  ASSERT_EQ(&getAssertOStream(AssertMode::Internal), &ss0);
+  ASSERT_STREQ(ss0.str().c_str(), "hello, world\n");
+
+  getAssertOStream(AssertMode::Test) << "goodbye, world\n";
+  ASSERT_EQ(&getAssertOStream(AssertMode::Test), &ss1);
+  ASSERT_STREQ(ss1.str().c_str(), "goodbye, world\n");
 }
 
 TEST(Unit_Core_Assert, Die) {
-  ASSERT_DEATH({ dieOnAssertFail(); }, "");
+  ASSERT_DEATH({ failAssertDie(); }, "");
 }
 
 TEST(Unit_Core_Assert, Unreachable) {
-  setAssertOStream(std::cerr);
+  setAssertOStream(AssertMode::Internal, std::cerr);
 
   ASSERT_DEATH({ W_ASSERT_UNREACHABLE("Hey, now."); }, "Hey, now.");
 }
 
 TEST(Unit_Core_Assert, True) {
-  setAssertOStream(std::cerr);
+  setAssertOStream(AssertMode::Internal, std::cerr);
 
   W_ASSERT_TRUE(true, "");
 
@@ -45,7 +56,7 @@ TEST(Unit_Core_Assert, True) {
 }
 
 TEST(Unit_Core_Assert, False) {
-  setAssertOStream(std::cerr);
+  setAssertOStream(AssertMode::Internal, std::cerr);
 
   W_ASSERT_FALSE(false, "");
 
@@ -54,7 +65,7 @@ TEST(Unit_Core_Assert, False) {
 }
 
 TEST(Unit_Core_Assert, Null) {
-  setAssertOStream(std::cerr);
+  setAssertOStream(AssertMode::Internal, std::cerr);
 
   W_ASSERT_NULL(static_cast<void *>(nullptr), "");
 
@@ -64,7 +75,7 @@ TEST(Unit_Core_Assert, Null) {
 }
 
 TEST(Unit_Core_Assert, NonNull) {
-  setAssertOStream(std::cerr);
+  setAssertOStream(AssertMode::Internal, std::cerr);
 
   int x;
 
@@ -74,7 +85,7 @@ TEST(Unit_Core_Assert, NonNull) {
 }
 
 TEST(Unit_Core_Assert, LT) {
-  setAssertOStream(std::cerr);
+  setAssertOStream(AssertMode::Internal, std::cerr);
 
   W_ASSERT_LT(0, 1, "");
 
@@ -92,7 +103,7 @@ TEST(Unit_Core_Assert, LT) {
 }
 
 TEST(Unit_Core_Assert, LE) {
-  setAssertOStream(std::cerr);
+  setAssertOStream(AssertMode::Internal, std::cerr);
 
   W_ASSERT_LE(0, 1, "");
 
@@ -110,7 +121,7 @@ TEST(Unit_Core_Assert, LE) {
 }
 
 TEST(Unit_Core_Assert, GT) {
-  setAssertOStream(std::cerr);
+  setAssertOStream(AssertMode::Internal, std::cerr);
 
   W_ASSERT_GT(1, 0, "");
 
@@ -128,7 +139,7 @@ TEST(Unit_Core_Assert, GT) {
 }
 
 TEST(Unit_Core_Assert, GE) {
-  setAssertOStream(std::cerr);
+  setAssertOStream(AssertMode::Internal, std::cerr);
 
   W_ASSERT_GE(1, 0, "");
 
@@ -146,7 +157,7 @@ TEST(Unit_Core_Assert, GE) {
 }
 
 TEST(Unit_Core_Assert, NE) {
-  setAssertOStream(std::cerr);
+  setAssertOStream(AssertMode::Internal, std::cerr);
 
   W_ASSERT_NE(0, 1, "");
 
@@ -159,7 +170,7 @@ TEST(Unit_Core_Assert, NE) {
 }
 
 TEST(Unit_Core_Assert, EQ) {
-  setAssertOStream(std::cerr);
+  setAssertOStream(AssertMode::Internal, std::cerr);
 
   W_ASSERT_EQ(0, 0, "");
 
@@ -171,4 +182,182 @@ TEST(Unit_Core_Assert, EQ) {
 
   ASSERT_DEATH({ W_ASSERT_EQ(1, -1, "Do the chorus again lol xD"); },
                "Do the chorus again lol xD");
+}
+
+TEST(Unit_Core_Assert, Test_Unreachable) {
+  setAssertOStream(AssertMode::Test, std::cerr);
+
+  size_t before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_UNREACHABLE("Hey, now.");
+  size_t after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+}
+
+TEST(Unit_Core_Assert, Test_True) {
+  setAssertOStream(AssertMode::Test, std::cerr);
+
+  W_TEST_ASSERT_TRUE(true, "");
+
+  size_t before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_TRUE(false, "You're an all star.");
+  size_t after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+}
+
+TEST(Unit_Core_Assert, Test_False) {
+  setAssertOStream(AssertMode::Test, std::cerr);
+
+  W_TEST_ASSERT_FALSE(false, "");
+
+  size_t before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_FALSE(true, "Get your game on,");
+  size_t after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+}
+
+TEST(Unit_Core_Assert, Test_LT) {
+  setAssertOStream(AssertMode::Test, std::cerr);
+
+  W_TEST_ASSERT_LT(0, 1, "");
+
+  W_TEST_ASSERT_LT(-1, 1, "");
+
+  W_TEST_ASSERT_LT(-1, 0, "");
+
+  size_t before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_LT(0, 0, "You're a rock star.");
+  size_t after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+
+  before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_LT(1, 0, "Get your game on,");
+  after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+
+  before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_LT(1, -1, "Go play!");
+  after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+}
+
+TEST(Unit_Core_Assert, Test_LE) {
+  setAssertOStream(AssertMode::Test, std::cerr);
+
+  W_TEST_ASSERT_LE(0, 1, "");
+
+  W_TEST_ASSERT_LE(-1, 1, "");
+
+  W_TEST_ASSERT_LE(-1, 0, "");
+
+  W_TEST_ASSERT_LE(0, 0, "");
+
+  size_t before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_LE(1, 0, "It's a cool place,");
+  size_t after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+
+  before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_LE(1, -1, "And they say it gets colder.");
+  after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+}
+
+TEST(Unit_Core_Assert, Test_GT) {
+  setAssertOStream(AssertMode::Test, std::cerr);
+
+  W_TEST_ASSERT_GT(1, 0, "");
+
+  W_TEST_ASSERT_GT(1, -1, "");
+
+  W_TEST_ASSERT_GT(0, -1, "");
+
+  size_t before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_GT(0, 0, "Bundled up now,");
+  size_t after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+
+  before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_GT(0, 1, "Wait till you get older.");
+  after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+
+  before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_GT(-1, 1, "It's the medium back the big dipper,");
+  after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+}
+
+TEST(Unit_Core_Assert, Test_GE) {
+  setAssertOStream(AssertMode::Test, std::cerr);
+
+  W_TEST_ASSERT_GE(1, 0, "");
+
+  W_TEST_ASSERT_GE(1, -1, "");
+
+  W_TEST_ASSERT_GE(0, -1, "");
+
+  W_TEST_ASSERT_GE(0, 0, "");
+
+  size_t before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_GE(0, 1, "Wonder why it's not the bad the big flipper.");
+  size_t after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+
+  before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_GE(-1, 1, "The ice we skate");
+  after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+}
+
+TEST(Unit_Core_Assert, Test_NE) {
+  setAssertOStream(AssertMode::Test, std::cerr);
+
+  W_TEST_ASSERT_NE(0, 1, "");
+
+  W_TEST_ASSERT_NE(0, -1, "");
+
+  W_TEST_ASSERT_NE(-1, 1, "");
+
+  size_t before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_NE(0, 0, "And I never get bored.");
+  size_t after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+}
+
+TEST(Unit_Core_Assert, Test_EQ) {
+  setAssertOStream(AssertMode::Test, std::cerr);
+
+  W_TEST_ASSERT_EQ(0, 0, "");
+
+  size_t before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_EQ(0, 1, "Do the chorus again lol xD");
+  size_t after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+
+  before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_EQ(0, -1, "Do the chorus again lol xD");
+  after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
+
+  before = getNAssertFailures(AssertMode::Test);
+  W_TEST_ASSERT_EQ(1, -1, "Do the chorus again lol xD");
+  after = getNAssertFailures(AssertMode::Test);
+
+  ASSERT_EQ(after - before, 1);
 }

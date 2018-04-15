@@ -1,26 +1,16 @@
-#include <iostream>
+#include "Integration.hpp"
 
-#include <whiskey-testing/IntegrationTest.hpp>
-#include <whiskey-testing/IntegrationTestSet.hpp>
-#include <whiskey-testing/IntegrationTestLoader.hpp>
+#include <whiskey/CodeGen/LLVMJIT.hpp>
+
+#include <whiskey-testing/IntegrationTestSuite.hpp>
 
 using namespace whiskey;
 
+IntegrationTestSuite suite;
+
 int main(int argc, char *argv[]) {
-	if (argc <= 1) {
-		std::cerr << "error: usage: " << argv[0] << " <*.yaml>\n";
-		return 1;
-	}
+	LLVMJIT::init();
 
-	IntegrationTestLoader loader;
-	IntegrationTestSet tests;
-
-	for (int i = 1; i < argc; i++) {
-		IntegrationTest test;
-		if (loader.load(argv[i], test)) {
-			tests.getTests().push_back(test);
-		}
-	}
-
-  return tests.run() ? 0 : 1;
+	initSimple();
+  return suite.run() ? 0 : 1;
 }

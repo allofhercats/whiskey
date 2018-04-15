@@ -4,6 +4,8 @@
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 project(whiskey)
 
+message(STATUS "CMake version: ${CMAKE_VERSION}")
+
 # Options
 #-----------------------------------------------------------------------
 option(enable_verbose "enable_verbose" ON)
@@ -11,7 +13,8 @@ option(enable_verbose "enable_verbose" ON)
 # Packages
 #-----------------------------------------------------------------------
 
-find_package(LLVM REQUIRED CONFIG)
+find_package(LLVM REQUIRED CONFIG 6.0)
+message(STATUS "LLVM version: ${LLVM_VERSION}")
 
 # Subdirectories
 #-----------------------------------------------------------------------
@@ -44,6 +47,7 @@ endif()
 
 # Handling the EnableVerbose option
 if (${enable_verbose})
+	message(STATUS "Enabling W_VERBOSE")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DW_ENABLE_VERBOSE")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DW_ENABLE_VERBOSE")
 endif()
@@ -115,7 +119,7 @@ target_link_libraries(lib_whiskey_source lib_whiskey_core lib_whiskey_messages)
 
 add_library(lib_whiskey_testing ${lib_whiskey_testing_files})
 set_target_properties(lib_whiskey_testing PROPERTIES OUTPUT_NAME WhiskeyTesting)
-target_link_libraries(lib_whiskey_testing lib_whiskey_lexing)
+target_link_libraries(lib_whiskey_testing lib_whiskey_lexing lib_whiskey_parsing lib_whiskey_codegen)
 
 # Unit tests
 #-----------------------------------------------------------------------
@@ -157,7 +161,7 @@ target_link_libraries(test_unit_whiskey_source lib_whiskey_source gtest)
 
 add_executable(test_integration_whiskey ${test_integration_whiskey_files})
 set_target_properties(test_integration_whiskey PROPERTIES OUTPUT_NAME whiskey-test-integration)
-target_link_libraries(test_integration_whiskey lib_whiskey_core lib_whiskey_source lib_whiskey_ast lib_whiskey_lexing lib_whiskey_parsing lib_whiskey_passes lib_whiskey_printing lib_whiskey_codegen lib_whiskey_testing ${llvm_libs} yaml-cpp)
+target_link_libraries(test_integration_whiskey lib_whiskey_testing)
 
 # CMake Tests
 #-----------------------------------------------------------------------

@@ -41,13 +41,30 @@ public:
   Field &getField(std::vector<std::unique_ptr<Field>>::size_type index);
   const Field &getField(FieldTag fieldTag) const;
   const Field &getField(std::vector<std::unique_ptr<Field>>::size_type index) const;
+  void removeField(FieldTag fieldTag);
+  void removeField(std::vector<std::unique_ptr<Field>>::size_type index);
 
-  void setFieldUInt(FieldTag fieldTag, UInt64 value = 0);
-  void setFieldInt(FieldTag fieldTag, Int64 value = 0);
-  void setFieldReal(FieldTag fieldTag, Real value = 0);
-  void setFieldString(FieldTag fieldTag, std::string value = "");
-  void setFieldNode(FieldTag fieldTag, Node value = Node());
-  void setFieldNodeVector(FieldTag fieldTag, std::vector<Node> value = {});
+  UInt64 &getFieldUInt(FieldTag fieldTag);
+  const UInt64 &getFieldUInt(FieldTag fieldTag) const;
+  Node &setFieldUInt(FieldTag fieldTag, UInt64 value = 0);
+  Int64 &getFieldInt(FieldTag fieldTag);
+  const Int64 &getFieldInt(FieldTag fieldTag) const;
+  Node &setFieldInt(FieldTag fieldTag, Int64 value = 0);
+  Real &getFieldReal(FieldTag fieldTag);
+  const Real &getFieldReal(FieldTag fieldTag) const;
+  Node &setFieldReal(FieldTag fieldTag, Real value = 0);
+  std::string &getFieldString(FieldTag fieldTag);
+  const std::string &getFieldString(FieldTag fieldTag) const;
+  Node &setFieldString(FieldTag fieldTag, std::string value = "");
+  Node &getFieldNode(FieldTag fieldTag);
+  const Node &getFieldNode(FieldTag fieldTag) const;
+  Node &setFieldNode(FieldTag fieldTag, Node value = Node());
+  std::vector<Node> &getFieldNodeVector(FieldTag fieldTag);
+  const std::vector<Node> &getFieldNodeVector(FieldTag fieldTag) const;
+  Node &setFieldNodeVector(FieldTag fieldTag, std::vector<Node> value = {});
+  Scope &getFieldScope(FieldTag fieldTag);
+  const Scope &getFieldScope(FieldTag fieldTag) const;
+  Node &setFieldScope(FieldTag fieldTag);
 
   bool operator==(const Node &other) const;
   bool operator!=(const Node &other) const;

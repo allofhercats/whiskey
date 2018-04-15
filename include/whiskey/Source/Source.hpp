@@ -17,6 +17,8 @@ private:
   std::string defaultPath;
 
 public:
+  static std::string stripUnneededWhitespace(const std::string &text);
+
   Source(std::istream &is, std::string defaultPath = W_SOURCE_DEFAULT_PATH);
 
   const std::string &getDefaultPath() const;

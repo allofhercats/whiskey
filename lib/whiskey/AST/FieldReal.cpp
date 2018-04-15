@@ -17,7 +17,11 @@ void FieldReal::onPrint(std::ostream &os, int indent) const {
 
 FieldReal::FieldReal(Real value) : Field(FieldFormat::Real), value(value) {}
 
-Real FieldReal::getValue() const {
+Real &FieldReal::getValue() {
+	return value;
+}
+
+const Real &FieldReal::getValue() const {
 	return value;
 }
 

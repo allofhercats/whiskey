@@ -96,13 +96,13 @@ NodeTypeInfo nodeTypeInfos[] {
 	NodeTypeInfo("StmtWhile", NodeTypeCategory::Stmt, {FieldTag::StmtWhile_Condition, FieldTag::StmtWhile_Body, FieldTag::StmtWhile_Name}),
 	NodeTypeInfo("StmtFor", NodeTypeCategory::Stmt, {FieldTag::StmtFor_Decls, FieldTag::StmtFor_Condition, FieldTag::StmtFor_Steps, FieldTag::StmtFor_Body, FieldTag::StmtFor_Name}),
 	NodeTypeInfo("StmtForEach", NodeTypeCategory::Stmt, {FieldTag::StmtForEach_Decl, FieldTag::StmtForEach_Sequence, FieldTag::StmtForEach_Body, FieldTag::StmtForEach_Name}),
-	NodeTypeInfo("StmtBlock", NodeTypeCategory::Stmt, {FieldTag::StmtBlock_Stmts}),
+	NodeTypeInfo("StmtBlock", NodeTypeCategory::Stmt, {FieldTag::StmtBlock_Stmts, FieldTag::StmtBlock_Scope}),
 	NodeTypeInfo("DeclVariable", NodeTypeCategory::Decl, {FieldTag::DeclVariable_Type, FieldTag::DeclVariable_TemplateDeclArgs, FieldTag::DeclVariable_Initial}),
-	NodeTypeInfo("DeclFunction", NodeTypeCategory::Decl, {FieldTag::DeclFunction_Return, FieldTag::DeclFunction_TemplateDeclArgs, FieldTag::DeclFunction_Args, FieldTag::DeclFunction_Body}),
-	NodeTypeInfo("DeclClass", NodeTypeCategory::Decl, {FieldTag::DeclClass_TemplateDeclArgs, FieldTag::DeclClass_Inherits, FieldTag::DeclClass_Members}),
-	NodeTypeInfo("DeclNamespace", NodeTypeCategory::Decl, {FieldTag::DeclNamespace_Members}),
+	NodeTypeInfo("DeclFunction", NodeTypeCategory::Decl, {FieldTag::DeclFunction_Return, FieldTag::DeclFunction_TemplateDeclArgs, FieldTag::DeclFunction_Args, FieldTag::DeclFunction_Body, FieldTag::DeclFunction_Scope}),
+	NodeTypeInfo("DeclClass", NodeTypeCategory::Decl, {FieldTag::DeclClass_TemplateDeclArgs, FieldTag::DeclClass_Inherits, FieldTag::DeclClass_Members, FieldTag::DeclClass_Scope}),
+	NodeTypeInfo("DeclNamespace", NodeTypeCategory::Decl, {FieldTag::DeclNamespace_Members, FieldTag::DeclNamespace_Scope}),
 	NodeTypeInfo("Import", NodeTypeCategory::Import, {FieldTag::Import_Path}),
-	NodeTypeInfo("Unit", NodeTypeCategory::Unit, {FieldTag::Unit_Members})
+	NodeTypeInfo("Unit", NodeTypeCategory::Unit, {FieldTag::Unit_Members, FieldTag::Unit_Scope})
 };
 }
 

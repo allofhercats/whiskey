@@ -127,6 +127,7 @@ enum class FieldTag {
   StmtForEach_Body,
   StmtForEach_Name,
   StmtBlock_Stmts,
+  StmtBlock_Scope,
   DeclVariable_Type,
   DeclVariable_TemplateDeclArgs,
   DeclVariable_Initial,
@@ -134,12 +135,16 @@ enum class FieldTag {
   DeclFunction_TemplateDeclArgs,
   DeclFunction_Args,
   DeclFunction_Body,
+  DeclFunction_Scope,
   DeclClass_TemplateDeclArgs,
   DeclClass_Inherits,
   DeclClass_Members,
+  DeclClass_Scope,
   DeclNamespace_Members,
+  DeclNamespace_Scope,
   Import_Path,
-  Unit_Members
+  Unit_Members,
+  Unit_Scope
 };
 
 std::ostream &operator<<(std::ostream &os, FieldTag value);
@@ -150,7 +155,8 @@ enum class FieldFormat {
   Real,
   String,
   Node,
-  NodeVector
+  NodeVector,
+  Scope
 };
 
 std::ostream &operator<<(std::ostream &os, FieldFormat value);

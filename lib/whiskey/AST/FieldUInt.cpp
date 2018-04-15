@@ -18,7 +18,11 @@ void FieldUInt::onPrint(std::ostream &os, int indent) const {
 
 FieldUInt::FieldUInt(UInt64 value) : Field(FieldFormat::UInt), value(value) {}
 
-UInt64 FieldUInt::getValue() const {
+UInt64 &FieldUInt::getValue() {
+	return value;
+}
+
+const UInt64 &FieldUInt::getValue() const {
 	return value;
 }
 

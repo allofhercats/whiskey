@@ -1,6 +1,7 @@
 #include <whiskey/Core/Literals.hpp>
 
 #include <math.h>
+#include <limits.h>
 
 #include <whiskey/Core/Assert.hpp>
 
@@ -297,7 +298,7 @@ bool evalLiteralInt(const std::string &text, Int64 &value) {
   } else if (text[0] == '-') {
     UInt64 tmp;
     if (evalLiteralUInt(text.substr(1), tmp)) {
-      W_ASSERT_LE(tmp, LONG_MAX, "Cast to signed integer will cause overflow.");
+      W_ASSERT_LE(tmp, static_cast<UInt64>(LONG_MAX), "Cast to signed integer will cause overflow.");
       value = static_cast<Int64>(tmp);
       return true;
     } else {
@@ -306,7 +307,7 @@ bool evalLiteralInt(const std::string &text, Int64 &value) {
   } else {
     UInt64 tmp;
     if (evalLiteralUInt(text, tmp)) {
-      W_ASSERT_LE(tmp, LONG_MAX, "Cast to signed integer will cause overflow.");
+      W_ASSERT_LE(tmp, static_cast<UInt64>(LONG_MAX), "Cast to signed integer will cause overflow.");
       value = static_cast<Int64>(tmp);
       return true;
     } else {

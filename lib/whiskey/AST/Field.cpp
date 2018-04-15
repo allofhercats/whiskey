@@ -7,6 +7,7 @@
 #include <whiskey/AST/FieldString.hpp>
 #include <whiskey/AST/FieldNode.hpp>
 #include <whiskey/AST/FieldNodeVector.hpp>
+#include <whiskey/AST/FieldScope.hpp>
 
 namespace whiskey {
 void Field::onPrintAsLiteral(std::ostream &os) const {
@@ -19,7 +20,12 @@ FieldFormat Field::getFormat() const {
 	return format;
 }
 
-UInt64 Field::getUInt() const {
+UInt64 &Field::getUInt() {
+	W_ASSERT_TRUE(format == FieldFormat::UInt, "Cannot access field outside of format.");
+	return as<FieldUInt>().getValue();
+}
+
+const UInt64 &Field::getUInt() const {
 	W_ASSERT_TRUE(format == FieldFormat::UInt, "Cannot access field outside of format.");
 	return as<FieldUInt>().getValue();
 }
@@ -29,7 +35,12 @@ void Field::setUInt(UInt64 value) {
 	as<FieldUInt>().setValue(value);
 }
 
-Int64 Field::getInt() const {
+Int64 &Field::getInt() {
+	W_ASSERT_TRUE(format == FieldFormat::Int, "Cannot access field outside of format.");
+	return as<FieldInt>().getValue();
+}
+
+const Int64 &Field::getInt() const {
 	W_ASSERT_TRUE(format == FieldFormat::Int, "Cannot access field outside of format.");
 	return as<FieldInt>().getValue();
 }
@@ -39,7 +50,12 @@ void Field::setInt(Int64 value) {
 	as<FieldInt>().setValue(value);
 }
 
-Real Field::getReal() const {
+Real &Field::getReal() {
+	W_ASSERT_TRUE(format == FieldFormat::Real, "Cannot access field outside of format.");
+	return as<FieldReal>().getValue();
+}
+
+const Real &Field::getReal() const {
 	W_ASSERT_TRUE(format == FieldFormat::Real, "Cannot access field outside of format.");
 	return as<FieldReal>().getValue();
 }
@@ -92,6 +108,16 @@ const std::vector<Node> &Field::getNodeVector() const {
 void Field::setNodeVector(std::vector<Node> value) {
 	W_ASSERT_TRUE(format == FieldFormat::NodeVector, "Cannot access field outside of format.");
 	as<FieldNodeVector>().getValue() = value;
+}
+
+Scope &Field::getScope() {
+	W_ASSERT_TRUE(format == FieldFormat::Scope, "Cannot access field outside of format.");
+	return as<FieldScope>().getValue();
+}
+
+const Scope &Field::getScope() const {
+	W_ASSERT_TRUE(format == FieldFormat::Scope, "Cannot access field outside of format.");
+	return as<FieldScope>().getValue();
 }
 
 void Field::printAsLiteral(std::ostream &os) const {

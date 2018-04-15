@@ -7,7 +7,7 @@
 #include <whiskey/AST/Requires.hpp>
 
 namespace whiskey {
-bool VerificationASTForm::onVerifyPre(const Node &node, MessageContext &msgs) {
+PassResult VerificationASTForm::onRunPre(Node &node, MessageContext &msgs) {
 	if (node.getType() == NodeType::TypeSymbol) {
 		requireNodeVectorFieldWithCategory(node, msgs, FieldTag::TypeSymbol_TemplateEvalArgs, {
 			NodeTypeCategory::Type,
@@ -553,12 +553,12 @@ bool VerificationASTForm::onVerifyPre(const Node &node, MessageContext &msgs) {
 		W_ASSERT_UNREACHABLE("Unsupported node type " << node.getType() << ".");
 	}
 
-	return true;
+	return PassResult::Good;
 }
 
-bool VerificationASTForm::onVerifyPost(const Node &node, MessageContext &msgs) {
-	return true;
+PassResult VerificationASTForm::onRunPost(Node &node, MessageContext &msgs) {
+	return PassResult::Good;
 }
 
-VerificationASTForm::VerificationASTForm() : Verification("VerificationASTForm") {}
+VerificationASTForm::VerificationASTForm() : Pass("VerificationASTForm") {}
 }

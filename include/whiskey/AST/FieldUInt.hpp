@@ -16,7 +16,8 @@ protected:
 public:
 	FieldUInt(UInt64 value);
 
-	UInt64 getValue() const;
+	UInt64 &getValue();
+	const UInt64 &getValue() const;
   void setValue(UInt64 value);
 };
 }

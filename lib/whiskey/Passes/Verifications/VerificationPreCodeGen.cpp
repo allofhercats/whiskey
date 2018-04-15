@@ -6,7 +6,7 @@
 #include <whiskey/AST/Predicates.hpp>
 
 namespace whiskey {
-bool VerificationPreCodeGen::onVerifyPre(const Node &node, MessageContext &msgs) {
+PassResult VerificationPreCodeGen::onRunPre(Node &node, MessageContext &msgs) {
 	if (node.getType() == NodeType::TypeVoid) {
 		// do nothing
 	} else if (isAtomicType(node.getType())) {
@@ -147,12 +147,12 @@ bool VerificationPreCodeGen::onVerifyPre(const Node &node, MessageContext &msgs)
 		msgs.emit(node.getToken(), Message::Severity::InternalCompilerError);
 	}
 
-	return true;
+	return PassResult::Good;
 }
 
-bool VerificationPreCodeGen::onVerifyPost(const Node &node, MessageContext &msgs) {
-	return true;
+PassResult VerificationPreCodeGen::onRunPost(Node &node, MessageContext &msgs) {
+	return PassResult::Good;
 }
 
-VerificationPreCodeGen::VerificationPreCodeGen() : Verification("VerificationPreCodeGen", {"VerificationASTForm"}) {}
+VerificationPreCodeGen::VerificationPreCodeGen() : Pass("VerificationPreCodeGen", {"VerificationASTForm"}) {}
 }
